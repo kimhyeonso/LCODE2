@@ -1,0 +1,70 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+.header {
+  @include page;
+  height: 94px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid $line;
+  position: relative;
+  z-index: 20;
+}
+.logo {
+  font: 700 25px $serif;
+  letter-spacing: -1px;
+  display: flex;
+  flex-direction: column;
+  span {
+    font: 500 8px $sans;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+}
+nav {
+  display: flex;
+  align-items: center;
+  gap: 35px;
+  font-size: 11px;
+  letter-spacing: 1.6px;
+  a {
+    padding: 12px 0;
+    border-bottom: 1px solid transparent;
+  }
+  .active {
+    border-color: $ink;
+  }
+}
+.my {
+  border: 1px solid $ink !important;
+  padding: 13px 18px !important;
+  display: flex;
+  gap: 22px;
+}
+.menu {
+  display: none;
+  border: 0;
+  background: none;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+@include tablet {
+  .menu {
+    display: block;
+  }
+  nav {
+    display: none;
+    position: absolute;
+    top: 75px;
+    left: 0;
+    right: 0;
+    padding: 24px;
+    background: $paper-light;
+    flex-direction: column;
+    align-items: flex-start;
+    box-shadow: 0 20px 40px #0002;
+    &.open {
+      display: flex;
+    }
+  }
+}
