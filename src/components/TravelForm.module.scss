@@ -1,0 +1,51 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+.form {
+  background: $paper-light;
+  padding: 40px;
+  border: 1px solid $line;
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    margin-bottom: 24px;
+  }
+  input,
+  select {
+    border: 0;
+    border-bottom: 1px solid $ink;
+    background: transparent;
+    padding: 14px 0;
+    font: 24px $serif;
+    outline: none;
+    width: 100%;
+  }
+  div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+  button {
+    width: 100%;
+    border: 1px solid $ink;
+    background: $ink;
+    color: $paper;
+    padding: 18px;
+    font-size: 11px;
+    letter-spacing: 2px;
+  }
+  button:disabled {
+    opacity: 0.5;
+  }
+}
+@include mobile {
+  .form {
+    padding: 24px;
+    div {
+      grid-template-columns: 1fr;
+      gap: 0;
+    }
+  }
+}

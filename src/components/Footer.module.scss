@@ -1,0 +1,42 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+.footer {
+  @include page;
+  margin-top: 120px;
+  padding: 48px 0 38px;
+  border-top: 1px solid $ink;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  strong {
+    font: 700 30px $serif;
+  }
+  p {
+    font: 34px/1.15 $serif;
+    margin: 45px 0 0;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    font-size: 13px;
+  }
+  .note {
+    font-size: 10px;
+    line-height: 1.7;
+    letter-spacing: 1px;
+    text-align: right;
+    color: $muted;
+  }
+}
+@include mobile {
+  .footer {
+    grid-template-columns: 1fr 1fr;
+    gap: 38px;
+    p {
+      font-size: 26px;
+    }
+    .note {
+      text-align: left;
+    }
+  }
+}
