@@ -25,7 +25,7 @@ export default function Itinerary() {
         </section>
 
         <section className={styles.tripArea} aria-label="다가오는 여행">
-          <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행">‹</button>
+          <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행">&lsaquo;</button>
           <article className={styles.tripCard}>
             <div className={styles.photo} aria-hidden="true">
               <span>D-12</span>
@@ -37,7 +37,7 @@ export default function Itinerary() {
               <button className={styles.detailButton} type="button">일정 상세 보기</button>
             </div>
           </article>
-          <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="다음 여행">›</button>
+          <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="다음 여행">&rsaquo;</button>
         </section>
       </div>
     </main>

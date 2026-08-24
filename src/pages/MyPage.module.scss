@@ -6,10 +6,14 @@
 $korean: "Noto Sans KR", sans-serif;
 $english: "DM Serif Display", serif;
 
+// 로그인 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.myPage, .myPage * { letter-spacing: -0.01em !important; }
+
 .myPage {
   min-height: calc(100vh - 10rem);
-  padding: 2.75rem 0 4.5rem;
   background: $paper-light;
+  padding: 2.25rem 0 4rem;
+  background: white;
 }
 
 .layout {
@@ -31,7 +35,7 @@ $english: "DM Serif Display", serif;
 .imagePlaceholder {
   background:
     linear-gradient(265deg, rgba(0, 0, 0, 0.46), transparent 58%),
-    url("../assets/tokyo-street-login.png") center / cover no-repeat;
+    url("/public/Mypage-img/4.png") center / cover no-repeat;
 }
 
 .sideImage {
@@ -330,4 +334,12 @@ $english: "DM Serif Display", serif;
     width: min(100%, 19.375rem);
     margin: 0 auto;
   }
+}
+.greeting h1 {
+  margin: 0 0 0.8rem;
+  color: $ink;
+  font-family: $korean;
+  font-size: 1rem;
+  font-weight: 100;
+  letter-spacing: -0.01em;
 }

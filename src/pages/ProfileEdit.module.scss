@@ -7,6 +7,9 @@
 $korean: "Noto Sans KR", sans-serif;
 $english: "DM Serif Display", serif;
 
+// 프로필 편집 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.profileEdit, .profileEdit * { letter-spacing: -0.01em !important; }
+
 // 프로필 편집 페이지 전체 영역입니다.
 .profileEdit {
   min-height: calc(100vh - 10rem);

@@ -10,17 +10,20 @@ $display: "DM Serif Display", serif;
 // 한글 본문에 사용하는 산세리프 글꼴입니다.
 $korean: "Noto Sans KR", sans-serif;
 
+// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.wishlist, .wishlist * { letter-spacing: -0.01em !important; }
+
 // 공통 헤더 아래의 위시리스트 전체 영역입니다.
 .wishlist {
   min-height: calc(100vh - 10rem); // Keep short pages visually full-height.
   padding: 3.75rem 0 4rem; // Create breathing room above and below content.
-  background: $paper-light; // Use the project's light paper background.
+ background-color: white;
 }
 
 // 페이지 내용을 가운데 정렬하는 래퍼입니다.
 .content {
-  width: min(calc(100% - 10.6rem), 55.3rem); // Limit desktop width while preserving side gutters.
-  margin: 0 auto; // Horizontally center the wrapper.
+  width: min(calc(100% - 10rem), 48rem);
+  margin: -1rem auto;
 }
 
 // 제목 위의 작은 섹션 라벨입니다.
@@ -67,7 +70,7 @@ h1 {
   position: relative; // Anchor the heart icon within the placeholder.
   width: 100%; // Fill the available card width.
   height: 11.55rem; // Preserve the intended rectangular image height.
-  background: #d3d3d3; // Indicate that the real image is not present yet.
+  background: #ff9a9a; // Indicate that the real image is not present yet.
 
   span {
     position: absolute; // Position the heart independently of the image flow.
@@ -77,6 +80,25 @@ h1 {
     font-size: 1rem; // Use a compact icon size.
     line-height: 1; // Prevent extra line-box height around the icon.
   }
+}
+.placeCard:nth-child(1) .imagePlaceholder {
+  background-image: url('/Mypage-img/2.png');
+}
+
+.placeCard:nth-child(2) .imagePlaceholder {
+  background-image: url('/Mypage-img/1.png');
+}
+
+.placeCard:nth-child(3) .imagePlaceholder {
+  background-image: url('/Mypage-img/3.png');
+}
+.placeCard:nth-child(4) .imagePlaceholder {
+  background-image: url('/Mypage-img/5.png');
+}
+
+.imagePlaceholder {
+  background-size: cover;
+  background-position: center;
 }
 
 // 국가와 도시를 보여주는 메타 정보입니다.

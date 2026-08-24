@@ -7,24 +7,29 @@
 $serif-display: "DM Serif Display", serif;
 $korean: "Noto Sans KR", sans-serif;
 
+// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.itinerary, .itinerary * { letter-spacing: -0.01em !important; }
+
 // 여행 일정 페이지 전체 영역입니다.
 .itinerary {
   min-height: calc(100vh - 10rem);
-  padding: 3.75rem 0 4rem;
-  background: $paper-light;
+  padding: 2.25rem 0 4rem;
+  background: white;
 }
 
 // 왼쪽 소개와 오른쪽 일정 카드의 2단 레이아웃입니다.
 .content {
+
   display: grid;
   grid-template-columns: 22rem minmax(0, 29.5rem);
   gap: 4.1rem;
   align-items: center;
-  width: min(calc(100% - 10.6rem), 55.5rem);
   margin: 0 auto;
+  width: min(calc(100% - 10rem), 48rem);
+  margin: -1rem auto;
 }
 
-.intro { color: #111; }
+.intro { color: #f7f7f7; }
 
 .eyebrow {
   margin: 0;
@@ -70,10 +75,12 @@ $korean: "Noto Sans KR", sans-serif;
 }
 
 .countCard {
-  background: #f0ede7;
+  background-image:url(/public/Mypage-img/8.png);
+  background-position: center;
+  background-size: cover;
 
   h2 { font-size: 1.5rem; }
-  p { margin-top: 0.7rem; color: #625f5a; }
+  p { margin-top: 0.7rem; color: #f8f8f8; }
 }
 
 .packingCard {
@@ -97,7 +104,9 @@ $korean: "Noto Sans KR", sans-serif;
 .photo {
   position: relative;
   height: 7.45rem;
-  background: #d3d3d3;
+  background-image: url(/public/Mypage-img/3.png);
+  background-size: cover;
+  background-position: bottom;
 
   span {
     position: absolute;
@@ -131,19 +140,19 @@ $korean: "Noto Sans KR", sans-serif;
   position: absolute;
   top: 50%;
   z-index: 1;
-  width: 1.9rem;
-  height: 1.9rem;
+  width: 1.6rem;
+  height: 1.6rem;
   border: 0;
   border-radius: 50%;
   transform: translateY(-50%);
-  background: #d7d7d7;
-  color: #fff;
-  font: 400 2rem/1.4 Arial, sans-serif;
+  background: rgba($color: #000000, $alpha: 0.2);
+  color: white;
+  font: 400 1rem/1.4 Arial, sans-serif;
   cursor: pointer;
 }
 
 .previous { left: -3.2rem; }
-.next { right: -3.2rem; }
+.next {right: -3.2rem; }
 
 @include tablet {
   .content { grid-template-columns: minmax(17rem, 22rem) minmax(22rem, 29.5rem); gap: 3rem; width: min(calc(100% - 6rem), 55.5rem); }

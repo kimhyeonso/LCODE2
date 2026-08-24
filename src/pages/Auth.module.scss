@@ -1,5 +1,10 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
+$korean: "Noto Sans KR", sans-serif;
+$english: "DM Serif Display", serif;
+
 .auth {
   @include page;
   min-height: calc(100vh - 94px);
@@ -9,12 +14,17 @@
   align-items: center;
   padding-block: 70px;
 }
+.auth{
+    min-height: calc(100vh - 10rem);
+  padding: 2.25rem 0 4rem;
+  background: white;
+}
 .auth section span {
   font-size: 9px;
   letter-spacing: 2px;
 }
 .auth section h1 {
-  font: clamp(48px, 6vw, 82px) / 1 $serif;
+  font: clamp(48px, 6vw, 82px) / 1 $korean;
   margin: 28px 0;
 }
 .auth section p {

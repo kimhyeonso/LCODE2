@@ -6,10 +6,14 @@
 $display: "DM Serif Display", serif; // Serif coupon font.
 $korean: "Noto Sans KR", sans-serif; // Korean UI font.
 
+// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.coupon, .coupon * { letter-spacing: -0.01em !important; }
+
 // 쿠폰 아카이브 전체 배경과 여백입니다.
-.coupon { min-height: calc(100vh - 10rem); padding: 3.75rem 0 7rem; background: $paper-light; }
+.coupon { min-height: calc(100vh - 10rem); padding: 3.75rem 0 7rem; background: white; }
 // 쿠폰 등록 영역과 보유 쿠폰 목록의 2단 레이아웃입니다.
-.content { display: grid; grid-template-columns: 21.2rem 20.9rem; gap: 6.6rem; width: min(calc(100% - 10.6rem), 51.9rem); margin: 0 auto; }
+.content { display: grid; grid-template-columns: 21.2rem 20.9rem; gap: 6.6rem; width: min(calc(100% - 10.6rem), 51.9rem); margin: 0 auto; width: min(calc(100% - 10rem), 48rem);
+  margin: -1rem auto; }
 .eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
 h1 { margin: 1.15rem 0 0; color: #111; font: 400 1.9rem/1 $display; letter-spacing: -.08em; }
 .description { margin: -.1rem 0 0; color: #98948d; font: 400 .66rem $korean; }
