@@ -1,0 +1,199 @@
+// 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@400;500;600&display=swap");
+
+$korean: "Noto Sans KR", sans-serif;
+$english: "DM Serif Display", serif;
+
+// 마이페이지 메인 전체 영역입니다.
+.myPageMain {
+  min-height: calc(100vh - 10rem);
+  padding: 2.25rem 0 4rem;
+  background: $paper-light;
+}
+
+// 다가오는 여행과 완료 여행의 2단 레이아웃입니다.
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 22rem) minmax(0, 21rem);
+  gap: 3.5rem;
+  width: min(calc(100% - 10rem), 48rem);
+  margin: 0 auto;
+}
+
+// 제작한 페이지를 빠르게 확인하는 임시 메뉴입니다.
+.pageSwitcher {
+  position: fixed;
+  top: 7.5rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: 6.55rem;
+  border: 2px solid #111;
+  background: #fff;
+
+  a {
+    display: grid;
+    min-height: 1.85rem;
+    place-items: center;
+    border-bottom: 2px solid #111;
+    color: #111;
+    font: 400 0.7rem $korean;
+    text-decoration: none;
+  }
+
+  a:last-child { border-bottom: 0; }
+}
+
+.upcoming {
+  .eyebrow {
+    color: #aaa59c;
+    font-family: $korean;
+    font-size: 0.62rem;
+    letter-spacing: 0.17em;
+  }
+
+  h1 {
+    margin: 1.15rem 0 0.7rem;
+    color: #111;
+    font-family: $english;
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 1.05;
+    letter-spacing: -0.07em;
+  }
+}
+
+.featuredTrip {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 13.4rem;
+  margin-top: 0.55rem;
+  overflow: hidden;
+  padding: 1.1rem 0.85rem 0;
+  background: linear-gradient(180deg, #ddd 0%, #b5b5b5 32%, #282828 76%, #111 100%);
+  color: #fff;
+
+  > strong {
+    position: absolute;
+    top: 1.2rem;
+    right: 1rem;
+    font-family: $english;
+    font-size: 3rem;
+    font-weight: 400;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: $english;
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  p {
+    margin: 0.65rem 0 0.85rem;
+    color: rgba(255, 255, 255, 0.62);
+    font-family: $korean;
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
+  }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 -0.85rem;
+    padding: 0.6rem 0.85rem;
+    background: #111;
+    color: rgba(255, 255, 255, 0.7);
+    font-family: $korean;
+    font-size: 0.58rem;
+
+    button {
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #fff;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 600;
+    }
+  }
+}
+
+.completed {
+  padding-top: 0.1rem;
+}
+
+.completedTrip {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  min-height: 8.8rem;
+  border-bottom: 0.0625rem solid #ded9d1;
+
+  &:first-child {
+    border-top: 0.0625rem solid #ded9d1;
+  }
+
+  .thumbnail {
+    aspect-ratio: 1;
+    background: #d2d2d2;
+  }
+
+  > div:last-child {
+    font-family: $korean;
+  }
+
+  span {
+    color: #aaa59c;
+    font-size: 0.58rem;
+    letter-spacing: 0.13em;
+  }
+
+  h2 {
+    margin: 0.55rem 0 0.45rem;
+    color: #111;
+    font-family: $english;
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 0.9;
+  }
+
+  p {
+    margin: 0;
+    color: #9c978e;
+    font-size: 0.6rem;
+    line-height: 1.5;
+  }
+}
+
+@include mobile {
+  .myPageMain {
+    padding: 2.5rem 0 4rem;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    width: min(calc(100% - 2.5rem), 31rem);
+  }
+
+  .featuredTrip {
+    min-height: 15rem;
+  }
+
+  .pageSwitcher {
+    position: static;
+    width: min(calc(100% - 2.5rem), 31rem);
+    margin: 2rem auto 0;
+  }
+}

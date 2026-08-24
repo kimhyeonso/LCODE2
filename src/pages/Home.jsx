@@ -85,12 +85,12 @@ export default function Home() {
           <TextLink to="/products">VIEW ALL</TextLink>
         </div>
         <div className={styles.pickGrid}>
-          <Link to="/products/kyoto-slow" className={styles.featurePick}>
-            <div className={`${styles.placeholder} ${styles.osakaImage}`} />
+          <Link to="/products/shanghai-frame" className={styles.featurePick}>
+            <div className={`${styles.placeholder} ${styles.shanghaiImage}`} />
             <h3>
-              후쿠오카에서 보내는
+              상하이에서 만나는
               <br />
-              맛있는 3박 4일
+              오래된 것과 새로운 것
             </h3>
           </Link>
           <Link to="/products/tokyo-afterdark" className={styles.smallPick}>
@@ -113,8 +113,8 @@ export default function Home() {
         <div className={styles.destinationList}>
           {[
             ["KOREA", "서울, 부산, 제주", styles.koreaImage],
-            ["JAPAN", "도쿄, 오사카, 후쿠오카", styles.japanImage],
-            ["CHINA", "상하이, 베이징, 청두", styles.chinaImage],
+            ["JAPAN", "교토, 도쿄", styles.japanImage],
+            ["CHINA", "상하이", styles.chinaImage],
           ].map(([country, cities, imageClass]) => (
             <Link to={`/products?country=${country}`} key={country}>
               <div>
@@ -146,7 +146,7 @@ export default function Home() {
         <SectionLabel number="05">ESSENTIALS</SectionLabel>
         <div className={styles.rowTitle}>
           <p>여행 필수템</p>
-          <span className={styles.mutedLabel}>TRAVEL SHOPPING</span>
+          <TextLink to="/shop">TRAVEL SHOPPING</TextLink>
         </div>
         <div className={styles.essentialGrid}>
           {[
@@ -154,13 +154,13 @@ export default function Home() {
             ["POUCH", "파우치", travelPouchImage],
             ["ADAPTER", "어댑터", travelAdapterImage],
           ].map(([name, sub, image]) => (
-            <article key={name}>
+            <Link to="/shop" key={name}>
               <div>
                 <img src={image} alt={sub} loading="lazy" />
               </div>
               <h3>{name}</h3>
               <p>{sub}</p>
-            </article>
+            </Link>
           ))}
         </div>
       </section>

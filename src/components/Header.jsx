@@ -8,7 +8,8 @@ import closeIcon from "../assets/icons/close.svg";
 
 const links = [
   ["/", "HOME"],
-  ["/products", "PLAN"],
+  ["/products", "TRIPS"],
+  ["/shop", "SHOP"],
   ["/event", "EVENT"],
   ["/contact", "CONTACT"],
 ];

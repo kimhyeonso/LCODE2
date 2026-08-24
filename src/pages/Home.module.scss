@@ -175,7 +175,7 @@ $type-display: 36px;
 }
 .tokyoImage,
 .seoulImage,
-.osakaImage,
+.shanghaiImage,
 .koreaImage,
 .japanImage,
 .chinaImage {
@@ -189,8 +189,8 @@ $type-display: 36px;
 .seoulImage {
   background-image: url("../assets/images/seoul_korea.jpg");
 }
-.osakaImage {
-  background-image: url("../assets/images/osaka_japan.jpg");
+.shanghaiImage {
+  background-image: url("../assets/images/shanghai_china.jpg");
 }
 .koreaImage {
   background-image: url("../assets/images/korea.jpg");
@@ -233,7 +233,7 @@ $type-display: 36px;
 .destinationHero {
   height: 313px;
   background: $home-sage;
-  background-image: url("../assets/images/shanghai_china.jpg");
+  background-image: url("../assets/images/beijing_china.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -315,12 +315,12 @@ $type-display: 36px;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
 }
-.essentialGrid article > div {
+.essentialGrid a > div {
   height: 234px;
   background: $home-placeholder;
   overflow: hidden;
 }
-.essentialGrid article > div img {
+.essentialGrid a > div img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -434,7 +434,7 @@ $type-display: 36px;
   .destinationList a {
     grid-template-columns: 1fr 1fr;
   }
-  .essentialGrid article > div {
+  .essentialGrid a > div {
     height: 320px;
   }
   .journalVisual {

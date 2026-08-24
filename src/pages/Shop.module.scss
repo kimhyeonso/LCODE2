@@ -1,0 +1,147 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.shop {
+  @include page;
+  min-height: 70vh;
+  padding-top: 70px;
+  padding-bottom: 100px;
+}
+
+.title {
+  position: relative;
+  margin-bottom: 65px;
+  border-bottom: 1px solid $line;
+  padding-bottom: 40px;
+
+  > span {
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  h1 {
+    margin: 30px 0 0;
+    font: clamp(50px, 7vw, 95px) / 0.93 $serif;
+    letter-spacing: -4px;
+  }
+
+  i {
+    color: $sand;
+    font-weight: 400;
+  }
+
+  p {
+    position: absolute;
+    right: 0;
+    bottom: 40px;
+    color: $muted;
+    font-size: 12px;
+    line-height: 1.8;
+  }
+}
+
+.collection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.card {
+  scroll-margin-top: 100px;
+}
+
+.visual {
+  position: relative;
+  display: grid;
+  aspect-ratio: 1 / 1.15;
+  place-items: center;
+  overflow: hidden;
+  background: #ececea;
+
+  span {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 1;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  img {
+    width: 78%;
+    height: 78%;
+    object-fit: contain;
+    transition: transform 0.35s ease;
+  }
+}
+
+.card:hover .visual img {
+  transform: scale(1.04);
+}
+
+.copy {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  border-bottom: 1px solid $line;
+  padding: 18px 0 14px;
+
+  h2 {
+    margin: 0 0 5px;
+    font: 26px $serif;
+  }
+
+  p,
+  strong {
+    margin: 0;
+    font-size: 11px;
+  }
+
+  p {
+    color: $muted;
+  }
+
+  strong {
+    white-space: nowrap;
+    font-weight: 500;
+  }
+}
+
+.description {
+  margin: 14px 0 0;
+  color: $muted;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+@include tablet {
+  .title p {
+    position: static;
+    margin-top: 25px;
+  }
+
+  .collection {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@include mobile {
+  .shop {
+    padding-top: 48px;
+    padding-bottom: 70px;
+  }
+
+  .title {
+    margin-bottom: 36px;
+  }
+
+  .title h1 {
+    letter-spacing: -2px;
+  }
+
+  .collection {
+    grid-template-columns: 1fr;
+    gap: 42px;
+  }
+}

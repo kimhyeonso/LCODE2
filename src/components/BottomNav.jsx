@@ -10,7 +10,7 @@ const items = [
   { to: "/", icon: homeIcon, label: "HOME", end: true },
   { to: "/travel-planner", icon: planIcon, label: "PLAN" },
   { to: "/travel-planner", icon: addIcon, label: "", add: true },
-  { to: "/products", icon: shopIcon, label: "SHOP" },
+  { to: "/shop", icon: shopIcon, label: "SHOP" },
   { to: "/my", icon: userIcon, label: "MY" },
 ];
 
