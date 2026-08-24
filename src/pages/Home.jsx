@@ -86,7 +86,7 @@ export default function Home() {
         </div>
         <div className={styles.pickGrid}>
           <Link to="/products/kyoto-slow" className={styles.featurePick}>
-            <div className={`${styles.placeholder} ${styles.fukuokaImage}`} />
+            <div className={`${styles.placeholder} ${styles.osakaImage}`} />
             <h3>
               후쿠오카에서 보내는
               <br />
@@ -112,9 +112,9 @@ export default function Home() {
         <div className={styles.destinationHero} />
         <div className={styles.destinationList}>
           {[
-            ["KOREA", "서울, 부산, 제주", styles.seoulImage],
-            ["JAPAN", "도쿄, 오사카, 후쿠오카", styles.tokyoImage],
-            ["CHINA", "상하이, 베이징, 청두", styles.shanghaiImage],
+            ["KOREA", "서울, 부산, 제주", styles.koreaImage],
+            ["JAPAN", "도쿄, 오사카, 후쿠오카", styles.japanImage],
+            ["CHINA", "상하이, 베이징, 청두", styles.chinaImage],
           ].map(([country, cities, imageClass]) => (
             <Link to={`/products?country=${country}`} key={country}>
               <div>

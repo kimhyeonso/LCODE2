@@ -34,7 +34,7 @@ $type-display: 36px;
   background: $home-placeholder;
   position: relative;
   overflow: hidden;
-  background-image: url("../assets/images/fukuoka_japan.jpg");
+  background-image: url("../assets/images/busan_korea.jpg");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -173,16 +173,15 @@ $type-display: 36px;
 .placeholder {
   background: $home-placeholder;
 }
-.fukuokaImage,
 .tokyoImage,
 .seoulImage,
-.shanghaiImage {
+.osakaImage,
+.koreaImage,
+.japanImage,
+.chinaImage {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-}
-.fukuokaImage {
-  background-image: url("../assets/images/fukuoka_japan.jpg");
 }
 .tokyoImage {
   background-image: url("../assets/images/tokyo_japan.jpg");
@@ -190,8 +189,17 @@ $type-display: 36px;
 .seoulImage {
   background-image: url("../assets/images/seoul_korea.jpg");
 }
-.shanghaiImage {
-  background-image: url("../assets/images/shanghai_china.jpg");
+.osakaImage {
+  background-image: url("../assets/images/osaka_japan.jpg");
+}
+.koreaImage {
+  background-image: url("../assets/images/korea.jpg");
+}
+.japanImage {
+  background-image: url("../assets/images/japan.jpg");
+}
+.chinaImage {
+  background-image: url("../assets/images/china.jpg");
 }
 .featurePick {
   grid-column: 1/-1;
@@ -225,13 +233,42 @@ $type-display: 36px;
 .destinationHero {
   height: 313px;
   background: $home-sage;
+  background-image: url("../assets/images/shanghai_china.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin: 0;
+  display: block;
+}
+.destinationList {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 .destinationList a {
   height: 168px;
   display: grid;
   grid-template-columns: 62% 38%;
-  border-bottom: 2px solid $home-paper;
+  align-items: stretch;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+  border: 0;
   background: $home-surface;
+}
+.destinationList a + a {
+  border-top: 1px solid $home-line;
+}
+.destinationList a > div {
+  min-height: 100%;
+  margin: 0;
+  border: 0;
+}
+.destinationList a > div + div {
+  border-left: 1px solid $home-line;
 }
 .destinationList a > div:first-child {
   padding: $space-5 0 $space-4 $space-3;
@@ -254,17 +291,16 @@ $type-display: 36px;
   margin: 0;
 }
 .countryImage {
-  background: $home-placeholder;
+  background-color: $home-placeholder;
 }
 .eventVisual {
   height: 312px;
   display: block;
-  background: linear-gradient(
-    90deg,
-    $home-forest 0 6%,
-    $home-sage 6% 94%,
-    $home-forest 94%
-  );
+  background-color: $home-sage;
+  background-image: url("../assets/images/event.jpg");
+  background-position: center 68%;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .eventVisual span {
   display: none;
@@ -309,6 +345,10 @@ $type-display: 36px;
 .journalVisual {
   height: 280px;
   background: $home-placeholder;
+  background-image: url("../assets/images/journal_tokyo.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   position: relative;
 }
 .journalVisual span {
