@@ -31,7 +31,7 @@ $english: "DM Serif Display", serif;
 // 작업 중인 페이지를 확인하는 임시 메뉴입니다.
 .pageSwitcher {
   position: fixed;
-  top: 2rem;
+  top: -1rem;
   right: 1.5rem;
   z-index: 10;
   display: flex;
@@ -193,4 +193,59 @@ $english: "DM Serif Display", serif;
   .layout { grid-template-columns: 1fr; gap: 3rem; width: min(calc(100% - 2.5rem), 31rem); }
   .featuredTrip { min-height: 15rem; }
   .pageSwitcher { position: static; width: min(calc(100% - 2.5rem), 31rem); margin: 2rem auto 0; }
+}
+
+// 768px 이하 모바일에서는 두 영역을 위아래로 배치합니다.
+@media (max-width: 768px) {
+  .myPageMain {
+    min-height: auto;
+    padding: 1.5rem 0 2rem;
+  }
+
+  // 예정 여행과 완료 여행을 세로로 쌓습니다.
+  .layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+    width: calc(100% - 2rem);
+    max-width: 31rem;
+  }
+
+  // 모바일에서는 제목과 카드가 화면 너비에 맞게 늘어납니다.
+  .upcoming,
+  .completed {
+    width: 100%;
+  }
+
+  .upcoming h1 {
+    margin-top: 0.9rem;
+    font-size: 2rem;
+  }
+
+  .featuredTrip {
+    min-height: 16rem;
+    margin-top: 1rem;
+  }
+
+  // 완료 여행은 이미지와 정보를 나란히 둡니다.
+  .completedTrip {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    min-height: 7rem;
+  }
+
+  .thumbnail {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+
+  .tripText h2 {
+    margin: 0.35rem 0 0.3rem;
+    font-size: 1.35rem;
+  }
+
+  // 모바일에서는 오른쪽 미리보기 메뉴가 콘텐츠를 가리지 않게 숨깁니다.
+  .pageSwitcher {
+    display: none;
+  }
 }

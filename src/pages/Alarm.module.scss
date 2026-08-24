@@ -21,10 +21,33 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 .settingList { margin-top: 1.8rem; border-top: 1px solid #ebe8e3; }
 .setting { display: flex; align-items: center; justify-content: space-between; height: 3.55rem; padding: 0 1rem; border-bottom: 1px solid #ebe8e3; color: #292929; font: 400 1rem $korean; letter-spacing: -.06em; }
 // 기능 없이 상태만 보여주는 토글 스타일입니다.
-.setting button { position: relative; width: 2.45rem; height: 1.28rem; border: 0; border-radius: 1rem; background: #d7d7d7; }
-.setting button i { position: absolute; top: .18rem; left: .18rem; width: .92rem; height: .92rem; border-radius: 50%; background: #fff; }
+// 토글 바깥쪽 트랙입니다. 배경색이 부드럽게 바뀝니다.
+.setting button {
+  position: relative;
+  width: 2.45rem;
+  height: 1.28rem;
+  border: 0;
+  border-radius: 1rem;
+  background: #d7d7d7;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+// 토글 안에서 움직이는 흰색 원입니다.
+.setting button i {
+  position: absolute;
+  top: .18rem;
+  left: .18rem;
+  width: .92rem;
+  height: .92rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+
+// 켜진 토글은 어두운 트랙과 오른쪽 원으로 표시합니다.
 .setting button.enabled { background: #363636; }
-.setting button.enabled i { right: .18rem; left: auto; }
+.setting button.enabled i { transform: translateX(1.17rem); }
 .notice { margin: 2.45rem 0 0; color: #65615c; font: 400 .58rem/1.45 $korean; text-align: center; }
 .notice span { margin-right: 1.5rem; font-size: .72rem; }
 // 알림 이미지를 대신하는 고정 크기 회색 영역입니다.

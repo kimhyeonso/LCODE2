@@ -21,8 +21,8 @@ h1 { margin: 1.15rem 0 0; color: #111; font: 400 1.9rem/1 $display; letter-spaci
 // 양쪽 절취선을 표현한 쿠폰 티켓 외곽입니다.
 .ticket { position: relative; overflow: hidden; border: 1px solid #dedbd5; background: #faf9f7; }
 .ticket::before, .ticket::after { position: absolute; z-index: 2; top: 50%; width: .75rem; height: .75rem; border-radius: 50%; background: $paper-light; content: ""; transform: translateY(-50%); }
-.ticket::before { left: -.42rem; }
-.ticket::after { right: -.42rem; }
+.ticket::before { left: -.42rem; z-index: 15;}
+.ticket::after { right: -.42rem; z-index: 15;}
 .ticketBody { position: relative; min-height: 7rem; padding: 1.05rem 1.15rem .4rem; border-bottom: 1px solid #e5e2dd; }
 .ticketBody::after { position: absolute; top: 0; right: 4.55rem; bottom: 0; border-left: 1px dashed #d9d5cf; content: ""; }
 .ticketType { margin: 0; color: #aaa49c; font: 400 .48rem $korean; letter-spacing: .16em; }

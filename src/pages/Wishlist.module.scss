@@ -101,6 +101,42 @@ h1 {
   background-position: center;
 }
 
+// 하트를 올려둘 흰색 원과 클릭 가능한 버튼입니다.
+.heartButton {
+  position: absolute;
+  top: 0.55rem;
+  right: 0.55rem;
+  display: grid;
+  width: 1.2rem;
+  height: 1.2rem;
+  padding: 0;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+}
+
+// 기본 상태는 검은색 빈 하트입니다.
+.heartButton span {
+  position: static;
+  color: #111;
+  font-size: 0.8rem;
+  line-height: 1;
+}
+
+// 좋아요 상태는 빨간색 채운 하트로 표시합니다.
+.heartButton.liked span { color: #e53935; }
+
+// 클릭 직후 하트가 살짝 커졌다가 원래 크기로 돌아옵니다.
+.heartButton.liked { animation: heart-pop 0.28s ease-out; }
+
+@keyframes heart-pop {
+  0% { transform: scale(1); }
+  45% { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
 // 국가와 도시를 보여주는 메타 정보입니다.
 .location {
   margin: 0.65rem 0 0; // Add only space above the label.

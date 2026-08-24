@@ -13,16 +13,19 @@ $english: "DM Serif Display", serif;
 // 프로필 편집 페이지 전체 영역입니다.
 .profileEdit {
   min-height: calc(100vh - 10rem);
-  padding: 3rem 0 5rem;
-  background: $paper-light;
+  padding: 2.25rem 0 4rem;
+  background: white;
+  // 이 페이지의 한글은 명시적으로 Noto Sans KR을 사용합니다.
   font-family: $korean;
 }
 
 // 입력 폼과 여행 아카이브의 2단 레이아웃입니다.
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 21rem) 16.5rem;
+  // 왼쪽 입력 영역과 오른쪽 아카이브를 같은 비율로 나눕니다.
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: start;
+  // 기존 바깥 여백은 유지하고 컬럼 비율만 5:5로 맞춥니다.
   gap: 1.5rem;
   width: min(calc(100% - 6rem), 42rem);
   margin: 0 auto;
@@ -45,7 +48,7 @@ $english: "DM Serif Display", serif;
 
   label {
     display: grid;
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 1.8rem 0 0.8rem;
     color: #aaa59c;
     font-size: 0.65rem;
@@ -61,21 +64,24 @@ $english: "DM Serif Display", serif;
     color: $ink;
     font: inherit;
     font-size: 0.9rem;
-
+    margin-top: -1.5rem;
     &::placeholder {
       color: #d0ccc4;
     }
   }
 }
-
+.hero{
+  // font는 크기까지 필요한 축약형이므로 여기서는 family를 사용합니다.
+  font-family: $korean;
+}
 .eyebrow {
-  color: #aaa59c;
+  color: #aa9e9c;
   font-size: 0.62rem;
   letter-spacing: 0.15em;
 }
 
 .passwordLink {
-  margin: 2rem 0 0;
+  margin: 0.5rem 0 0;
   color: #aaa59c;
   font-size: 0.65rem;
 
@@ -92,6 +98,7 @@ $english: "DM Serif Display", serif;
 
 .error,
 .saved {
+  // TODO: 빨간 오류 문구와 저장 버튼 사이 간격은 여기서 조절하세요.
   margin: 1rem 0 0;
   font-size: 0.65rem;
 }
@@ -122,9 +129,13 @@ $english: "DM Serif Display", serif;
 }
 
 .archive {
+  // 전체 아카이브를 정사각형으로 고정합니다.
+  width: 100%;
+  max-width: 20rem;
+  height: 20rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: 8.5rem 6.25rem;
+  grid-template-rows: repeat(2, 1fr);
 }
 
 .archive article {
@@ -141,12 +152,13 @@ $english: "DM Serif Display", serif;
 }
 
 .tripCard {
+  
   justify-content: flex-end;
   overflow: hidden;
   border-right: 0 !important;
   background:
     linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.65)),
-    url("../assets/tokyo-street-login.png") center / cover no-repeat;
+    url("/public/Mypage-img/3.png") center / cover no-repeat;
 
   strong,
   small {
@@ -212,7 +224,7 @@ $english: "DM Serif Display", serif;
   strong {
     color: #1e273c;
     font-family: $english;
-    font-size: 1.8rem;
+    font-size: 1.1rem;
     font-weight: 400;
     line-height: 1;
   }
@@ -221,10 +233,12 @@ $english: "DM Serif Display", serif;
 .savedCard {
   border-top: 0 !important;
   border-right: 0 !important;
+ 
 }
 
 .storyCard {
   border-top: 0 !important;
+  
 }
 
 @include mobile {
@@ -236,6 +250,14 @@ $english: "DM Serif Display", serif;
     grid-template-columns: 1fr;
     gap: 3rem;
     width: min(calc(100% - 2.5rem), 31rem);
+  }
+
+  // 모바일에서도 아카이브를 정사각형으로 유지합니다.
+  .archive {
+    width: 100%;
+    max-width: 20rem;
+    height: 20rem;
+    margin: 0 auto;
   }
 
   .formSection {

@@ -27,6 +27,37 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 .items button:first-child { border-top: 1px solid #e9e6e1; }
 .items span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .items b { margin-left: 1rem; font: 400 1.6rem/1 Arial, sans-serif; }
+// 공지 하나를 감싸는 아코디언 항목입니다.
+.noticeItem { border-bottom: 1px solid #e9e6e1; }
+
+// 제목을 클릭할 수 있는 행입니다.
+.noticeButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 3.25rem;
+  padding: 0 .7rem;
+  border: 0;
+  background: transparent;
+  color: #292929;
+  font: 400 .72rem $korean;
+  text-align: left;
+  cursor: pointer;
+}
+
+// 제목이 길어도 한 줄로 잘라서 보여줍니다.
+.noticeButton span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+// 오른쪽 화살표의 회전 애니메이션입니다.
+.arrow { margin-left: 1rem; font: 400 1.6rem/1 Arial, sans-serif; transition: transform .25s ease; }
+.noticeItem.open .arrow { transform: rotate(90deg); }
+
+// 닫힌 공지 내용은 높이를 0으로 숨깁니다.
+.noticeDetail { max-height: 0; overflow: hidden; padding: 0 .7rem; color: #777; font: 400 .62rem/1.6 $korean; transition: max-height .25s ease, padding .25s ease; }
+
+// 열린 공지 내용은 기존 제목보다 작은 글씨로 보여줍니다.
+.noticeItem.open .noticeDetail { max-height: 8rem; padding: 1rem .85rem; }
 .contact { margin: 1.15rem 0 0; color: #666; font: 400 .58rem $korean; text-align: center; }
 // 고정 크기 배너 플레이스홀더 목록입니다.
 .banners { display: grid; gap: 1.8rem; padding-top: 5.9rem; }
