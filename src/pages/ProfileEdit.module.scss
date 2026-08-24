@@ -1,0 +1,241 @@
+// 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
+
+$korean: "Noto Sans KR", sans-serif;
+$english: "DM Serif Display", serif;
+
+// 프로필 편집 페이지 전체 영역입니다.
+.profileEdit {
+  min-height: calc(100vh - 10rem);
+  padding: 3rem 0 5rem;
+  background: $paper-light;
+  font-family: $korean;
+}
+
+// 입력 폼과 여행 아카이브의 2단 레이아웃입니다.
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 21rem) 16.5rem;
+  align-items: start;
+  gap: 1.5rem;
+  width: min(calc(100% - 6rem), 42rem);
+  margin: 0 auto;
+}
+
+.formSection {
+  padding: 0.5rem 1rem;
+
+  h1 {
+    margin: 1rem 0 2rem;
+    color: $ink;
+    font-size: 1.7rem;
+    font-weight: 500;
+    letter-spacing: -0.07em;
+  }
+
+  form {
+    border-top: 0.0625rem solid #d7d2ca;
+  }
+
+  label {
+    display: grid;
+    gap: 1rem;
+    padding: 1.8rem 0 0.8rem;
+    color: #aaa59c;
+    font-size: 0.65rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0 0 0.75rem;
+    border: 0;
+    border-bottom: 0.0625rem solid #ded9d1;
+    outline: 0;
+    background: transparent;
+    color: $ink;
+    font: inherit;
+    font-size: 0.9rem;
+
+    &::placeholder {
+      color: #d0ccc4;
+    }
+  }
+}
+
+.eyebrow {
+  color: #aaa59c;
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+}
+
+.passwordLink {
+  margin: 2rem 0 0;
+  color: #aaa59c;
+  font-size: 0.65rem;
+
+  button {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: $ink;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 600;
+  }
+}
+
+.error,
+.saved {
+  margin: 1rem 0 0;
+  font-size: 0.65rem;
+}
+
+.error {
+  color: #b32929;
+}
+
+.saved {
+  color: #547257;
+}
+
+.saveButton {
+  width: 100%;
+  height: 2.75rem;
+  margin-top: 1.5rem;
+  border: 0;
+  background: #171714;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+
+  &:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+}
+
+.archive {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 8.5rem 6.25rem;
+}
+
+.archive article {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0.8rem;
+  border: 0.0625rem solid #e0ddd6;
+
+  > span {
+    color: #aaa59c;
+    font-size: 0.6rem;
+  }
+}
+
+.tripCard {
+  justify-content: flex-end;
+  overflow: hidden;
+  border-right: 0 !important;
+  background:
+    linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.65)),
+    url("../assets/tokyo-street-login.png") center / cover no-repeat;
+
+  strong,
+  small {
+    position: relative;
+    color: #fff;
+  }
+
+  strong {
+    font-family: $english;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  small {
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+  }
+}
+
+.recentCard {
+  background: #111;
+  color: #fff;
+
+  > span,
+  small,
+  em {
+    color: rgba(255, 255, 255, 0.43) !important;
+  }
+
+  small {
+    margin-top: auto;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+  }
+
+  h2 {
+    margin: 0.35rem 0;
+    font-family: $english;
+    font-size: 1.65rem;
+    font-weight: 400;
+    line-height: 0.94;
+  }
+
+  em {
+    font-size: 0.6rem;
+    font-style: normal;
+    letter-spacing: 0.08em;
+  }
+}
+
+.savedCard,
+.storyCard {
+  background: #f1eee8;
+
+  small {
+    margin-top: auto;
+    color: #aaa59c;
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+  }
+
+  strong {
+    color: #1e273c;
+    font-family: $english;
+    font-size: 1.8rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+}
+
+.savedCard {
+  border-top: 0 !important;
+  border-right: 0 !important;
+}
+
+.storyCard {
+  border-top: 0 !important;
+}
+
+@include mobile {
+  .profileEdit {
+    padding: 2.5rem 0 4rem;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    width: min(calc(100% - 2.5rem), 31rem);
+  }
+
+  .formSection {
+    padding: 0;
+  }
+}

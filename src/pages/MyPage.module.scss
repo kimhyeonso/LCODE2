@@ -1,0 +1,333 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
+
+$korean: "Noto Sans KR", sans-serif;
+$english: "DM Serif Display", serif;
+
+.myPage {
+  min-height: calc(100vh - 10rem);
+  padding: 2.75rem 0 4.5rem;
+  background: $paper-light;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 62rem) minmax(16rem, 32rem);
+  align-items: center;
+  gap: 6rem;
+  width: min(calc(100% - 10rem), 100rem);
+  margin: 0 auto;
+}
+
+.visualSection {
+  display: grid;
+  grid-template-columns: 22rem minmax(0, 1fr);
+  gap: 1rem;
+}
+
+.sideImage,
+.imagePlaceholder {
+  background:
+    linear-gradient(265deg, rgba(0, 0, 0, 0.46), transparent 58%),
+    url("../assets/tokyo-street-login.png") center / cover no-repeat;
+}
+
+.sideImage {
+  position: relative;
+  min-height: 39.5rem;
+
+  span {
+    position: absolute;
+    bottom: 2rem;
+    left: 1.5rem;
+    color: rgba(255, 255, 255, 0.78);
+    font-family: $english;
+    font-size: 2.7rem;
+    font-weight: 700;
+    line-height: 1.05;
+  }
+}
+
+.intro {
+  display: grid;
+  grid-template-rows: 21rem auto;
+  gap: 1rem;
+  min-width: 0;
+}
+
+.imagePlaceholder {
+  position: relative;
+  overflow: hidden;
+}
+
+.welcome {
+  position: absolute;
+  top: 2.2rem;
+  right: 2.5rem;
+  margin: 0;
+  color: #fff;
+  font-family: $english;
+  font-size: 4.8rem;
+  font-weight: 400;
+  line-height: 0.94;
+  letter-spacing: -0.06em;
+}
+
+.greeting {
+  position: relative;
+  min-height: 17.5rem;
+  padding: 2.5rem 2.5rem 2rem 5.2rem;
+  background: #eeeae2;
+  font-family: $korean;
+
+  .number {
+    position: absolute;
+    top: 2.6rem;
+    left: 2rem;
+    color: #aaa59c;
+    font-size: 1.3rem;
+  }
+
+  h1 {
+    margin: 0 0 0.8rem;
+    color: $ink;
+    font-size: 2.36rem;
+    font-weight: 500;
+    letter-spacing: -0.06em;
+  }
+
+  p {
+    margin: 0;
+    color: $muted;
+    font-size: 1.24rem;
+    letter-spacing: -0.05em;
+  }
+}
+
+.placeSaved {
+  display: grid;
+  gap: 0.16rem;
+  margin-top: 1.4rem;
+
+  span {
+    color: #aaa59c;
+    font-size: 1.2rem;
+    letter-spacing: 0.12em;
+  }
+
+  strong {
+    color: #1e273c;
+    font-family: $english;
+    font-size: 3.3rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+}
+
+.loginPanel {
+  width: 100%;
+  color: $muted;
+  font-family: $korean;
+  font-size: 1.4rem;
+  text-align: center;
+
+  form {
+    display: grid;
+    gap: 3.75rem;
+  }
+
+  label {
+    display: grid;
+    gap: 1.625rem;
+    color: #9b9790;
+    text-align: left;
+  }
+
+  input {
+    width: 100%;
+    height: 3.375rem;
+    padding: 0;
+    border: 0;
+    border-bottom: 0.0625rem solid #d7d2ca;
+    outline: 0;
+    background: transparent;
+    color: $ink;
+    font: inherit;
+  }
+
+  button {
+    height: 5rem;
+    margin-top: -1.875rem;
+    border: 0;
+    background: #131313;
+    color: #fff;
+    cursor: pointer;
+    font: inherit;
+    font-size: 1.5rem;
+
+    &:disabled {
+      cursor: wait;
+      opacity: 0.65;
+    }
+  }
+
+  .signup {
+    margin: 2rem 0 2.875rem;
+    color: #8d8982;
+
+    button {
+      height: auto;
+      margin-left: 0.3rem;
+      padding: 0;
+      background: transparent;
+      color: $ink;
+      font: inherit;
+      font-weight: 600;
+      font-size: inherit;
+    }
+  }
+
+  a {
+    color: $muted;
+    font-size: 1.36rem;
+    text-decoration: none;
+  }
+}
+
+.error {
+  margin: -1rem 0;
+  color: #b32929;
+  font-size: 0.7em;
+  line-height: 1.4;
+  text-align: left;
+}
+
+// 데스크톱 로그인 화면도 태블릿과 같은 작은 비율을 유지합니다.
+.layout { grid-template-columns: minmax(0, 31rem) 14rem; gap: 2.25rem; width: min(calc(100% - 4rem), 48rem); }
+.visualSection { grid-template-columns: 11rem minmax(0, 1fr); gap: 0.5rem; }
+.sideImage { min-height: 19.75rem; span { bottom: 1rem; left: 0.75rem; font-size: 1.35rem; } }
+.intro { grid-template-rows: 10.5rem auto; gap: 0.5rem; }
+.welcome { top: 1.1rem; right: 1.25rem; font-size: 2.4rem; }
+.greeting { min-height: 8.75rem; padding: 1.25rem 1.25rem 1rem 2.6rem; .number { top: 1.3rem; left: 1rem; font-size: 0.65rem; } h1 { margin-bottom: 0.4rem; font-size: 1.18rem; } p { font-size: 0.62rem; } }
+.placeSaved { gap: 0.08rem; margin-top: 0.7rem; span { font-size: 0.6rem; } strong { font-size: 1.65rem; } }
+.loginPanel { font-size: 0.7rem; form { gap: 1.875rem; } label { gap: 0.8125rem; } input { height: 1.6875rem; } button { height: 2.5rem; margin-top: -0.9375rem; font-size: 0.75rem; } .signup { margin: 1rem 0 1.4375rem; } .error { margin: -0.5rem 0; } a { font-size: 0.68rem; } }
+
+@include tablet {
+  .layout {
+    grid-template-columns: minmax(0, 31rem) 14rem;
+    gap: 2.25rem;
+    width: min(calc(100% - 4rem), 48rem);
+  }
+
+  .visualSection {
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 0.5rem;
+  }
+
+  .sideImage {
+    min-height: 19.75rem;
+
+    span {
+      bottom: 1rem;
+      left: 0.75rem;
+      font-size: 1.35rem;
+    }
+  }
+
+  .intro {
+    grid-template-rows: 10.5rem auto;
+    gap: 0.5rem;
+  }
+
+  .welcome {
+    top: 1.1rem;
+    right: 1.25rem;
+    font-size: 2.4rem;
+  }
+
+  .greeting {
+    min-height: 8.75rem;
+    padding: 1.25rem 1.25rem 1rem 2.6rem;
+
+    .number {
+      top: 1.3rem;
+      left: 1rem;
+      font-size: 0.65rem;
+    }
+
+    h1 {
+      margin-bottom: 0.4rem;
+      font-size: 1.18rem;
+    }
+
+    p {
+      font-size: 0.62rem;
+    }
+  }
+
+  .placeSaved {
+    gap: 0.08rem;
+    margin-top: 0.7rem;
+
+    span {
+      font-size: 0.6rem;
+    }
+
+    strong {
+      font-size: 1.65rem;
+    }
+  }
+
+  .loginPanel {
+    font-size: 0.7rem;
+
+    form {
+      gap: 1.875rem;
+    }
+
+    label {
+      gap: 0.8125rem;
+    }
+
+    input {
+      height: 1.6875rem;
+    }
+
+    button {
+      height: 2.5rem;
+      margin-top: -0.9375rem;
+      font-size: 0.75rem;
+    }
+
+    .signup {
+      margin: 1rem 0 1.4375rem;
+    }
+
+    .error {
+      margin: -0.5rem 0;
+    }
+
+    a {
+      font-size: 0.68rem;
+    }
+  }
+}
+
+@include mobile {
+  .myPage {
+    padding: 2.5rem 0 4rem;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+    width: min(calc(100% - 2.5rem), 31rem);
+  }
+
+  .loginPanel {
+    width: min(100%, 19.375rem);
+    margin: 0 auto;
+  }
+}
