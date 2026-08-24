@@ -7,6 +7,7 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { firebaseApp } from "../firebase/config";
+import { createUserProfile } from "./firestoreService";
 const auth = firebaseApp ? getAuth(firebaseApp) : null;
 export function observeAuth(callback) {
   if (!auth) {
@@ -29,6 +30,11 @@ export async function signup(email, password, name) {
     password,
   );
   if (name) await updateProfile(credential.user, { displayName: name });
+  await createUserProfile({
+    uid: credential.user.uid,
+    email: credential.user.email,
+    nickname: name,
+  });
   return credential;
 }
 export const logout = () => (auth ? signOut(auth) : Promise.resolve());

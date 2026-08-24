@@ -6,6 +6,7 @@ import {
   getDocs,
   query,
   serverTimestamp,
+  setDoc,
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
@@ -13,6 +14,36 @@ const requireDb = () => {
   if (!db) throw new Error("Firebase is not configured");
   return db;
 };
+
+export async function createUserProfile({ uid, email, nickname }) {
+  return setDoc(
+    doc(requireDb(), "users", uid),
+    {
+      email,
+      nickname: nickname || "여행자",
+      savedTrips: [],
+      favorites: [],
+      orders: [],
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true },
+  );
+}
+
+export async function getUserProfile(uid) {
+  const snap = await getDoc(doc(requireDb(), "users", uid));
+  return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+}
+
+export async function updateUserProfile(uid, data) {
+  return setDoc(
+    doc(requireDb(), "users", uid),
+    { ...data, updatedAt: serverTimestamp() },
+    { merge: true },
+  );
+}
+
 export async function savePlan(userId, plan) {
   return addDoc(collection(requireDb(), "plans"), {
     ...plan,
