@@ -97,7 +97,7 @@ $korean: "Noto Sans KR", sans-serif;
 }
 
 // 일정 카드와 좌우 이동 버튼을 감싸는 영역입니다.
-.tripArea { position: relative; }
+.tripArea {margin-top: 5rem; position: relative; }
 
 .tripCard { border: 1px solid #d2d0cd; background: #fff; }
 
@@ -120,7 +120,7 @@ $korean: "Noto Sans KR", sans-serif;
   }
 }
 
-.tripInfo { padding: 0.7rem 1.35rem 0.45rem; }
+.tripInfo {padding: 0.7rem 1.35rem 0.45rem; }
 
 .tripInfo h2 { margin: 0; font: 700 1.25rem $korean; letter-spacing: -0.07em; }
 .subtitle { margin: 0.3rem 0 0; color: #949494; font: 400 0.72rem $korean; }
@@ -128,7 +128,7 @@ $korean: "Noto Sans KR", sans-serif;
 
 .detailButton {
   width: 100%;
-  height: 2.65rem;
+  height: 2.50rem;
   border: 1px solid #111;
   background: #050505;
   color: #fff;
