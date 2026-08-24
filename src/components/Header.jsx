@@ -2,6 +2,9 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import styles from "./Header.module.scss";
+import logoBlack from "../assets/images/logo-black.png";
+import menuIcon from "../assets/icons/ham_menu.svg";
+import closeIcon from "../assets/icons/close.svg";
 
 const links = [
   ["/", "HOME"],
@@ -23,7 +26,7 @@ export default function Header() {
   return (
     <header ref={header} className={styles.header}>
       <NavLink to="/" className={styles.logo}>
-        L:CODE<span>TRAVEL, REMIXED</span>
+        <img src={logoBlack} alt="L:CODE" />
       </NavLink>
       <button
         className={styles.menu}
@@ -31,9 +34,12 @@ export default function Header() {
         aria-expanded={open}
         onClick={() => setOpen(!open)}
       >
-        MENU
+        <img src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
       </button>
-      <nav className={open ? styles.open : ""} aria-label="주요 메뉴">
+      <nav
+        className={`${styles.navigation} ${open ? styles.open : ""}`}
+        aria-label="주요 메뉴"
+      >
         {links.map(([to, label]) => (
           <NavLink
             key={to}

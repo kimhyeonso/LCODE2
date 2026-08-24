@@ -30,13 +30,6 @@
 }
 @include mobile {
   .footer {
-    grid-template-columns: 1fr 1fr;
-    gap: 38px;
-    p {
-      font-size: 26px;
-    }
-    .note {
-      text-align: left;
-    }
+    display: none;
   }
 }

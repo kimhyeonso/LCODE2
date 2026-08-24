@@ -11,17 +11,17 @@
   z-index: 20;
 }
 .logo {
-  font: 700 25px $serif;
-  letter-spacing: -1px;
-  display: flex;
-  flex-direction: column;
-  span {
-    font: 500 8px $sans;
-    letter-spacing: 2px;
-    margin-top: 2px;
+  display: block;
+  width: 150px;
+  height: 27px;
+  overflow: hidden;
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
 }
-nav {
+.navigation {
   display: flex;
   align-items: center;
   gap: 35px;
@@ -49,17 +49,37 @@ nav {
   letter-spacing: 1px;
 }
 @include tablet {
+  .header {
+    width: 100%;
+    height: 56px;
+    padding: 0 20px;
+    border-bottom: 0;
+    background: #f5f5f5;
+    position: relative;
+  }
+  .logo {
+    width: 96px;
+    height: 18px;
+  }
   .menu {
     display: block;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
   }
-  nav {
+  .navigation {
     display: none;
     position: absolute;
-    top: 75px;
+    top: 56px;
     left: 0;
     right: 0;
     padding: 24px;
-    background: $paper-light;
+    background: #fff;
     flex-direction: column;
     align-items: flex-start;
     box-shadow: 0 20px 40px #0002;

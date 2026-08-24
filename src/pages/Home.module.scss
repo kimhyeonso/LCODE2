@@ -1,291 +1,403 @@
 @use "../styles/variables" as *;
-@use "../styles/mixins" as *;
+
+$home-paper: #f6f3ec;
+$home-surface: #fcfbf8;
+$home-ink: #171714;
+$home-muted: #8b8780;
+$home-line: #d9d3c8;
+$home-sage: #657266;
+$home-forest: #344139;
+$home-terracotta: #a8664c;
+$home-placeholder: #e7e4de;
+$space-1: 8px;
+$space-2: 16px;
+$space-3: 24px;
+$space-4: 32px;
+$space-5: 48px;
+$space-6: 64px;
+$type-caption: 11px;
+$type-small: 12px;
+$type-body: 14px;
+$type-section: 26px;
+$type-display: 36px;
+
+.home {
+  background: $home-paper;
+  color: $home-ink;
+  padding-bottom: 72px;
+}
 .hero {
-  min-height: calc(100vh - 94px);
-  display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  @include page;
-  padding: 56px 0 70px;
+  width: 100%;
 }
-.heroCopy {
-  align-self: center;
-}
-.issue {
-  font-size: 9px;
-  letter-spacing: 2px;
-}
-.hero h1 {
-  font: clamp(50px, 6vw, 92px) / 0.98 $serif;
-  letter-spacing: -4px;
-  margin: 35px 0 30px;
-  i {
-    font-weight: 400;
-    color: $sand;
-  }
-}
-.hero p {
-  font-size: 13px;
-  line-height: 1.8;
-  color: $muted;
-}
-.heroCopy > a {
-  display: inline-flex;
-  justify-content: space-between;
-  width: 260px;
-  border-bottom: 1px solid $ink;
-  padding: 18px 0;
-  margin-top: 28px;
-  font-size: 11px;
-  letter-spacing: 1px;
-}
-.heroArt {
+.heroVisual {
+  height: 454px;
+  background: $home-placeholder;
   position: relative;
-  min-height: 580px;
-  background: #9f6b52;
   overflow: hidden;
-  color: $paper;
+  background-image: url("../assets/images/fukuoka_japan.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.sun {
-  position: absolute;
-  width: 330px;
-  height: 330px;
-  border-radius: 50%;
-  background: #d6b78c;
-  top: 70px;
-  left: 50%;
-  transform: translateX(-50%);
-  box-shadow: 0 0 80px #ffe1ad55;
+.heroVisual span {
+  display: none;
 }
-.arch {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font: 300px $serif;
-  color: #f5e6cc55;
-  border: 26px solid #52352655;
-  margin: 42px;
+.section {
+  padding: 0 $space-2;
+  margin-top: $space-6;
 }
-.heroArt > span {
-  position: absolute;
-  bottom: 18px;
-  left: 18px;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-}
-.sectionHead {
+.sectionLabel {
+  height: 32px;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  border-top: 1px solid $ink;
-  padding-top: 15px;
-  margin-bottom: 35px;
-  span {
-    font-size: 9px;
-    letter-spacing: 2px;
-  }
-  h2 {
-    font: 38px $serif;
-    margin: 0;
-  }
-}
-.upcoming,
-.products,
-.destinations,
-.journal {
-  @include page;
-  margin-top: 100px;
-}
-.trip {
-  display: grid;
-  grid-template-columns: 1fr 2fr 1fr auto;
   align-items: center;
-  background: $paper-light;
-  border: 1px solid $line;
-  padding: 40px;
-  gap: 25px;
-  .trip div {
-    display: flex;
-    flex-direction: column;
-  }
-  b {
-    font: 44px $serif;
-  }
-  .trip span {
-    font-size: 10px;
-    color: $muted;
-  }
-  h3 {
-    font: 32px/1.1 $serif;
-    margin: 0;
-    i {
-      color: $sand;
-      font-weight: 400;
-    }
-  }
-  p {
-    font-size: 10px;
-    line-height: 1.8;
-  }
-  a {
-    font-size: 10px;
-    border-bottom: 1px solid $ink;
-    padding: 10px 0;
-  }
+  gap: $space-1;
+  border-bottom: 1px solid $home-line;
+  color: $home-muted;
+  font-size: $type-caption;
+  letter-spacing: 1.8px;
 }
-.grid {
+.section > h1 {
+  font-family: $serif;
+  font-size: $type-section;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: $space-4 $space-2 $space-3;
+}
+.rowTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin: 0 $space-2 $space-2;
+  min-height: 27px;
+}
+.rowTitle > p,
+.rowTitle div > p {
+  margin: 0;
+  font-size: $type-body;
+}
+.rowTitle div > h2 {
+  font-family: $serif;
+  font-size: $type-section;
+  font-weight: 600;
+  line-height: 1.1;
+  margin: 0 0 12px;
+}
+.rowTitle div > p {
+  color: $home-muted;
+  font-size: $type-caption;
+}
+.textLink {
+  color: $home-forest;
+  font-size: $type-caption;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+}
+.textLink span {
+  margin-left: 2px;
+}
+.upcomingCard {
+  display: block;
+  background: $home-surface;
+  border: 1px solid $home-line;
+}
+.upcomingMain {
+  min-height: 200px;
+  display: grid;
+  grid-template-columns: 54% 46%;
+}
+.upcomingMain > div:first-child {
+  padding: $space-4 $space-2;
+  background: $home-surface;
+}
+.upcomingMain strong {
+  font: 400 44px/1 $serif;
+  letter-spacing: -2px;
+  color: $home-terracotta;
+}
+.upcomingMain h2 {
+  font: 600 19px/1.1 $serif;
+  margin: 18px 0 9px;
+}
+.upcomingMain p {
+  margin: 0;
+  font-size: $type-caption;
+  color: $home-muted;
+}
+.upcomingImage {
+  background-image: url('../assets/images/fukuoka_japan.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.tripMeta {
+  margin: 0;
+  padding: $space-2;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  background: $home-surface;
+  border-top: 1px solid $home-line;
 }
-.more {
-  display: block;
-  width: max-content;
-  margin: 35px 0 0 auto;
-  padding-bottom: 9px;
-  border-bottom: 1px solid;
+.tripMeta div {
+  padding-left: $space-2;
+  border-left: 1px solid $home-line;
+}
+.tripMeta div:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+.tripMeta dt {
+  color: $home-muted;
   font-size: 10px;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
 }
-.destinations > div a {
+.tripMeta dd {
+  margin: 6px 0 0;
+  font-size: $type-caption;
+  line-height: 1.55;
+}
+.pickGrid {
   display: grid;
-  grid-template-columns: 80px 1fr auto;
-  align-items: center;
-  border-top: 1px solid $line;
-  padding: 22px 10px;
-  font: clamp(40px, 7vw, 100px) $serif;
+  grid-template-columns: 1fr 1fr;
+  gap: $space-3 $space-2;
 }
-.destinations a span {
-  font: 10px $sans;
-  align-self: start;
+.pickGrid h3 {
+  font: 600 15px/1.4 $serif;
+  margin: $space-2 $space-2 0;
 }
-.destinations a b {
-  font: 18px $sans;
+.pickGrid p {
+  margin: $space-1 0 0;
+  color: $home-muted;
+  font-size: $type-caption;
+  line-height: 1.6;
 }
-.remix {
-  margin-top: 120px;
-  padding: 110px max(32px, calc((100vw - 1320px) / 2));
-  background: $ink;
-  color: $paper;
-  text-align: center;
+.placeholder {
+  background: $home-placeholder;
 }
-.remix > span {
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: $sand;
+.fukuokaImage,
+.tokyoImage,
+.seoulImage,
+.shanghaiImage {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
-.remix h2 {
-  font: clamp(35px, 5vw, 70px) / 1.08 $serif;
-  margin: 30px 0;
-  i {
-    color: $sand;
-    font-weight: 400;
-  }
+.fukuokaImage {
+  background-image: url("../assets/images/fukuoka_japan.jpg");
 }
-.remix p {
-  font-size: 13px;
-  line-height: 1.8;
-  color: #aaa79f;
+.tokyoImage {
+  background-image: url("../assets/images/tokyo_japan.jpg");
 }
-.remix a {
-  display: inline-block;
-  border: 1px solid $paper;
-  padding: 16px 24px;
-  margin-top: 24px;
+.seoulImage {
+  background-image: url("../assets/images/seoul_korea.jpg");
+}
+.shanghaiImage {
+  background-image: url("../assets/images/shanghai_china.jpg");
+}
+.featurePick {
+  grid-column: 1/-1;
+}
+.featurePick .placeholder {
+  height: 261px;
+}
+.featurePick h3 {
+  font-family: $sans;
+  font-size: $type-body;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.smallPick .placeholder {
+  height: 160px;
+}
+.smallPick h3 {
+  margin-left: 0;
+  margin-bottom: 0;
+}
+.destinationSection {
+  padding: 0;
+}
+.destinationSection .sectionLabel {
+  margin: 0 $space-2;
+}
+.scriptTitle {
+  font: 600 30px/1.1 $serif;
+  margin: $space-4 $space-3;
+}
+.destinationHero {
+  height: 313px;
+  background: $home-sage;
+}
+.destinationList a {
+  height: 168px;
+  display: grid;
+  grid-template-columns: 62% 38%;
+  border-bottom: 2px solid $home-paper;
+  background: $home-surface;
+}
+.destinationList a > div:first-child {
+  padding: $space-5 0 $space-4 $space-3;
+}
+.destinationList span {
   font-size: 10px;
+  color: $home-sage;
+  letter-spacing: 1.5px;
+}
+.destinationList h3 {
+  font-family: $serif;
+  font-size: $type-display;
+  font-weight: 600;
+  line-height: 1;
+  margin: $space-2 0 $space-1;
+}
+.destinationList p {
+  color: $home-muted;
+  font-size: $type-small;
+  margin: 0;
+}
+.countryImage {
+  background: $home-placeholder;
+}
+.eventVisual {
+  height: 312px;
+  display: block;
+  background: linear-gradient(
+    90deg,
+    $home-forest 0 6%,
+    $home-sage 6% 94%,
+    $home-forest 94%
+  );
+}
+.eventVisual span {
+  display: none;
+}
+.mutedLabel {
+  color: $home-muted;
+  font-size: $type-caption;
   letter-spacing: 1px;
 }
-.journalGrid {
+.essentialGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1px;
-  background: $line;
 }
-.journal article {
-  background: $paper;
-  padding: 20px 0 30px;
+.essentialGrid article > div {
+  height: 234px;
+  background: $home-placeholder;
+  overflow: hidden;
 }
-.journal article > div {
-  height: 210px;
-  background: #d3cab8;
-  display: grid;
-  place-items: center;
-  text-align: center;
-  font: 16px/1.6 $serif;
-  margin-bottom: 20px;
+.essentialGrid article > div img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
-.journal article:nth-child(2) > div {
-  background: #687269;
-  color: white;
+.essentialGrid h3 {
+  font-family: $sans;
+  font-size: $type-caption;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 1px;
+  margin: $space-2 0 $space-1;
 }
-.journal article:nth-child(3) > div {
-  background: #81695d;
-  color: white;
+.essentialGrid p {
+  font-size: 10px;
+  color: $home-muted;
+  margin: 0;
 }
-.journal small {
-  font-size: 8px;
-  letter-spacing: 1.5px;
+.journal {
+  padding-bottom: 28px;
 }
-.journal h3 {
-  font: 24px $serif;
+.journalVisual {
+  height: 280px;
+  background: $home-placeholder;
+  position: relative;
 }
-.journal p {
-  font-size: 12px;
-  color: $muted;
+.journalVisual span {
+  position: absolute;
+  top: $space-2;
+  right: $space-2;
+  padding: $space-1 $space-2;
+  background: $home-surface;
+  color: $home-forest;
+  font-size: $type-caption;
+  letter-spacing: 1px;
 }
-@include tablet {
-  .hero {
-    grid-template-columns: 1fr;
-    gap: 50px;
+.journalMeta {
+  display: flex;
+  align-items: center;
+  gap: $space-1;
+  margin: $space-2;
+  color: $home-muted;
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+.journalMeta i {
+  width: 20px;
+  height: 1px;
+  background: $home-line;
+}
+.journal article > h3 {
+  font: 500 24px/1.35 $sans;
+  letter-spacing: -1px;
+  margin: 0 $space-2 $space-2;
+}
+.journal article > p {
+  color: $home-muted;
+  font-size: $type-body;
+  line-height: 1.8;
+  margin: 0 $space-2 $space-3;
+}
+.journal article > footer {
+  border-top: 1px solid $home-line;
+  border-bottom: 1px solid $home-line;
+  padding: $space-2;
+  color: $home-muted;
+  font-size: $type-caption;
+  letter-spacing: 1px;
+}
+
+@media (min-width: 641px) {
+  .home {
+    padding-bottom: 0;
   }
-  .heroArt {
-    min-height: 480px;
+  .hero,
+  .section {
+    width: min(1100px, calc(100% - 64px));
+    margin-left: auto;
+    margin-right: auto;
   }
-  .trip {
-    grid-template-columns: 1fr 2fr;
+  .heroVisual {
+    height: min(620px, 70vh);
+    margin-top: 28px;
   }
-  .grid,
-  .journalGrid {
+  .section {
+    margin-top: 96px;
+  }
+  .pickGrid {
+    grid-template-columns: 2fr 1fr 1fr;
+  }
+  .featurePick {
+    grid-column: auto;
+  }
+  .featurePick .placeholder,
+  .smallPick .placeholder {
+    height: 360px;
+  }
+  .destinationSection {
+    width: 100%;
+  }
+  .destinationSection .sectionLabel,
+  .destinationSection .scriptTitle {
+    width: min(1100px, calc(100% - 64px));
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .destinationList a {
     grid-template-columns: 1fr 1fr;
   }
-  .grid article:last-child,
-  .journal article:last-child {
-    display: none;
+  .essentialGrid article > div {
+    height: 320px;
   }
-}
-@include mobile {
-  .hero {
-    padding-top: 40px;
-  }
-  .hero h1 {
-    letter-spacing: -2px;
-  }
-  .heroArt {
-    min-height: 390px;
-  }
-  .arch {
-    font-size: 170px;
-  }
-  .sectionHead {
-    display: block;
-    h2 {
-      margin-top: 16px;
-      font-size: 30px;
-    }
-  }
-  .trip {
-    grid-template-columns: 1fr;
-    padding: 25px;
-  }
-  .grid,
-  .journalGrid {
-    grid-template-columns: 1fr;
-  }
-  .grid article:last-child,
-  .journal article:last-child {
-    display: block;
-  }
-  .destinations > div a {
-    grid-template-columns: 40px 1fr auto;
+  .journalVisual {
+    height: 520px;
   }
 }
