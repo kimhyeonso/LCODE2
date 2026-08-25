@@ -12,17 +12,22 @@
 .email { margin-top: 1rem; letter-spacing: .04em; }
 .edit { display: inline-block; margin-top: .6rem; border: 1px solid #ddd9d2; padding: .32rem .45rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
 
-.menuList { display: grid; margin-top: 1.75rem; border-top: 1px solid #dedad3; }
+.menuList { display: grid; gap: 0; margin-top: 1.75rem; border-top: 1px solid #dedad3; }
 .menuList a, .menuList button { display: flex; align-items: center; justify-content: space-between; min-height: 1.75rem; border: 0; border-bottom: 1px solid #dedad3; background: transparent; color: #222; font: 400 .62rem $korean; text-align: left; text-decoration: none; }
 .menuList span { color: #aaa49c; }
 .menuList button { color: #aaa49c; }
 
 .summary { display: grid; grid-template-columns: repeat(2, 1fr); }
-.summary article { position: relative; display: flex; min-height: 6.65rem; flex-direction: column; justify-content: flex-end; padding: .75rem; border: 1px solid #dedad3; color: #77736c; }
+.summary article { position: relative; display: flex; aspect-ratio: 1; min-height: 0; flex-direction: column; justify-content: flex-end; padding: .75rem; border: 1px solid #dedad3; color: #77736c; }
 .summary small { position: absolute; top: .55rem; left: .55rem; color: #aaa49c; font: 400 .42rem $korean; letter-spacing: .12em; }
 .summary > article > span { color: #aaa49c; font: 400 .45rem $korean; letter-spacing: .14em; }
 .summary strong { font: 400 1.4rem/1 $display; }
-.upcoming { color: #fff !important; background: linear-gradient(180deg, #aaa 0%, #4c4c4c 70%, #202020 100%); }
+.upcoming {
+  color: #fff !important;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 8%) 0%, rgb(0 0 0 / 78%) 100%),
+    url("/Mypage-img/3.png") center / cover no-repeat;
+}
 .upcoming > span, .upcoming small { color: #eee !important; }
 .recent { justify-content: center !important; background: #111; color: #eee !important; }
 .recent > span { margin-top: .5rem; color: #777 !important; }
@@ -41,7 +46,7 @@
   .profile h1 { font-size: 1.2rem; }
   .menuList { margin-top: 1.2rem; }
   .menuList a, .menuList button { min-height: 1.55rem; font-size: .56rem; }
-  .summary article { min-height: 5.3rem; padding: .6rem; }
+  .summary article { min-height: 0; padding: .6rem; }
   .summary strong { font-size: 1.1rem; }
   .recent h2 { font-size: .82rem; }
 }

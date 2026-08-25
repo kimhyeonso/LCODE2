@@ -74,8 +74,8 @@ export default function App() {
       <ScrollTop />
       <PageSize />
       <Header />
-      <MyPageUserLink />
       <div className={styles.main}>
+        <MyPageUserLink />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />

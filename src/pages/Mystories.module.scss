@@ -10,7 +10,7 @@
 // 페이지 전체 배경과 상하 여백입니다.
 .mystories { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; @include korean-font; }
 // 데스크톱의 좌우 2단 레이아웃입니다.
-.content { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 6.7rem; width: min(calc(100% - 10.6rem), 52.3rem); margin: 0 auto; }
+.content { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 6.7rem; width: min(calc(100% - 10.6rem), 48rem); margin: 0 auto; }
 // 상단 작은 섹션 라벨입니다.
 .eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
 // 공통 영문 제목 스타일입니다.
@@ -58,7 +58,7 @@ background-size: cover; }
 .productCard footer button { height: 1.35rem; font-size: .48rem; }
 .pagination { margin-top: .6rem; color: #bbb; font-size: .42rem; letter-spacing: .25rem; text-align: center; }
 // 태블릿 화면 여백입니다.
-@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 52.3rem); } }
+@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 48rem); } }
 // 휴대폰 화면의 단일 열 레이아웃입니다.
 @include mobile {
   .mystories { padding: 0.8rem 0 1.5rem; }
