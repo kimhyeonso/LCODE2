@@ -14,7 +14,7 @@ export default function Notice() {
     <main className={styles.notice}>
       <div className={styles.content}>
         <section className={styles.noticeList} aria-labelledby="notice-title">
-          <p className={styles.eyebrow}>MY JOURNEY</p>
+          <p className={styles.eyebrow}>SAVED</p>
           <h1 id="notice-title">NOTICE</h1>
           <p className={styles.description}>공지사항</p>
           <div className={styles.divider} />

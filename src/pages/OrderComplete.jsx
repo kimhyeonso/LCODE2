@@ -1,0 +1,3 @@
+import { Link } from "react-router-dom";
+import styles from "./Shop.module.scss";
+export default function OrderComplete() { return <main className={styles.completePage}><span>ORDER</span><h1>COMPLETE</h1><div className={styles.completeMessage}><b>✓</b><div><h2>여행 준비가<br />한 단계 완료되었습니다.</h2><p>결제가 완료되었습니다.</p></div></div><dl><div><dt>ORDER NUMBER</dt><dd>LC-20260809-001</dd></div><div><dt>PAYMENT</dt><dd>25,000 KRW</dd></div><div><dt>DELIVERY</dt><dd>배송 준비 예정</dd></div><div><dt>PRODUCT</dt><dd>여행용 키트</dd></div></dl><div className={styles.completeActions}><Link to="/products">쇼핑 계속</Link><Link to="/">메인 화면</Link></div></main>; }

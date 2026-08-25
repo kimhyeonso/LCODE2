@@ -7,7 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
-import Shop from "./pages/Shop";
+import Plan from "./pages/Plan";
 import TravelPlanner from "./pages/TravelPlanner";
 import Plans from "./pages/Plans";
 import Event from "./pages/Event";
@@ -23,6 +23,10 @@ import Alarm from "./pages/Alarm";
 import Notice from "./pages/Notice";
 import OpenGuide from "./pages/OpenGuide";
 import NotFound from "./pages/NotFound";
+import Saved from "./pages/Saved";
+import Cart from "./pages/Cart";
+import Checkout from "./pages/Checkout";
+import OrderComplete from "./pages/OrderComplete";
 import styles from "./App.module.scss";
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -41,7 +45,6 @@ const enlargedPagePaths = new Set([
   "/mystories",
   "/coupon",
   "/alarm",
-  "/notice",
   "/open-guide",
 ]);
 
@@ -66,9 +69,14 @@ export default function App() {
       <div className={styles.main}>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/products/:productId" element={<ProductDetailPage />} />
-          <Route path="/shop" element={<Shop />} />
+          <Route path="/plan" element={<Plan />} />
+          <Route path="/search" element={<Plan />} />
+          <Route path="/shop" element={<Products />} />
+          <Route path="/shop/:productId" element={<ProductDetailPage />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order-complete" element={<OrderComplete />} />
           <Route path="/travel-planner" element={<TravelPlanner />} />
           <Route path="/login" element={<Login />} />
           <Route path="/itinerary" element={<Itinerary />} />

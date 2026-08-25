@@ -28,8 +28,81 @@
     color: $muted;
   }
 }
+
+.mobileFooter {
+  display: none;
+}
+
 @include mobile {
   .footer {
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 220px;
+    margin-top: 80px;
+    overflow: hidden;
+    border-top: 0;
+    background: #111;
+    padding: 16px 15px 76px;
+    color: #f5f5f5;
+  }
+
+  .desktopBrand,
+  .desktopLinks,
+  .desktopNote {
     display: none;
+  }
+
+  .mobileFooter {
+    position: relative;
+    z-index: 1;
+    display: block;
+
+    &::after {
+      content: "L:CODE";
+      position: absolute;
+      z-index: -1;
+      top: -3px;
+      right: 24px;
+      color: #252525;
+      font: 62px/0.9 $serif;
+      letter-spacing: -3px;
+      writing-mode: vertical-rl;
+    }
+
+    > strong {
+      font: 24px/1 $serif;
+    }
+
+    > p {
+      margin: 8px 0 10px;
+      font: 8px/1.5 $sans;
+    }
+
+    nav {
+      display: grid;
+      width: 175px;
+      grid-template-columns: 1fr 1fr;
+      gap: 7px 12px;
+    }
+
+    nav a {
+      font-size: 8px;
+    }
+
+    > div {
+      margin-top: 24px;
+    }
+
+    > div span,
+    > div small {
+      display: block;
+      font-size: 7px;
+    }
+
+    > div small {
+      margin-top: 8px;
+      color: #b8b8b8;
+    }
   }
 }

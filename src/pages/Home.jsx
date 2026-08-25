@@ -82,10 +82,10 @@ export default function Home() {
         <SectionLabel number="02">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
-          <TextLink to="/products">VIEW ALL</TextLink>
+          <TextLink to="/plan">VIEW ALL</TextLink>
         </div>
         <div className={styles.pickGrid}>
-          <Link to="/products/shanghai-frame" className={styles.featurePick}>
+          <Link to="/plan?city=SHANGHAI" className={styles.featurePick}>
             <div className={`${styles.placeholder} ${styles.shanghaiImage}`} />
             <h3>
               상하이에서 만나는
@@ -93,12 +93,12 @@ export default function Home() {
               오래된 것과 새로운 것
             </h3>
           </Link>
-          <Link to="/products/tokyo-afterdark" className={styles.smallPick}>
+          <Link to="/plan?city=TOKYO" className={styles.smallPick}>
             <div className={`${styles.placeholder} ${styles.tokyoImage}`} />
             <h3>TOKYO</h3>
             <p>조용한 골목과 작은 카페를 찾아서</p>
           </Link>
-          <Link to="/products/seoul-archive" className={styles.smallPick}>
+          <Link to="/plan?city=SEOUL" className={styles.smallPick}>
             <div className={`${styles.placeholder} ${styles.seoulImage}`} />
             <h3>SEOUL</h3>
             <p>도시 속 오래된 풍경을 천천히</p>
@@ -116,7 +116,7 @@ export default function Home() {
             ["JAPAN", "교토, 도쿄", styles.japanImage],
             ["CHINA", "상하이", styles.chinaImage],
           ].map(([country, cities, imageClass]) => (
-            <Link to={`/products?country=${country}`} key={country}>
+            <Link to={`/plan?country=${country}`} key={country}>
               <div>
                 <span>EAST ASIA</span>
                 <h3>{country}</h3>

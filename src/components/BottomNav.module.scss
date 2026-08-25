@@ -1,17 +1,19 @@
 @use "../styles/variables" as *;
 .nav {
   display: flex;
-  position: fixed;
+  position: fixed !important;
   z-index: 50;
+  width: 100%;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 58px;
+  height: calc(58px + env(safe-area-inset-bottom));
   background: #f7f7f7;
   border-top: 1px solid #eee;
   align-items: center;
   justify-content: space-around;
   padding-bottom: env(safe-area-inset-bottom);
+  transform: translateZ(0);
 }
 .nav a {
   width: 20%;

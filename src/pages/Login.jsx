@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Auth.module.scss";
 const messages = {
@@ -10,7 +10,12 @@ const messages = {
 };
 export default function Login() {
   const [mode, setMode] = useState("login");
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+    passwordConfirm: "",
+  });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   const { login, signup } = useAuth();
@@ -18,6 +23,10 @@ export default function Login() {
   const location = useLocation();
   const submit = async (e) => {
     e.preventDefault();
+    if (mode === "signup" && form.password !== form.passwordConfirm) {
+      setError("비밀번호가 일치하지 않습니다.");
+      return;
+    }
     setBusy(true);
     setError("");
     try {
@@ -33,20 +42,41 @@ export default function Login() {
     }
   };
   return (
-    <main className={styles.auth}>
-      <section>
-        <span>MEMBER / L:CODE</span>
-        <h1>
-          {mode === "login" ? "다시 만난 여행자님," : "새로운 여행을 시작해요."}
-        </h1>
-        <p>일정을 저장하고 나만의 여행 기록을 이어가세요.</p>
+    <main
+      className={`${styles.auth} ${mode === "signup" ? styles.signup : ""}`}
+    >
+      <section
+        className={`${styles.brand} ${mode === "signup" ? styles.signupBrand : ""}`}
+      >
+        {mode === "login" ? (
+          <>
+            <p>나만의 여행 계획 플랫폼</p>
+            <h1>L:CODE</h1>
+            <span>TRAVEL CURATION PLATFORM</span>
+          </>
+        ) : (
+          <>
+            <p>회원가입</p>
+            <h1>
+              CREATE
+              <br />
+              YOUR
+              <br />
+              L:CODE
+            </h1>
+          </>
+        )}
       </section>
-      <form onSubmit={submit}>
+      <form
+        className={mode === "signup" ? styles.signupForm : ""}
+        onSubmit={submit}
+      >
         {mode === "signup" && (
           <label>
-            이름
+            닉네임
             <input
               required
+              placeholder="닉네임을 입력하세요"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
               autoComplete="name"
@@ -54,10 +84,11 @@ export default function Login() {
           </label>
         )}
         <label>
-          이메일
+          아이디
           <input
             required
             type="email"
+            placeholder="이메일을 입력하세요"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
             autoComplete="email"
@@ -69,6 +100,7 @@ export default function Login() {
             required
             minLength="6"
             type="password"
+            placeholder="비밀번호를 입력하세요"
             value={form.password}
             onChange={(e) => setForm({ ...form, password: e.target.value })}
             autoComplete={
@@ -76,27 +108,43 @@ export default function Login() {
             }
           />
         </label>
+        {mode === "signup" && (
+          <label>
+            비밀번호 확인
+            <input
+              required
+              minLength="6"
+              type="password"
+              placeholder="비밀번호를 한 번 더 입력하세요"
+              value={form.passwordConfirm}
+              onChange={(e) =>
+                setForm({ ...form, passwordConfirm: e.target.value })
+              }
+              autoComplete="new-password"
+            />
+          </label>
+        )}
         {error && (
           <p className={styles.error} role="alert">
             {error}
           </p>
         )}
         <button disabled={busy}>
-          {busy ? "잠시만요…" : mode === "login" ? "로그인 →" : "회원가입 →"}
+          {busy ? "잠시만요…" : mode === "login" ? "로그인" : "회원가입"}
         </button>
-        <button
-          type="button"
-          className={styles.switch}
-          onClick={() => {
-            setMode(mode === "login" ? "signup" : "login");
-            setError("");
-          }}
-        >
-          {mode === "login"
-            ? "처음이신가요? 회원가입"
-            : "이미 회원이신가요? 로그인"}
-        </button>
-        <Link to="/">홈으로 돌아가기</Link>
+        <p className={styles.accountPrompt}>
+          {mode === "login" ? "회원이 아니신가요?" : "이미 회원이신가요?"}
+          <button
+            type="button"
+            className={styles.switch}
+            onClick={() => {
+              setMode(mode === "login" ? "signup" : "login");
+              setError("");
+            }}
+          >
+            {mode === "login" ? "회원가입" : "로그인"}
+          </button>
+        </p>
       </form>
     </main>
   );

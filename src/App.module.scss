@@ -1,7 +1,29 @@
+.app :global(*) {
+  box-sizing: border-box;
+}
+
+:global(html.enlarged-page) {
+  // 기존 1.5배 기준에서 모든 rem 단위의 기준을 0.2rem만큼 추가합니다.
+  font-size: calc(150% + 0.2rem);
+}
+
 .app {
   min-height: 100vh;
   overflow: hidden;
 }
 .main {
   min-height: 60vh;
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding-top: 56px;
+    padding-bottom: calc(58px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .main {
+    padding-top: 56px;
+  }
 }
