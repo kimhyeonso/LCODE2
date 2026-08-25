@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Link, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
@@ -57,12 +57,25 @@ function PageSize() {
   return null;
 }
 
+function MyPageUserLink() {
+  const { pathname } = useLocation();
+
+  if (pathname === "/mypage-user") return null;
+
+  return (
+    <Link className={styles.mypageUserLink} to="/mypage-user" aria-label="마이페이지로 돌아가기">
+      ←
+    </Link>
+  );
+}
+
 export default function App() {
   return (
     <div className={styles.app}>
       <ScrollTop />
       <PageSize />
       <Header />
+      <MyPageUserLink />
       <div className={styles.main}>
         <Routes>
           <Route path="/" element={<Home />} />

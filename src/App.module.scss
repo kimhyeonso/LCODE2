@@ -14,3 +14,23 @@
 .main {
   min-height: 60vh;
 }
+
+// MypageUser를 제외한 모든 페이지에서 계정 마이페이지로 이동하는 공통 화살표입니다.
+.mypageUserLink {
+  position: fixed;
+  top: 6.25rem;
+  right: max(2rem, calc((100vw - 48rem) / 2));
+  z-index: 30;
+  color: #77736c;
+  font-size: 1.25rem;
+  line-height: 1;
+  text-decoration: none;
+}
+
+@media (max-width: 640px) {
+  .mypageUserLink {
+    top: 4.75rem;
+    right: 1.25rem;
+    font-size: 1rem;
+  }
+}

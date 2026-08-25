@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  ["주문 내역", "/plans"],
+  ["주문 내역", "/itinerary"],
+  ["나의 리뷰", "/mystories"],
   ["찜한 상품", "/wishlist"],
   ["쿠폰함", "/coupon"],
   ["알림 설정", "/alarm"],
