@@ -2,7 +2,6 @@ import { Link, Routes, Route, useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -90,38 +89,11 @@ export default function App() {
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/open-guide" element={<OpenGuide />} />
-          <Route
-            path="/mypage-user"
-            element={
-              <ProtectedRoute>
-                <MypageUser />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/my"
-            element={
-              <ProtectedRoute>
-                <MyPageMain />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile/edit"
-            element={
-              <ProtectedRoute>
-                <ProfileEdit />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/plans"
-            element={
-              <ProtectedRoute>
-                <Plans />
-              </ProtectedRoute>
-            }
-          />
+          {/* UI 작업 기간에는 마이페이지 관련 화면을 로그인 없이 바로 확인합니다. */}
+          <Route path="/mypage-user" element={<MypageUser />} />
+          <Route path="/my" element={<MyPageMain />} />
+          <Route path="/profile/edit" element={<ProfileEdit />} />
+          <Route path="/plans" element={<Plans />} />
           <Route path="/event" element={<Event />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
