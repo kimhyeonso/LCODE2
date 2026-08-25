@@ -20,6 +20,7 @@ import Coupon from "./pages/Coupon";
 import Alarm from "./pages/Alarm";
 import Notice from "./pages/Notice";
 import OpenGuide from "./pages/OpenGuide";
+import MypageUser from "./pages/MypageUser";
 import NotFound from "./pages/NotFound";
 import styles from "./App.module.scss";
 function ScrollTop() {
@@ -41,6 +42,7 @@ const enlargedPagePaths = new Set([
   "/alarm",
   "/notice",
   "/open-guide",
+  "/mypage-user",
 ]);
 
 function PageSize() {
@@ -75,6 +77,14 @@ export default function App() {
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/open-guide" element={<OpenGuide />} />
+          <Route
+            path="/mypage-user"
+            element={
+              <ProtectedRoute>
+                <MypageUser />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/my"
             element={

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./Notice.module.scss";
 
 const notices = [
@@ -11,13 +11,6 @@ const notices = [
 ];
 
 export default function Notice() {
-  // 한 번에 하나의 공지만 펼쳐지는 아코디언 상태입니다.
-  const [openIndex, setOpenIndex] = useState(null);
-
-  function toggleNotice(index) {
-    setOpenIndex((current) => (current === index ? null : index));
-  }
-
   return (
     <main className={styles.notice}>
       <div className={styles.content}>
@@ -27,23 +20,21 @@ export default function Notice() {
           <p className={styles.description}>공지사항</p>
           <div className={styles.divider} />
           <div className={styles.items}>
-            {notices.map(([title, detail], index) => {
-              const isOpen = openIndex === index;
-              return (
-                <div className={`${styles.noticeItem} ${isOpen ? styles.open : ""}`} key={title + index}>
-                  <button
-                    className={styles.noticeButton}
-                    type="button"
-                    aria-expanded={isOpen}
-                    onClick={() => toggleNotice(index)}
-                  >
-                    <span>{title}</span>
-                    <b className={styles.arrow} aria-hidden="true">›</b>
-                  </button>
-                  <div className={styles.noticeDetail}>{detail}</div>
+            {notices.map(([title], index) => (
+              index === 0 ? (
+                <Link className={styles.noticeLink} to="/open-guide" key={title}>
+                  <span>{title}</span>
+                  <b className={styles.arrow} aria-hidden="true">&gt;</b>
+                  <span className={styles.mobileArrow} aria-hidden="true">&gt;</span>
+                </Link>
+              ) : (
+                <div className={styles.noticeRow} key={title + index}>
+                  <span>{title}</span>
+                  <b className={styles.arrow} aria-hidden="true">&gt;</b>
+                  <span className={styles.mobileArrow} aria-hidden="true">&gt;</span>
                 </div>
-              );
-            })}
+              )
+            ))}
           </div>
           <p className={styles.contact}>고객센터 전화번호: 070-548-8679</p>
         </section>

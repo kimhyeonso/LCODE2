@@ -1,11 +1,10 @@
 // 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
 
-$serif-display: "DM Serif Display", serif;
-$korean: "Noto Sans KR", sans-serif;
+$serif-display: $display;
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .itinerary, .itinerary * { letter-spacing: -0.01em !important; }
@@ -15,6 +14,7 @@ $korean: "Noto Sans KR", sans-serif;
   min-height: calc(100vh - 10rem);
   padding: 2.25rem 0 4rem;
   background: white;
+  @include korean-font;
 }
 
 // 왼쪽 소개와 오른쪽 일정 카드의 2단 레이아웃입니다.
@@ -159,10 +159,50 @@ $korean: "Noto Sans KR", sans-serif;
 }
 
 @include mobile {
-  .itinerary { padding: 2.5rem 0 3.5rem; }
-  .content { grid-template-columns: 1fr; gap: 3.5rem; width: min(calc(100% - 2.5rem), 29.5rem); }
-  .titleRow { gap: 1.25rem; }
-  .tripArea { padding: 0 2.5rem; }
-  .previous { left: 0; }
-  .next { right: 0; }
+  .itinerary { padding: 1.75rem 0 3.5rem; }
+  .content { grid-template-columns: 1fr; gap: 0; width: min(calc(100% - 2.5rem), 29.5rem); }
+
+  .titleRow {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin-top: 0.85rem;
+
+    h1 { font-size: 2rem; line-height: 1.05; }
+    p { margin: 0; font-size: 0.6rem; }
+  }
+
+  .divider { margin-top: 0.8rem; }
+
+  // 안내용 보조 카드는 데스크톱에서만 표시합니다.
+  .quickCards { display: none; }
+
+  .tripArea {
+    margin: 1.85rem -0.5rem 0;
+    padding: 0;
+  }
+
+  .photo {
+    height: 4.6rem;
+
+    span {
+      top: 0.6rem;
+      right: 0.6rem;
+      padding: 0.26rem 0.55rem;
+      font-size: 0.52rem;
+    }
+  }
+
+  .tripInfo { padding: 0.65rem 1.1rem 0.3rem; }
+  .tripInfo h2 { font-size: 0.95rem; }
+  .subtitle { margin-top: 0.22rem; font-size: 0.58rem; }
+  .date { margin: 0.3rem 0 0.5rem; font-size: 0.5rem; }
+
+  .detailButton {
+    height: 1.8rem;
+    font-size: 0.58rem;
+  }
+
+  // 모바일은 카드가 한 장씩 세로로 보여 이동 화살표를 사용하지 않습니다.
+  .arrow { display: none; }
 }

@@ -1,11 +1,10 @@
 // 프로젝트 공통 색상과 반응형 도구를 가져옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 
 // 이 페이지에서 사용할 글꼴입니다.
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
-$korean: "Noto Sans KR", sans-serif;
-$english: "DM Serif Display", serif;
+$english: $display;
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .myPageMain, .myPageMain * { letter-spacing: -0.01em !important; }
@@ -15,6 +14,7 @@ $english: "DM Serif Display", serif;
   min-height: calc(100vh - 10rem);
   padding: 2.25rem 0 4rem;
   background: white;
+  @include korean-font;
   // border: 1px solid red;
 }
 
@@ -218,14 +218,22 @@ $english: "DM Serif Display", serif;
     width: 100%;
   }
 
+  // 데스크톱에서 오른쪽 목록을 내리던 여백은 모바일 세로 배치에서는 제거합니다.
+  .completed { padding-top: 0; }
+
   .upcoming h1 {
     margin-top: 0.9rem;
     font-size: 2rem;
   }
 
   .featuredTrip {
-    min-height: 16rem;
+    min-height: 13.5rem;
     margin-top: 1rem;
+  }
+
+  .featuredTrip h2 {
+    font-size: 2.2rem;
+    line-height: 1;
   }
 
   // 완료 여행은 이미지와 정보를 나란히 둡니다.

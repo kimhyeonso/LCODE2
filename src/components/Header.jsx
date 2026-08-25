@@ -44,7 +44,7 @@ export default function Header() {
             {label}
           </NavLink>
         ))}
-        <NavLink to="/my" onClick={() => setOpen(false)} className={styles.my}>
+        <NavLink to="/mypage-user" onClick={() => setOpen(false)} className={styles.my}>
           MY PAGE <span>↗</span>
         </NavLink>
       </nav>
