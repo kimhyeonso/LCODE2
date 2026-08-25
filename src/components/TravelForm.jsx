@@ -224,7 +224,6 @@ export default function TravelForm({ onSubmit, loading }) {
         <button className={styles.draft} type="button">임시저장</button>
         <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : "일정 확정하기 →"}</button>
       </section>
-      <button className={styles.aiButton} type="button"><b>AI</b><span>REMIX</span></button>
       {isEditOpen && (
         <div className={styles.modalBackdrop} role="presentation" onMouseDown={() => setIsEditOpen(false)}>
           <div
