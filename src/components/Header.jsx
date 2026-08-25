@@ -18,11 +18,12 @@ const links = [
 export default function Header() {
   const header = useRef(null);
   const [open, setOpen] = useState(false);
-  const { user } = useAuth();
-  const menuLinks = [
-    ...links,
-    user ? ["/my", "MYPAGE"] : ["/login", "LOGIN/SIGNUP"],
-  ];
+  const { user, logout } = useAuth();
+
+  const handleLogout = async () => {
+    await logout();
+    setOpen(false);
+  };
 
   useEffect(() => {
     const tween = gsap.fromTo(
@@ -49,7 +50,7 @@ export default function Header() {
         className={styles.navigation}
         aria-label="주요 메뉴"
       >
-        {menuLinks.map(([to, label]) => (
+        {links.map(([to, label]) => (
           <NavLink
             key={to}
             to={to}
@@ -59,6 +60,28 @@ export default function Header() {
             {label}
           </NavLink>
         ))}
+        <div className={styles.memberMenu}>
+          {user ? (
+            <>
+              <NavLink
+                to="/my"
+                onClick={() => setOpen(false)}
+                className={({ isActive }) => (isActive ? styles.active : "")}
+              >
+                MYPAGE
+              </NavLink>
+              <button type="button" onClick={handleLogout}>LOGOUT</button>
+            </>
+          ) : (
+            <NavLink
+              to="/login"
+              onClick={() => setOpen(false)}
+              className={({ isActive }) => (isActive ? styles.active : "")}
+            >
+              LOGIN / SIGN UP
+            </NavLink>
+          )}
+        </div>
       </nav>
       <nav
         className={`${styles.mobileNavigation} ${open ? styles.open : ""}`}
@@ -76,13 +99,25 @@ export default function Header() {
 
         <span className={styles.contentsLabel}>CONTENTS</span>
         <div className={styles.mobileLinks}>
-          {menuLinks.map(([to, label], index) => (
+          {links.map(([to, label], index) => (
             <NavLink key={label} to={to} onClick={() => setOpen(false)}>
               <b>{String(index + 1).padStart(2, "0")}</b>
               <strong>{label}</strong>
               <span>→</span>
             </NavLink>
           ))}
+        </div>
+        <div className={styles.mobileMemberMenu}>
+          {user ? (
+            <>
+              <NavLink to="/my" onClick={() => setOpen(false)}>MYPAGE</NavLink>
+              <button type="button" onClick={handleLogout}>LOGOUT</button>
+            </>
+          ) : (
+            <NavLink to="/login" onClick={() => setOpen(false)}>
+              LOGIN / SIGN UP
+            </NavLink>
+          )}
         </div>
       </nav>
     </header>
