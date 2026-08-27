@@ -18,7 +18,7 @@ export default function MyPage() {
     setError("");
     try {
       if (mode === "signup") {
-        await signup(form.email, form.password, form.nickname);
+        await siggitnup(form.email, form.password, form.nickname);
       } else {
         await login(form.email, form.password);
       }
