@@ -3,10 +3,17 @@
 
 
 /* =========================================================
-   SHOP
+   DESKTOP SHOP WORKSPACE
+   실제 Header width = 220px
 ========================================================= */
 
-.shopPage {
+.shopPage,
+.detailPage,
+.cartPage,
+.checkoutPage,
+.completePage {
+  width: calc(100% - 220px);
+  margin-left: 220px;
   background: $paper-light;
 }
 
@@ -16,32 +23,30 @@
 ========================================================= */
 
 .shopHero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  width: 100%;
   min-height: 560px;
   height: min(68vh, 680px);
-
-  position: relative;
-  overflow: hidden;
 
   display: flex;
   align-items: flex-end;
 
   padding:
     34px
-    max(32px, calc((100% - 1320px) / 2))
-    42px;
+    clamp(48px, 4.5vw, 84px)
+    44px;
 
   color: #fff;
 
-  background-image: url("../assets/images/BANNER.png");
-  background-size: cover;
-  background-position: center 52%;
-  background-repeat: no-repeat;
-
-  isolation: isolate;
+  background:
+    url("../assets/images/BANNER.png")
+    center 52% / cover
+    no-repeat;
 }
 
-
-/* 사진 위 어두운 그라데이션 */
 
 .heroOverlay {
   position: absolute;
@@ -51,26 +56,25 @@
   background:
     linear-gradient(
       90deg,
-      rgba(5, 8, 12, 0.66) 0%,
-      rgba(5, 8, 12, 0.27) 42%,
-      rgba(5, 8, 12, 0.05) 70%
+      rgba(3, 7, 12, 0.7) 0%,
+      rgba(3, 7, 12, 0.31) 39%,
+      rgba(3, 7, 12, 0.04) 72%
     ),
     linear-gradient(
       0deg,
-      rgba(3, 6, 9, 0.64) 0%,
-      rgba(3, 6, 9, 0.08) 52%,
-      rgba(3, 6, 9, 0.24) 100%
+      rgba(2, 5, 8, 0.58) 0%,
+      rgba(2, 5, 8, 0.04) 55%,
+      rgba(2, 5, 8, 0.18) 100%
     );
 }
 
 
-/* 상단 정보 */
-
 .heroTop {
   position: absolute;
+
   top: 30px;
-  left: max(32px, calc((100% - 1320px) / 2));
-  right: max(32px, calc((100% - 1320px) / 2));
+  left: clamp(48px, 4.5vw, 84px);
+  right: clamp(48px, 4.5vw, 84px);
 
   display: flex;
   align-items: center;
@@ -80,10 +84,16 @@
 }
 
 
-.heroLocation {
+.heroLocation,
+.heroEyebrow,
+.heroNumber {
   font-size: 9px;
   letter-spacing: 0.25em;
+}
 
+
+.heroLocation,
+.heroEyebrow {
   opacity: 0.8;
 }
 
@@ -104,8 +114,7 @@
   gap: 7px;
 
   color: #fff;
-
-  opacity: 0.85;
+  opacity: 0.86;
 
   transition:
     opacity 0.25s ease,
@@ -128,34 +137,29 @@
 
   padding: 0 4px;
 
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 999px;
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.5);
+
+  border-radius: 50px;
 
   font-size: 8px;
   font-weight: 400;
 }
 
 
-/* 메인 카피 */
-
 .heroContent {
-  width: 100%;
-  max-width: 680px;
-
   position: relative;
   z-index: 2;
+
+  width: min(650px, 68%);
 }
 
 
 .heroEyebrow {
   display: block;
 
-  margin-bottom: 15px;
-
-  font-size: 9px;
-  letter-spacing: 0.28em;
-
-  opacity: 0.8;
+  margin-bottom: 16px;
 }
 
 
@@ -163,7 +167,8 @@
   margin: 0;
 
   font:
-    clamp(78px, 9.3vw, 148px) / 0.77
+    clamp(80px, 8.7vw, 145px) /
+    0.78
     $serif;
 
   letter-spacing: -0.055em;
@@ -171,14 +176,17 @@
   color: #fff;
 
   text-shadow:
-    0 2px 18px rgba(0, 0, 0, 0.16);
+    0 3px
+    18px
+    rgba(0, 0, 0, 0.18);
 }
 
 
 .heroBottom {
   display: flex;
   align-items: flex-end;
-  gap: 28px;
+
+  gap: 30px;
 
   margin-top: 30px;
 }
@@ -187,72 +195,76 @@
 .heroBottom p {
   margin: 0;
 
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.8
+    );
+
   font-size: 10px;
   line-height: 1.8;
-  letter-spacing: 0.03em;
-
-  color: rgba(255, 255, 255, 0.78);
 }
 
 
-/* VIEW ALL */
-
 .heroButton {
+  width: 126px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  width: 128px;
-
   padding: 13px 15px;
 
-  border: 1px solid rgba(255, 255, 255, 0.48);
-
   color: #fff;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.48);
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.04
+    );
+
+  backdrop-filter: blur(4px);
 
   font-size: 9px;
   letter-spacing: 0.12em;
 
-  backdrop-filter: blur(4px);
-
-  background: rgba(255, 255, 255, 0.04);
-
   transition:
     background 0.25s ease,
-    color 0.25s ease,
-    border-color 0.25s ease;
-}
-
-
-.heroButton span {
-  font-size: 13px;
-
-  transition: transform 0.25s ease;
+    color 0.25s ease;
 }
 
 
 .heroButton:hover {
-  background: #fff;
   color: #111;
-  border-color: #fff;
+  background: #fff;
+}
+
+
+.heroButton span {
+  transition:
+    transform 0.25s ease;
 }
 
 
 .heroButton:hover span {
-  transform: translate(2px, 2px);
+  transform:
+    translate(2px, 2px);
 }
 
-
-/* 오른쪽 하단 작은 번호 */
 
 .heroNumber {
   position: absolute;
 
-  right: max(32px, calc((100% - 1320px) / 2));
-  bottom: 42px;
-
-  font-size: 8px;
-  letter-spacing: 0.25em;
+  right: clamp(48px, 4.5vw, 84px);
+  bottom: 44px;
 
   opacity: 0.65;
 }
@@ -260,31 +272,43 @@
 
 /* =========================================================
    CATALOG
+   220px 헤더를 제외한 영역 안에서
+   좌우 동일한 editorial gutter
 ========================================================= */
 
 .catalog {
-  @include page;
+  width: min(
+    1320px,
+    calc(100% - 112px)
+  );
 
-  padding: 52px 0 100px;
+  margin-inline: auto;
+
+  padding:
+    clamp(52px, 5vw, 74px)
+    0
+    120px;
 }
 
 
 .categoryBar {
   display: flex;
+  flex-wrap: wrap;
+
   gap: 8px;
 
-  margin-bottom: 28px;
+  margin-bottom: 34px;
 }
 
 
 .categoryBar button,
 .options button,
 .paymentMethods button {
-  background: transparent;
+  padding: 12px 20px;
 
   border: 1px solid $line;
 
-  padding: 12px 20px;
+  background: transparent;
 
   font-size: 10px;
   letter-spacing: 1px;
@@ -295,8 +319,8 @@
 .categoryBar .selected,
 .options .selected,
 .paymentMethods .selected {
-  background: $ink !important;
   color: #fff;
+  background: $ink !important;
 }
 
 
@@ -305,9 +329,9 @@
   display: flex;
   justify-content: space-between;
 
-  border-bottom: 1px solid $line;
-
   padding: 12px 0;
+
+  border-bottom: 1px solid $line;
 
   color: $muted;
 
@@ -316,40 +340,35 @@
 }
 
 
-/* =========================================================
-   SEARCH
-========================================================= */
-
 .search {
-  height: 60px;
-
-  border: 1px solid $line;
-
-  margin: 16px 0 26px;
+  height: 58px;
 
   display: flex;
   align-items: center;
 
+  gap: 14px;
+
+  margin: 16px 0 30px;
   padding: 0 14px;
 
-  gap: 14px;
+  border: 1px solid $line;
 
   color: $muted;
 }
 
 
 .search span {
-  font-size: 28px;
+  font-size: 27px;
 }
 
 
 .search input {
+  flex: 1;
+
   border: 0;
   outline: 0;
 
   background: transparent;
-
-  flex: 1;
 
   font-size: 12px;
 }
@@ -357,6 +376,162 @@
 
 .search small {
   letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
+
+.productGrid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  column-gap:
+    clamp(16px, 1.5vw, 24px);
+
+  row-gap:
+    clamp(54px, 5vw, 78px);
+}
+
+
+.productCard {
+  min-width: 0;
+}
+
+
+.productVisual {
+  position: relative;
+  overflow: hidden;
+
+  width: 100%;
+
+  aspect-ratio: 1 / 1.08;
+
+  color: #fff;
+  background: #ccc;
+}
+
+
+.productVisual a {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  color: inherit;
+}
+
+
+.productVisual span {
+  position: absolute;
+
+  top: 12px;
+  left: 12px;
+
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+
+.productVisual b {
+  position: absolute;
+  inset: 0;
+
+  display: grid;
+  place-items: center;
+
+  font:
+    clamp(100px, 10vw, 170px)
+    $serif;
+
+  opacity: 0.2;
+}
+
+
+.heart,
+.cardCart {
+  position: absolute;
+  z-index: 2;
+
+  border: 0;
+
+  background: none;
+
+  color: $ink;
+
+  font-size: 22px;
+}
+
+
+.heart {
+  top: 8px;
+  right: 8px;
+}
+
+
+.liked {
+  color: #111;
+}
+
+
+.cardCart {
+  right: 8px;
+  bottom: 8px;
+
+  width: 28px;
+  height: 28px;
+
+  color: #fff;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.55);
+
+  font-size: 18px;
+}
+
+
+.light { background: #d3d3d3; }
+.warm { background: #c2b4a1; }
+.cool { background: #a9b4b8; }
+.dark { background: #888; }
+.blue { background: #9daab0; }
+.sand { background: #c6beb2; }
+
+
+.productMeta {
+  padding-top: 12px;
+}
+
+
+.productMeta small,
+.detailInfo small,
+.checkoutPage > span,
+.completePage > span,
+.detailInfo label,
+.checkoutPage label,
+.pageEyebrow {
+  color: $muted;
+
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+
+.productMeta h3 {
+  margin: 7px 0;
+
+  font: 18px $serif;
+}
+
+
+.productMeta p {
+  margin: 0;
+
+  font-size: 11px;
 }
 
 
@@ -369,31 +544,30 @@
 
   z-index: 8;
 
-  bottom: 58px;
+  bottom: 54px;
 
   left: calc(
-    var(--sidebar-width) +
-    (100% - var(--sidebar-width)) / 2
+    220px +
+    (100vw - 220px) / 2
   );
 
   transform: translateX(-50%);
 
   width: min(
-    620px,
-    calc(
-      100% -
-      var(--sidebar-width) -
-      (var(--page-gutter) * 2)
-    )
+    600px,
+    calc(100vw - 220px - 112px)
   );
 
-  background: $paper-light;
+  padding: 14px 20px;
 
   border-top: 1px solid $line;
 
-  box-shadow: 0 -10px 30px #0001;
+  background: $paper-light;
 
-  padding: 13px 20px;
+  box-shadow:
+    0 -10px
+    35px
+    rgba(0, 0, 0, 0.08);
 }
 
 
@@ -426,262 +600,1231 @@
 
 
 .quickCart b {
-  font: 18px $serif;
-
   flex: 1;
+
+  font: 18px $serif;
 }
 
 
 .quickCart em {
   display: block;
 
-  font: 10px $sans;
+  margin-top: 5px;
 
   color: $muted;
 
-  margin-top: 4px;
+  font: 10px $sans;
 }
 
 
 .quickCart a {
-  background: $ink;
-  color: #fff;
-
   padding: 12px;
+
+  color: #fff;
+  background: $ink;
 
   font-size: 10px;
 }
 
 
 /* =========================================================
-   PRODUCT GRID
+   PRODUCT DETAIL
 ========================================================= */
 
-.productGrid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 46px 14px;
+.detailPage {
+  padding:
+  clamp(58px, 6vw, 94px)
+  clamp(54px, 5vw, 88px)
+  64px;
 }
 
 
-.productVisual {
-  aspect-ratio: 1 / 1.14;
+.detailSpread {
+  width: min(1280px, 100%);
 
-  background: #ccc;
+  margin-inline: auto;
 
+  display: grid;
+
+  grid-template-columns:
+    minmax(360px, 520px)
+    minmax(450px, 620px);
+
+  justify-content: space-between;
+
+  align-items: start;
+
+  column-gap:
+    clamp(64px, 6vw, 120px);
+}
+
+
+/* 이미지가 독립된 화보 컷처럼 보이도록 */
+
+.detailVisual {
   position: relative;
 
-  color: #fff;
+  width: 100%;
+
+  aspect-ratio: 0.88 / 1;
+
+  max-height: 610px;
 
   overflow: hidden;
-}
-
-
-.productVisual a {
-  height: 100%;
-
-  display: block;
-
-  color: inherit;
-}
-
-
-.productVisual span {
-  position: absolute;
-
-  top: 12px;
-  left: 12px;
-
-  font-size: 8px;
-  letter-spacing: 1px;
-}
-
-
-.productVisual b {
-  position: absolute;
-  inset: 0;
-
-  display: grid;
-  place-items: center;
-
-  font: 160px $serif;
-
-  opacity: 0.2;
-}
-
-
-.heart,
-.cardCart {
-  position: absolute;
-
-  z-index: 2;
-
-  background: none;
-
-  border: 0;
-
-  color: $ink;
-
-  font-size: 22px;
-}
-
-
-.heart {
-  top: 8px;
-  right: 8px;
-}
-
-
-.liked {
-  color: #111;
-}
-
-
-.cardCart {
-  bottom: 8px;
-  right: 8px;
-
-  border: 1px solid #fff8;
 
   color: #fff;
 
-  width: 28px;
-  height: 28px;
-
-  font-size: 18px;
+  background: #ccc;
 }
 
 
-.light {
-  background: #d3d3d3;
-}
+.detailVisual span {
+  position: absolute;
 
-.warm {
-  background: #c2b4a1;
-}
-
-.cool {
-  background: #a9b4b8;
-}
-
-.dark {
-  background: #888;
-}
-
-.blue {
-  background: #9daab0;
-}
-
-.sand {
-  background: #c6beb2;
-}
-
-
-/* =========================================================
-   PRODUCT META
-========================================================= */
-
-.productMeta {
-  padding-top: 10px;
-}
-
-
-.productMeta small,
-.detailInfo small,
-.simplePage > span,
-.checkoutPage > span,
-.completePage > span,
-.detailInfo label,
-.checkoutPage label {
-  color: $muted;
+  top: 18px;
+  left: 18px;
 
   font-size: 9px;
   letter-spacing: 2px;
 }
 
 
-.productMeta h3 {
-  font: 18px $serif;
+.detailVisual b {
+  width: 100%;
+  height: 100%;
 
-  margin: 7px 0;
+  display: grid;
+  place-items: center;
+
+  font:
+    clamp(150px, 13vw, 235px)
+    $serif;
+
+  opacity: 0.22;
 }
 
 
-.productMeta p {
-  margin: 0;
+.detailInfo {
+  width: 100%;
+
+  padding-top:
+    clamp(18px, 2vw, 38px);
+}
+
+
+.detailInfo h1 {
+  margin:
+    22px 0
+    18px;
+
+  font:
+    clamp(44px, 4.4vw, 66px) /
+    0.98
+    $serif;
+
+  letter-spacing: -0.04em;
+}
+
+
+.detailInfo > strong {
+  font: 25px $serif;
+}
+
+
+.detailInfo em,
+.totalBox em,
+.summary em {
+  font: 11px $sans;
+}
+
+
+.detailInfo p {
+  margin: 34px 0;
+
+  color: $muted;
+
+  font-size: 12px;
+  line-height: 1.9;
+}
+
+
+.detailInfo hr {
+  margin: 26px 0;
+
+  border: 0;
+  border-top: 1px solid $line;
+}
+
+
+.detailInfo label {
+  display: block;
+
+  margin: 18px 0 10px;
+}
+
+
+.options {
+  display: grid;
+
+  gap: 6px;
+}
+
+
+.options button {
+  text-align: left;
+}
+
+
+.quantity {
+  display: flex;
+
+  width: fit-content;
+
+  margin-top: 10px;
+
+  border: 1px solid $line;
+}
+
+
+.quantity button,
+.quantity b {
+  width: 34px;
+  height: 28px;
+
+  display: grid;
+  place-items: center;
+
+  border: 0;
+
+  background: transparent;
+
+  font-size: 12px;
+}
+
+
+.detailInfo > .quantity {
+  margin-left: auto;
+}
+
+
+.detailActions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 34px;
+}
+
+
+.detailActions > * {
+  flex: 1;
+}
+
+
+.primaryButton,
+.detailActions button,
+.detailActions a {
+  display: block;
+
+  width: 100%;
+
+  padding: 17px;
+
+  border: 0;
+
+  color: #fff;
+  background: $ink;
+
+  text-align: center;
 
   font-size: 11px;
 }
 
 
 /* =========================================================
-   SIMPLE / CHECKOUT / COMPLETE
+   PRODUCT DETAIL
 ========================================================= */
 
-.simplePage,
-.checkoutPage,
-.completePage {
-  @include page;
+.detailPage {
+  width: calc(100% - 220px);
+  margin-left: 220px;
 
-  padding: 70px 0 110px;
+  padding:
+    clamp(58px, 6vw, 94px)
+    clamp(54px, 5vw, 88px)
+    72px;
 
-  min-height: 80vh;
+  background: $paper-light;
 }
 
 
-.simplePage h1,
-.checkoutPage h1,
-.completePage h1 {
+/* =========================================================
+   MAIN PRODUCT SPREAD
+========================================================= */
+
+.detailSpread {
+  width: min(1280px, 100%);
+
+  margin-inline: auto;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(360px, 510px)
+    minmax(460px, 620px);
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  column-gap:
+    clamp(70px, 7vw, 130px);
+}
+
+
+/* 상품 이미지 */
+
+.detailVisual {
+  position: relative;
+
+  width: 100%;
+
+  aspect-ratio: 0.9 / 1;
+
+  max-height: 590px;
+
+  overflow: hidden;
+
+  background: #ccc;
+
+  color: #fff;
+}
+
+
+.detailVisual span {
+  position: absolute;
+
+  top: 18px;
+  left: 18px;
+
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+
+.detailVisual b {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+
+  place-items: center;
+
   font:
-    clamp(52px, 7vw, 88px) / 0.9
+    clamp(
+      150px,
+      13vw,
+      230px
+    )
     $serif;
 
-  margin: 24px 0 35px;
+  opacity: 0.22;
+}
+
+
+/* 상품 정보 */
+
+.detailInfo {
+  width: 100%;
+
+  padding: 0;
+}
+
+
+.detailInfo small,
+.detailInfo label {
+  color: $muted;
+
+  font-size: 9px;
+
+  letter-spacing: 2px;
+}
+
+
+.detailInfo h1 {
+  margin:
+    22px 0
+    18px;
+
+  font:
+    clamp(
+      44px,
+      4.4vw,
+      66px
+    ) /
+    0.98
+    $serif;
+
+  letter-spacing: -0.04em;
+}
+
+
+.detailInfo > strong {
+  font: 25px $serif;
+}
+
+
+.detailInfo em {
+  font: 11px $sans;
+}
+
+
+.detailInfo > p {
+  max-width: 540px;
+
+  margin:
+    34px 0;
+
+  color: $muted;
+
+  font-size: 12px;
+
+  line-height: 1.9;
+}
+
+
+.detailInfo hr {
+  margin:
+    26px 0;
+
+  border: 0;
+
+  border-top:
+    1px solid $line;
+}
+
+
+.detailInfo label {
+  display: block;
+
+  margin:
+    18px 0
+    10px;
+}
+
+
+/* 옵션 */
+
+.options {
+  display: grid;
+
+  gap: 6px;
+}
+
+
+.options button {
+  padding:
+    13px 16px;
+
+  border:
+    1px solid $line;
+
+  background:
+    transparent;
+
+  text-align: left;
+
+  font-size: 10px;
+}
+
+
+.options .selected {
+  background:
+    $ink !important;
+
+  color: #fff;
+}
+
+
+/* 수량 */
+
+.quantity {
+  display: flex;
+
+  width: fit-content;
+
+  margin-top: 10px;
+
+  border:
+    1px solid $line;
+}
+
+
+.quantity button,
+.quantity b {
+  width: 34px;
+  height: 28px;
+
+  display: grid;
+
+  place-items: center;
+
+  border: 0;
+
+  background:
+    transparent;
+
+  font-size: 12px;
+}
+
+
+.detailInfo > .quantity {
+  margin-left: auto;
+}
+
+
+/* 구매 버튼 */
+
+.detailActions {
+  display: flex;
+
+  gap: 8px;
+
+  margin-top: 34px;
+}
+
+
+.detailActions > * {
+  flex: 1;
+}
+
+
+.detailActions button,
+.detailActions a {
+  display: block;
+
+  width: 100%;
+
+  padding: 17px;
+
+  border: 0;
+
+  background: $ink;
+
+  color: #fff;
+
+  text-align: center;
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   PRODUCT ACCORDION
+========================================================= */
+
+.productAccordion {
+  width: min(1280px, 100%);
+
+  margin:
+    clamp(70px, 7vw, 108px)
+    auto
+    0;
+
+  border-top: 1px solid $line;
+}
+
+
+.productAccordion details {
+  border-bottom: 1px solid $line;
+}
+
+
+.productAccordion summary {
+  min-height: 68px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 4px;
+
+  list-style: none;
+
+  cursor: pointer;
+}
+
+
+.productAccordion summary::-webkit-details-marker {
+  display: none;
+}
+
+
+.productAccordion summary > span {
+  display: flex;
+  align-items: center;
+
+  gap: 26px;
+
+  font-size: 11px;
+  letter-spacing: 0.17em;
+}
+
+
+.productAccordion summary b {
+  color: $muted;
+
+  font: 400 9px $sans;
+
+  letter-spacing: 0.12em;
+}
+
+
+/* + / - */
+
+.productAccordion summary i {
+  position: relative;
+
+  width: 16px;
+  height: 16px;
+
+  flex: 0 0 auto;
+}
+
+
+.productAccordion summary i::before,
+.productAccordion summary i::after {
+  content: "";
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  width: 12px;
+  height: 1px;
+
+  background: $ink;
+
+  transform: translate(-50%, -50%);
+}
+
+
+.productAccordion summary i::after {
+  transform:
+    translate(-50%, -50%)
+    rotate(90deg);
+
+  transition: transform 0.2s ease;
+}
+
+
+.productAccordion details[open]
+  summary
+  i::after {
+  transform:
+    translate(-50%, -50%)
+    rotate(0deg);
+}
+
+
+/* 내용 */
+
+.accordionContent {
+  padding:
+    0
+    4px
+    28px
+    57px;
+}
+
+
+.accordionContent p {
+  max-width: 680px;
+
+  margin: 0;
+
+  color: $muted;
+
+  font-size: 11px;
+  line-height: 1.9;
+
+  word-break: keep-all;
+}
+
+
+/* =========================================================
+   PRODUCT DETAIL LONG IMAGE AREA
+========================================================= */
+
+.detailContents {
+  /* 위 아코디언과 정확히 같은 폭 */
+  width: min(1280px, 100%);
+
+  margin:
+    clamp(72px, 7vw, 105px)
+    auto
+    30px;
+}
+
+
+/* PRODUCT DETAIL */
+
+.detailContentsHeader {
+  width: 100%;
+
+  margin-bottom: 18px;
+
+  padding-bottom: 14px;
+
+  border-bottom: 1px solid $ink;
+}
+
+
+.detailContentsHeader small {
+  color: $muted;
+
+  font-size: 8px;
+  letter-spacing: 0.2em;
+}
+
+
+/* 혹시 예전 span 스타일 남아있어도 숨김 */
+
+.detailContentsHeader > span {
+  display: none;
+}
+
+
+/* =========================================================
+   DETAIL BANNER
+========================================================= */
+
+.detailBannerSlot {
+  width: 100%;
+
+  margin-bottom:
+    clamp(22px, 2.5vw, 36px);
+
+  overflow: hidden;
+
+  background: #e7e4dd;
+}
+
+
+/* placeholder일 때만 적당한 높이 */
+
+.detailBannerSlot:not(:has(img)) {
+  min-height:
+    clamp(320px, 34vw, 520px);
+
+  display: grid;
+  place-items: center;
+}
+
+
+.detailBannerSlot > span {
+  color: rgba(23, 23, 20, 0.28);
+
+  font-size: 9px;
+  letter-spacing: 0.22em;
+}
+
+
+/* 실제 상세 이미지 */
+
+.detailBannerSlot img {
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+
+  max-width: 100%;
+
+  object-fit: contain;
+}
+
+
+/* 실제 이미지가 들어가면
+   원본 비율 그대로 */
+
+.detailBannerSlot:has(img) {
+  min-height: 0;
+
+  background: transparent;
+}
+
+/* =========================================================
+   LONG PRODUCT DETAIL
+========================================================= */
+
+.detailContents {
+  width:
+    min(
+      1080px,
+      100%
+    );
+
+  margin:
+    clamp(
+      84px,
+      8vw,
+      130px
+    )
+    auto
+    30px;
+}
+
+
+/* 상세영역 작은 타이틀 */
+
+.detailContentsHeader {
+  display: flex;
+
+  justify-content:
+    space-between;
+
+  align-items:
+    center;
+
+  margin-bottom: 18px;
+
+  padding-bottom: 14px;
+
+  border-bottom:
+    1px solid $ink;
+}
+
+
+.detailContentsHeader small,
+.detailContentsHeader span {
+  color: $muted;
+
+  font-size: 8px;
+
+  letter-spacing:
+    0.2em;
+}
+
+
+/* =========================================================
+   상세 긴 배너 슬롯
+========================================================= */
+
+.detailBannerSlot {
+  position: relative;
+
+  width: 100%;
+
+  min-height:
+    clamp(
+      420px,
+      46vw,
+      680px
+    );
+
+  margin-bottom:
+    clamp(
+      24px,
+      3vw,
+      42px
+    );
+
+  display: grid;
+
+  place-items: center;
+
+  overflow: hidden;
+
+  background: #e7e4dd;
+
+  color:
+    rgba(
+      23,
+      23,
+      20,
+      0.28
+    );
+}
+
+
+.detailBannerSlot > span {
+  font-size: 9px;
+
+  letter-spacing:
+    0.22em;
+}
+
+
+/* 실제 이미지 넣을 때 */
+
+.detailBannerSlot img {
+  display: block;
+
+  width: 100%;
+
+  height: auto;
+
+  object-fit: cover;
+}
+
+
+/* 이미지가 들어오면 placeholder 최소높이 무시 */
+
+.detailBannerSlot:has(img) {
+  min-height: 0;
+
+  display: block;
+
+  background: transparent;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modalBackdrop {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 80;
+
+  display: grid;
+
+  place-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.4
+    );
+}
+
+
+.addedModal {
+  position: relative;
+
+  width:
+    min(
+      500px,
+      100%
+    );
+
+  padding: 28px;
+
+  background:
+    $paper-light;
+}
+
+
+.addedModal h2 {
+  font-size: 16px;
+}
+
+
+.addedModal p {
+  color: $muted;
+
+  font-size: 11px;
+}
+
+
+.close {
+  position: absolute;
+
+  top: 12px;
+  right: 16px;
+
+  border: 0;
+
+  background:
+    none;
+
+  font-size: 25px;
+}
+
+
+.miniProducts {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      1fr
+    );
+
+  gap: 12px;
+
+  margin:
+    18px
+    0;
+}
+
+
+.miniVisual {
+  aspect-ratio: 1;
+
+  background: #ccc;
+}
+
+
+.miniProducts small,
+.miniProducts span {
+  display: block;
+
+  margin-top: 5px;
+
+  font-size: 9px;
+}
+
+
+.modalActions {
+  display: flex;
+
+  gap: 8px;
+
+  padding-top: 20px;
+
+  border-top:
+    1px solid $line;
+}
+
+
+.modalActions > * {
+  flex: 1;
+
+  padding: 13px;
+
+  border:
+    1px solid $line;
+
+  background:
+    transparent;
+
+  text-align: center;
+
+  font-size: 10px;
+}
+
+
+.modalActions a {
+  background: $ink;
+
+  color: #fff;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@include tablet {
+
+  .detailPage {
+    width: 100%;
+
+    margin-left: 0;
+
+    padding:
+      54px
+      36px
+      90px;
+  }
+
+
+  .detailSpread {
+    grid-template-columns:
+      1fr;
+
+    row-gap: 48px;
+  }
+
+
+  .detailVisual {
+    width:
+      min(
+        560px,
+        100%
+      );
+
+    margin-inline:
+      auto;
+
+    aspect-ratio:
+      1 / 1.05;
+  }
+
+
+  .detailInfo {
+    width:
+      min(
+        680px,
+        100%
+      );
+
+    margin-inline:
+      auto;
+  }
+
+
+  .productAccordion {
+    width:
+      min(
+        760px,
+        100%
+      );
+
+    margin-top: 64px;
+  }
+
+
+  .detailContents {
+    width:
+      min(
+        760px,
+        100%
+      );
+
+    margin-top: 86px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@include mobile {
+
+  .detailPage {
+    padding:
+      28px
+      16px
+      70px;
+  }
+
+
+  .detailSpread {
+    row-gap: 32px;
+  }
+
+
+  .detailVisual {
+    width: 100%;
+
+    max-height: none;
+
+    aspect-ratio:
+      1 / 1.08;
+  }
+
+
+  .detailInfo {
+    width: 100%;
+  }
+
+
+  .detailInfo h1 {
+    font-size:
+      clamp(
+        40px,
+        13vw,
+        60px
+      );
+  }
+
+
+  .productAccordion {
+    width: 100%;
+
+    margin-top: 54px;
+  }
+
+
+  .productAccordion summary {
+    min-height: 62px;
+  }
+
+
+  .productAccordion summary > span {
+    gap: 16px;
+
+    font-size: 10px;
+  }
+
+
+  .accordionContent {
+    padding:
+      0
+      0
+      24px
+      39px;
+  }
+
+
+  .detailContents {
+    width: 100%;
+
+    margin-top: 72px;
+  }
+
+
+  .detailBannerSlot {
+    min-height: 360px;
+  }
+}
+
+/* =========================================================
+   CART
+   페이지 전체는 workspace,
+   실제 내용은 오른쪽 980px rail
+========================================================= */
+
+.cartPage {
+  min-height: 72vh;
+
+  padding:
+    clamp(64px, 6vw, 96px)
+    clamp(54px, 5vw, 88px)
+    110px;
+}
+
+
+.cartRail {
+  width: min(980px, 100%);
+
+  margin-left: auto;
+}
+
+
+.cartRail h1 {
+  margin:
+    22px 0
+    38px;
+
+  font:
+    clamp(58px, 6vw, 86px) /
+    0.9
+    $serif;
 
   letter-spacing: -3px;
 }
 
 
-.simplePage .productGrid {
-  margin-top: 34px;
-
-  grid-template-columns: repeat(3, 1fr);
-}
-
-
-.empty {
-  text-align: center;
-
-  padding: 80px 20px;
-
-  color: $muted;
-}
-
-
-.empty a {
-  color: $ink;
-
-  border-bottom: 1px solid;
-
-  padding: 10px;
-
-  font-size: 11px;
-}
-
-
-/* =========================================================
-   CART
-========================================================= */
-
 .cartTools {
   display: flex;
   justify-content: space-between;
 
-  border-bottom: 1px solid $line;
-
   padding: 15px 0;
+
+  border-bottom: 1px solid $line;
 
   font-size: 12px;
 }
@@ -703,16 +1846,16 @@
 
   grid-template-columns:
     20px
-    110px
-    1fr
-    100px
-    24px;
+    108px
+    minmax(220px, 1fr)
+    145px
+    26px;
 
   align-items: center;
 
-  gap: 14px;
+  gap: 16px;
 
-  padding: 20px 0;
+  padding: 24px 0;
 
   border-bottom: 1px solid $line;
 }
@@ -757,50 +1900,31 @@
 
   background: none;
 
-  font-size: 22px;
-
   color: $muted;
+
+  font-size: 22px;
 }
 
 
-.quantity {
-  display: flex;
+.cartSummary {
+  width: min(500px, 100%);
 
-  width: fit-content;
-
-  border: 1px solid $line;
-
-  margin-top: 10px;
-}
-
-
-.quantity button,
-.quantity b {
-  width: 34px;
-  height: 28px;
-
-  border: 0;
-
-  background: transparent;
-
-  display: grid;
-  place-items: center;
-
-  font-size: 12px;
+  margin:
+    48px
+    0
+    0
+    auto;
 }
 
 
 .totalBox {
-  max-width: 500px;
-
-  margin: 40px 0 24px auto;
+  width: 100%;
 }
 
 
 .totalBox p,
 .summary p {
   display: flex;
-
   justify-content: space-between;
 
   color: $muted;
@@ -812,7 +1936,6 @@
 .totalBox h2,
 .summary h2 {
   display: flex;
-
   justify-content: space-between;
   align-items: center;
 
@@ -824,48 +1947,66 @@
 
 .totalBox strong,
 .summary strong {
-  font: 28px $serif;
-
   color: $ink;
+
+  font: 28px $serif;
 }
 
 
-.primaryButton,
-.detailActions button,
-.detailActions a {
-  display: block;
-
-  width: 100%;
-
-  background: $ink;
-
-  color: #fff;
-
-  border: 0;
-
-  padding: 17px;
-
-  text-align: center;
-
-  font-size: 11px;
+.cartSummary .primaryButton {
+  margin-top: 26px;
 }
 
 
 /* =========================================================
    CHECKOUT
+   기존 JSX에서 .checkoutPage만 쓰면 적용
 ========================================================= */
 
-.checkoutPage section {
-  max-width: 700px;
+.checkoutPage {
+  min-height: 76vh;
 
-  margin: 0 auto;
+  padding:
+    clamp(64px, 6vw, 96px)
+    clamp(54px, 5vw, 88px)
+    110px;
+}
+
+
+/* checkout 내부 모든 주요 블록을 우측 rail로 */
+
+.checkoutPage > span,
+.checkoutPage > h1,
+.checkoutPage > section {
+  width: min(820px, 100%);
+
+  margin-left: auto;
+}
+
+
+.checkoutPage h1,
+.completePage h1 {
+  margin-top: 22px;
+  margin-bottom: 38px;
+
+  font:
+    clamp(58px, 6vw, 86px) /
+    0.9
+    $serif;
+
+  letter-spacing: -3px;
+}
+
+
+.checkoutPage section {
+  max-width: none;
 }
 
 
 .steps {
-  border-bottom: 1px solid $line;
-
   padding: 14px 0 20px;
+
+  border-bottom: 1px solid $line;
 
   text-align: center;
 
@@ -911,14 +2052,12 @@
 
 .shipping p {
   display: flex;
-
   justify-content: space-between;
 
-  border-bottom: 1px solid $line;
-
+  margin: 0;
   padding: 12px 0;
 
-  margin: 0;
+  border-bottom: 1px solid $line;
 
   font-size: 11px;
 }
@@ -944,9 +2083,9 @@
 
 
 .coupon {
-  border-bottom: 1px solid $line;
-
   padding: 12px 0;
+
+  border-bottom: 1px solid $line;
 
   font-size: 12px;
 }
@@ -955,9 +2094,9 @@
 .coupon small {
   display: block;
 
-  color: $muted;
-
   margin-top: 6px;
+
+  color: $muted;
 }
 
 
@@ -967,324 +2106,9 @@
 
 
 .summary {
-  border-bottom: 2px solid $ink;
-
   padding-bottom: 15px;
-}
 
-
-/* =========================================================
-   DETAIL
-========================================================= */
-
-.detailPage {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  width: min(
-    var(--content-max-width),
-    calc(100% - (var(--page-gutter) * 2))
-  );
-
-  margin-inline: auto;
-
-  padding-bottom: 100px;
-}
-
-
-.detailVisual {
-  min-height: 620px;
-
-  background: #ccc;
-
-  color: #fff;
-
-  position: relative;
-}
-
-
-.detailVisual span {
-  position: absolute;
-
-  top: 24px;
-  left: 24px;
-
-  font-size: 10px;
-  letter-spacing: 2px;
-}
-
-
-.detailVisual b {
-  height: 100%;
-
-  display: grid;
-  place-items: center;
-
-  font: 280px $serif;
-
-  opacity: 0.22;
-}
-
-
-.detailInfo {
-  padding: 80px clamp(24px, 7vw, 100px);
-}
-
-
-.detailInfo h1 {
-  font:
-    clamp(40px, 5vw, 70px)
-    $serif;
-
-  margin: 22px 0 12px;
-}
-
-
-.detailInfo > strong {
-  font: 25px $serif;
-}
-
-
-.detailInfo em,
-.totalBox em,
-.summary em {
-  font: 11px $sans;
-}
-
-
-.detailInfo p {
-  color: $muted;
-
-  font-size: 12px;
-
-  line-height: 1.8;
-
-  margin: 28px 0;
-}
-
-
-.detailInfo hr {
-  border: 0;
-
-  border-top: 1px solid $line;
-
-  margin: 24px 0;
-}
-
-
-.detailInfo label {
-  display: block;
-
-  margin: 18px 0 10px;
-}
-
-
-.options {
-  display: grid;
-
-  gap: 6px;
-}
-
-
-.options button {
-  text-align: left;
-}
-
-
-.detailInfo > .quantity {
-  margin-left: auto;
-}
-
-
-.story {
-  grid-column: 1 / -1;
-
-  width: min(800px, calc(100% - 64px));
-
-  margin: 60px auto;
-}
-
-
-.story details {
-  border-top: 1px solid $line;
-
-  padding: 22px 0;
-}
-
-
-.story summary {
-  list-style: none;
-
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-
-
-.story p {
-  color: $muted;
-
-  font-size: 12px;
-}
-
-
-/* DETAIL ACTION */
-
-.detailActions {
-  grid-column: 1 / -1;
-
-  display: flex;
-
-  gap: 5px;
-
-  position: fixed;
-
-  bottom: 0;
-  left: var(--sidebar-width);
-  right: 0;
-
-  z-index: 10;
-
-  padding:
-    12px
-    max(
-      20px,
-      calc(
-        (
-          100% -
-          var(--sidebar-width) -
-          800px
-        ) / 2
-      )
-    );
-
-  background: #fff;
-}
-
-
-.detailActions > * {
-  flex: 1;
-}
-
-
-.detailActions a {
-  background: $ink;
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modalBackdrop {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 30;
-
-  background: #0006;
-
-  display: grid;
-  place-items: center;
-
-  padding: 20px;
-}
-
-
-.addedModal {
-  width: min(500px, 100%);
-
-  background: $paper-light;
-
-  padding: 28px;
-
-  position: relative;
-}
-
-
-.addedModal h2 {
-  font-size: 16px;
-}
-
-
-.addedModal p {
-  color: $muted;
-
-  font-size: 11px;
-}
-
-
-.close {
-  position: absolute;
-
-  right: 16px;
-  top: 12px;
-
-  border: 0;
-
-  background: none;
-
-  font-size: 25px;
-}
-
-
-.miniProducts {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 12px;
-
-  margin: 18px 0;
-}
-
-
-.miniVisual {
-  aspect-ratio: 1;
-}
-
-
-.miniProducts small,
-.miniProducts span {
-  display: block;
-
-  font-size: 9px;
-
-  margin-top: 5px;
-}
-
-
-.modalActions {
-  display: flex;
-
-  gap: 8px;
-
-  border-top: 1px solid $line;
-
-  padding-top: 20px;
-}
-
-
-.modalActions > * {
-  flex: 1;
-
-  padding: 13px;
-
-  text-align: center;
-
-  border: 1px solid $line;
-
-  background: transparent;
-
-  font-size: 10px;
-}
-
-
-.modalActions a {
-  background: $ink;
-
-  color: white;
+  border-bottom: 2px solid $ink;
 }
 
 
@@ -1293,43 +2117,54 @@
 ========================================================= */
 
 .completePage {
-  max-width: 900px;
+  min-height: 72vh;
+
+  padding:
+    clamp(64px, 6vw, 96px)
+    clamp(54px, 5vw, 88px)
+    110px;
+}
+
+
+.completePage > * {
+  width: min(900px, 100%);
+
+  margin-left: auto;
 }
 
 
 .completePage h1 {
-  border-bottom: 1px solid $line;
-
   padding-bottom: 30px;
+
+  border-bottom: 1px solid $line;
 }
 
 
 .completeMessage {
   display: flex;
+  align-items: center;
 
   gap: 20px;
 
-  align-items: center;
-
-  margin: 30px 0 50px;
+  margin-top: 30px;
+  margin-bottom: 50px;
 }
 
 
 .completeMessage > b {
-  border: 1px solid;
-
   padding: 18px 22px;
 
-  font-size: 25px;
+  border: 1px solid;
 
+  font-size: 25px;
   font-weight: 400;
 }
 
 
 .completeMessage h2 {
-  font: 24px / 1.4 $sans;
-
   margin: 0;
+
+  font: 24px / 1.4 $sans;
 }
 
 
@@ -1341,18 +2176,18 @@
 
 
 .completePage dl {
-  margin: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 
 .completePage dl div {
   display: flex;
-
   justify-content: space-between;
 
-  border-top: 1px solid $line;
-
   padding: 18px 0;
+
+  border-top: 1px solid $line;
 
   font-size: 12px;
 }
@@ -1394,58 +2229,278 @@
 
 
 .completeActions a:last-child {
-  background: $ink;
-
   color: #fff;
+  background: $ink;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+
+  display: grid;
+  place-items: center;
+
+  padding: 20px;
+
+  background:
+    rgba(
+      0,
+      0,
+      0,
+      0.4
+    );
+}
+
+
+.addedModal {
+  position: relative;
+
+  width: min(500px, 100%);
+
+  padding: 28px;
+
+  background: $paper-light;
+}
+
+
+.addedModal h2 {
+  font-size: 16px;
+}
+
+
+.addedModal p {
+  color: $muted;
+
+  font-size: 11px;
+}
+
+
+.close {
+  position: absolute;
+
+  top: 12px;
+  right: 16px;
+
+  border: 0;
+
+  background: none;
+
+  font-size: 25px;
+}
+
+
+.miniProducts {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 12px;
+
+  margin: 18px 0;
+}
+
+
+.miniVisual {
+  aspect-ratio: 1;
+
+  background: #ccc;
+}
+
+
+.miniProducts small,
+.miniProducts span {
+  display: block;
+
+  margin-top: 5px;
+
+  font-size: 9px;
+}
+
+
+.modalActions {
+  display: flex;
+
+  gap: 8px;
+
+  padding-top: 20px;
+
+  border-top: 1px solid $line;
+}
+
+
+.modalActions > * {
+  flex: 1;
+
+  padding: 13px;
+
+  border: 1px solid $line;
+
+  background: transparent;
+
+  text-align: center;
+
+  font-size: 10px;
+}
+
+
+.modalActions a {
+  color: #fff;
+  background: $ink;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty {
+  padding: 80px 20px;
+
+  text-align: center;
+
+  color: $muted;
+}
+
+
+.empty a {
+  padding: 10px;
+
+  color: $ink;
+
+  border-bottom: 1px solid;
+
+  font-size: 11px;
 }
 
 
 /* =========================================================
    TABLET
+   Header가 220px sidebar → 56px topbar로 바뀜
 ========================================================= */
 
 @include tablet {
 
-  .productGrid,
-  .simplePage .productGrid {
-    grid-template-columns: repeat(2, 1fr);
+  .shopPage,
+  .detailPage,
+  .cartPage,
+  .checkoutPage,
+  .completePage {
+    width: 100%;
+
+    margin-left: 0;
   }
 
-  .detailPage {
-    grid-template-columns: 1fr;
 
-    width: calc(100% - 64px);
+  .shopHero {
+    min-height: 500px;
 
-    margin-inline: auto;
+    padding:
+      30px
+      36px
+      40px;
   }
 
-  .detailVisual {
-    min-height: 440px;
+
+  .heroTop {
+    left: 36px;
+    right: 36px;
   }
 
-  .story {
-    grid-column: auto;
+
+  .heroNumber {
+    right: 36px;
   }
 
-  .detailActions {
-    grid-column: auto;
 
-    left: 0;
-
-    padding-inline:
-      max(
-        20px,
-        calc((100% - 800px) / 2)
-      );
+  .catalog {
+    width: calc(100% - 72px);
   }
+
+
+  .productGrid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
 
   .quickCart {
     left: 50%;
 
-    width: min(
-      620px,
-      calc(100% - 64px)
-    );
+    width:
+      min(
+        600px,
+        calc(100% - 72px)
+      );
+  }
+
+
+  .detailPage {
+    padding:
+      54px
+      36px
+      100px;
+  }
+
+
+  .detailSpread {
+    grid-template-columns: 1fr;
+
+    row-gap: 48px;
+  }
+
+
+  .detailVisual {
+    width: min(580px, 100%);
+
+    margin-inline: auto;
+
+    aspect-ratio: 1 / 1.05;
+  }
+
+
+  .detailInfo {
+    width: min(680px, 100%);
+
+    margin-inline: auto;
+
+    padding-top: 0;
+  }
+
+
+  .story {
+    width: min(760px, 100%);
+  }
+
+
+  .cartPage,
+  .checkoutPage,
+  .completePage {
+    padding:
+      58px
+      36px
+      100px;
+  }
+
+
+  .cartRail {
+    width: 100%;
+  }
+
+
+  .checkoutPage > span,
+  .checkoutPage > h1,
+  .checkoutPage > section,
+  .completePage > * {
+    width: 100%;
+
+    margin-left: 0;
   }
 }
 
@@ -1460,10 +2515,15 @@
     min-height: 500px;
     height: 72vh;
 
-    padding: 22px 16px 30px;
+    padding:
+      22px
+      16px
+      30px;
 
-    background-position: 61% center;
+    background-position:
+      61% center;
   }
+
 
   .heroTop {
     top: 20px;
@@ -1471,9 +2531,11 @@
     right: 16px;
   }
 
+
   .heroLocation {
     display: none;
   }
+
 
   .heroMenu {
     margin-left: auto;
@@ -1481,15 +2543,21 @@
     gap: 18px;
   }
 
+
+  .heroContent {
+    width: 100%;
+  }
+
+
   .heroContent h1 {
-    font-size: clamp(68px, 23vw, 94px);
-
-    letter-spacing: -0.06em;
+    font-size:
+      clamp(
+        68px,
+        23vw,
+        94px
+      );
   }
 
-  .heroEyebrow {
-    font-size: 8px;
-  }
 
   .heroBottom {
     flex-direction: column;
@@ -1500,29 +2568,25 @@
     margin-top: 24px;
   }
 
+
   .heroNumber {
     display: none;
   }
 
-  .catalog,
-  .simplePage,
-  .checkoutPage,
-  .completePage {
-    width: calc(100% - 24px);
+
+  .catalog {
+    width: calc(100% - 32px);
+
+    padding-top: 38px;
   }
 
-  .productGrid,
-  .simplePage .productGrid {
-    gap: 30px 4px;
-  }
 
   .categoryBar {
-    gap: 5px;
+    flex-wrap: nowrap;
 
     overflow-x: auto;
-
-    padding-bottom: 4px;
   }
+
 
   .categoryBar button {
     flex: 0 0 auto;
@@ -1530,19 +2594,78 @@
     padding: 10px 12px;
   }
 
-  .productVisual b {
-    font-size: 100px;
+
+  .productGrid {
+    gap: 32px 6px;
   }
+
+
+  .detailPage {
+    padding:
+      28px
+      16px
+      90px;
+  }
+
+
+  .detailSpread {
+    row-gap: 34px;
+  }
+
+
+  .detailVisual {
+    width: 100%;
+
+    max-height: none;
+
+    aspect-ratio: 1 / 1.08;
+  }
+
+
+  .detailInfo {
+    width: 100%;
+
+    padding-top: 12px;
+  }
+
+
+  .detailInfo h1 {
+    font-size:
+      clamp(
+        40px,
+        13vw,
+        60px
+      );
+  }
+
+
+  .story {
+    width: 100%;
+
+    margin-top: 58px;
+  }
+
+
+  .cartPage,
+  .checkoutPage,
+  .completePage {
+    padding:
+      46px
+      16px
+      90px;
+  }
+
 
   .cartItem {
     grid-template-columns:
       18px
-      80px
+      76px
       1fr
-      20px;
+      22px;
 
     gap: 8px;
   }
+
 
   .cartItem strong {
     grid-column: 3;
@@ -1550,114 +2673,22 @@
     text-align: left;
   }
 
+
   .remove {
     grid-column: 4;
     grid-row: 1;
   }
 
-  .paymentMethods button {
-    font-size: 9px;
+
+  .cartSummary {
+    width: 100%;
   }
 
-  .detailVisual {
-    min-height: 380px;
-  }
 
-  .detailInfo {
-    padding: 45px 16px;
-  }
+  .paymentMethods {
+    display: grid;
 
-  .story {
-    width: calc(100% - 32px);
-  }
-
-  .completeMessage h2 {
-    font-size: 19px;
-  }
-}
-
-
-/* =========================================================
-   DETAIL ALIGNMENT
-========================================================= */
-
-.detailInfo .detailActions {
-  grid-column: auto;
-
-  position: static;
-
-  margin-top: 30px;
-
-  padding: 0;
-
-  background: transparent;
-
-  box-shadow: none;
-}
-
-
-.detailInfo .detailActions > * {
-  flex: 1;
-
-  min-height: 50px;
-}
-
-
-.detailPage > .story {
-  width: min(
-    1320px,
-    calc(100% - 64px)
-  );
-
-  margin: 72px auto 40px;
-}
-
-
-.detailPage > .story details {
-  padding: 26px 0;
-
-  min-height: 70px;
-}
-
-
-@include mobile {
-
-  .detailPage {
-    width: calc(100% - 24px);
-
-    margin-inline: auto;
-  }
-
-  .detailPage > .story {
-    width: calc(100% - 32px);
-
-    margin-top: 56px;
-  }
-
-  .detailInfo .detailActions {
-    position: fixed;
-
-    left: 0;
-    right: 0;
-
-    bottom:
-      calc(
-        58px +
-        env(safe-area-inset-bottom)
-      );
-
-    z-index: 10;
-
-    margin: 0;
-
-    padding: 10px 12px;
-
-    background: $paper-light;
-
-    box-shadow: 0 -6px 16px #0001;
-  }
-
-  .detailInfo .detailActions > * {
-    min-height: 48px;
+    grid-template-columns:
+      repeat(2, 1fr);
   }
 }

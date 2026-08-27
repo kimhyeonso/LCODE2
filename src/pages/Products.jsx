@@ -1,16 +1,13 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-
 import products from "../data/products.json";
 import ProductCard from "../components/ProductCard";
 import { useShop } from "../hooks/useShop";
-
 import styles from "./Shop.module.scss";
 
 export default function Products() {
   const [category, setCategory] = useState("ALL");
   const [query, setQuery] = useState("");
-
   const { cart } = useShop();
 
   const categories = useMemo(
@@ -35,23 +32,16 @@ export default function Products() {
 
   return (
     <main className={styles.shopPage}>
-      {/* =========================
-          SHOP HERO
-      ========================= */}
       <header className={styles.shopHero}>
         <div className={styles.heroOverlay} />
 
         <div className={styles.heroTop}>
-          <span className={styles.heroLocation}>
-            TAIWAN · JIUFEN
-          </span>
+          <span className={styles.heroLocation}>TAIWAN · JIUFEN</span>
 
           <aside className={styles.heroMenu}>
             <Link to="/saved">♡ SAVED</Link>
-
             <Link to="/cart">
-              CART
-              <b>{cartCount}</b>
+              CART <b>{cartCount}</b>
             </Link>
           </aside>
         </div>
@@ -75,20 +65,14 @@ export default function Products() {
             </p>
 
             <a href="#items" className={styles.heroButton}>
-              VIEW ALL
-              <span>↘</span>
+              VIEW ALL <span>↘</span>
             </a>
           </div>
         </div>
 
-        <span className={styles.heroNumber}>
-          01 / TAIPEI
-        </span>
+        <span className={styles.heroNumber}>01 / TAIPEI</span>
       </header>
 
-      {/* =========================
-          PRODUCT CATALOG
-      ========================= */}
       <section id="items" className={styles.catalog}>
         <div className={styles.categoryBar}>
           {categories.map((item) => (
@@ -135,9 +119,6 @@ export default function Products() {
         )}
       </section>
 
-      {/* =========================
-          QUICK CART
-      ========================= */}
       {cart.length > 0 && (
         <aside className={styles.quickCart}>
           <small>QUICK CART</small>
@@ -149,10 +130,8 @@ export default function Products() {
               {cart[cart.length - 1].name}
 
               <em>
-                {cart[
-                  cart.length - 1
-                ].price.toLocaleString()}{" "}
-                KRW · {cart[cart.length - 1].quantity}개
+                {cart[cart.length - 1].price.toLocaleString()} KRW ·{" "}
+                {cart[cart.length - 1].quantity}개
               </em>
             </b>
 
