@@ -16,7 +16,6 @@
 .app {
   min-height: 100vh;
   overflow: hidden;
-  position: relative;
 }
 .main {
   min-height: 60vh;
@@ -29,24 +28,15 @@
   }
 }
 
-// MypageUser를 제외한 모든 페이지에서 계정 마이페이지로 이동하는 공통 화살표입니다.
-.mypageUserLink {
-  // 페이지 콘텐츠 영역의 여백 안쪽에 붙이고, 스크롤하면 같이 움직입니다.
-  position: absolute;
-  top: 2rem;
-  // 가운데 콘텐츠 레이아웃(최대 48rem)의 오른쪽 선에 맞춥니다.
-  right: max(2rem, calc((100% - 48rem) / 2));
-  z-index: 30;
-  color: #77736c;
-  font-size: 1.25rem;
-  line-height: 1;
-  text-decoration: none;
+@media (max-width: 640px) {
+  .main {
+    padding-top: 56px;
+    padding-bottom: calc(58px + env(safe-area-inset-bottom));
+  }
 }
 
-@media (max-width: 640px) {
-  .mypageUserLink {
-    top: 4.75rem;
-    right: 1.25rem;
-    font-size: 1rem;
+@media (min-width: 641px) and (max-width: 900px) {
+  .main {
+    padding-top: 56px;
   }
 }
