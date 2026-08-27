@@ -1,0 +1,107 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.notice {
+  min-height: 100vh;
+  background: $paper-light;
+  padding: 64px 0 110px;
+}
+
+.content {
+  width: min(calc(100% - 64px), 720px);
+  margin: 0 auto;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #aaa49c;
+  font-size: 9px;
+  letter-spacing: 2.4px;
+}
+
+.noticeList h1 {
+  margin: 22px 0 26px;
+  color: $ink;
+  font: 52px/1 $serif;
+  letter-spacing: -1px;
+}
+
+.description {
+  margin: 0;
+  color: $muted;
+  font-size: 11px;
+}
+
+.divider {
+  height: 1px;
+  margin-top: 26px;
+  background: $line;
+}
+
+.items button {
+  display: flex;
+  width: 100%;
+  min-height: 58px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  border: 0;
+  border-bottom: 1px solid #e9e6e1;
+  background: transparent;
+  padding: 0 12px;
+  color: $ink;
+  text-align: left;
+  cursor: pointer;
+}
+
+.items span {
+  overflow: hidden;
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.items b {
+  flex: 0 0 auto;
+  font: 26px/1 Arial, sans-serif;
+}
+
+.contact {
+  margin: 20px 0 0;
+  color: #666;
+  font-size: 10px;
+  text-align: center;
+}
+
+.banners {
+  display: none;
+}
+
+@include mobile {
+  .notice {
+    min-height: calc(100dvh - 58px);
+    padding: 34px 0 90px;
+  }
+
+  .content {
+    width: calc(100% - 40px);
+  }
+
+  .noticeList h1 {
+    margin: 22px 0 28px;
+    font-size: 40px;
+  }
+
+  .divider {
+    margin-top: 24px;
+  }
+
+  .items button {
+    min-height: 52px;
+    padding: 0 12px;
+  }
+
+  .items span {
+    font-size: 12px;
+  }
+}

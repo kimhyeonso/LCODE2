@@ -1,0 +1,200 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.auth {
+  width: min(100% - 40px, 420px);
+  min-height: calc(100vh - 94px);
+  margin: 0 auto;
+  padding: 80px 20px 90px;
+}
+
+.brand {
+  p {
+    margin: 0 0 30px;
+    color: $muted;
+    font-size: 10px;
+    letter-spacing: 1.6px;
+  }
+
+  h1 {
+    margin: 0 0 40px;
+    font: 52px/1 $serif;
+    letter-spacing: -1.5px;
+  }
+
+  span {
+    display: block;
+    border-top: 1px solid $line;
+    padding-top: 14px;
+    color: $muted;
+    font-size: 9px;
+    letter-spacing: 2.4px;
+  }
+}
+
+.signupBrand h1 {
+  margin-bottom: 0;
+  font-size: 52px;
+  line-height: 1.15;
+  letter-spacing: -1px;
+}
+
+.auth form {
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+  margin-top: 170px;
+  border-top: 1px solid $line;
+  padding-top: 32px;
+}
+
+.auth .signupForm {
+  margin-top: 22px;
+  padding-top: 66px;
+}
+
+.auth label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: $muted;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.auth input {
+  border: 0;
+  border-bottom: 1px solid $line;
+  border-radius: 0;
+  outline: none;
+  background: transparent;
+  padding: 10px 0 12px;
+  color: $ink;
+  font: 13px $sans;
+
+  &::placeholder {
+    color: #aaa7a0;
+  }
+
+  &:focus {
+    border-color: $ink;
+  }
+}
+
+.auth form > button:not(.switch) {
+  min-height: 52px;
+  margin-top: 12px;
+  border: 0;
+  background: $ink;
+  padding: 15px;
+  color: $paper;
+  font-size: 12px;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.accountPrompt {
+  margin: 0;
+  text-align: center;
+  color: $muted;
+  font-size: 10px;
+}
+
+.switch {
+  margin-left: 3px;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: $ink;
+  text-decoration: underline;
+  font-size: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.error {
+  margin: 0;
+  color: #9b3f32;
+  font-size: 10px;
+}
+
+.auth button:disabled {
+  opacity: 0.55;
+}
+
+@media (min-width: 901px) {
+  .auth {
+    width: min(100% - 96px, 480px);
+    min-height: 100vh;
+    padding: 96px 32px 110px;
+  }
+
+  .brand p {
+    margin-bottom: 36px;
+  }
+
+  .brand h1 {
+    margin-bottom: 44px;
+  }
+
+  .auth form {
+    gap: 24px;
+    margin-top: 120px;
+  }
+
+  .auth.signup {
+    padding-top: 72px;
+  }
+
+  .signupBrand h1 {
+    margin-bottom: 0;
+  }
+
+  .auth .signupForm {
+    margin-top: 28px;
+    padding-top: 54px;
+  }
+}
+
+@include mobile {
+  .auth {
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    padding: 78px 40px 70px;
+    background: $paper-light;
+  }
+
+  .brand h1 {
+    font-size: 50px;
+  }
+
+  .brand:not(.signupBrand) > p {
+    margin-bottom: 66px;
+  }
+
+  .brand:not(.signupBrand) > h1 {
+    margin-bottom: 50px;
+  }
+
+  .signupBrand h1 {
+    font-size: 48px;
+  }
+
+  .auth.signup {
+    padding-top: 14px;
+  }
+
+  .auth form {
+    margin-top: 170px;
+  }
+
+  .auth form > button:not(.switch) {
+    width: calc(100% + 40px);
+    margin-right: -20px;
+    margin-left: -20px;
+  }
+
+  .auth .signupForm {
+    margin-top: 22px;
+  }
+}

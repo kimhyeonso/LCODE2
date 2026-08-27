@@ -1,0 +1,196 @@
+// 프로젝트 공통 색상과 반응형 도구를 가져옵니다.
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+// 이 페이지에서 사용할 글꼴입니다.
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
+$korean: "Noto Sans KR", sans-serif;
+$english: "DM Serif Display", serif;
+
+// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.myPageMain, .myPageMain * { letter-spacing: -0.01em !important; }
+
+// 마이페이지 전체 배경과 여백입니다.
+.myPageMain {
+  min-height: calc(100vh - 10rem);
+  padding: 2.25rem 0 4rem;
+  background: white;
+  // border: 1px solid red;
+}
+
+// 왼쪽의 예정 여행과 오른쪽의 완료 여행을 나눕니다.
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 22rem) minmax(0, 21rem);
+  gap: 3.5rem;
+  width: min(calc(100% - 10rem), 48rem);
+  margin: -1rem auto;
+  // border: 1px solid red;
+}
+
+// 작업 중인 페이지를 확인하는 임시 메뉴입니다.
+.pageSwitcher {
+  position: fixed;
+  top: 2rem;
+  right: 1.5rem;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  width: 6.55rem;
+  border: 2px solid #111;
+  background: #fff;
+}
+
+// 임시 메뉴의 각각의 링크입니다.
+.pageSwitcher a {
+  display: grid;
+  min-height: 1.85rem;
+  place-items: center;
+  border-bottom: 2px solid #111;
+  color: #111;
+  font: 400 0.7rem $korean;
+  text-decoration: none;
+}
+
+// 마지막 링크에는 아래 선을 넣지 않습니다.
+.pageSwitcher a:last-child { border-bottom: 0; }
+
+// MY JOURNEY 라벨입니다.
+.eyebrow {
+  color: #aaa59c;
+  font: 400 0.62rem $korean;
+  letter-spacing: 0.17em;
+}
+
+// UPCOMING TRIP 제목입니다.
+.upcoming h1 {
+  margin: 0.5rem 0 0.7rem;
+  color: #111;
+  font: 400 2.5rem/1.05 $english;
+  letter-spacing: -0.01em;
+}
+
+// 예정 여행 카드입니다.
+.featuredTrip {
+  position: relative;
+  display: flex;
+  min-height: 13.4rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-top: 0.55rem;
+  overflow: hidden;
+  padding: 1.1rem 0.85rem 0;
+  color: #fff;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(221, 221, 221, 0.15) 0%,
+      rgba(181, 181, 181, 0.2) 50%,
+      rgba(40, 40, 40, 0.78) 80%,
+      rgba(17, 17, 17, 0.95) 100%
+    ),
+    url('/Mypage-img/6.png') center / cover no-repeat;
+}
+
+// 카드 오른쪽 위의 디데이 숫자입니다.
+.featuredTrip > strong {
+  position: absolute;
+  top: 1.2rem;
+  right: 1rem;
+  font: 400 3rem $english;
+}
+
+// 예정 여행 도시 이름입니다.
+.featuredTrip h2 {
+  margin: 0;
+  font: 400 3rem/0.95 $english;
+  // letter-spacing: -0.01em;
+}
+
+// 예정 여행의 간단한 정보입니다.
+.featuredTrip p {
+  margin: 0.65rem 0 0.85rem;
+  color: rgb(255 255 255 / 62%);
+  font: 400 0.58rem $korean;
+}
+
+// 예정 여행 카드의 하단 버튼 영역입니다.
+.featuredTrip footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 -0.85rem;
+  padding: 0.6rem 0.85rem;
+  background: #111;
+  color: rgb(255 255 255 / 70%);
+  font: 400 0.58rem $korean;
+}
+
+// 일정 보기 버튼은 아직 기능 없이 글자만 보여줍니다.
+.featuredTrip footer button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #fff;
+  font: 600 0.58rem $korean;
+}
+
+// 완료한 여행 목록입니다.
+.completed { padding-top: 7rem; }
+
+// 완료한 여행 카드 하나의 구조입니다.
+.completedTrip {
+  display: grid;
+  grid-template-columns: 7rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: center;
+  min-height: 8.8rem;
+  border-bottom: 1px solid #ded9d1;
+}
+
+// 첫 번째 카드 위에도 선을 표시합니다.
+.completedTrip:first-child { border-top: 1px solid #ded9d1; }
+
+// 이미지가 없을 때 보이는 기본 회색 박스입니다.
+.thumbnail {
+  width: 7rem;
+  height: 7rem;
+  background-color: #d2d2d2;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+// 완료 여행의 텍스트 영역입니다.
+.tripText { font-family: $korean; }
+
+// 완료 상태와 날짜를 보여주는 작은 라벨입니다.
+.tripText span {
+  color: #aaa59c;
+  font-size: 0.58rem;
+  letter-spacing: 0.13em;
+}
+
+// 완료한 여행의 도시 이름입니다.
+.tripText h2 {
+  margin: 0.55rem 0 0.45rem;
+  color: #111;
+  font: 400 1.65rem/0.9 $english;
+}
+
+// 완료한 여행의 일정 정보입니다.
+.tripText p {
+  margin: 0;
+  color: #9c978e;
+  font-size: 0.6rem;
+  line-height: 1.5;
+}
+
+// 휴대폰에서는 한 열로 쌓습니다.
+@include mobile {
+  .myPageMain { padding: 2.5rem 0 4rem; }
+  .layout { grid-template-columns: 1fr; gap: 3rem; width: min(calc(100% - 2.5rem), 31rem); }
+  .featuredTrip { min-height: 15rem; }
+  .pageSwitcher { position: static; width: min(calc(100% - 2.5rem), 31rem); margin: 2rem auto 0; }
+}
