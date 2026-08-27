@@ -1,0 +1,198 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+$surface: #fcfbf8;
+$sage: #657266;
+$forest: #344139;
+$terracotta: #a8664c;
+
+.itinerary {
+  min-height: calc(100vh - 10rem);
+  padding: 64px 0 110px;
+  background: $paper;
+  color: $ink;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(420px, 1.2fr);
+  gap: 64px;
+  align-items: end;
+  width: min(1100px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.intro { color: $ink; }
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  margin: 0;
+  border-bottom: 1px solid $line;
+  color: $muted;
+  font-size: 11px;
+  letter-spacing: 1.8px;
+}
+
+.eyebrow::before { content: "01 /"; }
+
+.titleRow {
+  display: block;
+  margin: 32px 16px 0;
+
+  h1 {
+    margin: 0;
+    font: 600 clamp(42px, 5vw, 68px)/0.92 $serif;
+    letter-spacing: -2px;
+  }
+
+  p {
+    margin: 20px 0 0;
+    color: $muted;
+    font: 400 13px/1.7 $sans;
+  }
+}
+
+.divider { height: 1px; margin-top: 32px; background: $line; }
+
+.quickCards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  margin-top: 24px;
+  border: 1px solid $line;
+  background: $line;
+}
+
+.countCard,
+.packingCard {
+  box-sizing: border-box;
+  min-width: 0;
+  height: 210px;
+  padding: 24px 20px;
+
+  h2 { margin: 0; font: 500 28px/0.95 $serif; }
+  p { margin: 0; font: 400 11px/1.65 $sans; }
+}
+
+.countCard {
+  background: linear-gradient(rgba(23, 23, 20, 0.16), rgba(23, 23, 20, 0.32)),
+    url("../assets/images/busan_korea.jpg") center/cover;
+  color: #fff;
+
+  p { margin-top: 16px; color: rgba(255, 255, 255, 0.78); }
+}
+
+.packingCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  background: $forest;
+  color: #fff;
+  text-align: right;
+
+  p { color: rgba(255, 255, 255, 0.7); }
+  h2 { font-size: 34px; }
+}
+
+.tripArea { position: relative; }
+
+.tripCard {
+  overflow: hidden;
+  border: 1px solid $line;
+  background: $surface;
+}
+
+.photo {
+  position: relative;
+  height: 360px;
+  background-image: linear-gradient(to top, rgba(23, 23, 20, 0.12), transparent 40%),
+    url("../assets/images/fukuoka_japan.jpg");
+  background-position: center;
+  background-size: cover;
+
+  span {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.65);
+    background: $surface;
+    color: $terracotta;
+    font: 600 11px $sans;
+    letter-spacing: 1px;
+  }
+}
+
+.tripInfo { padding: 28px 32px 32px; }
+.tripInfo h2 { margin: 0; font: 600 25px/1.2 $serif; }
+.subtitle { margin: 10px 0 0; color: $muted; font: 400 12px $sans; }
+.date {
+  margin: 24px 0 20px;
+  padding-top: 16px;
+  border-top: 1px solid $line;
+  color: $muted;
+  font: 400 11px $sans;
+  letter-spacing: 0.5px;
+}
+
+.detailButton {
+  width: 100%;
+  height: 48px;
+  border: 1px solid $forest;
+  background: $forest;
+  color: #fff;
+  font: 500 11px $sans;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.detailButton:hover { background: transparent; color: $forest; }
+
+.arrow {
+  position: absolute;
+  top: 42%;
+  z-index: 1;
+  width: 36px;
+  height: 36px;
+  border: 1px solid $line;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  background: $surface;
+  color: $forest;
+  font: 400 20px/1 Arial, sans-serif;
+  cursor: pointer;
+}
+
+.previous { left: -52px; }
+.next { right: -52px; }
+
+@include tablet {
+  .content {
+    grid-template-columns: minmax(250px, 0.8fr) minmax(360px, 1.2fr);
+    gap: 40px;
+  }
+  .previous { left: -18px; }
+  .next { right: -18px; }
+}
+
+@include mobile {
+  .itinerary { padding: 34px 0 88px; }
+  .content { grid-template-columns: 1fr; gap: 48px; width: calc(100% - 32px); }
+  .titleRow {
+    margin: 28px 16px 0;
+    h1 { font-size: 48px; }
+  }
+  .quickCards { margin-top: 16px; }
+  .countCard,
+  .packingCard { height: 190px; padding: 20px 16px; }
+  .photo { height: 290px; }
+  .tripInfo { padding: 24px 20px; }
+  .tripArea { padding: 0; }
+  .previous { left: -10px; }
+  .next { right: -10px; }
+}

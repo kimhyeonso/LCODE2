@@ -1,0 +1,291 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+.header {
+  width: 220px;
+  height: 100vh;
+  margin: 0;
+  padding: 38px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  border-right: 1px solid #292929;
+  background: #111;
+  color: #f2f2f2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+
+  &::before {
+    content: "";
+    position: fixed;
+    top: 112px;
+    right: 0;
+    left: 0;
+    height: 1px;
+    background: #292929;
+  }
+
+  &::after {
+    content: "ISSUE 01 / 2026\A EST. 2024";
+    position: absolute;
+    right: 28px;
+    bottom: 26px;
+    left: 28px;
+    border-top: 1px solid #292929;
+    padding-top: 20px;
+    color: #515151;
+    font-size: 10px;
+    line-height: 2;
+    letter-spacing: 1.2px;
+    white-space: pre;
+  }
+}
+.logo {
+  display: block;
+  width: 126px;
+  height: 50px;
+  position: relative;
+  overflow: visible;
+  img {
+    display: block;
+    width: 100%;
+    height: auto;
+    filter: invert(1);
+  }
+  &::after {
+    content: "TRAVEL CURATION";
+    position: absolute;
+    top: 36px;
+    left: 0;
+    color: #606060;
+    font-size: 9px;
+    letter-spacing: 2px;
+    white-space: nowrap;
+  }
+}
+.navigation {
+  display: flex;
+  width: 100%;
+  margin-top: 62px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  font-size: 15px;
+  letter-spacing: 1.8px;
+  a {
+    width: calc(100% + 28px);
+    margin-left: -28px;
+    padding: 14px 0 14px 28px;
+    border: 0;
+    color: #5b5b5b;
+  }
+  .active {
+    border: 0;
+    box-shadow: inset 2px 0 #f5f5f5;
+    color: #f5f5f5;
+  }
+}
+
+.memberMenu {
+  width: 100%;
+  margin-top: 24px;
+  padding-top: 18px;
+  border-top: 1px solid #292929;
+
+  button {
+    width: calc(100% + 28px);
+    margin-left: -28px;
+    border: 0;
+    background: transparent;
+    padding: 14px 0 14px 28px;
+    color: #5b5b5b;
+    font: inherit;
+    letter-spacing: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  button:hover {
+    color: #f5f5f5;
+  }
+}
+
+.menu {
+  display: none;
+  border: 0;
+  background: none;
+  font-size: 11px;
+  letter-spacing: 1px;
+}
+
+.mobileNavigation {
+  display: none;
+}
+
+@include tablet {
+  .header {
+    width: 100%;
+    height: 56px;
+    margin: 0;
+    padding: 0 20px;
+    border-bottom: 0;
+    border-right: 0;
+    background: #f5f5f5;
+    position: fixed !important;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 100;
+    transform: translateZ(0);
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    color: $ink;
+
+    &::before,
+    &::after {
+      display: none;
+    }
+  }
+  .logo {
+    width: 96px;
+    height: 18px;
+
+    img {
+      filter: none;
+    }
+
+    &::after {
+      display: none;
+    }
+  }
+  .menu {
+    display: block;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+  }
+  .navigation {
+    display: none;
+  }
+
+  .memberMenu {
+    display: none;
+  }
+
+  .mobileNavigation {
+    display: none;
+    position: absolute;
+    z-index: 19;
+    top: 56px;
+    left: 0;
+    width: 100vw;
+    height: calc(100dvh - 56px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background: $paper-light;
+    padding: 26px 40px 42px;
+    color: $ink;
+
+    &.open {
+      display: block;
+    }
+  }
+
+  .memberIntro {
+    span,
+    p {
+      color: $muted;
+    }
+
+    span,
+    .contentsLabel {
+      font-size: 8px;
+      letter-spacing: 2px;
+    }
+
+    strong {
+      display: block;
+      margin-top: 15px;
+      font-size: 25px;
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    p {
+      margin: 8px 0 0;
+      font-size: 11px;
+    }
+  }
+
+  .contentsLabel {
+    display: block;
+    margin: 42px 0 15px;
+    color: $muted;
+    font-size: 8px;
+    letter-spacing: 2px;
+  }
+
+  .mobileLinks a {
+    display: grid;
+    grid-template-columns: 52px 1fr 20px;
+    min-height: 76px;
+    align-items: center;
+    border-bottom: 1px solid $line;
+
+    > b {
+      color: #d7d3cb;
+      font: 42px $serif;
+    }
+
+    > strong {
+      font: 27px $serif;
+    }
+
+    > span {
+      color: $muted;
+      font-size: 12px;
+      text-align: right;
+    }
+  }
+
+  .mobileMemberMenu {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid $line;
+
+    a,
+    button {
+      min-height: 46px;
+      border: 1px solid $ink;
+      background: transparent;
+      color: $ink;
+      font: 500 10px $sans;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    a:only-child {
+      grid-column: 1 / -1;
+    }
+
+    button {
+      background: $ink;
+      color: $paper-light;
+    }
+  }
+
+}

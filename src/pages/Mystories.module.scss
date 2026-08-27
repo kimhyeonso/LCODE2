@@ -1,0 +1,65 @@
+// 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+// 페이지에서 사용하는 글꼴을 불러옵니다.
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
+$display: "DM Serif Display", serif; // Serif heading font.
+$korean: "Noto Sans KR", sans-serif; // Korean UI font.
+
+// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.mystories, .mystories * { letter-spacing: -0.01em !important; }
+
+// 페이지 전체 배경과 상하 여백입니다.
+.mystories { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; }
+// 데스크톱의 좌우 2단 레이아웃입니다.
+.content { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 6.7rem; width: min(calc(100% - 10.6rem), 52.3rem); margin: 0 auto; }
+// 상단 작은 섹션 라벨입니다.
+.eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
+// 공통 영문 제목 스타일입니다.
+h1 { margin: 1.2rem 0; color: #111; font: 400 2rem/1 $display; letter-spacing: -.08em; }
+// 제목 아래 보조 설명 문구입니다.
+.description, .shopping > p { margin: 0; color: #98948d; font: 400 .66rem $korean; }
+// 오른쪽 쇼핑 영역 전체를 왼쪽 제목 높이에 맞춰 아래로 내립니다.
+.shopping { padding-top: 0.75rem; }
+// 제목 영역을 구분하는 얇은 선입니다.
+.divider { height: 1px; margin-top: .8rem; background: #ddd9d1; }
+// 저장한 여행 카드 목록입니다.
+.storyList { display: grid; gap: 3rem; margin-top: 1.85rem; }
+// 여행 카드 외곽 스타일입니다.
+.storyCard { border: 1px solid #d4d1cc; background: #fff; }
+// 여행 사진을 대신하는 고정 크기 회색 영역입니다.
+.storyImage { width: 100%; height: 7.45rem; background-image: url(/public/Mypage-img/2.png);
+background-size: cover; }
+// 여행 카드의 텍스트와 버튼 영역입니다.
+.storyInfo { padding: .85rem .85rem .35rem; }
+.storyInfo h2 { margin: 0; color: #202020; font: 700 1.1rem $korean; letter-spacing: -.07em; }
+.storyInfo > p { margin: .4rem 0 0; color: #8f8f8f; font: 400 .68rem $korean; }
+.storyInfo small { display: block; margin-top: .55rem; color: #666; font: 400 .57rem $korean; }
+.storyInfo footer { display: grid; grid-template-columns: .84fr 1.65fr; gap: .45rem; margin-top: .95rem; }
+// 동작 없이 표시하는 카드 버튼 스타일입니다.
+.storyInfo button, .productCard footer button { height: 2.35rem; border: 1px solid #ddd9d2; background: #fff; color: #77736c; font: 400 .62rem $korean; }
+.storyInfo button:last-child, .productCard footer button:last-child { border-color: #111; background: #111; color: #fff; }
+// 쇼핑 카테고리 필터 버튼 행입니다.
+.shopping h1 { margin-bottom: 1.25rem; }
+.filters { display: flex; gap: .32rem; margin-top: .8rem; }
+.filters button { min-width: 3.25rem; height: 1.85rem; border: 1px solid #ddd9d2; background: #fff; color: #8e8982; font: 400 .5rem $korean; letter-spacing: .12em; }
+.filters .selected { border-color: #111; background: #111; color: #fff; }
+// 상품 카드 2열 그리드입니다.
+.productGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.35rem .6rem; margin-top: 1.55rem; }
+// 상품 사진을 대신하는 고정 크기 회색 영역입니다.
+.productImage { width: 100%; height: 10.1rem; background: #ff8686; }
+.productImage:nth-child(1){
+    background-image: url(/public/Mypage-img/3.png);
+    background-size: cover;
+}
+.productCard h2 { margin: .55rem 0 0; color: #292929; font: 500 .64rem $korean; }
+.productCard small { display: block; margin-top: .1rem; color: #777; font: 400 .52rem $korean; }
+.productCard p { margin: .22rem 0 0; color: #777; font: 400 .53rem $korean; }
+.productCard p span { margin-left: .2rem; letter-spacing: .06em; }
+.productCard footer { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; margin-top: 1.65rem; }
+.productCard footer button { height: 1.35rem; font-size: .48rem; }
+.pagination { margin-top: .6rem; color: #bbb; font-size: .42rem; letter-spacing: .25rem; text-align: center; }
+// 태블릿 화면 여백입니다.
+@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 52.3rem); } }
+// 휴대폰 화면의 단일 열 레이아웃입니다.
+@include mobile { .mystories { padding: 2.5rem 0 3.5rem; } .content { grid-template-columns: 1fr; gap: 3.5rem; width: min(calc(100% - 2.5rem), 31rem); } .shopping { padding-top: 0; } .storyImage { height: 11rem; } .productImage { height: 12rem; } }

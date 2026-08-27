@@ -1,0 +1,44 @@
+@use "../styles/variables" as *;
+.result {
+  margin-top: 36px;
+  padding: 42px;
+  background: #20211e;
+  color: $paper;
+  small {
+    letter-spacing: 2px;
+    color: $sand;
+  }
+  h2 {
+    font: 42px $serif;
+    margin: 18px 0;
+  }
+  p {
+    line-height: 1.7;
+    color: #d1cec6;
+  }
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 35px 0;
+  }
+  li {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    border-top: 1px solid #ffffff35;
+    padding: 20px 0;
+    span {
+      font-size: 10px;
+      letter-spacing: 1px;
+    }
+    b {
+      font: 23px $serif;
+    }
+    p {
+      margin: 8px 0;
+    }
+  }
+  .note {
+    font-size: 11px !important;
+    color: $sand !important;
+  }
+}

@@ -1,0 +1,178 @@
+// 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+// 위시리스트 페이지에서 사용하는 글꼴을 불러옵니다.
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
+
+// 영문 제목에 사용하는 세리프 글꼴입니다.
+$display: "DM Serif Display", serif;
+// 한글 본문에 사용하는 산세리프 글꼴입니다.
+$korean: "Noto Sans KR", sans-serif;
+
+// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
+.wishlist, .wishlist * { letter-spacing: -0.01em !important; }
+
+// 공통 헤더 아래의 위시리스트 전체 영역입니다.
+.wishlist {
+  min-height: calc(100vh - 10rem); // Keep short pages visually full-height.
+  padding: 3.75rem 0 4rem; // Create breathing room above and below content.
+ background-color: white;
+}
+
+// 페이지 내용을 가운데 정렬하는 래퍼입니다.
+.content {
+  width: min(calc(100% - 10rem), 48rem);
+  margin: -1rem auto;
+}
+
+// 제목 위의 작은 섹션 라벨입니다.
+.eyebrow {
+  margin: 0; // Remove the browser's default paragraph margin.
+  color: #aaa49c; // Use a subdued neutral color.
+  font: 400 0.58rem $korean; // Use compact Korean label typography.
+  letter-spacing: 0.24em; // Match the wide tracking in the reference.
+}
+
+// 페이지의 큰 제목입니다.
+h1 {
+  margin: 1.2rem 0; // Separate the title from the label and description.
+  color: #111; // Use strong near-black heading text.
+  font: 400 2rem/1 $display; // Use the display typeface with tight leading.
+  letter-spacing: -0.08em; // Tighten the serif heading shape.
+}
+
+// 제목 아래의 안내 문구입니다.
+.description {
+  margin: 0; // Remove the default paragraph margin.
+  color: #98948d; // Keep this supporting text muted.
+  font: 400 0.66rem $korean; // Use small supporting-copy typography.
+}
+
+// 안내 문구 아래의 구분선입니다.
+.divider {
+  width: 22rem; // Keep the divider aligned to the title block.
+  height: 1px; // Render a thin horizontal line.
+  margin-top: 0.8rem; // Add space after the description.
+  background: #ddd9d1; // Use the page's soft border color.
+}
+
+// 데스크톱에서 4열로 보이는 저장 장소 카드 목록입니다.
+.placeGrid {
+  display: grid; // Lay cards out in a regular grid.
+  grid-template-columns: repeat(4, minmax(0, 1fr)); // Create four equal-width columns.
+  gap: 1.8rem; // Separate adjacent cards.
+  margin-top: 1.85rem; // Separate cards from the divider.
+}
+
+// 카드 안의 고정 크기 이미지 플레이스홀더입니다.
+.imagePlaceholder {
+  position: relative; // Anchor the heart icon within the placeholder.
+  width: 100%; // Fill the available card width.
+  height: 11.55rem; // Preserve the intended rectangular image height.
+  background: #ff9a9a; // Indicate that the real image is not present yet.
+
+  span {
+    position: absolute; // Position the heart independently of the image flow.
+    top: 0.7rem; // Offset the heart from the top edge.
+    right: 0.7rem; // Offset the heart from the right edge.
+    color: #111; // Keep the saved-state heart prominent.
+    font-size: 1rem; // Use a compact icon size.
+    line-height: 1; // Prevent extra line-box height around the icon.
+  }
+}
+.placeCard:nth-child(1) .imagePlaceholder {
+  background-image: url('/Mypage-img/2.png');
+}
+
+.placeCard:nth-child(2) .imagePlaceholder {
+  background-image: url('/Mypage-img/1.png');
+}
+
+.placeCard:nth-child(3) .imagePlaceholder {
+  background-image: url('/Mypage-img/3.png');
+}
+.placeCard:nth-child(4) .imagePlaceholder {
+  background-image: url('/Mypage-img/5.png');
+}
+
+.imagePlaceholder {
+  background-size: cover;
+  background-position: center;
+}
+
+// 국가와 도시를 보여주는 메타 정보입니다.
+.location {
+  margin: 0.65rem 0 0; // Add only space above the label.
+  color: #aaa49c; // Keep location metadata subtle.
+  font: 400 0.52rem $korean; // Use small metadata typography.
+  letter-spacing: 0.14em; // Match the tracked uppercase reference style.
+}
+
+// 저장한 장소의 이름입니다.
+.placeCard h2 {
+  margin: 0.32rem 0 0.4rem; // Space the name between metadata and controls.
+  color: #222; // Use readable near-black text.
+  font: 500 0.8rem $korean; // Use a modest semibold Korean title.
+  letter-spacing: -0.06em; // Tighten Korean heading spacing.
+}
+
+// 카테고리와 정적 일정 추가 버튼이 있는 카드 하단입니다.
+.placeCard footer {
+  display: flex; // Keep the category and action on one row.
+  align-items: center; // Vertically align footer content.
+  justify-content: space-between; // Push content to opposite ends.
+  gap: 0.4rem; // Preserve space when text becomes narrow.
+
+  span {
+    border: 1px solid #dedbd5; // Outline the category pill.
+    padding: 0.16rem 0.35rem; // Give the category pill internal space.
+    color: #aaa49c; // Use muted category text.
+    font: 400 0.48rem $korean; // Keep category metadata compact.
+    letter-spacing: 0.08em; // Add light tracking to the category.
+  }
+
+  button {
+    padding: 0; // Remove default button inset.
+    border: 0; // Remove the default button border.
+    background: transparent; // Keep this UI action visually text-only.
+    color: #8c8984; // Use muted action text.
+    font: 400 0.55rem $korean; // Keep the static action compact.
+    white-space: nowrap; // Prevent the action label from wrapping.
+  }
+}
+
+// 태블릿과 좁은 데스크톱 화면의 여백입니다.
+@include tablet {
+  .content {
+    width: min(calc(100% - 6rem), 55.3rem); // Reduce gutters for mid-sized screens.
+  }
+
+  .placeGrid {
+    gap: 1.25rem; // Tighten card gaps on smaller screens.
+  }
+}
+
+// 휴대폰 화면의 2열 카드 레이아웃입니다.
+@include mobile {
+  .wishlist {
+    padding: 2.5rem 0 3.5rem; // Reduce page padding on phones.
+  }
+
+  .content {
+    width: min(calc(100% - 2.5rem), 31rem); // Use mobile side gutters.
+  }
+
+  .divider {
+    width: 100%; // Let the divider fill the mobile content width.
+  }
+
+  .placeGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)); // Show two cards per row on phones.
+    gap: 2rem 1rem; // Use separate row and column gaps for mobile cards.
+  }
+
+  .imagePlaceholder {
+    height: 10.5rem; // Keep image placeholders proportionate on narrow cards.
+  }
+}

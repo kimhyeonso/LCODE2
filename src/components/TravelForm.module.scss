@@ -1,0 +1,832 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.form {
+  position: relative;
+  width: min(100%, 560px);
+  margin: 0 auto;
+  background: #fff;
+  color: #222;
+}
+
+.hero {
+  position: relative;
+  height: 382px;
+  color: #fff;
+  background: linear-gradient(to bottom, #c7c7c7 0%, #a6a6a6 48%, #444 100%), url("../assets/images/fukuoka_japan.jpg") center/cover;
+  background-blend-mode: multiply;
+}
+
+.weather {
+  position: absolute;
+  top: 28px;
+  right: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.weather small {
+  color: #eee;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.weather strong {
+  margin-top: 8px;
+  font: 34px/1 $serif;
+}
+
+.weather span {
+  margin-top: 8px;
+  border-radius: 18px;
+  padding: 7px 13px;
+  background: #292929;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.heroCopy {
+  position: absolute;
+  right: 22px;
+  bottom: 24px;
+  left: 22px;
+}
+
+.heroCopy p {
+  margin: 0 0 10px;
+  color: #d8d8d8;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.heroCopy h1 {
+  margin: 0;
+  color: #d8d8d8;
+  font: 64px/.9 $serif;
+  letter-spacing: -2px;
+}
+
+.summary {
+  padding: 0 14px;
+}
+
+.summaryTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 74px;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.summaryTitle h2 {
+  margin: 0;
+  font-size: 21px;
+}
+
+.summaryTitle button {
+  border: 1px solid #ddd;
+  background: #fff;
+  padding: 8px 12px;
+  color: #aaa;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.flight {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  border-radius: 5px;
+  padding: 13px 17px;
+  background: #ddd;
+  color: #666;
+  font-size: 9px;
+}
+
+.flight button {
+  border: 0;
+  background: transparent;
+  color: #666;
+  font-size: 9px;
+}
+
+.flight span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.flight span img {
+  width: 14px;
+  height: 14px;
+}
+
+.dayTabs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin-top: 20px;
+}
+
+.dayTabs button {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  border: 0;
+  border-bottom: 1px solid #ddd;
+  padding: 0 0 14px;
+  background: #fff;
+  color: #c7c7c7;
+}
+
+.dayTabs b {
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+.dayTabs span {
+  font: 12px $serif;
+}
+
+.dayTabs .selected {
+  color: #555;
+}
+
+.dayTabs .selected::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: #777;
+}
+
+.mapPlaceholder {
+  height: 150px;
+  display: grid;
+  place-items: center;
+  background: #ddd;
+  color: #bbb;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+.mapPlaceholder span {
+  opacity: 0;
+}
+
+.schedule {
+  padding: 32px 16px 30px;
+}
+
+.schedule > header {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 0 18px 18px;
+  border-bottom: 1px solid #ddd;
+}
+
+.schedule > header h2 {
+  margin: 0;
+  font: 24px $serif;
+}
+
+.schedule > header span {
+  color: #bbb;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+
+.guide {
+  margin: 12px 0;
+  padding: 10px 14px;
+  background: #e1e1e1;
+  color: #777;
+  font-size: 10px;
+}
+
+.guide::first-letter {
+  color: #d4ad42;
+}
+
+.arrival {
+  margin: 14px 0 10px;
+  color: #777;
+  font-size: 9px;
+}
+
+.stopGroup {
+  margin-bottom: 13px;
+}
+
+.stopCard {
+  display: grid;
+  grid-template-columns: 46px 42px 1fr 20px 20px;
+  align-items: center;
+  min-height: 104px;
+  background: #fafafa;
+}
+
+.stopCard time {
+  color: #777;
+  font-size: 9px;
+  text-align: left;
+}
+
+.placeIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  color: #777;
+}
+
+.placeIcon img {
+  width: 20px;
+  height: 20px;
+}
+
+.placeCopy {
+  min-width: 0;
+  padding-left: 12px;
+}
+
+.placeCopy strong,
+.placeCopy small {
+  display: block;
+}
+
+.placeCopy strong {
+  font-size: 14px;
+}
+
+.placeCopy small {
+  margin-top: 4px;
+  color: #777;
+  font-size: 9px;
+}
+
+.placeCopy button {
+  border: 0;
+  background: transparent;
+  margin-top: 8px;
+  padding: 0;
+  font-size: 10px;
+}
+
+.drag {
+  display: grid;
+  place-items: center;
+}
+
+.drag img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.55;
+}
+
+.remove {
+  border: 0;
+  background: transparent;
+  color: #888;
+  padding: 2px;
+}
+
+.remove img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.55;
+}
+
+.note {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  padding: 12px 14px;
+  background: #f1f1f1;
+  color: #777;
+  font-size: 9px;
+}
+
+.note > button,
+.note > span button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+}
+
+.note > button {
+  flex: 1;
+  padding: 0;
+  line-height: 1.5;
+  text-align: left;
+}
+
+.note > span {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 6px;
+}
+
+.note > span button {
+  padding: 0;
+  font-size: 8px;
+}
+
+.addMemo {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 12px auto;
+  border: 0;
+  background: transparent;
+  color: #888;
+  font-size: 11px;
+}
+
+.addMemo img {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+}
+
+.travel {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 14px;
+  background: #ddd;
+  color: #555;
+  font-size: 9px;
+}
+
+.travel b {
+  color: #888;
+}
+
+.travel span,
+.travel b {
+  display: flex;
+  align-items: center;
+}
+
+.travel span {
+  gap: 7px;
+}
+
+.travel img {
+  width: 14px;
+  height: 14px;
+  opacity: 0.65;
+}
+
+.addActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 32px;
+}
+
+.addActions button,
+.draft,
+.confirm {
+  height: 54px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #888;
+  font-size: 11px;
+  letter-spacing: .5px;
+}
+
+.addActions button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.draft,
+.confirm {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.confirm {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.confirm:disabled {
+  opacity: .55;
+}
+
+.modalBackdrop {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.titleModal {
+  width: min(100%, 500px);
+  max-height: calc(100dvh - 40px);
+  overflow-y: auto;
+  padding: 40px 24px 28px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+.modalLabel,
+.suggestions > p {
+  margin: 0;
+  color: #999;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.titleField {
+  display: block;
+  margin-top: 28px;
+}
+
+.titleField span {
+  display: block;
+  margin-bottom: 10px;
+  color: #aaa;
+  font-size: 10px;
+}
+
+.titleField input {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #d8d8d8;
+  outline: 0;
+  padding: 0 0 18px;
+  background: transparent;
+  color: #888;
+  font-size: 14px;
+}
+
+.titleField input:focus {
+  border-color: #222;
+}
+
+.titlePreview {
+  display: block;
+  min-height: 58px;
+  padding: 20px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.suggestions {
+  margin-top: 34px;
+}
+
+.suggestions > p {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.suggestions button {
+  width: 100%;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border-bottom: 1px solid #e2e2e2;
+  background: transparent;
+  color: #999;
+  font-size: 12px;
+  text-align: left;
+}
+
+.suggestions button b {
+  color: #c9c1ad;
+  font-weight: 400;
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  margin-top: 38px;
+}
+
+.modalActions button {
+  height: 54px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #777;
+  font-size: 11px;
+}
+
+.modalActions button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.modalActions button:disabled {
+  opacity: 0.45;
+}
+
+.memoModal {
+  width: min(100%, 500px);
+  padding: 40px 24px 28px;
+  background: #fff;
+  color: #222;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+}
+
+.memoPlace {
+  display: block;
+  margin-top: 14px;
+  color: #999;
+  font-size: 10px;
+}
+
+.memoModal textarea {
+  width: 100%;
+  min-height: 92px;
+  margin-top: 20px;
+  resize: vertical;
+  border: 0;
+  border-bottom: 1px solid #d8d8d8;
+  outline: 0;
+  padding: 0 0 18px;
+  background: transparent;
+  color: #222;
+  font: 14px/1.65 $sans;
+}
+
+.memoModal textarea:focus {
+  border-color: #222;
+}
+
+.memoActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.memoActions button {
+  height: 54px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #777;
+  font-size: 11px;
+}
+
+.memoActions button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.memoActions button:disabled {
+  opacity: 0.45;
+}
+
+.placeDetail {
+  position: fixed;
+  z-index: 210;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100%, 560px);
+  overflow-y: auto;
+  transform: translateX(-50%);
+  background: #fff;
+  color: #222;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+}
+
+.detailHeader {
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.detailHeader button {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  padding: 3px;
+}
+
+.detailHeader img {
+  width: 22px;
+  height: 22px;
+}
+
+.mapLink {
+  display: block;
+  padding: 2px 20px 12px;
+  color: #666;
+  font-size: 11px;
+  text-align: right;
+}
+
+.detailImage {
+  height: 325px;
+  margin: 0 20px;
+  background: #ddd;
+  overflow: hidden;
+}
+
+.detailImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detailContent {
+  padding: 24px 40px 116px;
+}
+
+.detailContent h2 {
+  margin: 0;
+  font-size: 22px;
+  line-height: 1.35;
+}
+
+.placeMeta,
+.rating,
+.placeDescription {
+  margin: 6px 0 0;
+  color: #777;
+  font-size: 11px;
+}
+
+.rating strong {
+  margin-left: 6px;
+  color: #e3a800;
+  letter-spacing: 1px;
+}
+
+.rating > span {
+  color: #ddd;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, auto) 1fr;
+  gap: 6px;
+  align-items: center;
+  margin-top: 42px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e2e2e2;
+  font-size: 9px;
+}
+
+.features span:first-child {
+  color: #15824b;
+}
+
+.features span:nth-child(n + 2) {
+  color: #555;
+}
+
+.features b {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: right;
+}
+
+.detailList {
+  margin: 0;
+}
+
+.detailList > div {
+  position: relative;
+  display: grid;
+  grid-template-columns: 32px 1fr;
+  min-height: 52px;
+  align-items: center;
+}
+
+.detailList dt img {
+  width: 18px;
+  height: 18px;
+}
+
+.detailList dd {
+  margin: 0;
+  color: #555;
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+.detailList dd em {
+  color: #d84a3b;
+  font-style: normal;
+}
+
+.detailList dd small {
+  display: block;
+  color: #999;
+  font-size: 8px;
+}
+
+.detailList > div > b {
+  position: absolute;
+  right: 0;
+  font-weight: 400;
+}
+
+.detailActions {
+  position: fixed;
+  right: max(0px, calc((100vw - 560px) / 2));
+  bottom: 0;
+  left: max(0px, calc((100vw - 560px) / 2));
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+
+.detailActions button {
+  height: 54px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #777;
+  font-size: 11px;
+}
+
+.detailActions button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+@media (min-width: 641px) {
+  .form {
+    margin-top: 40px;
+    margin-bottom: 80px;
+    box-shadow: 0 16px 50px rgba(0, 0, 0, .08);
+  }
+}
+
+@include mobile {
+  .form {
+    width: 100%;
+  }
+
+  .hero {
+    height: 330px;
+  }
+
+  .heroCopy h1 {
+    font-size: 52px;
+  }
+
+  .schedule {
+    padding-inline: 14px;
+  }
+
+  .aiButton {
+    right: 18px;
+  }
+
+  .modalBackdrop {
+    align-items: center;
+    padding: 18px;
+  }
+
+  .titleModal {
+    padding: 34px 18px 24px;
+  }
+
+  .memoModal {
+    padding: 34px 18px 24px;
+  }
+
+  .detailImage {
+    height: 280px;
+  }
+
+  .detailContent {
+    padding: 20px 40px 108px;
+  }
+}
