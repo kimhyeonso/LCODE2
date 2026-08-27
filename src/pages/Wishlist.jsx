@@ -46,7 +46,7 @@ export default function Wishlist() {
                     aria-pressed={isLiked}
                     onClick={() => toggleLike(place.name)}
                   >
-                    <span aria-hidden="true">{isLiked ? "♥" : "♡"}</span>
+                    <span aria-hidden="true">{isLiked ? "♥" : "♥"}</span>
                   </button>
                 </div>
                 <p className={styles.location}>{place.location}</p>

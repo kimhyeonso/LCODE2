@@ -13,7 +13,7 @@ $english: $display;
 .myPageMain {
   min-height: calc(100vh - 10rem);
   padding: 2.25rem 0 4rem;
-  background: white;
+  background: $paper;
   @include korean-font;
   // border: 1px solid red;
 }
@@ -38,7 +38,7 @@ $english: $display;
   flex-direction: column;
   width: 6.55rem;
   border: 2px solid #111;
-  background: #fff;
+  background: #f8f8f8;
   transform: scale(0.5);
 }
 
@@ -81,7 +81,7 @@ $english: $display;
   margin-top: 0.55rem;
   overflow: hidden;
   padding: 1.1rem 0.85rem 0;
-  color: #fff;
+  color: #f8f8f8;
 
   background:
     linear-gradient(
@@ -133,7 +133,7 @@ $english: $display;
   padding: 0;
   border: 0;
   background: transparent;
-  color: #fff;
+  color: #f8f8f8;
   font: 600 0.58rem $korean;
 }
 

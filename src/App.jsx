@@ -33,6 +33,7 @@ function ScrollTop() {
 const enlargedPagePaths = new Set([
   "/login",
   "/my",
+  "/mypage-main",
   "/profile/edit",
   "/itinerary",
   "/wishlist",
@@ -91,7 +92,8 @@ export default function App() {
           <Route path="/open-guide" element={<OpenGuide />} />
           {/* UI 작업 기간에는 마이페이지 관련 화면을 로그인 없이 바로 확인합니다. */}
           <Route path="/mypage-user" element={<MypageUser />} />
-          <Route path="/my" element={<MyPageMain />} />
+          <Route path="/my" element={<MypageUser />} />
+          <Route path="/mypage-main" element={<MyPageMain />} />
           <Route path="/profile/edit" element={<ProfileEdit />} />
           <Route path="/plans" element={<Plans />} />
           <Route path="/event" element={<Event />} />
