@@ -8,7 +8,7 @@ export default function MyPage() {
   const [form, setForm] = useState({ nickname: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const { login, signup } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,11 +18,12 @@ export default function MyPage() {
     setError("");
     try {
       if (mode === "signup") {
-        await signup(form.email, form.password, form.nickname);
+        await siggitnup(form.email, form.password, form.nickname);
       } else {
         await login(form.email, form.password);
       }
-      navigate(location.state?.from || "/my", { replace: true });
+      // 로그인 또는 회원가입이 끝나면 사용자 마이페이지로 이동합니다.
+      navigate(location.state?.from || "/mypage-user", { replace: true });
     } catch (authError) {
       setError(authError.message || "인증 중 문제가 발생했습니다.");
     } finally {

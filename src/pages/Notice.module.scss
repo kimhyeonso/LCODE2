@@ -1,107 +1,391 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 
-.notice {
-  min-height: 100vh;
-  background: $paper-light;
-  padding: 64px 0 110px;
+// 공지 페이지 전체 영역과 공통 글자 간격입니다.
+.notice,
+.notice * {
+  letter-spacing: -0.01em !important;
 }
 
+.notice {
+  position: relative;
+  min-height: calc(100vh - 10rem);
+  padding: 3.25rem 0 4rem;
+  background: $paper;
+  @include korean-font;
+}
+
+// 공지 목록과 여행 저널을 나란히 배치하는 본문 레이아웃입니다.
 .content {
-  width: min(calc(100% - 64px), 720px);
+  display: grid;
+  grid-template-columns: minmax(20rem, 25rem) minmax(18rem, 22.5rem);
+  gap: clamp(2.5rem, 4vw, 4.5rem);
+  align-items: start;
+  width: min(1320px, calc(100% - 16rem));
   margin: 0 auto;
+}
+
+// 좌측 공지 제목과 목록 영역입니다.
+.noticeList {
+  position: relative;
+  padding-top: 1.2rem;
+}
+
+.noticeList::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -3.25rem;
+  width: 1px;
+  background: #d8d3cb;
+  content: "";
 }
 
 .eyebrow {
   margin: 0;
-  color: #aaa49c;
-  font-size: 9px;
-  letter-spacing: 2.4px;
+  color: #595550;
+  font: 400 .58rem $korean;
+  letter-spacing: .26em !important;
 }
 
-.noticeList h1 {
-  margin: 22px 0 26px;
+.title {
+  margin: 1.2rem 0 1.25rem;
   color: $ink;
-  font: 52px/1 $serif;
-  letter-spacing: -1px;
+  font: 400 2rem/1 $display;
+  letter-spacing: -.07em !important;
 }
 
 .description {
   margin: 0;
-  color: $muted;
-  font-size: 11px;
+  color: #65615c;
+  font: 400 .66rem $korean;
 }
 
 .divider {
   height: 1px;
-  margin-top: 26px;
-  background: $line;
+  margin-top: .85rem;
+  background: #bcb6ae;
 }
 
-.items button {
+// 공지 한 건을 표시하는 행입니다. 첫 행은 상세 페이지로 연결됩니다.
+.items {
+  margin-top: 1.8rem;
+  border-top: 1px solid #ddd8d0;
+}
+
+.noticeRow,
+.noticeLink {
   display: flex;
-  width: 100%;
-  min-height: 58px;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  border: 0;
-  border-bottom: 1px solid #e9e6e1;
-  background: transparent;
-  padding: 0 12px;
-  color: $ink;
-  text-align: left;
-  cursor: pointer;
+  min-height: 3.25rem;
+  padding: 0 .7rem;
+  border-bottom: 1px solid #ddd8d0;
+  color: #292929;
+  font: 400 .72rem $korean;
+  text-decoration: none;
 }
 
-.items span {
+.noticeRow > span,
+.noticeLink > span {
   overflow: hidden;
-  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.items b {
-  flex: 0 0 auto;
-  font: 26px/1 Arial, sans-serif;
+.noticeRow b,
+.noticeLink b {
+  flex: none;
+  margin-left: 1rem;
+  color: #4d4a45;
+  font: 300 1.6rem/1 Arial, sans-serif;
 }
 
+.noticeLink {
+  cursor: pointer;
+  transition: background-color .2s ease, padding-left .2s ease;
+}
+
+.noticeLink:hover {
+  padding-left: 1.1rem;
+  background: rgba(255, 255, 255, .26);
+}
+
+// 목록 아래 고객센터 전화번호 안내 박스입니다.
 .contact {
-  margin: 20px 0 0;
-  color: #666;
-  font-size: 10px;
-  text-align: center;
+  display: flex;
+  gap: .85rem;
+  align-items: center;
+  margin: 1.15rem 0 0;
+  padding: .7rem 1rem;
+  border: 1px solid #d4cec5;
+  color: #6c6862;
+  font: 400 .58rem $korean;
 }
 
-.banners {
-  display: none;
+.contact span {
+  color: #595550;
+  font-size: 1.25rem;
 }
 
-@include mobile {
+// 우측의 여행 저널 이미지 카드 묶음입니다.
+.journal {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+  padding: .6rem;
+  border: 1px solid #d4cec5;
+}
+
+.journalCard {
+  margin: 0;
+}
+
+.journalCard img {
+  display: block;
+  width: 100%;
+  height: clamp(10.5rem, 16vw, 14.75rem);
+  object-fit: cover;
+}
+
+.cardCaption {
+  display: flex;
+  gap: .85rem;
+  align-items: center;
+  padding-top: .5rem;
+  color: #5e5a55;
+  font: 400 .48rem $korean;
+  letter-spacing: .16em !important;
+}
+
+.cardCaption i {
+  flex: 1;
+  height: 1px;
+  background: #d4cec5;
+}
+
+.cardCaption span:last-child {
+  white-space: nowrap;
+}
+
+// 카드 가장자리에 겹치는 우편 소인 장식입니다.
+.stamp {
+  position: absolute;
+  top: 31%;
+  right: -4.5rem;
+  width: 6.5rem;
+  aspect-ratio: 1;
+  background: url("/Mypage-img/u.png") center / contain no-repeat;
+  opacity: .3;
+  pointer-events: none;
+}
+
+// Alarm 화면과 통일감을 주는 좌측 이슈 레일입니다.
+.issueRail {
+  position: absolute;
+  top: 3.2rem;
+  left: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  width: 4rem;
+  color: #77736c;
+  font: 400 .5rem $korean;
+  letter-spacing: .14em !important;
+}
+
+.issueRail strong {
+  margin-top: .22rem;
+  font: inherit;
+}
+
+.issueRail i {
+  width: 1px;
+  height: 18rem;
+  margin: .9rem 0 1rem .35rem;
+  background: #bdb7ad;
+}
+
+.issueRail em {
+  font: 400 .45rem/1.5 $korean;
+  font-style: normal;
+  letter-spacing: .16em !important;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.issueRail b {
+  width: 4rem;
+  height: 4rem;
+  margin-top: auto;
+  background: url("/Mypage-img/u.png") center / contain no-repeat;
+  opacity: .28;
+}
+
+// 우측 상단의 이전 페이지 이동 버튼입니다.
+.back {
+  position: absolute;
+  top: 1.9rem;
+  right: 3.5rem;
+  color: #4d4a45;
+  font: 300 1.6rem/1 Arial, sans-serif;
+  text-decoration: none;
+}
+
+// ALARM과 같은 편집 지면 기준을 사용하는 데스크톱 레이아웃입니다.
+@media (min-width: 901px) {
   .notice {
-    min-height: calc(100dvh - 58px);
-    padding: 34px 0 90px;
+    min-height: 999px;
+    padding: 157px 0 76px;
   }
 
   .content {
-    width: calc(100% - 40px);
+    --notice-left: clamp(360px, 23.79vw, 493px);
+    grid-template-columns: minmax(520px, 650px) minmax(480px, 617px);
+    gap: clamp(70px, 5.02vw, 104px);
+    width: min(1371px, calc(100% - var(--notice-left) - 64px));
+    margin-right: 0;
+    margin-left: var(--notice-left);
   }
 
-  .noticeList h1 {
-    margin: 22px 0 28px;
-    font-size: 40px;
+  .noticeList {
+    padding-top: 7px;
+  }
+
+  .noticeList::before {
+    top: -8px;
+    bottom: 0;
+    left: -68px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+  }
+
+  .title {
+    margin: 30px 0 26px;
+    font-size: 82px;
+  }
+
+  .description {
+    font-size: 17px;
   }
 
   .divider {
     margin-top: 24px;
   }
 
-  .items button {
-    min-height: 52px;
-    padding: 0 12px;
+  .items {
+    margin-top: 18px;
   }
 
-  .items span {
+  .noticeRow,
+  .noticeLink {
+    min-height: 80px;
+    padding: 0 12px;
+    font-size: 17px;
+  }
+
+  .noticeRow b,
+  .noticeLink b {
+    font-size: 30px;
+  }
+
+  .contact {
+    min-height: 62px;
+    margin-top: 10px;
+    padding: 12px 34px;
+    font-size: 14px;
+  }
+
+  .contact span {
+    font-size: 26px;
+  }
+
+  .journal {
+    gap: 18px;
+    margin-top: 32px;
+    padding: 14px;
+  }
+
+  .journalCard img {
+    height: 300px;
+  }
+
+  .cardCaption {
+    min-height: 39px;
+    padding-top: 10px;
+    font-size: 11px;
+  }
+
+  .stamp {
+    top: 29%;
+    right: -75px;
+    width: 150px;
+  }
+
+  .issueRail {
+    top: 158px;
+    left: 281px;
+    width: 54px;
     font-size: 12px;
   }
+
+  .issueRail i {
+    height: 236px;
+    margin: 14px 0 24px 7px;
+  }
+
+  .issueRail em {
+    font-size: 11px;
+  }
+
+  .issueRail b {
+    width: 80px;
+    height: 80px;
+    margin-top: 170px;
+  }
+
+  .back {
+    top: 126px;
+    right: 58px;
+    font-size: 32px;
+  }
+}
+
+@include tablet {
+  .content { width: min(900px, calc(100% - 8rem)); }
+  .issueRail { left: 1.25rem; }
+  .stamp { right: -2.5rem; }
+}
+
+// 모바일에서는 한 열로 전환하고, 공간을 차지하는 장식은 숨깁니다.
+@include mobile {
+  .notice { padding: 1.2rem 0 2rem; }
+  .content { grid-template-columns: 1fr; gap: 2rem; width: min(calc(100% - 2.5rem), 31rem); }
+  .noticeList { padding-top: 0; }
+  .noticeList::before, .issueRail, .stamp { display: none; }
+
+  .back {
+    position: static;
+    display: block;
+    width: min(calc(100% - 2.5rem), 31rem);
+    margin: 0 auto 1.5rem;
+    font-size: 1.45rem;
+  }
+
+  .eyebrow { font-size: .52rem; }
+  .title { margin: .8rem 0; font-size: 3.1rem; }
+  .description { font-size: .78rem; }
+  .divider { margin-top: .8rem; }
+  .items { margin-top: .8rem; }
+
+  .noticeRow,
+  .noticeLink { min-height: 3.5rem; padding-inline: .45rem; font-size: .72rem; }
+  .noticeRow b, .noticeLink b { font-size: 1.4rem; }
+  .contact { margin-top: 1rem; padding: .75rem 1rem; font-size: .62rem; }
+  .contact span { font-size: 1.2rem; }
+  .journal { gap: 1rem; padding: .5rem; }
+  .journalCard img { height: 11rem; }
+  .cardCaption { gap: .5rem; padding-top: .45rem; font-size: .43rem; }
 }
