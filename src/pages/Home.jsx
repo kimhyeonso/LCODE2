@@ -1,203 +1,135 @@
 import { Link } from "react-router-dom";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import products from "../data/products.json";
+import ProductCard from "../components/ProductCard";
 import styles from "./Home.module.scss";
-import travelKitImage from "../assets/images/travel_kit.webp";
-import travelPouchImage from "../assets/images/travel_pouch.webp";
-import travelAdapterImage from "../assets/images/travel_adapter.webp";
-
-const SectionLabel = ({ number, children }) => (
-  <div className={styles.sectionLabel}>
-    <span>{number}</span>
-    <span>/</span>
-    <span>{children}</span>
+const SectionHead = ({ no, kicker, title }) => (
+  <div className={styles.sectionHead}>
+    <span>
+      {no} / {kicker}
+    </span>
+    <h2>{title}</h2>
   </div>
 );
-
-const TextLink = ({ to, children }) => (
-  <Link className={styles.textLink} to={to}>
-    {children} <span>→</span>
-  </Link>
-);
-
 export default function Home() {
-  const page = useRef(null);
-
+  const hero = useRef(null);
   useEffect(() => {
-    const context = gsap.context(() => {
-      gsap.from(`.${styles.heroVisual}`, {
-        opacity: 0,
-        duration: 0.9,
-        ease: "power2.out",
-      });
-    }, page);
-    return () => context.revert();
+    const tween = gsap.from(hero.current.children, {
+      y: 35,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.9,
+      ease: "power3.out",
+    });
+    return () => tween.kill();
   }, []);
-
   return (
-    <main ref={page} className={styles.home}>
-      <section className={styles.hero} aria-label="L:CODE 대표 여행 이미지">
-        <div className={styles.heroVisual}>
-          <span>TRAVEL, REMIXED</span>
-        </div>
-      </section>
-
-      <section className={styles.section}>
-        <SectionLabel number="01">UPCOMING</SectionLabel>
-        <h1>UPCOMING TRIP</h1>
-        <div className={styles.rowTitle}>
-          <p>다가오는 여행</p>
-          <TextLink to="/plans">VIEW ALL</TextLink>
-        </div>
-        <Link to="/plans" className={styles.upcomingCard}>
-          <div className={styles.upcomingMain}>
-            <div>
-              <strong>D−14</strong>
-              <h2>FUKUOKA</h2>
-              <p>후쿠오카 3박 4일</p>
-            </div>
-            <div className={styles.upcomingImage} />
-          </div>
-          <dl className={styles.tripMeta}>
-            <div>
-              <dt>DATE</dt>
-              <dd>
-                AUG 17 —<br />
-                AUG 21
-              </dd>
-            </div>
-            <div>
-              <dt>DAYS</dt>
-              <dd>04 DAYS</dd>
-            </div>
-            <div>
-              <dt>SPOTS</dt>
-              <dd>07 SPOTS</dd>
-            </div>
-          </dl>
-        </Link>
-      </section>
-
-      <section className={styles.section}>
-        <SectionLabel number="02">EDITOR&apos;S PICK</SectionLabel>
-        <div className={styles.rowTitle}>
-          <p>추천하는 패키지</p>
-          <TextLink to="/plan">VIEW ALL</TextLink>
-        </div>
-        <div className={styles.pickGrid}>
-          <Link to="/plan?city=SHANGHAI" className={styles.featurePick}>
-            <div className={`${styles.placeholder} ${styles.shanghaiImage}`} />
-            <h3>
-              상하이에서 만나는
-              <br />
-              오래된 것과 새로운 것
-            </h3>
-          </Link>
-          <Link to="/plan?city=TOKYO" className={styles.smallPick}>
-            <div className={`${styles.placeholder} ${styles.tokyoImage}`} />
-            <h3>TOKYO</h3>
-            <p>조용한 골목과 작은 카페를 찾아서</p>
-          </Link>
-          <Link to="/plan?city=SEOUL" className={styles.smallPick}>
-            <div className={`${styles.placeholder} ${styles.seoulImage}`} />
-            <h3>SEOUL</h3>
-            <p>도시 속 오래된 풍경을 천천히</p>
+    <>
+      <section className={styles.hero}>
+        <div ref={hero} className={styles.heroCopy}>
+          <span className={styles.issue}>VOL. 01 — JOURNEY IN MOTION</span>
+          <h1>
+            계획이 틀어져도,
+            <br />
+            <i>여행은 계속된다.</i>
+          </h1>
+          <p>
+            미리 큐레이션된 여행에 당신의 취향을 더하고,
+            <br />
+            예상 밖의 순간에는 AI로 다시 이어가세요.
+          </p>
+          <Link to="/travel-planner">
+            나의 여행 시작하기 <b>↗</b>
           </Link>
         </div>
-      </section>
-
-      <section className={`${styles.section} ${styles.destinationSection}`}>
-        <SectionLabel number="03">DESTINATIONS</SectionLabel>
-        <h2 className={styles.scriptTitle}>Where to Next?</h2>
-        <div className={styles.destinationHero} />
-        <div className={styles.destinationList}>
-          {[
-            ["KOREA", "서울, 부산, 제주", styles.koreaImage],
-            ["JAPAN", "교토, 도쿄", styles.japanImage],
-            ["CHINA", "상하이", styles.chinaImage],
-          ].map(([country, cities, imageClass]) => (
-            <Link to={`/plan?country=${country}`} key={country}>
-              <div>
-                <span>EAST ASIA</span>
-                <h3>{country}</h3>
-                <p>{cities}</p>
-              </div>
-              <div className={`${styles.countryImage} ${imageClass}`} />
-            </Link>
-          ))}
+        <div className={styles.heroArt}>
+          <div className={styles.sun} />
+          <div className={styles.arch}>旅</div>
+          <span>KYOTO · 35.0116° N</span>
         </div>
       </section>
-
-      <section className={styles.section}>
-        <SectionLabel number="04">EVENT</SectionLabel>
-        <div className={styles.rowTitle}>
+      <section className={styles.upcoming}>
+        <SectionHead no="01" kicker="UPCOMING" title="다가오는 여행" />
+        <div className={styles.trip}>
           <div>
-            <h2>EVENT</h2>
-            <p>짐싸고 쿠폰 받자!</p>
-          </div>
-          <TextLink to="/event">자세히 보기</TextLink>
-        </div>
-        <Link to="/event" className={styles.eventVisual}>
-          <span>PACK &amp; GO</span>
-        </Link>
-      </section>
-
-      <section className={styles.section}>
-        <SectionLabel number="05">ESSENTIALS</SectionLabel>
-        <div className={styles.rowTitle}>
-          <p>여행 필수템</p>
-          <TextLink to="/shop">TRAVEL SHOPPING</TextLink>
-        </div>
-        <div className={styles.essentialGrid}>
-          {[
-            ["TRAVEL KIT", "여행용 키트", travelKitImage],
-            ["POUCH", "파우치", travelPouchImage],
-            ["ADAPTER", "어댑터", travelAdapterImage],
-          ].map(([name, sub, image]) => (
-            <Link to="/shop" key={name}>
-              <div>
-                <img src={image} alt={sub} loading="lazy" />
-              </div>
-              <h3>{name}</h3>
-              <p>{sub}</p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className={`${styles.section} ${styles.journal}`}>
-        <SectionLabel number="06">JOURNAL</SectionLabel>
-        <div className={styles.rowTitle}>
-          <div>
-            <h2>JOURNAL</h2>
-            <p>여행자의 기록</p>
-          </div>
-          <TextLink to="/contact">ALL</TextLink>
-        </div>
-        <article>
-          <div className={styles.journalVisual}>
-            <span>JOURNAL 04</span>
-          </div>
-          <div className={styles.journalMeta}>
-            <span>TOKYO</span>
-            <i />
-            <span>MAY 12, 2026</span>
-            <i />
-            <span>by HAEUN</span>
+            <b>D−12</b>
+            <span>다음 장면까지</span>
           </div>
           <h3>
-            도쿄의 조용한 아침,
+            KYOTO
             <br />
-            골목이 들려준 이야기
+            <i>A Quiet Spring</i>
           </h3>
           <p>
-            이른 아침 도쿄의 골목을 걷다 보면 도시가 아직 잠에서 깨어나기 전의
-            고요한 순간을 마주한다. 작은 카페에서 피어오르는 커피 향, 빗물에
-            젖은 돌바닥…
+            APR 08 — 11
+            <br />3 NIGHTS · 7 PLACES
           </p>
-          <footer>P. 04 — TOKYO JOURNAL</footer>
-        </article>
+          <Link to="/plans">일정 열기 →</Link>
+        </div>
       </section>
-    </main>
+      <section className={styles.products}>
+        <SectionHead
+          no="02"
+          kicker="EDITOR'S PICK"
+          title="이번 계절, 우리가 고른 여행"
+        />
+        <div className={styles.grid}>
+          {products.slice(0, 3).map((p, i) => (
+            <ProductCard key={p.id} product={p} index={i} />
+          ))}
+        </div>
+        <Link className={styles.more} to="/products">
+          모든 여행 보기 (06) →
+        </Link>
+      </section>
+      <section className={styles.destinations}>
+        <SectionHead no="03" kicker="DESTINATIONS" title="Where to next?" />
+        <div>
+          {["KOREA", "JAPAN", "CHINA"].map((x, i) => (
+            <Link to={`/products?country=${x}`} key={x}>
+              <span>0{i + 1}</span>
+              {x}
+              <b>↗</b>
+            </Link>
+          ))}
+        </div>
+      </section>
+      <section className={styles.remix}>
+        <span>WHEN PLANS CHANGE</span>
+        <h2>
+          계획은 고정된 답이 아니라
+          <br />
+          <i>계속 고쳐 쓰는 여행의 초안.</i>
+        </h2>
+        <p>
+          날씨가 바뀌고, 문이 닫히고, 조금 지쳤을 때.
+          <br />
+          L:CODE가 지금의 당신에게 맞게 일정을 다시 엮습니다.
+        </p>
+        <Link to="/travel-planner">TRY AI REMIX →</Link>
+      </section>
+      <section className={styles.journal}>
+        <SectionHead no="06" kicker="JOURNAL" title="여행자의 기록" />
+        <div className={styles.journalGrid}>
+          {[
+            "골목은 목적지보다 오래 남는다",
+            "좋은 여행을 만드는 비워 둔 두 시간",
+            "비 오는 교토를 걷는 법",
+          ].map((x, i) => (
+            <article key={x}>
+              <div>
+                JOURNAL
+                <br />
+                NO. {i + 1}
+              </div>
+              <small>FIELD NOTE · 5 MIN READ</small>
+              <h3>{x}</h3>
+              <p>계획 밖의 장면을 발견하는 여행자의 작은 기록.</p>
+            </article>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

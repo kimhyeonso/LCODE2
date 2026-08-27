@@ -1,11 +1,10 @@
 // 프로젝트 공통 색상과 반응형 도구를 가져옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 
 // 이 페이지에서 사용할 글꼴입니다.
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
-$korean: "Noto Sans KR", sans-serif;
-$english: "DM Serif Display", serif;
+$english: $display;
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .myPageMain, .myPageMain * { letter-spacing: -0.01em !important; }
@@ -14,7 +13,8 @@ $english: "DM Serif Display", serif;
 .myPageMain {
   min-height: calc(100vh - 10rem);
   padding: 2.25rem 0 4rem;
-  background: white;
+  background: $paper;
+  @include korean-font;
   // border: 1px solid red;
 }
 
@@ -31,14 +31,15 @@ $english: "DM Serif Display", serif;
 // 작업 중인 페이지를 확인하는 임시 메뉴입니다.
 .pageSwitcher {
   position: fixed;
-  top: 2rem;
+  top: -1rem;
   right: 1.5rem;
   z-index: 10;
   display: flex;
   flex-direction: column;
   width: 6.55rem;
   border: 2px solid #111;
-  background: #fff;
+  background: #f8f8f8;
+  transform: scale(0.5);
 }
 
 // 임시 메뉴의 각각의 링크입니다.
@@ -80,7 +81,7 @@ $english: "DM Serif Display", serif;
   margin-top: 0.55rem;
   overflow: hidden;
   padding: 1.1rem 0.85rem 0;
-  color: #fff;
+  color: #f8f8f8;
 
   background:
     linear-gradient(
@@ -132,7 +133,7 @@ $english: "DM Serif Display", serif;
   padding: 0;
   border: 0;
   background: transparent;
-  color: #fff;
+  color: #f8f8f8;
   font: 600 0.58rem $korean;
 }
 
@@ -193,4 +194,67 @@ $english: "DM Serif Display", serif;
   .layout { grid-template-columns: 1fr; gap: 3rem; width: min(calc(100% - 2.5rem), 31rem); }
   .featuredTrip { min-height: 15rem; }
   .pageSwitcher { position: static; width: min(calc(100% - 2.5rem), 31rem); margin: 2rem auto 0; }
+}
+
+// 768px 이하 모바일에서는 두 영역을 위아래로 배치합니다.
+@media (max-width: 768px) {
+  .myPageMain {
+    min-height: auto;
+    padding: 1.5rem 0 2rem;
+  }
+
+  // 예정 여행과 완료 여행을 세로로 쌓습니다.
+  .layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2.25rem;
+    width: calc(100% - 2rem);
+    max-width: 31rem;
+  }
+
+  // 모바일에서는 제목과 카드가 화면 너비에 맞게 늘어납니다.
+  .upcoming,
+  .completed {
+    width: 100%;
+  }
+
+  // 데스크톱에서 오른쪽 목록을 내리던 여백은 모바일 세로 배치에서는 제거합니다.
+  .completed { padding-top: 0; }
+
+  .upcoming h1 {
+    margin-top: 0.9rem;
+    font-size: 2rem;
+  }
+
+  .featuredTrip {
+    min-height: 13.5rem;
+    margin-top: 1rem;
+  }
+
+  .featuredTrip h2 {
+    font-size: 2.2rem;
+    line-height: 1;
+  }
+
+  // 완료 여행은 이미지와 정보를 나란히 둡니다.
+  .completedTrip {
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    min-height: 7rem;
+  }
+
+  .thumbnail {
+    width: 5.5rem;
+    height: 5.5rem;
+  }
+
+  .tripText h2 {
+    margin: 0.35rem 0 0.3rem;
+    font-size: 1.35rem;
+  }
+
+  // 모바일에서는 오른쪽 미리보기 메뉴가 콘텐츠를 가리지 않게 숨깁니다.
+  .pageSwitcher {
+    display: none;
+  }
 }

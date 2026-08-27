@@ -16,9 +16,13 @@ export default function OpenGuide() {
           <h1>[안내] L:CODE 오픈 기념<br />'저렴이 세트' 첫 예약 가이드</h1>
           <p>2026.08.11 | 안내</p>
           <div className={styles.divider} />
-          <div className={styles.imageLarge} aria-label="가이드 이미지 영역" />
-          <div className={styles.imageSmall} aria-label="가이드 이미지 영역" />
         </article>
+
+        <section className={styles.images} aria-label="가이드 이미지">
+          <div className={styles.imageLarge} aria-hidden="true" />
+          <div className={styles.imageSmall} aria-hidden="true" />
+        </section>
+
         <article className={styles.guideContent}>
           <p className={styles.introduction}>안녕하세요. L:CODE입니다.</p>
           <p className={styles.introduction}>처음 여행을 준비하는 사용자를 위해<br />쇼핑 상품 예약 전 확인해야 할 내용을<br />아래와 같이 안내드립니다.</p>

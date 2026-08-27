@@ -1049,9 +1049,9 @@ Firebase가 설정되지 않아도 공개 페이지와 AI Mock 추천은 실행�
 
 ## 24. Typography
 
-- 영문 Hero, 섹션 제목, 상품명: **DM Serif Display**
-- 한글 및 본문, 메뉴, 버튼, 폼: **Noto Sans KR**
-- 두 폰트는 `index.html`에서 Google Fonts 웹폰트로 불러옵니다.
-- 웹폰트를 불러오지 못하면 시스템 산세리프 폰트로 대체됩니다.
+- Hero, 섹션 제목, 상품명: **Maru Buri**
+- 본문, 메뉴, 버튼, 폼: **Pretendard**
+- 두 폰트는 `index.html`에서 jsDelivr 웹폰트로 불러옵니다.
+- 웹폰트를 불러오지 못하면 `Noto Serif KR`, 시스템 산세리프 순으로 대체됩니다.
 - 한글 가독성과 일관성을 위해 italic 스타일은 사용하지 않습니다.
 - 실제 폰트 스택은 `src/styles/_variables.scss`에서 관리합니다.
