@@ -1,0 +1,12 @@
+// 마이페이지 전용 전역 글꼴 기준입니다.
+// 각 마이페이지 모듈은 이 파일을 최우선으로 불러옵니다.
+$display: "DM Serif Display", serif;
+$korean: "Noto Sans KR", sans-serif;
+
+@mixin korean-font {
+  font-family: $korean !important;
+}
+
+@mixin display-font {
+  font-family: $display !important;
+}

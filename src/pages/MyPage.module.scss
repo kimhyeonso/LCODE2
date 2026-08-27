@@ -1,19 +1,19 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
 
-$korean: "Noto Sans KR", sans-serif;
-$english: "DM Serif Display", serif;
+$english: $display;
 
 // 로그인 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .myPage, .myPage * { letter-spacing: -0.01em !important; }
 
 .myPage {
+  @include korean-font;
   min-height: calc(100vh - 10rem);
   background: $paper-light;
   padding: 2.25rem 0 4rem;
-  background: white;
+  background: $paper;
 }
 
 .layout {
