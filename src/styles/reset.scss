@@ -11,8 +11,12 @@ body {
   color: $ink;
   font-family: $sans;
   font-weight: 400;
+  font-kerning: normal;
+  font-feature-settings: "kern" 1;
+  letter-spacing: 0.012em;
   word-break: keep-all;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 body,
 button,
@@ -20,6 +24,18 @@ input,
 select,
 textarea {
   font: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  letter-spacing: 0.018em;
+}
+
+small,
+time {
+  letter-spacing: 0.025em;
 }
 button,
 a {

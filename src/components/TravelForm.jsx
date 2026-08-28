@@ -128,20 +128,15 @@ export default function TravelForm({ onSubmit, loading }) {
   const [placeQuery, setPlaceQuery] = useState("");
   const [placeCategory, setPlaceCategory] = useState("all");
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [isWishlistOpen, setIsWishlistOpen] = useState(false);
+  const [wishlistCategory, setWishlistCategory] = useState("all");
+  const [wishlistSelections, setWishlistSelections] = useState([]);
   const stops = stopsByDay[activeDay] || [];
   const suggestedTitles = [
     `맛집 따라 ${selectedTrip.city}`,
     `카페와 골목을 걷는 ${selectedTrip.city} 여행`,
     `SLOW ${selectedTrip.city.toUpperCase()}`,
   ];
-
-  const addStop = () => {
-    setStopsByDay((current) => current.map((dayStops, index) =>
-      index === activeDay
-        ? [...dayStops, { id: Date.now(), time: "시간 미정", icon: pinIcon, name: "새로운 장소", type: "장소", note: "", travel: "" }]
-        : dayStops,
-    ));
-  };
 
   const removeStop = (id) => setStopsByDay((current) => current.map((dayStops, index) =>
     index === activeDay ? dayStops.filter((stop) => stop.id !== id) : dayStops,
@@ -259,6 +254,42 @@ export default function TravelForm({ onSubmit, loading }) {
     setSelectedCandidate(null);
     setPlaceQuery("");
   };
+
+  const wishlistPlaces = selectedTrip.days
+    .flatMap((day) => day.items)
+    .filter((item) => item.type === "place")
+    .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
+    .filter((item) => wishlistCategory === "all" || item.category === wishlistCategory)
+    .slice(0, 12);
+
+  const toggleWishlistSelection = (place) => {
+    setWishlistSelections((current) => current.includes(place.place)
+      ? current.filter((name) => name !== place.place)
+      : [...current, place.place]);
+  };
+
+  const addWishlistPlaces = () => {
+    const selectedItems = wishlistPlaces.filter((place) => wishlistSelections.includes(place.place));
+    if (!selectedItems.length) return;
+    setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
+      ? [...dayStops, ...selectedItems.map((place, placeIndex) => ({
+        id: `wishlist-${Date.now()}-${placeIndex}`,
+        time: "시간 미정",
+        icon: categoryIcons[place.category] || pinIcon,
+        name: place.place,
+        type: categoryNames[place.category] || place.category,
+        note: place.recommendation || "",
+        travel: "",
+        image: getImageUrl(place.image),
+        category: place.category,
+        recommendation: place.recommendation || "",
+        latitude: place.latitude,
+        longitude: place.longitude,
+      }))]
+      : dayStops));
+    setWishlistSelections([]);
+    setIsWishlistOpen(false);
+  };
   return (
     <form className={styles.form} onSubmit={submit}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(to bottom, #c7c7c766 0%, #444 100%), url(${heroImage})` } : undefined}>
@@ -356,7 +387,7 @@ export default function TravelForm({ onSubmit, loading }) {
 
         <div className={styles.addActions}>
           <button type="button" onClick={() => setIsPlaceAddOpen(true)}>장소 추가</button>
-          <button type="button" onClick={addStop}>찜한 장소 추가</button>
+          <button type="button" onClick={() => setIsWishlistOpen(true)}>찜한 장소 추가</button>
         </div>
         <button className={styles.draft} type="button">임시저장</button>
         <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : "일정 확정하기 →"}</button>
@@ -396,6 +427,47 @@ export default function TravelForm({ onSubmit, loading }) {
               </div>
             </section>
             <footer className={styles.placeAddFooter}><span>선택한 장소 {selectedCandidate ? 1 : 0}개</span><button type="button" disabled={!selectedCandidate} onClick={addSelectedPlace}>선택한 장소 추가</button></footer>
+          </div>
+        </div>
+      )}
+      {isWishlistOpen && (
+        <div className={styles.wishlistAdder} role="dialog" aria-modal="true" aria-labelledby="wishlist-adder-title">
+          <div className={styles.wishlistAdderInner}>
+            <header>
+              <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}>←</button>
+              <div><h2 id="wishlist-adder-title">찜한 장소 불러오기</h2><p>지도에 저장해둔 장소를 일정에 담아보세요</p></div>
+            </header>
+            <section className={styles.wishlistMapArea}>
+              <PlaceMap
+                places={wishlistPlaces}
+                fallbackPlaces={selectedTrip.days.flatMap((day) => day.items)}
+                selectedPlace={wishlistPlaces.find((place) => wishlistSelections.includes(place.place)) || null}
+                onSelect={toggleWishlistSelection}
+              />
+              <span className={styles.savedCount}>♡ 저장된 장소 {wishlistPlaces.length}곳</span>
+            </section>
+            <div className={styles.wishlistFilters}>
+              {[["all", "전체"], ["attraction", "관광지"], ["restaurant", "맛집"], ["hotel", "숙소"], ["station", "교통"]].map(([value, label]) => (
+                <button className={wishlistCategory === value ? styles.wishlistFilterActive : ""} type="button" key={value} onClick={() => setWishlistCategory(value)}>{label}</button>
+              ))}
+            </div>
+            <section className={styles.wishlistResults}>
+              <h3>검색 결과</h3>
+              <div>
+                {wishlistPlaces.map((place, index) => {
+                  const selected = wishlistSelections.includes(place.place);
+                  return (
+                    <article key={place.place}>
+                      <span className={styles.resultNumber}>{index + 1}</span>
+                      <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" />}</span>
+                      <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
+                      <button className={selected ? styles.wishlistSelected : ""} type="button" onClick={() => toggleWishlistSelection(place)}>{selected ? "✓ 담김" : "+ 찜"}</button>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+            <footer className={styles.wishlistFooter}><span>찜한 장소 {wishlistSelections.length}개</span><button type="button" disabled={!wishlistSelections.length} onClick={addWishlistPlaces}>선택한 장소 추가</button></footer>
           </div>
         </div>
       )}
