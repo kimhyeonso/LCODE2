@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
@@ -11,21 +12,30 @@ const menuItems = [
 ];
 
 export default function MypageUser() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const displayName = user.displayName || user.email?.split("@")[0] || "여행자";
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/", { replace: true });
+  };
+
   return (
     <main className={styles.mypageUser}>
       <div className={styles.content}>
         <section className={styles.profile} aria-labelledby="user-name">
           <p className={styles.eyebrow}>MY L:CODE</p>
           <p className={styles.greeting}>안녕하세요,</p>
-          <h1 id="user-name">닉네임 님.</h1>
-          <p className={styles.email}>nickname@email.com</p>
+          <h1 id="user-name">{displayName} 님.</h1>
+          <p className={styles.email}>{user.email}</p>
           <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
 
           <nav className={styles.menuList} aria-label="마이페이지 메뉴">
             {menuItems.map(([label, to]) => (
               <Link key={label} to={to}>{label}<span aria-hidden="true">→</span></Link>
             ))}
-            <button type="button">로그아웃</button>
+            <button type="button" onClick={handleLogout}>로그아웃</button>
           </nav>
         </section>
 

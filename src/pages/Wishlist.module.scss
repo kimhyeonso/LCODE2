@@ -14,7 +14,7 @@
 .wishlist {
   min-height: calc(100vh - 10rem); // Keep short pages visually full-height.
   padding: 3.75rem 0 4rem; // Create breathing room above and below content.
-  background-color: white;
+  background-color: $paper;
   @include korean-font;
 }
 
@@ -111,14 +111,15 @@ h1 {
   place-items: center;
   border: 0;
   border-radius: 50%;
-  background: #fff;
+  background: #f8f8f8;
   cursor: pointer;
 }
 
 // 기본 상태는 검은색 빈 하트입니다.
 .heartButton span {
   position: static;
-  color: #111;
+  // Wishlist cards are saved by default, so every heart is red from the first render.
+  color: #e53935;
   font-size: 0.8rem;
   line-height: 1;
 }
@@ -173,6 +174,16 @@ h1 {
     color: #8c8984; // Use muted action text.
     font: 400 0.55rem $korean; // Keep the static action compact.
     white-space: nowrap; // Prevent the action label from wrapping.
+  }
+}
+
+// MY STORIES와 동일한 데스크톱 본문 여백을 사용합니다.
+@media (min-width: 901px) {
+  .content {
+    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
+    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
+    margin-right: 0;
+    margin-left: calc(220px + var(--desktop-left-gap));
   }
 }
 

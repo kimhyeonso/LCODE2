@@ -8,7 +8,7 @@
 .openGuide, .openGuide * { letter-spacing: -0.01em !important; }
 
 // 가이드 본문 페이지 전체 영역입니다.
-.openGuide { min-height: calc(100vh - 10rem); padding: 2.5rem 0 5rem; background: white; @include korean-font; }
+.openGuide { min-height: calc(100vh - 10rem); padding: 2.5rem 0 5rem; background: $paper; @include korean-font; }
 // 사진 영역과 본문 영역의 2단 레이아웃입니다.
 .content { display: grid; grid-template-columns: 21.3rem 20.5rem; gap: 4rem; width: min(calc(100% - 12.5rem), 45.8rem); margin: 0 auto; }
 .articleHeader { grid-column: 1; grid-row: 1; }

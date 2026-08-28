@@ -6,7 +6,6 @@ import styles from "./Header.module.scss";
 import logoBlack from "../assets/images/logo-black.png";
 import menuIcon from "../assets/icons/ham_menu.svg";
 import closeIcon from "../assets/icons/close.svg";
-import searchIcon from "../assets/icons/search.svg";
 
 const links = [
   ["/", "HOME"],
@@ -39,19 +38,14 @@ export default function Header() {
       <NavLink to="/" className={styles.logo}>
         <img src={logoBlack} alt="L:CODE" />
       </NavLink>
-      <div className={styles.headerActions}>
-        <NavLink className={styles.searchButton} to="/search" aria-label="여행 검색" onClick={() => setOpen(false)}>
-          <img src={searchIcon} alt="" aria-hidden="true" />
-        </NavLink>
-        <button
-          className={styles.menu}
-          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
-          aria-expanded={open}
-          onClick={() => setOpen(!open)}
-        >
-          <img src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
-        </button>
-      </div>
+      <button
+        className={styles.menu}
+        aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+        aria-expanded={open}
+        onClick={() => setOpen(!open)}
+      >
+        <img src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
+      </button>
       <nav
         className={styles.navigation}
         aria-label="주요 메뉴"

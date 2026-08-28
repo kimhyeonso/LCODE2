@@ -8,13 +8,12 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import Plan from "./pages/Plan";
-import Search from "./pages/Search";
 import TravelPlanner from "./pages/TravelPlanner";
 import Plans from "./pages/Plans";
 import Event from "./pages/Event";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import MyPageMain from "./pages/MyPageMain";
+import MypageUser from "./pages/MypageUser";
 import ProfileEdit from "./pages/ProfileEdit";
 import Itinerary from "./pages/Itinerary";
 import Wishlist from "./pages/Wishlist";
@@ -40,6 +39,7 @@ function ScrollTop() {
 const enlargedPagePaths = new Set([
   "/login",
   "/my",
+  "/mypage-user",
   "/profile/edit",
   "/itinerary",
   "/wishlist",
@@ -71,7 +71,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
-          <Route path="/search" element={<Search />} />
+          <Route path="/search" element={<Plan />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />
@@ -99,7 +99,15 @@ export default function App() {
             path="/my"
             element={
               <ProtectedRoute>
-                <MyPageMain />
+                <MypageUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mypage-user"
+            element={
+              <ProtectedRoute>
+                <MypageUser />
               </ProtectedRoute>
             }
           />

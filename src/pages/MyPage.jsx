@@ -8,7 +8,7 @@ export default function MyPage() {
   const [form, setForm] = useState({ nickname: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const { login, signup } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -18,7 +18,7 @@ export default function MyPage() {
     setError("");
     try {
       if (mode === "signup") {
-        await signup(form.email, form.password, form.nickname);
+        await siggitnup(form.email, form.password, form.nickname);
       } else {
         await login(form.email, form.password);
       }
