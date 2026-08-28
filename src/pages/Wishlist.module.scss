@@ -177,6 +177,16 @@ h1 {
   }
 }
 
+// MY STORIES와 동일한 데스크톱 본문 여백을 사용합니다.
+@media (min-width: 901px) {
+  .content {
+    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
+    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
+    margin-right: 0;
+    margin-left: calc(220px + var(--desktop-left-gap));
+  }
+}
+
 // 태블릿과 좁은 데스크톱 화면의 여백입니다.
 @include tablet {
   .content {

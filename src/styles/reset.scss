@@ -1,20 +1,4 @@
 @use "./variables" as *;
-// 외부 Google Fonts 연결 없이 항상 같은 글꼴을 사용하도록 프로젝트 안의 폰트를 불러옵니다.
-@font-face {
-  font-family: "DM Serif Display";
-  src: url("/fonts/DMSerifDisplay-Regular.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Noto Sans KR";
-  src: url("/fonts/NotoSansKR-VF.ttf") format("truetype");
-  font-weight: 100 900;
-  font-style: normal;
-  font-display: swap;
-}
 * {
   box-sizing: border-box;
 }

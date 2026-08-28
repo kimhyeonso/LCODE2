@@ -138,9 +138,12 @@ h1 {
 // Desktop layout follows the supplied MY STORIES spread. Typography rules above are intentionally unchanged.
 @media (min-width: 901px) {
   .content {
+    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
     grid-template-columns: minmax(0, 2.33fr) minmax(0, 1fr);
     gap: 4rem;
-    width: min(1320px, calc(100% - 64px));
+    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
+    margin-right: 0;
+    margin-left: calc(220px + var(--desktop-left-gap));
   }
 
   .stories {

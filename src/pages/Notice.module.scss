@@ -232,6 +232,127 @@
   text-decoration: none;
 }
 
+// ALARM과 같은 편집 지면 기준을 사용하는 데스크톱 레이아웃입니다.
+@media (min-width: 901px) {
+  .notice {
+    min-height: 999px;
+    padding: 157px 0 76px;
+  }
+
+  .content {
+    --notice-left: clamp(360px, 23.79vw, 493px);
+    grid-template-columns: minmax(520px, 650px) minmax(480px, 617px);
+    gap: clamp(70px, 5.02vw, 104px);
+    width: min(1371px, calc(100% - var(--notice-left) - 64px));
+    margin-right: 0;
+    margin-left: var(--notice-left);
+  }
+
+  .noticeList {
+    padding-top: 7px;
+  }
+
+  .noticeList::before {
+    top: -8px;
+    bottom: 0;
+    left: -68px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+  }
+
+  .title {
+    margin: 30px 0 26px;
+    font-size: 82px;
+  }
+
+  .description {
+    font-size: 17px;
+  }
+
+  .divider {
+    margin-top: 24px;
+  }
+
+  .items {
+    margin-top: 18px;
+  }
+
+  .noticeRow,
+  .noticeLink {
+    min-height: 80px;
+    padding: 0 12px;
+    font-size: 17px;
+  }
+
+  .noticeRow b,
+  .noticeLink b {
+    font-size: 30px;
+  }
+
+  .contact {
+    min-height: 62px;
+    margin-top: 10px;
+    padding: 12px 34px;
+    font-size: 14px;
+  }
+
+  .contact span {
+    font-size: 26px;
+  }
+
+  .journal {
+    gap: 18px;
+    margin-top: 32px;
+    padding: 14px;
+  }
+
+  .journalCard img {
+    height: 300px;
+  }
+
+  .cardCaption {
+    min-height: 39px;
+    padding-top: 10px;
+    font-size: 11px;
+  }
+
+  .stamp {
+    top: 29%;
+    right: -75px;
+    width: 150px;
+  }
+
+  .issueRail {
+    top: 158px;
+    left: 281px;
+    width: 54px;
+    font-size: 12px;
+  }
+
+  .issueRail i {
+    height: 236px;
+    margin: 14px 0 24px 7px;
+  }
+
+  .issueRail em {
+    font-size: 11px;
+  }
+
+  .issueRail b {
+    width: 80px;
+    height: 80px;
+    margin-top: 170px;
+  }
+
+  .back {
+    top: 126px;
+    right: 58px;
+    font-size: 32px;
+  }
+}
+
 @include tablet {
   .content { width: min(900px, calc(100% - 8rem)); }
   .issueRail { left: 1.25rem; }

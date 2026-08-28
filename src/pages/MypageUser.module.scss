@@ -4,17 +4,18 @@
 
 .mypageUser, .mypageUser * { box-sizing: border-box; letter-spacing: -0.01em; }
 .mypageUser {
-  // Keep the 2×2 summary tiles inside the viewport below the fixed-height header.
-  height: calc(100vh - 94px);
+  width: calc(100% - 220px);
+  height: 100vh;
   min-height: 0;
+  margin-left: 220px;
   padding: 0;
   background-color: $paper;
   @include korean-font;
 }
 .content {
   display: grid;
-  // The summary's width equals its available height, so all four tiles remain perfect squares.
-  grid-template-columns: minmax(0, calc(100vh - 94px)) minmax(0, 1fr);
+  // The summary is a viewport-height square made from four equal tiles.
+  grid-template-columns: minmax(0, 100vh) minmax(0, 1fr);
   gap: 0;
   height: 100%;
   align-items: stretch;
@@ -60,7 +61,7 @@
 .greeting { margin: 1rem 0 .25rem; color: #99948d; font: 400 .58rem $korean; }
 .profile h1 { margin: 0; color: #111; font: 700 1.5rem/1 $korean; }
 .email { margin-top: 1rem; letter-spacing: .04em; }
-.edit { display: inline-block; margin-top: .6rem; border: 1px solid #a7a49f; padding: .32rem .95rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
+.edit { display: inline-block; margin-top: .6rem; border: 1px solid #383837; padding: .32rem .95rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
 
 // Limit the menu and its dividers to two-thirds of the profile area.
 .menuList { display: grid; width: 66.6667%; gap: 0; margin-top: 1.75rem; border-top: 1px solid #dedad3; }
@@ -117,6 +118,13 @@
 
 .saved strong { margin-top: .25rem; color: #1d2638; font-size: 2rem; }
 .stories strong { margin-top: .25rem; color: #66615a; font-size: .78rem; line-height: 1.1; font-size: 1.5rem;}
+
+@include tablet {
+  .mypageUser {
+    width: 100%;
+    margin-left: 0;
+  }
+}
 
 @include mobile {
   .mypageUser { height: auto; min-height: calc(100vh - 10rem); padding: 1.25rem 0 2rem; }

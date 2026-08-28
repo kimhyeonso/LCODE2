@@ -8,7 +8,7 @@ export default function MyPage() {
   const [form, setForm] = useState({ nickname: "", email: "", password: "" });
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const { login, signup } = useAuth();
+  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 

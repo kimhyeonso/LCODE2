@@ -57,65 +57,73 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 .imagePlaceholder { width: 100%; height: 31.4rem; background-image: url("/Mypage-img/7.png"); background-size: cover; margin-top: 4rem; }
 @include tablet { .content { width: min(calc(100% - 6rem), 42.5rem); } }
 // Desktop alarm spread based on the supplied reference. Existing type styles stay unchanged.
-@media (min-width: 641px) {
+@media (min-width: 901px) {
+  .alarm {
+    min-height: 977px;
+    padding-top: 94px;
+  }
+
   .content {
-    // Match the reference spread: wide settings column, narrow gutter, large image column.
-    grid-template-columns: 25rem 22.5rem;
-    gap: 2.5rem;
+    --alarm-left: clamp(360px, 27.92vw, 511px);
+    grid-template-columns: 465px 498px;
+    gap: 148px;
     align-items: start;
-    width: min(1320px, calc(100% - 64px));
+    width: min(1111px, calc(100% - var(--alarm-left) - 64px));
+    margin-right: 0;
+    margin-left: var(--alarm-left);
   }
 
   .settings {
     position: relative;
-    padding-top: 2rem;
+    padding-top: 39px;
   }
 
   .settings::before {
     position: absolute;
-    top: -1.2rem;
-    left: -2.9rem;
+    top: -18px;
+    left: -64px;
     width: 1px;
-    height: 29rem;
+    height: 790px;
     background: #d8d3cb;
     content: "";
   }
 
   .divider {
     position: relative;
-    margin-top: 1rem;
+    margin-top: 14px;
   }
 
   .divider::after {
     position: absolute;
     top: 50%;
-    right: 1.2rem;
-    width: 1.5rem;
-    height: 1.5rem;
+    right: 12px;
+    width: 28px;
+    height: 28px;
     background: url("/Mypage-img/port.png") center / contain no-repeat;
     content: "";
     transform: translateY(-50%);
   }
 
   .settingList {
-    margin-top: 1.8rem;
+    margin-top: 25px;
   }
 
   .setting {
     position: relative;
-    height: 3rem;
-    padding: 0 .65rem;
+    height: 69px;
+    padding: 0 14px;
+    font-size: 16px;
   }
 
   .setting > span {
     display: flex;
     align-items: center;
-    gap: .8rem;
+    gap: 22px;
   }
 
   .setting > span::before {
-    width: .85rem;
-    height: .85rem;
+    width: 22px;
+    height: 22px;
     background: center / contain no-repeat;
     content: "";
   }
@@ -129,10 +137,10 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 
   .notice {
     width: 100%;
-    margin: 1.25rem 0 0;
+    margin: 27px 0 0;
     border: 1px solid #d8d3cb;
     background: transparent;
-    padding: .7rem 1rem;
+    padding: 14px 32px;
     text-align: left;
   }
 
@@ -140,20 +148,20 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     position: relative;
     box-sizing: border-box;
     width: 100%;
-    height: 32.5rem;
-    margin-top: 1.8rem;
+    height: 724px;
+    margin-top: 49px;
     border: 1px solid #d8d3cb;
-    padding: .6rem;
+    padding: 15px;
     background: url("/Mypage-img/7.png") center / cover no-repeat;
     background-clip: content-box;
   }
 
   .imagePlaceholder::after {
     position: absolute;
-    top: 1.2rem;
-    right: -3.5rem;
-    width: 8rem;
-    height: 4.2rem;
+    top: 38px;
+    right: -142px;
+    width: 160px;
+    height: 83px;
     background: url("/Mypage-img/u.png") center / contain no-repeat;
     content: "";
     opacity: .25;
@@ -163,20 +171,20 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 }
 
 // Editorial side notes and stamps from the reference layout.
-@media (min-width: 641px) {
+@media (min-width: 901px) {
   .alarm {
     position: relative;
   }
 
   .issueRail {
     position: absolute;
-    top: 1.2rem;
-    left: 2.5rem;
+    top: 137px;
+    left: 325px;
     display: flex;
     flex-direction: column;
-    width: 3rem;
+    width: 52px;
     color: #77736c;
-    font: 400 .5rem $korean;
+    font: 400 12px $korean;
     letter-spacing: .12em;
     
   }
@@ -189,13 +197,13 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 
   .issueRail i {
     width: 1px;
-    height: 19rem;
-    margin: .75rem 0 1rem .2rem;
+    height: 210px;
+    margin: 14px 0 22px 5px;
     background: #bdb7ad;
   }
 
   .issueRail em {
-    font: 400 .45rem/1.5 $korean;
+    font: 400 11px/1.5 $korean;
     font-style: normal;
     letter-spacing: .15em;
     writing-mode: vertical-rl;
@@ -204,20 +212,20 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   }
 
   .issueRail b {
-    width: 4rem;
-    height: 4rem;
-    margin-top: auto;
+    width: 78px;
+    height: 78px;
+    margin-top: 220px;
     background: url("/Mypage-img/u.png") center / contain no-repeat;
     opacity: .25;
   }
 
   .sideCaption {
     position: absolute;
-    right: 2.5rem;
-    bottom: 3.8rem;
+    right: 145px;
+    bottom: 142px;
     margin: 0;
     color: #77736c;
-    font: 400 .48rem/1.4 $korean;
+    font: 400 11px/1.4 $korean;
     letter-spacing: .1em;
     writing-mode: vertical-rl;
   }
@@ -225,6 +233,41 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .sideCaption em {
     font-family: $display;
     font-style: italic;
+  }
+}
+
+@media (min-width: 901px) {
+  .eyebrow { font-size: 12px; }
+  h1 { margin: 22px 0 19px; font-size: 92px; }
+  .description { font-size: 16px; line-height: 1.55; }
+
+  .setting button { width: 52px; height: 24px; }
+  .setting button i { top: 3px; left: 3px; width: 18px; height: 18px; }
+  .setting button.enabled i { transform: translateX(28px); }
+
+  .back {
+    position: absolute;
+    z-index: 2;
+    top: 112px;
+    right: 56px;
+    width: 42px;
+    height: 32px;
+    border: 0;
+    background: transparent;
+    color: #77736c;
+    font: 300 32px/1 Arial, sans-serif;
+  }
+
+  .imagePlaceholder::before {
+    position: absolute;
+    right: 0;
+    bottom: -38px;
+    left: 0;
+    color: #77736c;
+    content: "VOL. 02                         ───────────────                         JOURNEY IN STYLE";
+    font: 400 10px/1 $korean;
+    letter-spacing: .08em;
+    white-space: pre;
   }
 }
 
