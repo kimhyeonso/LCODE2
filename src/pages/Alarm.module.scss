@@ -1,16 +1,14 @@
 // 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 // 페이지에서 사용하는 글꼴을 불러옵니다.
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
-$display: "DM Serif Display", serif; // Serif title font.
-$korean: "Noto Sans KR", sans-serif; // Korean UI font.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .alarm, .alarm * { letter-spacing: -0.01em !important; }
 
 // 알림 페이지 전체 배경과 여백입니다.
-.alarm { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; }
+.alarm { min-height: calc(100vh - 10rem); padding: 0.5rem 0 4rem; background: $paper; @include korean-font; }
 // 알림 설정과 이미지 영역의 2단 레이아웃입니다.
 .content { display: grid; grid-template-columns: 21rem 17.7rem; gap: 3.8rem; align-items: start; width: min(calc(100% - 10.6rem), 42.5rem); margin: 0 auto; }
 .eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
@@ -21,13 +19,285 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 .settingList { margin-top: 1.8rem; border-top: 1px solid #ebe8e3; }
 .setting { display: flex; align-items: center; justify-content: space-between; height: 3.55rem; padding: 0 1rem; border-bottom: 1px solid #ebe8e3; color: #292929; font: 400 1rem $korean; letter-spacing: -.06em; }
 // 기능 없이 상태만 보여주는 토글 스타일입니다.
-.setting button { position: relative; width: 2.45rem; height: 1.28rem; border: 0; border-radius: 1rem; background: #d7d7d7; }
-.setting button i { position: absolute; top: .18rem; left: .18rem; width: .92rem; height: .92rem; border-radius: 50%; background: #fff; }
+// 토글 바깥쪽 트랙입니다. 배경색이 부드럽게 바뀝니다.
+.setting button {
+  position: relative;
+  width: 2.45rem;
+  height: 1.28rem;
+  border: 0;
+  border-radius: 1rem;
+  background: #bbb;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+// 토글 안에서 움직이는 흰색 원입니다.
+.setting button i {
+  position: absolute;
+  top: .18rem;
+  left: .18rem;
+  width: .92rem;
+  height: .92rem;
+  border-radius: 50%;
+  background: $paper;
+  transition: transform 0.2s ease;
+}
+
+// 켜진 토글은 어두운 트랙과 오른쪽 원으로 표시합니다.
 .setting button.enabled { background: #363636; }
-.setting button.enabled i { right: .18rem; left: auto; }
-.notice { margin: 2.45rem 0 0; color: #65615c; font: 400 .58rem/1.45 $korean; text-align: center; }
-.notice span { margin-right: 1.5rem; font-size: .72rem; }
+.setting button.enabled i { transform: translateX(1.17rem); }
+.notice { margin: 2.45rem auto;
+  color: #65615c; font: 400 .58rem/1.45 $korean;
+  text-align: center; background-color: #ebe8e3;
+  width: 80%; padding: 0.5rem 1rem;
+  
+}
+.notice span { margin-right: 0.2rem; font-size: .72rem; }
 // 알림 이미지를 대신하는 고정 크기 회색 영역입니다.
-.imagePlaceholder { width: 100%; height: 31.4rem; background-image:url(/public/Mypage-img/7.png); background-size: cover;}
+.imagePlaceholder { width: 100%; height: 31.4rem; background-image: url("/Mypage-img/7.png"); background-size: cover; margin-top: 4rem; }
 @include tablet { .content { width: min(calc(100% - 6rem), 42.5rem); } }
-@include mobile { .alarm { padding: 2.5rem 0 3.5rem; } .content { grid-template-columns: 1fr; gap: 3rem; width: min(calc(100% - 2.5rem), 31rem); } .imagePlaceholder { height: 18rem; } }
+// Desktop alarm spread based on the supplied reference. Existing type styles stay unchanged.
+@media (min-width: 901px) {
+  .alarm {
+    min-height: 977px;
+    padding-top: 94px;
+  }
+
+  .content {
+    --alarm-left: clamp(360px, 27.92vw, 511px);
+    grid-template-columns: 465px 498px;
+    gap: 148px;
+    align-items: start;
+    width: min(1111px, calc(100% - var(--alarm-left) - 64px));
+    margin-right: 0;
+    margin-left: var(--alarm-left);
+  }
+
+  .settings {
+    position: relative;
+    padding-top: 39px;
+  }
+
+  .settings::before {
+    position: absolute;
+    top: -18px;
+    left: -64px;
+    width: 1px;
+    height: 790px;
+    background: #d8d3cb;
+    content: "";
+  }
+
+  .divider {
+    position: relative;
+    margin-top: 14px;
+  }
+
+  .divider::after {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 28px;
+    height: 28px;
+    background: url("/Mypage-img/port.png") center / contain no-repeat;
+    content: "";
+    transform: translateY(-50%);
+  }
+
+  .settingList {
+    margin-top: 25px;
+  }
+
+  .setting {
+    position: relative;
+    height: 69px;
+    padding: 0 14px;
+    font-size: 16px;
+  }
+
+  .setting > span {
+    display: flex;
+    align-items: center;
+    gap: 22px;
+  }
+
+  .setting > span::before {
+    width: 22px;
+    height: 22px;
+    background: center / contain no-repeat;
+    content: "";
+  }
+
+  .setting:nth-child(1) > span::before { background-image: url("/Mypage-img/plan.svg"); }
+  .setting:nth-child(2) > span::before { background-image: url("/Mypage-img/promotion.svg"); }
+  .setting:nth-child(3) > span::before { background-image: url("/Mypage-img/day.svg"); }
+  .setting:nth-child(4) > span::before { background-image: url("/Mypage-img/move.svg"); }
+  .setting:nth-child(5) > span::before { background-image: url("/Mypage-img/talk.svg"); }
+  .setting:nth-child(6) > span::before { background-image: url("/Mypage-img/speak.svg"); }
+
+  .notice {
+    width: 100%;
+    margin: 27px 0 0;
+    border: 1px solid #d8d3cb;
+    background: transparent;
+    padding: 14px 32px;
+    text-align: left;
+  }
+
+  .imagePlaceholder {
+    position: relative;
+    box-sizing: border-box;
+    width: 100%;
+    height: 724px;
+    margin-top: 49px;
+    border: 1px solid #d8d3cb;
+    padding: 15px;
+    background: url("/Mypage-img/7.png") center / cover no-repeat;
+    background-clip: content-box;
+  }
+
+  .imagePlaceholder::after {
+    position: absolute;
+    top: 38px;
+    right: -142px;
+    width: 160px;
+    height: 83px;
+    background: url("/Mypage-img/u.png") center / contain no-repeat;
+    content: "";
+    opacity: .25;
+    pointer-events: none;
+  }
+
+}
+
+// Editorial side notes and stamps from the reference layout.
+@media (min-width: 901px) {
+  .alarm {
+    position: relative;
+  }
+
+  .issueRail {
+    position: absolute;
+    top: 137px;
+    left: 325px;
+    display: flex;
+    flex-direction: column;
+    width: 52px;
+    color: #77736c;
+    font: 400 12px $korean;
+    letter-spacing: .12em;
+    
+  }
+
+  .issueRail strong {
+    margin-top: .22rem;
+    font: inherit;
+    
+  }
+
+  .issueRail i {
+    width: 1px;
+    height: 210px;
+    margin: 14px 0 22px 5px;
+    background: #bdb7ad;
+  }
+
+  .issueRail em {
+    font: 400 11px/1.5 $korean;
+    font-style: normal;
+    letter-spacing: .15em;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    
+  }
+
+  .issueRail b {
+    width: 78px;
+    height: 78px;
+    margin-top: 220px;
+    background: url("/Mypage-img/u.png") center / contain no-repeat;
+    opacity: .25;
+  }
+
+  .sideCaption {
+    position: absolute;
+    right: 145px;
+    bottom: 142px;
+    margin: 0;
+    color: #77736c;
+    font: 400 11px/1.4 $korean;
+    letter-spacing: .1em;
+    writing-mode: vertical-rl;
+  }
+
+  .sideCaption em {
+    font-family: $display;
+    font-style: italic;
+  }
+}
+
+@media (min-width: 901px) {
+  .eyebrow { font-size: 12px; }
+  h1 { margin: 22px 0 19px; font-size: 92px; }
+  .description { font-size: 16px; line-height: 1.55; }
+
+  .setting button { width: 52px; height: 24px; }
+  .setting button i { top: 3px; left: 3px; width: 18px; height: 18px; }
+  .setting button.enabled i { transform: translateX(28px); }
+
+  .back {
+    position: absolute;
+    z-index: 2;
+    top: 112px;
+    right: 56px;
+    width: 42px;
+    height: 32px;
+    border: 0;
+    background: transparent;
+    color: #77736c;
+    font: 300 32px/1 Arial, sans-serif;
+  }
+
+  .imagePlaceholder::before {
+    position: absolute;
+    right: 0;
+    bottom: -38px;
+    left: 0;
+    color: #77736c;
+    content: "VOL. 02                         ───────────────                         JOURNEY IN STYLE";
+    font: 400 10px/1 $korean;
+    letter-spacing: .08em;
+    white-space: pre;
+  }
+}
+
+@include mobile {
+  // 모바일은 6개 설정과 안내문이 한 화면에 들어오도록 세로 밀도를 높입니다.
+  .alarm { padding: 0.8rem 0 1.25rem; }
+  .content { grid-template-columns: 1fr; width: min(calc(100% - 2.5rem), 31rem); }
+
+  .eyebrow { font-size: 0.48rem; }
+  h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
+  .description { font-size: 0.55rem; }
+  .divider { margin-top: 0.55rem; }
+
+  .settingList { margin-top: 1rem; }
+  .setting {
+    height: 2.1rem;
+    padding-inline: 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .setting button { width: 1.45rem; height: 0.75rem; }
+  .setting button i { top: 0.115rem; left: 0.115rem; width: 0.52rem; height: 0.52rem; }
+  .setting button.enabled i { transform: translateX(0.68rem); }
+
+  .notice { margin-top: 0.8rem; font-size: 0.45rem; }
+  .notice span { margin-right: 0.8rem; font-size: 0.55rem; }
+
+  // 모바일 시안에서는 PC 전용 알림 이미지를 표시하지 않습니다.
+  .imagePlaceholder { display: none; }
+}
+.setting {
+  font: 400 0.7rem $korean;
+}

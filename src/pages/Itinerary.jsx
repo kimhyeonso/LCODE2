@@ -1,6 +1,32 @@
+import { useEffect, useState } from "react";
 import styles from "./Itinerary.module.scss";
 
+const slideImages = [
+  "/Mypage-img/3.png",
+  "/Mypage-img/4.png",
+  "/Mypage-img/5.png",
+];
+
 export default function Itinerary() {
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    const previousButton = document.querySelector(`.${styles.previous}`);
+    const nextButton = document.querySelector(`.${styles.next}`);
+    const moveSlide = (direction) => {
+      setSlideIndex((current) => (current + direction + slideImages.length) % slideImages.length);
+    };
+
+    const showPrevious = () => moveSlide(-1);
+    const showNext = () => moveSlide(1);
+    previousButton?.addEventListener("click", showPrevious);
+    nextButton?.addEventListener("click", showNext);
+    return () => {
+      previousButton?.removeEventListener("click", showPrevious);
+      nextButton?.removeEventListener("click", showNext);
+    };
+  }, []);
+
   return (
     <main className={styles.itinerary}>
       <div className={styles.content}>
@@ -27,7 +53,7 @@ export default function Itinerary() {
         <section className={styles.tripArea} aria-label="다가오는 여행">
           <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행">&lsaquo;</button>
           <article className={styles.tripCard}>
-            <div className={styles.photo} aria-hidden="true">
+            <div className={styles.photo} style={{ backgroundImage: `url(${slideImages[slideIndex]})` }} aria-hidden="true">
               <span>D-12</span>
             </div>
             <div className={styles.tripInfo}>

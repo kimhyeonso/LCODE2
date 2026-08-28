@@ -2,7 +2,9 @@ import styles from "./Coupon.module.scss";
 
 const coupons = [
   { type: "SPECIAL EVENT", title: "PACK & WIN", description: "여행 짐싸고 쿠폰받자!", code: "TC-0056", expiry: "VALID UNTIL 2026.08.31", used: true },
+  // description is the main coupon description: "FLIGHT KIT".
   { type: "L:CODE", title: "5%", suffix: "OFF", description: "FLIGHT KIT", detail: "여행 키트", code: "TC-0034", expiry: "VALID UNTIL 2026.10.15" },
+  // description is the main coupon description: "FLIGHT KIT".
   { type: "L:CODE", title: "5%", suffix: "OFF", description: "FLIGHT KIT", detail: "여행 키트", code: "TC-0034", expiry: "VALID UNTIL 2026.10.15" },
 ];
 
@@ -26,6 +28,7 @@ export default function Coupon() {
   const welcomeCoupon = { type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" };
   return (
     <main className={styles.coupon}>
+      
       <div className={styles.content}>
         <section className={styles.archive} aria-labelledby="coupon-title">
           <p className={styles.eyebrow}>MY JOURNEY</p>
