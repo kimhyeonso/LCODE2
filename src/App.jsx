@@ -13,7 +13,7 @@ import Plans from "./pages/Plans";
 import Event from "./pages/Event";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
-import MyPageMain from "./pages/MyPageMain";
+import MypageUser from "./pages/MypageUser";
 import ProfileEdit from "./pages/ProfileEdit";
 import Itinerary from "./pages/Itinerary";
 import Wishlist from "./pages/Wishlist";
@@ -39,6 +39,7 @@ function ScrollTop() {
 const enlargedPagePaths = new Set([
   "/login",
   "/my",
+  "/mypage-user",
   "/profile/edit",
   "/itinerary",
   "/wishlist",
@@ -98,7 +99,15 @@ export default function App() {
             path="/my"
             element={
               <ProtectedRoute>
-                <MyPageMain />
+                <MypageUser />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/mypage-user"
+            element={
+              <ProtectedRoute>
+                <MypageUser />
               </ProtectedRoute>
             }
           />

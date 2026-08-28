@@ -1,49 +1,122 @@
 // 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 // 페이지에서 사용하는 글꼴을 불러옵니다.
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
-$display: "DM Serif Display", serif; // Serif heading font.
-$korean: "Noto Sans KR", sans-serif; // Korean UI font.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
-.mystories, .mystories * { letter-spacing: -0.01em !important; }
+.mystories,
+.mystories * {
+  letter-spacing: -0.01em !important;
+}
 
 // 페이지 전체 배경과 상하 여백입니다.
-.mystories { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; }
+.mystories {
+  min-height: calc(100vh - 10rem);
+  padding: 2.5rem 0 4rem;
+  background: $paper;
+  @include korean-font;
+}
 // 데스크톱의 좌우 2단 레이아웃입니다.
-.content { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 6.7rem; width: min(calc(100% - 10.6rem), 52.3rem); margin: 0 auto; }
+.content {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+  gap: 6.7rem;
+  width: min(calc(100% - 10.6rem), 48rem);
+  margin: 0 auto;
+}
 // 상단 작은 섹션 라벨입니다.
-.eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
+.eyebrow {
+  margin: 0;
+  color: #aaa49c;
+  font: 400 .58rem $korean;
+  letter-spacing: .24em;
+}
 // 공통 영문 제목 스타일입니다.
-h1 { margin: 1.2rem 0; color: #111; font: 400 2rem/1 $display; letter-spacing: -.08em; }
+h1 {
+  margin: 1.2rem 0;
+  color: #111;
+  font: 400 2rem/1 $display;
+  letter-spacing: -.08em;
+}
 // 제목 아래 보조 설명 문구입니다.
-.description, .shopping > p { margin: 0; color: #98948d; font: 400 .66rem $korean; }
+.description,
+.shopping > p {
+  margin: 0;
+  color: #98948d;
+  font: 400 .66rem $korean;
+  
+}
 // 오른쪽 쇼핑 영역 전체를 왼쪽 제목 높이에 맞춰 아래로 내립니다.
-.shopping { padding-top: 0.75rem; }
+.shopping {
+  padding-top: 0.75rem;
+}
 // 제목 영역을 구분하는 얇은 선입니다.
-.divider { height: 1px; margin-top: .8rem; background: #ddd9d1; }
+.divider {
+  height: 1px;
+  margin-top: .8rem;
+  background: #ddd9d1;
+}
 // 저장한 여행 카드 목록입니다.
-.storyList { display: grid; gap: 3rem; margin-top: 1.85rem; }
+.storyList {
+  display: grid;
+  gap: 3rem;
+  margin-top: 1.85rem;
+}
 // 여행 카드 외곽 스타일입니다.
-.storyCard { border: 1px solid #d4d1cc; background: #fff; }
+.storyCard {
+  border: 1px solid #d4d1cc;
+  background: $paper;
+}
 // 여행 사진을 대신하는 고정 크기 회색 영역입니다.
-.storyImage { width: 100%; height: 7.45rem; background-image: url(/public/Mypage-img/2.png);
-background-size: cover; }
+.storyImage {
+  width: 100%;
+  height: 7.45rem;
+  background-image: url(/public/Mypage-img/2.png);
+  background-size: cover;
+}
 // 여행 카드의 텍스트와 버튼 영역입니다.
-.storyInfo { padding: .85rem .85rem .35rem; }
-.storyInfo h2 { margin: 0; color: #202020; font: 700 1.1rem $korean; letter-spacing: -.07em; }
-.storyInfo > p { margin: .4rem 0 0; color: #8f8f8f; font: 400 .68rem $korean; }
-.storyInfo small { display: block; margin-top: .55rem; color: #666; font: 400 .57rem $korean; }
-.storyInfo footer { display: grid; grid-template-columns: .84fr 1.65fr; gap: .45rem; margin-top: .95rem; }
+.storyInfo {
+  padding: .85rem .85rem .35rem;
+}
+
+.storyInfo h2 {
+  margin: 0;
+  color: #202020;
+  font: 700 1.1rem $korean;
+  letter-spacing: -.07em;
+}
+
+.storyInfo > p {
+  margin: .4rem 0 0;
+  color: #8f8f8f;
+  font: 400 .68rem $korean;
+}
+
+.storyInfo small {
+  display: block;
+  margin-top: .55rem;
+  color: #666;
+  font: 400 .57rem $korean;
+}
+
+.storyInfo footer {
+  display: grid;
+  grid-template-columns: .84fr 1.65fr;
+  gap: .45rem;
+  margin-top: .95rem;
+}
 // 동작 없이 표시하는 카드 버튼 스타일입니다.
-.storyInfo button, .productCard footer button { height: 2.35rem; border: 1px solid #ddd9d2; background: #fff; color: #77736c; font: 400 .62rem $korean; }
+.storyInfo button, .productCard footer button { height: 2.35rem; border: 1px solid #ddd9d2; background: $paper; color: #77736c; font: 400 .62rem $korean; }
 .storyInfo button:last-child, .productCard footer button:last-child { border-color: #111; background: #111; color: #fff; }
 // 쇼핑 카테고리 필터 버튼 행입니다.
-.shopping h1 { margin-bottom: 1.25rem; }
+.shopping{
+  margin-top: -9rem;
+}
+.shopping h1 { margin-bottom: 1.25rem; font-size: 1.5rem; }
 .filters { display: flex; gap: .32rem; margin-top: .8rem; }
-.filters button { min-width: 3.25rem; height: 1.85rem; border: 1px solid #ddd9d2; background: #fff; color: #8e8982; font: 400 .5rem $korean; letter-spacing: .12em; }
-.filters .selected { border-color: #111; background: #111; color: #fff; }
+.filters button { min-width: 2.5rem; height: 1.85rem; border: 1px solid #ddd9d2; background: #f8f8f8; color: #8e8982; font: 400 .5rem $korean; letter-spacing: .12em; }
+.filters .selected { border-color: #111; background: #111; color: #f8f8f8; }
 // 상품 카드 2열 그리드입니다.
 .productGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.35rem .6rem; margin-top: 1.55rem; }
 // 상품 사진을 대신하는 고정 크기 회색 영역입니다.
@@ -60,6 +133,105 @@ background-size: cover; }
 .productCard footer button { height: 1.35rem; font-size: .48rem; }
 .pagination { margin-top: .6rem; color: #bbb; font-size: .42rem; letter-spacing: .25rem; text-align: center; }
 // 태블릿 화면 여백입니다.
-@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 52.3rem); } }
+@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 48rem); } }
 // 휴대폰 화면의 단일 열 레이아웃입니다.
-@include mobile { .mystories { padding: 2.5rem 0 3.5rem; } .content { grid-template-columns: 1fr; gap: 3.5rem; width: min(calc(100% - 2.5rem), 31rem); } .shopping { padding-top: 0; } .storyImage { height: 11rem; } .productImage { height: 12rem; } }
+// Desktop layout follows the supplied MY STORIES spread. Typography rules above are intentionally unchanged.
+@media (min-width: 901px) {
+  .content {
+    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
+    grid-template-columns: minmax(0, 2.33fr) minmax(0, 1fr);
+    gap: 4rem;
+    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
+    margin-right: 0;
+    margin-left: calc(220px + var(--desktop-left-gap));
+  }
+
+  .stories {
+    position: relative;
+  }
+  .stories::after { position: absolute; top: 3.5rem; transform: rotate(-25deg); right: 3.2rem; width: 10rem; height: 4.7rem; background: url("/Mypage-img/u.png") center / contain no-repeat; content: ""; opacity: 0.1; pointer-events: none; }
+  .storyList {
+    margin-top: 2.6rem;
+  }
+  .storyCard { display: grid; grid-template-columns: 58.5% 41.5%; aspect-ratio: 2.63 / 1; }
+  .storyCard:nth-child(n + 2) {
+    display: none;
+  }
+  .storyImage { width: 100%; height: 100%; background: url("/Mypage-img/2.png") center / cover no-repeat; }
+  .storyInfo { display: flex; flex-direction: column; padding: 1.45rem 1.55rem 1.2rem; }
+  .storyInfo small { margin-top: 1.4rem; border-top: 1px solid #ddd9d1; padding-top: .85rem; }
+  .storyInfo footer { margin-top: auto; }
+  .shopping { padding-top: 10.6rem; border-left: 1px solid #e0ddd6; padding-left: 1.6rem; }
+  .shopping h1 {
+    margin-top: 0;
+  }
+
+  .filters {
+    margin-top: 1rem;
+  }
+  .productGrid { grid-template-columns: 1fr; gap: 0; margin-top: 1rem; }
+  .productCard { position: relative; display: grid; grid-template-columns: 6rem minmax(0, 1fr) auto; grid-template-rows: auto auto 1fr; column-gap: 1rem; min-height: 7.5rem; border-bottom: 1px solid #ddd9d1; padding: 0 0 1rem; }
+  .productCard:nth-child(n + 3) {
+    display: none;
+  }
+  .productImage { grid-row: 1 / span 3; width: 6rem; height: 6rem; background: url("/Mypage-img/3.png") center / cover no-repeat; }
+  .productCard h2,
+  .productCard small,
+  .productCard p {
+    grid-column: 2;
+  }
+
+  .productCard footer {
+    display: none;
+  }
+  .productCard::after { grid-column: 3; grid-row: 1 / span 3; align-self: center; content: "›"; color: #77736c; font: inherit; }
+  .pagination { position: relative; margin-top: .8rem; border-bottom: 1px solid #ddd9d1; padding-bottom: .7rem; color: transparent; font-size: 0; text-align: left; }
+  .pagination::before { content: "쇼핑 더보기"; color: #292929; font: 400 .62rem $korean; }
+  .pagination::after { position: absolute; right: 0; content: "→"; color: #77736c; font: 400 .9rem/1 $korean; }
+}
+
+@include mobile {
+  .mystories { padding: 0.8rem 0 1.5rem; }
+  // 확대된 rem 기준에서도 좌우 여백을 남겨 카드가 화면 밖으로 나가지 않게 합니다.
+  .content {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+    width: calc(100% - 2rem);
+    max-width: none;
+    // 모바일 미리보기의 확대 rem 기준에서 오른쪽으로 밀린 폭을 보정해 좌우 여백을 맞춥니다.
+    transform: translateX(-0.4rem);
+  }
+
+  .eyebrow { font-size: 0.48rem; }
+  h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
+  // 모바일 시안에는 보조 문구가 없어 제목 아래의 구분선으로 바로 이어집니다.
+  .description { display: none; }
+  .divider { margin-top: 0.55rem; }
+
+  .storyList { gap: 0; margin-top: 0.65rem; }
+  // 카드형 슬라이드의 첫 여행만 모바일 첫 화면에 표시합니다.
+  .storyCard:nth-child(n + 2) { display: none; }
+  .storyImage { height: 4.2rem; }
+  .storyInfo { padding: 0.55rem 0.7rem 0.25rem; }
+  .storyInfo h2 { font-size: 0.8rem; }
+  .storyInfo > p { margin-top: 0.2rem; font-size: 0.48rem; }
+  .storyInfo small { margin-top: 0.25rem; font-size: 0.42rem; }
+  .storyInfo footer { gap: 0.25rem; margin-top: 0.45rem; }
+  .storyInfo button { height: 1.55rem; font-size: 0.44rem; }
+
+  // 여행 리뷰 아래에 쇼핑 목록을 바로 이어 붙이고, 중복 제목은 모바일에서 숨깁니다.
+  .shopping { padding-top: 0.6rem; border-top: 1px solid #ddd9d1; }
+  .shopping h1,
+  .shopping > p { display: none; }
+  .filters { gap: 0.2rem; margin-top: 0; }
+  .filters button { min-width: 2.35rem; height: 1.35rem; font-size: 0.38rem; }
+
+  .productGrid { width: 100%; gap: 1rem 0.125rem; margin-top: 0.75rem; }
+  .productImage { height: auto; aspect-ratio: 1 / 1; }
+  .productCard h2 { margin-top: 0.3rem; font-size: 0.5rem; }
+  .productCard small { font-size: 0.42rem; }
+  .productCard p { margin-top: 0.15rem; font-size: 0.42rem; }
+  .productCard footer { gap: 0.2rem; margin-top: 0.55rem; }
+  .productCard footer button { height: 1.05rem; font-size: 0.34rem; }
+  .pagination { margin-top: 0.35rem; font-size: 0.35rem; }
+}

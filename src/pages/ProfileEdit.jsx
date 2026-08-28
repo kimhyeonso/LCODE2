@@ -57,7 +57,7 @@ export default function ProfileEdit() {
       <div className={styles.layout}>
         <section className={styles.formSection} aria-labelledby="profile-title">
           <span className={styles.eyebrow}>PROFILE</span>
-          <h1 id="profile-title">회원 정보 수정</h1>
+          <h1 className={styles.hero} id="profile-title">회원 정보 수정</h1>
 
           <form onSubmit={submit}>
             <label>
