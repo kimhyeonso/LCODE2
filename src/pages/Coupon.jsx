@@ -1,3 +1,6 @@
+import MypageBackLink from "../components/MypageBackLink";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 import styles from "./Coupon.module.scss";
 
 const coupons = [
@@ -25,21 +28,27 @@ function CouponTicket({ coupon, featured = false }) {
 }
 
 export default function Coupon() {
+  const [registeredCoupons] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("lcode-registered-coupons")) || []; }
+    catch { return []; }
+  });
   const welcomeCoupon = { type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" };
   return (
     <main className={styles.coupon}>
       
       <div className={styles.content}>
         <section className={styles.archive} aria-labelledby="coupon-title">
+          <MypageBackLink />
           <p className={styles.eyebrow}>MY JOURNEY</p>
           <h1 id="coupon-title">COUPON ARCHIVE</h1>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
           <div className={styles.divider} />
           <CouponTicket coupon={welcomeCoupon} featured />
-          <button className={styles.register} type="button">쿠폰 등록하기</button>
+          <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>
         </section>
         <section className={styles.couponList} aria-label="보유 쿠폰">
           {coupons.map((coupon, index) => <CouponTicket coupon={coupon} key={index} />)}
+          {registeredCoupons.map((coupon) => <CouponTicket coupon={coupon} key={coupon.code} />)}
         </section>
       </div>
     </main>

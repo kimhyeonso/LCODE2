@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import MypageBackLink from "../components/MypageBackLink";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
@@ -25,6 +26,7 @@ export default function MypageUser() {
     <main className={styles.mypageUser}>
       <div className={styles.content}>
         <section className={styles.profile} aria-labelledby="user-name">
+          {/* <MypageBackLink /> */}
           <p className={styles.eyebrow}>MY L:CODE</p>
           <p className={styles.greeting}>안녕하세요,</p>
           <h1 id="user-name">{displayName} 님.</h1>

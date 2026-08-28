@@ -1,0 +1,56 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
+
+.couponUp { min-height: 100vh; padding: 70px 48px; background: $paper; color: $ink; font-family: $korean; }
+.couponUp * { box-sizing: border-box; }
+.layout { display: grid; grid-template-columns: 490px 650px; gap: 130px; width: 1270px; margin: 0 auto; transform: translateX(34px); }
+.formArea > a { margin-bottom: 34px; }
+.eyebrow { margin: 0; color: #aaa49c; font-size: 12px; letter-spacing: .08em; }
+.formArea h1 { margin: 22px 0 12px; font-family: $display; font-size: 62px; font-weight: 400; line-height: .96; letter-spacing: -.035em; }
+.description { margin: 0 0 25px; padding-bottom: 22px; border-bottom: 1px solid rgba($ink, .14); color: #99948c; font-size: 13px; }
+.formArea form { display: grid; }
+.formArea label { margin: 0 0 8px; font-size: 13px; font-weight: 600; }
+.formArea label:not(:first-child) { margin-top: 18px; }
+.formArea label small { display: inline-grid; width: 17px; height: 17px; margin-left: 6px; border: 1px solid rgba($ink, .4); border-radius: 50%; place-items: center; font-size: 10px; }
+.formArea input { width: 100%; height: 58px; padding: 0 14px; border: 1px solid rgba($ink, .28); border-radius: 7px; background: rgba(255,255,255,.2); color: $ink; font: 13px $korean; outline: none; }
+.formArea input:focus { border-color: $ink; }
+.formArea input::placeholder { color: rgba($ink, .35); }
+.notice { display: flex; gap: 12px; margin-top: 20px; padding: 15px; border: 1px solid rgba($ink, .15); border-radius: 6px; color: #69655e; font-size: 11px; line-height: 1.65; }
+.notice b { font-size: 16px; font-weight: 400; }
+.error { margin: 10px 0 0; color: #b32929; font-size: 11px; }
+.submitButton, .cancelButton { height: 60px; border-radius: 6px; font: 600 16px $korean; }
+.submitButton { margin-top: 18px; border: 1px solid #111; background: #111; color: #fff; }
+.cancelButton { margin-top: 12px; border: 1px solid rgba($ink, .25); background: transparent; color: $ink; }
+
+.previewArea { position: relative; padding-top: 118px; }
+.previewArea::before { position: absolute; top: 0; right: -90px; width: 260px; height: 135px; background: url("/Mypage-img/u.png") center / contain no-repeat; content: ""; opacity: .13; }
+.couponPreview { position: relative; height: 308px; overflow: hidden; padding: 30px 35px; border-radius: 8px; background: linear-gradient(90deg, rgba(0,0,0,.65), rgba(0,0,0,.2)), url("/Mypage-img/7.png") center / cover no-repeat; box-shadow: 0 3px 9px rgba(0,0,0,.18); color: #fff; }
+.couponPreview::before, .couponPreview::after { position: absolute; top: 92px; width: 26px; height: 26px; border-radius: 50%; background: $paper; content: ""; }
+.couponPreview::before { left: -13px; }
+.couponPreview::after { right: -13px; }
+.couponPreview > p { margin: 0; font-size: 12px; }
+.couponPreview > span { position: absolute; top: 28px; right: 32px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.7); font-size: 12px; }
+.couponPreview h2 { margin: 20px 0 4px; font-family: $display; font-size: 50px; font-weight: 400; }
+.couponPreview h3 { margin: 0; font-size: 17px; }
+.couponPreview footer { position: absolute; right: 0; bottom: 0; left: 0; display: flex; justify-content: space-between; padding: 15px 35px; border-top: 1px solid rgba(255,255,255,.35); font-size: 11px; }
+.registered { background: linear-gradient(100deg, #24211d, #76634c); }
+
+.addedCoupon { position: relative; display: grid; grid-template-columns: 230px 1fr; align-items: center; min-height: 82px; margin-top: 14px; animation: appear .35s ease both; }
+.addedCoupon img { width: 230px; }
+.addedCoupon > div { display: grid; gap: 6px; margin-left: -155px; z-index: 1; pointer-events: none; }
+.addedCoupon strong { font-family: $display; font-size: 23px; }
+.addedCoupon span { font-size: 10px; }
+@keyframes appear { from { opacity: 0; transform: translateY(8px); } }
+
+.benefits { margin-top: 40px; padding: 22px 34px; border: 1px solid rgba($ink, .15); border-radius: 7px; }
+.benefits > h2 { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid rgba($ink, .15); font-size: 13px; }
+.benefits article { display: grid; grid-template-columns: 50px 1fr; align-items: center; min-height: 75px; border-bottom: 1px dotted rgba($ink, .2); }
+.benefits article:last-child { border-bottom: 0; }
+.benefits article > b { display: grid; width: 44px; height: 44px; border-radius: 50%; background: #eee4d5; place-items: center; font-size: 20px; }
+.benefits article p { margin: 0; font-size: 12px; }
+.benefits article small { display: block; margin-top: 6px; color: #99948c; font-size: 10px; }
+
+@media (max-width: 1400px) { .layout { grid-template-columns: minmax(400px, 480px) minmax(500px, 600px); gap: 70px; width: min(calc(100% - 80px), 1150px); transform: none; } }
+@include tablet { .couponUp { padding: 48px 32px; } .layout { grid-template-columns: 1fr; width: min(100%, 620px); transform: none; } .previewArea { padding-top: 0; } .previewArea::before { display: none; } }
+@include mobile { .couponUp { padding: 28px 18px 42px; } .formArea h1 { font-size: 46px; } .couponPreview { height: 235px; padding: 24px; } .couponPreview h2 { font-size: 36px; } .couponPreview footer { padding: 12px 24px; } .benefits { padding: 18px; } }

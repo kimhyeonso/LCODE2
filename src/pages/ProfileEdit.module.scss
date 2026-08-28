@@ -1,304 +1,148 @@
-// 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
 
-
-$english: $display;
-
-// 프로필 편집 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
-.profileEdit, .profileEdit * { letter-spacing: -0.01em !important; }
-
-// 프로필 편집 페이지 전체 영역입니다.
 .profileEdit {
-  @include korean-font;
-  min-height: calc(100vh - 10rem);
-  padding: 3.75rem 0 4rem;
+  position: relative;
+  min-height: 100vh;
+  padding: 84px 48px 64px;
   background: $paper;
-  // 이 페이지의 한글은 명시적으로 Noto Sans KR을 사용합니다.
+  color: $ink;
   font-family: $korean;
+  box-sizing: border-box;
 }
 
-// 입력 폼과 여행 아카이브의 2단 레이아웃입니다.
+.profileEdit * { box-sizing: border-box; }
+
 .layout {
   display: grid;
-  // 왼쪽 입력 영역과 오른쪽 아카이브를 같은 비율로 나눕니다.
-  // Reference layout proportions: 21rem form, 29rem image column, and a 2.6rem gutter.
-  grid-template-columns: 21rem 29rem;
-  align-items: start;
-  // 기존 바깥 여백은 유지하고 컬럼 비율만 5:5로 맞춥니다.
-  gap: 2.6rem;
-  width: min(calc(100% - 10rem), 52.6rem);
+  grid-template-columns: 122px 525px 555px;
+  column-gap: 61px;
+  width: 1324px;
   margin: 0 auto;
-  transform: translateX(2.7rem);
+  align-items: start;
 }
 
-.formSection {
-  padding: 0.5rem 0;
+.issueRail {
+  position: relative;
+  min-height: 754px;
+  border-right: 1px solid rgba($ink, .24);
+  color: rgba($ink, .78);
+  font-size: 10px;
+  letter-spacing: .18em;
 
-  h1 {
-    margin: 1rem 0 2rem;
-    color: $ink;
-    font-size: 1.7rem;
-    font-weight: 500;
-    letter-spacing: -0.07em;
-  }
-
-  form {
-    border-top: 0;
-  }
-
-  label {
-    display: grid;
-    gap: 1.5rem;
-    padding: 1.8rem 0 0.8rem;
-    color: #aaa59c;
-    font-size: 0.65rem;
-  }
-
-  input {
-    width: 100%;
-    padding: 0 0 0.75rem;
-    border: 0;
-    border-bottom: 0.0625rem solid #ded9d1;
-    outline: 0;
-    background: transparent;
-    color: $ink;
-    font: inherit;
-    font-size: 0.9rem;
-    margin-top: -1.5rem;
-    &::placeholder {
-      color: #d0ccc4;
-    }
-  }
-}
-.hero{
-  // font는 크기까지 필요한 축약형이므로 여기서는 family를 사용합니다.
-  font-family: $korean;
-}
-.eyebrow {
-  color: #aa9e9c;
-  font-size: 0.62rem;
-  letter-spacing: 0.15em;
+  p { margin: 4px 0; line-height: 1.5; }
+  &::before { content: ""; position: absolute; top: 52px; left: 2px; width: 1px; height: 196px; background: rgba($ink, .45); }
+  > span { position: absolute; top: 274px; left: -3px; writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1.8; }
 }
 
-.passwordLink {
-  margin: 0.5rem 0 0;
-  color: #aaa59c;
-  font-size: 0.65rem;
-
-  button {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: $ink;
-    cursor: pointer;
-    font: inherit;
-    font-weight: 600;
-  }
+.seal {
+  position: absolute;
+  bottom: 38px;
+  left: -7px;
+  display: grid;
+  place-items: center;
+  width: 70px;
+  aspect-ratio: 1;
+  border: 1px solid rgba($ink, .3);
+  border-radius: 50%;
+  text-align: center;
+  font-family: $display;
+  font-size: 9px;
+  line-height: 1.25;
 }
 
-.error,
-.saved {
-  // TODO: 빨간 오류 문구와 저장 버튼 사이 간격은 여기서 조절하세요.
-  margin: 1rem 0 0;
-  font-size: 0.65rem;
+.formSection { padding-top: 8px; }
+.eyebrow { font-size: 11px; letter-spacing: .27em; }
+.hero { margin: 12px 0 9px; font-family: $display; font-size: 63px; font-weight: 400; line-height: 1; letter-spacing: -.02em; }
+.subtitle { margin: 0; padding-bottom: 16px; border-bottom: 1px solid rgba($ink, .5); font-size: 14px; }
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 155px minmax(0, 1fr) 36px;
+  align-items: center;
+  min-height: 55px;
+  border-bottom: 1px solid rgba($ink, .11);
+  font-size: 13.5px;
+
+  > label, > span:first-child { font-weight: 500; }
+  input { min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: $ink; font: inherit; }
+  input::placeholder { color: rgba($ink, .35); }
+  input:not([readonly]) { color: #000; }
 }
 
-.error {
-  color: #b32929;
+.value { color: rgba($ink, .9); }
+.editText, .rowButton { justify-self: end; padding: 0 0 2px; border: 0; border-bottom: 1px solid rgba($ink, .45); background: transparent; color: rgba($ink, .55); font: inherit; font-size: 11px; }
+.rowButton { cursor: pointer; }
+.error, .saved { margin: 10px 0 0; font-size: 11px; }
+.error { color: #b32929; }
+.saved { color: #547257; }
+
+.withdrawNotice {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 51px;
+  margin-top: 28px;
+  padding: 0 12px;
+  border: 1px solid rgba($ink, .14);
+  color: rgba($ink, .57);
+  font-size: 10px;
 }
 
-.saved {
-  color: #547257;
-}
+.infoIcon { display: grid; place-items: center; width: 20px; aspect-ratio: 1; border: 1px solid rgba($ink, .4); border-radius: 50%; font-family: serif; font-weight: 700; }
 
 .saveButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  height: 2.75rem;
-  margin-top: 1.5rem;
+  height: 62px;
+  margin-top: 24px;
+  padding: 0 24px;
   border: 0;
-  background: #171714;
+  background: #111;
   color: #fff;
   cursor: pointer;
   font: inherit;
-  font-size: 0.75rem;
+  font-size: 16px;
 
-  &:disabled {
-    cursor: wait;
-    opacity: 0.65;
-  }
+  span:first-child { margin-left: auto; }
+  span:last-child { margin-left: auto; font-size: 25px; font-weight: 200; }
+  &:disabled { cursor: wait; opacity: .65; }
 }
 
 .archive {
-  // 전체 아카이브를 정사각형으로 고정합니다.
-  width: 100%;
-  max-width: 20rem;
-  height: 20rem;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  gap: 26px;
+  margin-top: 2rem;
+  padding: 15px;
+  border: 1px solid rgba($ink, .14);
+
+  figure { margin: 0; }
+  img { display: block; width: 100%; height: 300px; object-fit: cover; }
+  figcaption { display: flex; align-items: center; gap: 14px; padding-top: 10px; font-size: 10px; letter-spacing: .2em; white-space: nowrap; }
+  figcaption i { flex: 1; height: 1px; background: rgba($ink, .15); }
 }
 
-.archive article {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  padding: 0.8rem;
-  border: 0.0625rem solid #e0ddd6;
-
-  > span {
-    color: #aaa59c;
-    font-size: 0.6rem;
-  }
+@media (max-width: 1450px) {
+  .layout { grid-template-columns: minmax(470px, 525px) minmax(450px, 1fr); width: 100%; }
+  .issueRail { display: none; }
 }
 
-.tripCard {
-  
-  justify-content: flex-end;
-  overflow: hidden;
-  border-right: 0 !important;
-  background:
-    linear-gradient(180deg, transparent 35%, rgba(0, 0, 0, 0.65)),
-    url("/public/Mypage-img/3.png") center / cover no-repeat;
-
-  strong,
-  small {
-    position: relative;
-    color: #fff;
-  }
-
-  strong {
-    font-family: $english;
-    font-size: 2rem;
-    font-weight: 400;
-    line-height: 1;
-  }
-
-  small {
-    font-size: 0.55rem;
-    letter-spacing: 0.12em;
-  }
-}
-
-.recentCard {
-  background: #111;
-  color: #fff;
-
-  > span,
-  small,
-  em {
-    color: rgba(255, 255, 255, 0.43) !important;
-  }
-
-  small {
-    margin-top: auto;
-    font-size: 0.6rem;
-    letter-spacing: 0.12em;
-  }
-
-  h2 {
-    margin: 0.35rem 0;
-    font-family: $english;
-    font-size: 1.65rem;
-    font-weight: 400;
-    line-height: 0.94;
-  }
-
-  em {
-    font-size: 0.6rem;
-    font-style: normal;
-    letter-spacing: 0.08em;
-  }
-}
-
-.savedCard,
-.storyCard {
-  background: #f1eee8;
-
-  small {
-    margin-top: auto;
-    color: #aaa59c;
-    font-size: 0.6rem;
-    letter-spacing: 0.1em;
-  }
-
-  strong {
-    color: #1e273c;
-    font-family: $english;
-    font-size: 1.1rem;
-    font-weight: 400;
-    line-height: 1;
-  }
-}
-
-.savedCard {
-  border-top: 0 !important;
-  border-right: 0 !important;
- 
-}
-
-.storyCard {
-  border-top: 0 !important;
-  
-}
-
-// Replace the square archive cards with two clean, landscape travel images.
-.archive {
-  height: auto;
-  max-width: 29rem;
-  grid-template-columns: 1fr;
-  grid-template-rows: none;
-  gap: .8rem;
-}
-
-.archive article {
-  display: none;
-  aspect-ratio: 2.55 / 1;
-  overflow: hidden;
-  padding: 0;
-  border: 0;
-}
-
-.tripCard {
-  // Override `.archive article { display: none; }` for the first image.
-  display: block !important;
-  background: url("/Mypage-img/2.png") center / cover no-repeat;
-}
-
-.recentCard {
-  // Override `.archive article { display: none; }` for the second image.
-  display: block !important;
-  background: url("/Mypage-img/6.png") center / cover no-repeat;
-}
-
-// Keep the existing JSX intact but hide its card labels for the image-only version.
-.tripCard > *,
-.recentCard > * {
-  display: none;
+@include tablet {
+  .profileEdit { padding: 4rem 2rem; }
+  .layout { grid-template-columns: 1fr; width: min(100%, 40rem); }
+  .archive { order: 2; }
 }
 
 @include mobile {
-  .profileEdit {
-    padding: 2.5rem 0 4rem;
-  }
-
-  .layout {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-    width: min(calc(100% - 2.5rem), 31rem);
-    transform: none;
-  }
-
-  // 모바일에서도 아카이브를 정사각형으로 유지합니다.
-  .archive {
-    width: 100%;
-    max-width: none;
-    height: auto;
-    margin: 0 auto;
-  }
-
-  .formSection {
-    padding: 0;
-  }
+  .profileEdit { padding: 3.5rem 1.25rem; }
+  .hero { font-size: 3rem; }
+  .fieldRow { grid-template-columns: 7.2rem minmax(0, 1fr) 2rem; }
+  .withdrawNotice { grid-template-columns: 1.4rem 1fr; padding: .7rem; }
+  .withdrawNotice span:last-child { grid-column: 2; }
+  .archive { padding: .65rem; gap: 1rem; }
+  .archive figcaption { gap: .5rem; font-size: .52rem; letter-spacing: .1em; }
 }

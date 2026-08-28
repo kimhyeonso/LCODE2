@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Alarm.module.scss";
 
 // 처음에는 모든 알림을 꺼진 상태로 보여줍니다.
@@ -13,15 +13,9 @@ const alarmItems = [
 ];
 
 export default function Alarm() {
-  const navigate = useNavigate();
   // 알림 이름을 key로 사용해 각각의 토글 상태를 따로 관리합니다.
-  // Match the initial alarm mix shown in the design: 1–3 and 5 are enabled.
-  const [enabledAlarms, setEnabledAlarms] = useState(() => [
-    alarmItems[0],
-    alarmItems[1],
-    alarmItems[2],
-    alarmItems[4],
-  ]);
+  // 처음에는 모든 알림을 받는 상태로 시작합니다.
+  const [enabledAlarms, setEnabledAlarms] = useState(() => [...alarmItems]);
 
   // 클릭한 알림만 켜거나 다시 끕니다.
   function toggleAlarm(label) {
@@ -34,14 +28,6 @@ export default function Alarm() {
 
   return (
     <main className={styles.alarm}>
-      <button
-        className={styles.back}
-        type="button"
-        aria-label="이전 페이지로 돌아가기"
-        onClick={() => navigate(-1)}
-      >
-        ←
-      </button>
       <aside className={styles.issueRail} aria-label="Issue information">
         <span>ISSUE NO.</span>
         <strong>002</strong>
@@ -51,6 +37,7 @@ export default function Alarm() {
       </aside>
       <div className={styles.content}>
         <section className={styles.settings} aria-labelledby="alarm-title">
+          <MypageBackLink />
           <p className={styles.eyebrow}>MY JOURNEY</p>
           <h1 id="alarm-title">ALARM</h1>
           <p className={styles.description}>

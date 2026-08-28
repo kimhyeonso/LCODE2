@@ -1,4 +1,5 @@
 import { useState } from "react";
+import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Wishlist.module.scss";
 
 const places = [
@@ -24,6 +25,7 @@ export default function Wishlist() {
   return (
     <main className={styles.wishlist}>
       <section className={styles.content} aria-labelledby="wish-list-title">
+        <MypageBackLink />
         <p className={styles.eyebrow}>MY JOURNEY</p>
         <h1 id="wish-list-title">WISH LIST</h1>
         <p className={styles.description}>다음 여행을 위해 저장해둔 장소</p>

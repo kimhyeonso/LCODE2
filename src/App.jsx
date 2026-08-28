@@ -19,9 +19,11 @@ import Itinerary from "./pages/Itinerary";
 import Wishlist from "./pages/Wishlist";
 import Mystories from "./pages/Mystories";
 import Coupon from "./pages/Coupon";
+import CouponUp from "./pages/CouponUp";
 import Alarm from "./pages/Alarm";
 import Notice from "./pages/Notice";
 import OpenGuide from "./pages/OpenGuide";
+import Review from "./pages/Review";
 import NotFound from "./pages/NotFound";
 import Saved from "./pages/Saved";
 import Cart from "./pages/Cart";
@@ -44,7 +46,9 @@ const enlargedPagePaths = new Set([
   "/itinerary",
   "/wishlist",
   "/mystories",
+  "/review",
   "/coupon",
+  "/coupon/register",
   "/alarm",
   "/open-guide",
 ]);
@@ -83,7 +87,16 @@ export default function App() {
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/mystories" element={<Mystories />} />
+          <Route
+            path="/review"
+            element={
+              <ProtectedRoute>
+                <Review />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/coupon" element={<Coupon />} />
+          <Route path="/coupon/register" element={<CouponUp />} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/open-guide" element={<OpenGuide />} />
