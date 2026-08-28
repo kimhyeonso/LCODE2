@@ -628,1157 +628,449 @@
 
 
 /* =========================================================
-   PRODUCT DETAIL
+
+/* =========================================================
+   PRODUCT DETAIL - CLEAN
 ========================================================= */
 
 .detailPage {
   padding:
-  clamp(58px, 6vw, 94px)
-  clamp(54px, 5vw, 88px)
-  64px;
+    clamp(58px, 6vw, 94px)
+    clamp(54px, 5vw, 88px)
+    72px;
 }
-
 
 .detailSpread {
   width: min(1280px, 100%);
-
   margin-inline: auto;
-
   display: grid;
-
-  grid-template-columns:
-    minmax(360px, 520px)
-    minmax(450px, 620px);
-
+  grid-template-columns: minmax(360px, 510px) minmax(460px, 620px);
   justify-content: space-between;
-
   align-items: start;
-
-  column-gap:
-    clamp(64px, 6vw, 120px);
+  column-gap: clamp(70px, 7vw, 130px);
 }
 
+/* PRODUCT GALLERY */
+.productGallery {
+  width: 100%;
+  min-width: 0;
+}
 
-/* 이미지가 독립된 화보 컷처럼 보이도록 */
-
-.detailVisual {
+.productGallery .detailVisual {
   position: relative;
+  width: 100%;
+  max-width: 510px;
+  aspect-ratio: 0.82 / 1;
+  overflow: hidden;
+  background: #ece9e2;
+  color: #fff;
+}
+
+.galleryMainImage {
+  display: block;
 
   width: 100%;
+  height: 100%;
 
-  aspect-ratio: 0.88 / 1;
+  object-fit: cover;
+  object-position: center;
 
-  max-height: 610px;
-
-  overflow: hidden;
-
-  color: #fff;
-
-  background: #ccc;
+  animation: productImageFade 0.28s ease;
 }
 
+@keyframes productImageFade {
+  from { opacity: 0.55; }
+  to { opacity: 1; }
+}
 
-.detailVisual span {
+.productGallery .detailVisual > span {
   position: absolute;
-
   top: 18px;
   left: 18px;
-
+  z-index: 2;
   font-size: 9px;
   letter-spacing: 2px;
 }
 
-
-.detailVisual b {
+.productGallery .detailVisual > b {
   width: 100%;
   height: 100%;
-
   display: grid;
   place-items: center;
-
-  font:
-    clamp(150px, 13vw, 235px)
-    $serif;
-
+  font: clamp(150px, 13vw, 230px) $serif;
   opacity: 0.22;
 }
 
-
-.detailInfo {
-  width: 100%;
-
-  padding-top:
-    clamp(18px, 2vw, 38px);
+.galleryArrow {
+  position: absolute;
+  top: 50%;
+  z-index: 5;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid rgba(23, 23, 20, 0.18);
+  border-radius: 50%;
+  background: rgba(251, 249, 244, 0.9);
+  color: $ink;
+  font-size: 16px;
+  cursor: pointer;
+  transform: translateY(-50%);
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
+.productGallery:hover .galleryArrow { opacity: 1; }
+.galleryArrow:hover {
+  background: #fff;
+  transform: translateY(-50%) scale(1.04);
+}
+.galleryPrev { left: 14px; }
+.galleryNext { right: 14px; }
+
+.galleryCount {
+  position: absolute;
+  right: 16px;
+  bottom: 15px;
+  z-index: 5;
+  padding: 7px 10px;
+  background: rgba(251, 249, 244, 0.9);
+  color: $ink;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+}
+.galleryCount span { color: $muted; }
+
+.galleryPagination {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  transform: translateX(-50%);
+}
+
+.galleryPagination button {
+  width: 5px;
+  height: 5px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(23, 23, 20, 0.28);
+  cursor: pointer;
+  transition: width 0.2s ease, background 0.2s ease;
+}
+
+.galleryPagination .galleryDotActive {
+  width: 18px;
+  border-radius: 10px;
+  background: $ink;
+}
+
+/* PRODUCT INFO */
+.detailInfo {
+  width: 100%;
+  padding-top: clamp(8px, 1.5vw, 24px);
+}
+
+.detailInfo small,
+.detailInfo label {
+  color: $muted;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
 
 .detailInfo h1 {
-  margin:
-    22px 0
-    18px;
-
-  font:
-    clamp(44px, 4.4vw, 66px) /
-    0.98
-    $serif;
-
+  margin: 22px 0 18px;
+  font: clamp(44px, 4.4vw, 66px) / 0.98 $serif;
   letter-spacing: -0.04em;
 }
 
-
-.detailInfo > strong {
-  font: 25px $serif;
-}
-
-
+.detailInfo > strong { font: 25px $serif; }
 .detailInfo em,
 .totalBox em,
-.summary em {
-  font: 11px $sans;
-}
+.summary em { font: 11px $sans; }
 
-
-.detailInfo p {
+.detailInfo > p {
+  max-width: 540px;
   margin: 34px 0;
-
   color: $muted;
-
   font-size: 12px;
   line-height: 1.9;
 }
 
-
 .detailInfo hr {
   margin: 26px 0;
-
   border: 0;
   border-top: 1px solid $line;
 }
 
-
 .detailInfo label {
   display: block;
-
   margin: 18px 0 10px;
 }
 
-
 .options {
   display: grid;
-
   gap: 6px;
 }
 
-
 .options button {
+  padding: 13px 16px;
+  border: 1px solid $line;
+  background: transparent;
   text-align: left;
+  font-size: 10px;
+  cursor: pointer;
 }
 
+.options .selected {
+  color: #fff;
+  background: $ink !important;
+}
 
 .quantity {
   display: flex;
-
   width: fit-content;
-
   margin-top: 10px;
-
   border: 1px solid $line;
 }
-
 
 .quantity button,
 .quantity b {
   width: 34px;
   height: 28px;
-
   display: grid;
   place-items: center;
-
   border: 0;
-
   background: transparent;
-
   font-size: 12px;
 }
 
-
-.detailInfo > .quantity {
-  margin-left: auto;
-}
-
+.quantity button { cursor: pointer; }
+.detailInfo > .quantity { margin-left: auto; }
 
 .detailActions {
   display: flex;
-
   gap: 8px;
-
   margin-top: 34px;
 }
 
-
-.detailActions > * {
-  flex: 1;
-}
-
+.detailActions > * { flex: 1; }
 
 .primaryButton,
 .detailActions button,
 .detailActions a {
   display: block;
-
   width: 100%;
-
   padding: 17px;
-
   border: 0;
-
   color: #fff;
   background: $ink;
-
   text-align: center;
-
   font-size: 11px;
 }
 
-
-/* =========================================================
-   PRODUCT DETAIL
-========================================================= */
-
-.detailPage {
-  width: calc(100% - 220px);
-  margin-left: 220px;
-
-  padding:
-    clamp(58px, 6vw, 94px)
-    clamp(54px, 5vw, 88px)
-    72px;
-
-  background: $paper-light;
-}
-
-
-/* =========================================================
-   MAIN PRODUCT SPREAD
-========================================================= */
-
-.detailSpread {
-  width: min(1280px, 100%);
-
-  margin-inline: auto;
-
-  display: grid;
-
-  grid-template-columns:
-    minmax(360px, 510px)
-    minmax(460px, 620px);
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  column-gap:
-    clamp(70px, 7vw, 130px);
-}
-
-
-/* 상품 이미지 */
-
-.detailVisual {
-  position: relative;
-
-  width: 100%;
-
-  aspect-ratio: 0.9 / 1;
-
-  max-height: 590px;
-
-  overflow: hidden;
-
-  background: #ccc;
-
-  color: #fff;
-}
-
-
-.detailVisual span {
-  position: absolute;
-
-  top: 18px;
-  left: 18px;
-
-  font-size: 9px;
-  letter-spacing: 2px;
-}
-
-
-.detailVisual b {
-  width: 100%;
-  height: 100%;
-
-  display: grid;
-
-  place-items: center;
-
-  font:
-    clamp(
-      150px,
-      13vw,
-      230px
-    )
-    $serif;
-
-  opacity: 0.22;
-}
-
-
-/* 상품 정보 */
-
-.detailInfo {
-  width: 100%;
-
-  padding: 0;
-}
-
-
-.detailInfo small,
-.detailInfo label {
-  color: $muted;
-
-  font-size: 9px;
-
-  letter-spacing: 2px;
-}
-
-
-.detailInfo h1 {
-  margin:
-    22px 0
-    18px;
-
-  font:
-    clamp(
-      44px,
-      4.4vw,
-      66px
-    ) /
-    0.98
-    $serif;
-
-  letter-spacing: -0.04em;
-}
-
-
-.detailInfo > strong {
-  font: 25px $serif;
-}
-
-
-.detailInfo em {
-  font: 11px $sans;
-}
-
-
-.detailInfo > p {
-  max-width: 540px;
-
-  margin:
-    34px 0;
-
-  color: $muted;
-
-  font-size: 12px;
-
-  line-height: 1.9;
-}
-
-
-.detailInfo hr {
-  margin:
-    26px 0;
-
-  border: 0;
-
-  border-top:
-    1px solid $line;
-}
-
-
-.detailInfo label {
-  display: block;
-
-  margin:
-    18px 0
-    10px;
-}
-
-
-/* 옵션 */
-
-.options {
-  display: grid;
-
-  gap: 6px;
-}
-
-
-.options button {
-  padding:
-    13px 16px;
-
-  border:
-    1px solid $line;
-
-  background:
-    transparent;
-
-  text-align: left;
-
-  font-size: 10px;
-}
-
-
-.options .selected {
-  background:
-    $ink !important;
-
-  color: #fff;
-}
-
-
-/* 수량 */
-
-.quantity {
-  display: flex;
-
-  width: fit-content;
-
-  margin-top: 10px;
-
-  border:
-    1px solid $line;
-}
-
-
-.quantity button,
-.quantity b {
-  width: 34px;
-  height: 28px;
-
-  display: grid;
-
-  place-items: center;
-
-  border: 0;
-
-  background:
-    transparent;
-
-  font-size: 12px;
-}
-
-
-.detailInfo > .quantity {
-  margin-left: auto;
-}
-
-
-/* 구매 버튼 */
-
-.detailActions {
-  display: flex;
-
-  gap: 8px;
-
-  margin-top: 34px;
-}
-
-
-.detailActions > * {
-  flex: 1;
-}
-
-
-.detailActions button,
-.detailActions a {
-  display: block;
-
-  width: 100%;
-
-  padding: 17px;
-
-  border: 0;
-
-  background: $ink;
-
-  color: #fff;
-
-  text-align: center;
-
-  font-size: 11px;
-}
-
-
-/* =========================================================
-   PRODUCT ACCORDION
-========================================================= */
-
+/* PRODUCT ACCORDION */
 .productAccordion {
   width: min(1280px, 100%);
-
-  margin:
-    clamp(70px, 7vw, 108px)
-    auto
-    0;
-
+  margin: clamp(70px, 7vw, 108px) auto 0;
   border-top: 1px solid $line;
 }
 
-
-.productAccordion details {
-  border-bottom: 1px solid $line;
-}
-
+.productAccordion details { border-bottom: 1px solid $line; }
 
 .productAccordion summary {
   min-height: 68px;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   padding: 0 4px;
-
   list-style: none;
-
   cursor: pointer;
 }
 
-
-.productAccordion summary::-webkit-details-marker {
-  display: none;
-}
-
+.productAccordion summary::-webkit-details-marker { display: none; }
 
 .productAccordion summary > span {
   display: flex;
   align-items: center;
-
   gap: 26px;
-
   font-size: 11px;
   letter-spacing: 0.17em;
 }
 
-
 .productAccordion summary b {
   color: $muted;
-
   font: 400 9px $sans;
-
   letter-spacing: 0.12em;
 }
 
-
-/* + / - */
-
 .productAccordion summary i {
   position: relative;
-
   width: 16px;
   height: 16px;
-
   flex: 0 0 auto;
 }
-
 
 .productAccordion summary i::before,
 .productAccordion summary i::after {
   content: "";
-
   position: absolute;
-
   top: 50%;
   left: 50%;
-
   width: 12px;
   height: 1px;
-
   background: $ink;
-
   transform: translate(-50%, -50%);
 }
 
-
 .productAccordion summary i::after {
-  transform:
-    translate(-50%, -50%)
-    rotate(90deg);
-
+  transform: translate(-50%, -50%) rotate(90deg);
   transition: transform 0.2s ease;
 }
 
-
-.productAccordion details[open]
-  summary
-  i::after {
-  transform:
-    translate(-50%, -50%)
-    rotate(0deg);
+.productAccordion details[open] summary i::after {
+  transform: translate(-50%, -50%) rotate(0deg);
 }
-
-
-/* 내용 */
 
 .accordionContent {
-  padding:
-    0
-    4px
-    28px
-    57px;
+  padding: 0 4px 28px 57px;
 }
-
 
 .accordionContent p {
   max-width: 680px;
-
   margin: 0;
-
   color: $muted;
-
   font-size: 11px;
   line-height: 1.9;
-
   word-break: keep-all;
 }
 
-
-/* =========================================================
-   PRODUCT DETAIL LONG IMAGE AREA
-========================================================= */
-
+/* LONG PRODUCT DETAIL */
 .detailContents {
-  /* 위 아코디언과 정확히 같은 폭 */
-  width: min(1280px, 100%);
-
-  margin:
-    clamp(72px, 7vw, 105px)
-    auto
-    30px;
+  width: min(900px, 100%);
+  margin: clamp(84px, 8vw, 126px) auto 20px;
 }
-
-
-/* PRODUCT DETAIL */
 
 .detailContentsHeader {
   width: 100%;
-
-  margin-bottom: 18px;
-
+  margin-bottom: 22px;
   padding-bottom: 14px;
-
   border-bottom: 1px solid $ink;
 }
 
-
 .detailContentsHeader small {
   color: $muted;
-
   font-size: 8px;
   letter-spacing: 0.2em;
 }
 
+.detailContentsHeader > span { display: none; }
 
-/* 혹시 예전 span 스타일 남아있어도 숨김 */
-
-.detailContentsHeader > span {
-  display: none;
+.detailBannerList {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-
-
-/* =========================================================
-   DETAIL BANNER
-========================================================= */
 
 .detailBannerSlot {
   width: 100%;
-
-  margin-bottom:
-    clamp(22px, 2.5vw, 36px);
-
-  overflow: hidden;
-
-  background: #e7e4dd;
+  margin: 0;
+  padding: 0;
+  overflow: visible;
+  background: transparent;
 }
-
-
-/* placeholder일 때만 적당한 높이 */
-
-.detailBannerSlot:not(:has(img)) {
-  min-height:
-    clamp(320px, 34vw, 520px);
-
-  display: grid;
-  place-items: center;
-}
-
-
-.detailBannerSlot > span {
-  color: rgba(23, 23, 20, 0.28);
-
-  font-size: 9px;
-  letter-spacing: 0.22em;
-}
-
-
-/* 실제 상세 이미지 */
 
 .detailBannerSlot img {
   display: block;
-
   width: 100%;
-
   height: auto;
-
   max-width: 100%;
-
+  margin: 0 auto;
   object-fit: contain;
 }
 
-
-/* 실제 이미지가 들어가면
-   원본 비율 그대로 */
-
 .detailBannerSlot:has(img) {
   min-height: 0;
-
   background: transparent;
 }
 
-/* =========================================================
-   LONG PRODUCT DETAIL
-========================================================= */
-
-.detailContents {
-  width:
-    min(
-      1080px,
-      100%
-    );
-
-  margin:
-    clamp(
-      84px,
-      8vw,
-      130px
-    )
-    auto
-    30px;
-}
-
-
-/* 상세영역 작은 타이틀 */
-
-.detailContentsHeader {
-  display: flex;
-
-  justify-content:
-    space-between;
-
-  align-items:
-    center;
-
-  margin-bottom: 18px;
-
-  padding-bottom: 14px;
-
-  border-bottom:
-    1px solid $ink;
-}
-
-
-.detailContentsHeader small,
-.detailContentsHeader span {
-  color: $muted;
-
-  font-size: 8px;
-
-  letter-spacing:
-    0.2em;
-}
-
-
-/* =========================================================
-   상세 긴 배너 슬롯
-========================================================= */
-
-.detailBannerSlot {
-  position: relative;
-
-  width: 100%;
-
-  min-height:
-    clamp(
-      420px,
-      46vw,
-      680px
-    );
-
-  margin-bottom:
-    clamp(
-      24px,
-      3vw,
-      42px
-    );
-
-  display: grid;
-
-  place-items: center;
-
-  overflow: hidden;
-
-  background: #e7e4dd;
-
-  color:
-    rgba(
-      23,
-      23,
-      20,
-      0.28
-    );
-}
-
-
-.detailBannerSlot > span {
-  font-size: 9px;
-
-  letter-spacing:
-    0.22em;
-}
-
-
-/* 실제 이미지 넣을 때 */
-
-.detailBannerSlot img {
-  display: block;
-
-  width: 100%;
-
-  height: auto;
-
-  object-fit: cover;
-}
-
-
-/* 이미지가 들어오면 placeholder 최소높이 무시 */
-
-.detailBannerSlot:has(img) {
-  min-height: 0;
-
-  display: block;
-
-  background: transparent;
-}
-
-
-/* =========================================================
-   MODAL
-========================================================= */
-
-.modalBackdrop {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 80;
-
-  display: grid;
-
-  place-items: center;
-
-  padding: 20px;
-
-  background:
-    rgba(
-      0,
-      0,
-      0,
-      0.4
-    );
-}
-
-
-.addedModal {
-  position: relative;
-
-  width:
-    min(
-      500px,
-      100%
-    );
-
-  padding: 28px;
-
-  background:
-    $paper-light;
-}
-
-
-.addedModal h2 {
-  font-size: 16px;
-}
-
-
-.addedModal p {
-  color: $muted;
-
-  font-size: 11px;
-}
-
-
-.close {
-  position: absolute;
-
-  top: 12px;
-  right: 16px;
-
-  border: 0;
-
-  background:
-    none;
-
-  font-size: 25px;
-}
-
-
-.miniProducts {
-  display: grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      1fr
-    );
-
-  gap: 12px;
-
-  margin:
-    18px
-    0;
-}
-
-
-.miniVisual {
-  aspect-ratio: 1;
-
-  background: #ccc;
-}
-
-
-.miniProducts small,
-.miniProducts span {
-  display: block;
-
-  margin-top: 5px;
-
-  font-size: 9px;
-}
-
-
-.modalActions {
-  display: flex;
-
-  gap: 8px;
-
-  padding-top: 20px;
-
-  border-top:
-    1px solid $line;
-}
-
-
-.modalActions > * {
-  flex: 1;
-
-  padding: 13px;
-
-  border:
-    1px solid $line;
-
-  background:
-    transparent;
-
-  text-align: center;
-
-  font-size: 10px;
-}
-
-
-.modalActions a {
-  background: $ink;
-
-  color: #fff;
-}
-
-
-/* =========================================================
-   TABLET
-========================================================= */
-
+/* Detail-specific responsive rules */
 @include tablet {
-
   .detailPage {
     width: 100%;
-
     margin-left: 0;
-
-    padding:
-      54px
-      36px
-      90px;
+    padding: 54px 36px 90px;
   }
 
-
   .detailSpread {
-    grid-template-columns:
-      1fr;
-
+    grid-template-columns: 1fr;
     row-gap: 48px;
   }
 
-
-  .detailVisual {
-    width:
-      min(
-        560px,
-        100%
-      );
-
-    margin-inline:
-      auto;
-
-    aspect-ratio:
-      1 / 1.05;
+  .productGallery {
+    width: min(560px, 100%);
+    margin-inline: auto;
   }
 
+  .productGallery .detailVisual {
+    width: 100%;
+    max-width: none;
+    aspect-ratio: 0.82 / 1;
+  }
+
+  .galleryArrow { opacity: 1; }
 
   .detailInfo {
-    width:
-      min(
-        680px,
-        100%
-      );
-
-    margin-inline:
-      auto;
+    width: min(680px, 100%);
+    margin-inline: auto;
+    padding-top: 0;
   }
 
-
-  .productAccordion {
-    width:
-      min(
-        760px,
-        100%
-      );
-
-    margin-top: 64px;
-  }
-
-
-  .detailContents {
-    width:
-      min(
-        760px,
-        100%
-      );
-
-    margin-top: 86px;
-  }
+  .productAccordion { width: min(760px, 100%); }
+  .detailContents { width: min(760px, 100%); }
 }
 
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
 @include mobile {
+  .detailPage { padding: 28px 16px 70px; }
+  .detailSpread { row-gap: 32px; }
+  .productGallery { width: 100%; }
 
-  .detailPage {
-    padding:
-      28px
-      16px
-      70px;
-  }
-
-
-  .detailSpread {
-    row-gap: 32px;
-  }
-
-
-  .detailVisual {
+  .productGallery .detailVisual {
     width: 100%;
-
-    max-height: none;
-
-    aspect-ratio:
-      1 / 1.08;
+    aspect-ratio: 0.82 / 1;
   }
 
-
-  .detailInfo {
-    width: 100%;
+  .galleryArrow {
+    width: 36px;
+    height: 36px;
+    opacity: 1;
+    font-size: 14px;
   }
 
+  .galleryPrev { left: 8px; }
+  .galleryNext { right: 8px; }
+  .galleryCount { right: 10px; bottom: 10px; }
+  .galleryPagination { bottom: 13px; }
 
-  .detailInfo h1 {
-    font-size:
-      clamp(
-        40px,
-        13vw,
-        60px
-      );
-  }
-
+  .detailInfo { width: 100%; }
+  .detailInfo h1 { font-size: clamp(40px, 13vw, 60px); }
+  .detailActions { flex-direction: column; }
 
   .productAccordion {
     width: 100%;
-
     margin-top: 54px;
   }
 
-
-  .productAccordion summary {
-    min-height: 62px;
-  }
-
-
-  .productAccordion summary > span {
-    gap: 16px;
-
-    font-size: 10px;
-  }
-
-
-  .accordionContent {
-    padding:
-      0
-      0
-      24px
-      39px;
-  }
-
-
-  .detailContents {
-    width: 100%;
-
-    margin-top: 72px;
-  }
-
-
-  .detailBannerSlot {
-    min-height: 360px;
-  }
+  .productAccordion summary { min-height: 62px; }
+  .productAccordion summary > span { gap: 16px; font-size: 10px; }
+  .accordionContent { padding: 0 0 24px 39px; }
+  .detailContents { width: 100%; margin-top: 72px; }
 }
 
 /* =========================================================
