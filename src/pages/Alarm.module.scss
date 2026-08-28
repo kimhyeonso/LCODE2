@@ -1,16 +1,14 @@
 // 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 // 페이지에서 사용하는 글꼴을 불러옵니다.
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600&display=swap");
-$display: "DM Serif Display", serif; // Serif title font.
-$korean: "Noto Sans KR", sans-serif; // Korean UI font.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .alarm, .alarm * { letter-spacing: -0.01em !important; }
 
 // 알림 페이지 전체 배경과 여백입니다.
-.alarm { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; }
+.alarm { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; @include korean-font; }
 // 알림 설정과 이미지 영역의 2단 레이아웃입니다.
 .content { display: grid; grid-template-columns: 21rem 17.7rem; gap: 3.8rem; align-items: start; width: min(calc(100% - 10.6rem), 42.5rem); margin: 0 auto; }
 .eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
@@ -21,13 +19,65 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 .settingList { margin-top: 1.8rem; border-top: 1px solid #ebe8e3; }
 .setting { display: flex; align-items: center; justify-content: space-between; height: 3.55rem; padding: 0 1rem; border-bottom: 1px solid #ebe8e3; color: #292929; font: 400 1rem $korean; letter-spacing: -.06em; }
 // 기능 없이 상태만 보여주는 토글 스타일입니다.
-.setting button { position: relative; width: 2.45rem; height: 1.28rem; border: 0; border-radius: 1rem; background: #d7d7d7; }
-.setting button i { position: absolute; top: .18rem; left: .18rem; width: .92rem; height: .92rem; border-radius: 50%; background: #fff; }
+// 토글 바깥쪽 트랙입니다. 배경색이 부드럽게 바뀝니다.
+.setting button {
+  position: relative;
+  width: 2.45rem;
+  height: 1.28rem;
+  border: 0;
+  border-radius: 1rem;
+  background: #d7d7d7;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+// 토글 안에서 움직이는 흰색 원입니다.
+.setting button i {
+  position: absolute;
+  top: .18rem;
+  left: .18rem;
+  width: .92rem;
+  height: .92rem;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.2s ease;
+}
+
+// 켜진 토글은 어두운 트랙과 오른쪽 원으로 표시합니다.
 .setting button.enabled { background: #363636; }
-.setting button.enabled i { right: .18rem; left: auto; }
+.setting button.enabled i { transform: translateX(1.17rem); }
 .notice { margin: 2.45rem 0 0; color: #65615c; font: 400 .58rem/1.45 $korean; text-align: center; }
 .notice span { margin-right: 1.5rem; font-size: .72rem; }
 // 알림 이미지를 대신하는 고정 크기 회색 영역입니다.
-.imagePlaceholder { width: 100%; height: 31.4rem; background-image:url(/public/Mypage-img/7.png); background-size: cover;}
+.imagePlaceholder { width: 100%; height: 31.4rem; background-image:url(/public/Mypage-img/7.png); background-size: cover;  margin-top: 4rem;}
 @include tablet { .content { width: min(calc(100% - 6rem), 42.5rem); } }
-@include mobile { .alarm { padding: 2.5rem 0 3.5rem; } .content { grid-template-columns: 1fr; gap: 3rem; width: min(calc(100% - 2.5rem), 31rem); } .imagePlaceholder { height: 18rem; } }
+@include mobile {
+  // 모바일은 6개 설정과 안내문이 한 화면에 들어오도록 세로 밀도를 높입니다.
+  .alarm { padding: 0.8rem 0 1.25rem; }
+  .content { grid-template-columns: 1fr; width: min(calc(100% - 2.5rem), 31rem); }
+
+  .eyebrow { font-size: 0.48rem; }
+  h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
+  .description { font-size: 0.55rem; }
+  .divider { margin-top: 0.55rem; }
+
+  .settingList { margin-top: 1rem; }
+  .setting {
+    height: 2.1rem;
+    padding-inline: 0.7rem;
+    font-size: 0.75rem;
+  }
+
+  .setting button { width: 1.45rem; height: 0.75rem; }
+  .setting button i { top: 0.115rem; left: 0.115rem; width: 0.52rem; height: 0.52rem; }
+  .setting button.enabled i { transform: translateX(0.68rem); }
+
+  .notice { margin-top: 0.8rem; font-size: 0.45rem; }
+  .notice span { margin-right: 0.8rem; font-size: 0.55rem; }
+
+  // 모바일 시안에서는 PC 전용 알림 이미지를 표시하지 않습니다.
+  .imagePlaceholder { display: none; }
+}
+.setting {
+  font: 400 0.7rem $korean;
+}

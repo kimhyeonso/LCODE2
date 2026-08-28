@@ -1,0 +1,15 @@
+.map {
+  width: 100%;
+  height: 205px;
+  z-index: 0;
+  background: #e9e9e5;
+}
+
+:global(.leaflet-control-attribution) {
+  font-size: 7px;
+}
+
+:global(.leaflet-popup-content) {
+  margin: 10px 14px;
+  font-size: 11px;
+}

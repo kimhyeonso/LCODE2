@@ -120,6 +120,10 @@
   letter-spacing: 1px;
 }
 
+.headerActions { display: none; }
+.searchButton { width: 24px; height: 24px; }
+.searchButton img { width: 100%; height: 100%; display: block; }
+
 .mobileNavigation {
   display: none;
 }
@@ -171,6 +175,11 @@
       height: 24px;
       display: block;
     }
+  }
+  .headerActions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
   }
   .navigation {
     display: none;

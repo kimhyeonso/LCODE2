@@ -1,18 +1,16 @@
 // 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
 // 페이지에서 사용하는 글꼴을 불러옵니다.
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+KR:wght@400;500;600;700&display=swap");
-$display: "DM Serif Display", serif; // Serif heading font.
-$korean: "Noto Sans KR", sans-serif; // Korean UI font.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
 .mystories, .mystories * { letter-spacing: -0.01em !important; }
 
 // 페이지 전체 배경과 상하 여백입니다.
-.mystories { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; }
+.mystories { min-height: calc(100vh - 10rem); padding: 3.75rem 0 4rem; background: white; @include korean-font; }
 // 데스크톱의 좌우 2단 레이아웃입니다.
-.content { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 6.7rem; width: min(calc(100% - 10.6rem), 52.3rem); margin: 0 auto; }
+.content { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 6.7rem; width: min(calc(100% - 10.6rem), 48rem); margin: 0 auto; }
 // 상단 작은 섹션 라벨입니다.
 .eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
 // 공통 영문 제목 스타일입니다.
@@ -60,6 +58,50 @@ background-size: cover; }
 .productCard footer button { height: 1.35rem; font-size: .48rem; }
 .pagination { margin-top: .6rem; color: #bbb; font-size: .42rem; letter-spacing: .25rem; text-align: center; }
 // 태블릿 화면 여백입니다.
-@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 52.3rem); } }
+@include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 48rem); } }
 // 휴대폰 화면의 단일 열 레이아웃입니다.
-@include mobile { .mystories { padding: 2.5rem 0 3.5rem; } .content { grid-template-columns: 1fr; gap: 3.5rem; width: min(calc(100% - 2.5rem), 31rem); } .shopping { padding-top: 0; } .storyImage { height: 11rem; } .productImage { height: 12rem; } }
+@include mobile {
+  .mystories { padding: 0.8rem 0 1.5rem; }
+  // 확대된 rem 기준에서도 좌우 여백을 남겨 카드가 화면 밖으로 나가지 않게 합니다.
+  .content {
+    grid-template-columns: 1fr;
+    gap: 0.95rem;
+    width: calc(100% - 2rem);
+    max-width: none;
+    // 모바일 미리보기의 확대 rem 기준에서 오른쪽으로 밀린 폭을 보정해 좌우 여백을 맞춥니다.
+    transform: translateX(-0.4rem);
+  }
+
+  .eyebrow { font-size: 0.48rem; }
+  h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
+  // 모바일 시안에는 보조 문구가 없어 제목 아래의 구분선으로 바로 이어집니다.
+  .description { display: none; }
+  .divider { margin-top: 0.55rem; }
+
+  .storyList { gap: 0; margin-top: 0.65rem; }
+  // 카드형 슬라이드의 첫 여행만 모바일 첫 화면에 표시합니다.
+  .storyCard:nth-child(n + 2) { display: none; }
+  .storyImage { height: 4.2rem; }
+  .storyInfo { padding: 0.55rem 0.7rem 0.25rem; }
+  .storyInfo h2 { font-size: 0.8rem; }
+  .storyInfo > p { margin-top: 0.2rem; font-size: 0.48rem; }
+  .storyInfo small { margin-top: 0.25rem; font-size: 0.42rem; }
+  .storyInfo footer { gap: 0.25rem; margin-top: 0.45rem; }
+  .storyInfo button { height: 1.55rem; font-size: 0.44rem; }
+
+  // 여행 리뷰 아래에 쇼핑 목록을 바로 이어 붙이고, 중복 제목은 모바일에서 숨깁니다.
+  .shopping { padding-top: 0.6rem; border-top: 1px solid #ddd9d1; }
+  .shopping h1,
+  .shopping > p { display: none; }
+  .filters { gap: 0.2rem; margin-top: 0; }
+  .filters button { min-width: 2.35rem; height: 1.35rem; font-size: 0.38rem; }
+
+  .productGrid { width: 100%; gap: 1rem 0.125rem; margin-top: 0.75rem; }
+  .productImage { height: auto; aspect-ratio: 1 / 1; }
+  .productCard h2 { margin-top: 0.3rem; font-size: 0.5rem; }
+  .productCard small { font-size: 0.42rem; }
+  .productCard p { margin-top: 0.15rem; font-size: 0.42rem; }
+  .productCard footer { gap: 0.2rem; margin-top: 0.55rem; }
+  .productCard footer button { height: 1.05rem; font-size: 0.34rem; }
+  .pagination { margin-top: 0.35rem; font-size: 0.35rem; }
+}

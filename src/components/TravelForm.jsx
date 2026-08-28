@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
+import PlaceMap from "./PlaceMap";
 import styles from "./TravelForm.module.scss";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import walkIcon from "../assets/icons/transportation/directions_walk.svg";
@@ -105,6 +106,28 @@ export default function TravelForm({ onSubmit, loading }) {
   const [savedPlaces, setSavedPlaces] = useState([]);
   const [memoTarget, setMemoTarget] = useState(null);
   const [memoDraft, setMemoDraft] = useState("");
+  const [draggedStopId, setDraggedStopId] = useState(null);
+  const [isFlightOpen, setIsFlightOpen] = useState(false);
+  const airportStops = selectedTrip.days.flatMap((day) => day.items).filter((item) => item.type === "place" && item.category === "airport");
+  const [flightInfo, setFlightInfo] = useState(() => ({
+    departureAirport: airportStops[0]?.place || "출발 공항",
+    arrivalAirport: airportStops.at(-1)?.place || selectedTrip.city,
+    departureDate: selectedTrip.dateRange.start || "2026-08-17",
+    departureHour: "15",
+    departureMinute: "30",
+    arrivalDate: selectedTrip.dateRange.end || "2026-08-20",
+    arrivalHour: "20",
+    arrivalMinute: "30",
+    airline: "대한항공",
+    flightNumber: "KE704",
+    departureTerminal: "T1",
+    arrivalTerminal: "T2",
+  }));
+  const [flightDraft, setFlightDraft] = useState(flightInfo);
+  const [isPlaceAddOpen, setIsPlaceAddOpen] = useState(false);
+  const [placeQuery, setPlaceQuery] = useState("");
+  const [placeCategory, setPlaceCategory] = useState("all");
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
   const stops = stopsByDay[activeDay] || [];
   const suggestedTitles = [
     `맛집 따라 ${selectedTrip.city}`,
@@ -167,6 +190,75 @@ export default function TravelForm({ onSubmit, loading }) {
         : dayStops,
     ));
   };
+
+  const moveStop = (sourceId, targetId) => {
+    if (!sourceId || !targetId || sourceId === targetId) return;
+    setStopsByDay((current) => current.map((dayStops, index) => {
+      if (index !== activeDay) return dayStops;
+      const sourceIndex = dayStops.findIndex((stop) => String(stop.id) === String(sourceId));
+      const targetIndex = dayStops.findIndex((stop) => String(stop.id) === String(targetId));
+      if (sourceIndex < 0 || targetIndex < 0) return dayStops;
+      const nextStops = [...dayStops];
+      const [movedStop] = nextStops.splice(sourceIndex, 1);
+      nextStops.splice(targetIndex, 0, movedStop);
+      return nextStops;
+    }));
+  };
+
+  const handleHandleKeyDown = (event, stopId) => {
+    if (event.key !== "ArrowUp" && event.key !== "ArrowDown") return;
+    event.preventDefault();
+    const currentIndex = stops.findIndex((stop) => stop.id === stopId);
+    const targetIndex = event.key === "ArrowUp" ? currentIndex - 1 : currentIndex + 1;
+    if (targetIndex >= 0 && targetIndex < stops.length) moveStop(stopId, stops[targetIndex].id);
+  };
+
+  const openFlightEdit = () => {
+    setFlightDraft(flightInfo);
+    setIsFlightOpen(true);
+  };
+
+  const updateFlightDraft = (field) => (event) => {
+    setFlightDraft((current) => ({ ...current, [field]: event.target.value }));
+  };
+
+  const saveFlight = () => {
+    setFlightInfo(flightDraft);
+    setIsFlightOpen(false);
+  };
+
+  const placeCandidates = selectedTrip.days
+    .flatMap((day) => day.items)
+    .filter((item) => item.type === "place")
+    .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
+    .filter((item) => placeCategory === "all" || item.category === placeCategory)
+    .filter((item) => {
+      const keyword = placeQuery.trim().toLowerCase();
+      return !keyword || `${item.place} ${categoryNames[item.category] || ""}`.toLowerCase().includes(keyword);
+    });
+
+  const addSelectedPlace = () => {
+    if (!selectedCandidate) return;
+    setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
+      ? [...dayStops, {
+        id: `added-${Date.now()}`,
+        time: "시간 미정",
+        icon: categoryIcons[selectedCandidate.category] || pinIcon,
+        name: selectedCandidate.place,
+        type: categoryNames[selectedCandidate.category] || selectedCandidate.category,
+        note: selectedCandidate.recommendation || "",
+        travel: "",
+        image: getImageUrl(selectedCandidate.image),
+        category: selectedCandidate.category,
+        recommendation: selectedCandidate.recommendation || "",
+        latitude: selectedCandidate.latitude,
+        longitude: selectedCandidate.longitude,
+      }]
+      : dayStops));
+    setIsPlaceAddOpen(false);
+    setSelectedCandidate(null);
+    setPlaceQuery("");
+  };
   return (
     <form className={styles.form} onSubmit={submit}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(to bottom, #c7c7c766 0%, #444 100%), url(${heroImage})` } : undefined}>
@@ -176,7 +268,7 @@ export default function TravelForm({ onSubmit, loading }) {
 
       <section className={styles.summary}>
         <div className={styles.summaryTitle}><h2>{travelTitle}</h2><button type="button" onClick={openTitleEdit}>EDIT</button></div>
-        <div className={styles.flight}><span><img src={travelIcon} alt="" />{selectedTrip.dateRange.start || "출발일 미정"} · {selectedTrip.dateRange.end || "도착일 미정"}</span><button type="button">변경</button></div>
+        <div className={styles.flight}><span><img src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>
         <div className={styles.dayTabs}>
           {days.map(([day, date], index) => (
             <button className={activeDay === index ? styles.selected : ""} key={day} type="button" onClick={() => setActiveDay(index)}>
@@ -194,12 +286,57 @@ export default function TravelForm({ onSubmit, loading }) {
 
         <div className={styles.stopList}>
           {stops.map((stop) => (
-            <div className={styles.stopGroup} key={stop.id}>
+            <div
+              className={`${styles.stopGroup} ${draggedStopId === stop.id ? styles.dragging : ""}`}
+              key={stop.id}
+              data-stop-id={stop.id}
+              onDragOver={(event) => {
+                event.preventDefault();
+                moveStop(draggedStopId, stop.id);
+              }}
+            >
               <article className={styles.stopCard}>
                 <time>{stop.time}</time>
                 <span className={styles.placeIcon}><img src={stop.icon} alt="" /></span>
                 <div className={styles.placeCopy}><strong>{stop.name}</strong><small>{stop.type}</small><button type="button" onClick={() => setSelectedStop(stop)}>자세히 보기 &gt;</button></div>
-                <span className={styles.drag}><img src={menuIcon} alt="순서 변경" /></span>
+                <button
+                  className={styles.drag}
+                  type="button"
+                  draggable
+                  aria-label={`${stop.name} 순서 변경`}
+                  title="드래그하여 일정 순서 변경"
+                  onDragStart={(event) => {
+                    setDraggedStopId(stop.id);
+                    event.dataTransfer.effectAllowed = "move";
+                    event.dataTransfer.setData("text/plain", String(stop.id));
+                  }}
+                  onDragEnd={() => setDraggedStopId(null)}
+                  onKeyDown={(event) => handleHandleKeyDown(event, stop.id)}
+                  onPointerDown={(event) => {
+                    if (event.pointerType === "mouse") return;
+                    event.preventDefault();
+                    event.currentTarget.setPointerCapture(event.pointerId);
+                    setDraggedStopId(stop.id);
+                  }}
+                  onPointerMove={(event) => {
+                    if (event.pointerType === "mouse" || draggedStopId === null) return;
+                    event.preventDefault();
+                    const target = document
+                      .elementFromPoint(event.clientX, event.clientY)
+                      ?.closest("[data-stop-id]");
+                    if (target?.dataset.stopId) moveStop(draggedStopId, target.dataset.stopId);
+                  }}
+                  onPointerUp={(event) => {
+                    if (event.pointerType === "mouse") return;
+                    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+                      event.currentTarget.releasePointerCapture(event.pointerId);
+                    }
+                    setDraggedStopId(null);
+                  }}
+                  onPointerCancel={() => setDraggedStopId(null)}
+                >
+                  <img src={menuIcon} alt="" />
+                </button>
                 <button className={styles.remove} type="button" aria-label={`${stop.name} 삭제`} onClick={() => removeStop(stop.id)}><img src={closeIcon} alt="" /></button>
               </article>
               {stop.note && (
@@ -218,12 +355,98 @@ export default function TravelForm({ onSubmit, loading }) {
         </div>
 
         <div className={styles.addActions}>
-          <button type="button" onClick={addStop}>장소 추가</button>
+          <button type="button" onClick={() => setIsPlaceAddOpen(true)}>장소 추가</button>
           <button type="button" onClick={addStop}>찜한 장소 추가</button>
         </div>
         <button className={styles.draft} type="button">임시저장</button>
         <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : "일정 확정하기 →"}</button>
       </section>
+      {isPlaceAddOpen && (
+        <div className={styles.placeAdder} role="dialog" aria-modal="true" aria-labelledby="place-adder-title">
+          <div className={styles.placeAdderInner}>
+            <header><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}>←</button><div><h2 id="place-adder-title">장소 추가하기</h2><p>일정에 추가할 장소를 찾아보세요 · {selectedTrip.city}</p></div></header>
+            <section className={styles.placeMapArea}>
+              <PlaceMap
+                places={placeCandidates}
+                fallbackPlaces={selectedTrip.days.flatMap((day) => day.items)}
+                selectedPlace={selectedCandidate}
+                onSelect={setSelectedCandidate}
+              />
+              <span className={styles.mapDay}>⌖ DAY {String(activeDay + 1).padStart(2, "0")} 기준 주변</span>
+              <div className={styles.mapFilters}>
+                {[["all", "전체"], ["attraction", "관광지"], ["restaurant", "맛집"], ["hotel", "숙소"], ["station", "교통"]].map(([value, label]) => (
+                  <button className={placeCategory === value ? styles.mapFilterActive : ""} type="button" key={value} onClick={() => setPlaceCategory(value)}>{label}</button>
+                ))}
+              </div>
+            </section>
+            <label className={styles.placeSearch}><span>⌕</span><input value={placeQuery} onChange={(event) => setPlaceQuery(event.target.value)} placeholder="관광지, 맛집, 쇼핑 검색하기" /></label>
+            <section className={styles.placeResults}>
+              <h3>검색 결과</h3>
+              <div>
+                {placeCandidates.map((place, index) => {
+                  const selected = selectedCandidate?.place === place.place;
+                  return <button className={selected ? styles.placeSelected : ""} type="button" key={place.place} onClick={() => setSelectedCandidate(place)}>
+                    <span className={styles.resultNumber}>{index + 1}</span>
+                    <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" />}</span>
+                    <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
+                    {selected && <span className={styles.selectedCheck}>✓</span>}
+                  </button>;
+                })}
+                {!placeCandidates.length && <p className={styles.noPlaces}>검색 결과가 없습니다.</p>}
+              </div>
+            </section>
+            <footer className={styles.placeAddFooter}><span>선택한 장소 {selectedCandidate ? 1 : 0}개</span><button type="button" disabled={!selectedCandidate} onClick={addSelectedPlace}>선택한 장소 추가</button></footer>
+          </div>
+        </div>
+      )}
+      {isFlightOpen && (
+        <div className={styles.flightEditor} role="dialog" aria-modal="true" aria-labelledby="flight-editor-title">
+          <div className={styles.flightEditorInner}>
+            <p className={styles.flightEyebrow}>CHANGE YOUR FLIGHT</p>
+            <h2 id="flight-editor-title">비행기편 수정</h2>
+            <p className={styles.flightDescription}>변경된 항공편을 입력하면 연결된<br />일정의 이동 시간을 다시 계산해요.</p>
+
+            <section className={styles.currentFlight}>
+              <p>CURRENT BOOKING · 현재 항공편 <span>변경 전</span></p>
+              <strong>{flightInfo.departureAirport}<b>⟶</b>{flightInfo.arrivalAirport}</strong>
+              <small>{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} — {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute}<br />{flightInfo.airline} · {flightInfo.flightNumber}</small>
+            </section>
+
+            <section className={styles.flightFields}>
+              <p>EDIT DETAILS · 변경 정보</p>
+              <label className={styles.fieldTitle}>노선 ROUTE</label>
+              <div className={styles.routeFields}>
+                <label><span>출발 공항</span><input value={flightDraft.departureAirport} onChange={updateFlightDraft("departureAirport")} /></label>
+                <b>→</b>
+                <label><span>도착 공항</span><input value={flightDraft.arrivalAirport} onChange={updateFlightDraft("arrivalAirport")} /></label>
+              </div>
+              <label className={styles.fieldTitle}>출발 DEPARTURE</label>
+              <div className={styles.dateFields}>
+                <input type="date" value={flightDraft.departureDate} onChange={updateFlightDraft("departureDate")} />
+                <select value={flightDraft.departureHour} onChange={updateFlightDraft("departureHour")}>{Array.from({ length: 24 }, (_, hour) => <option key={hour}>{String(hour).padStart(2, "0")}</option>)}</select>
+                <select value={flightDraft.departureMinute} onChange={updateFlightDraft("departureMinute")}>{["00", "10", "20", "30", "40", "50"].map((minute) => <option key={minute}>{minute}</option>)}</select>
+              </div>
+              <label className={styles.fieldTitle}>도착 ARRIVAL</label>
+              <div className={styles.dateFields}>
+                <input type="date" value={flightDraft.arrivalDate} onChange={updateFlightDraft("arrivalDate")} />
+                <select value={flightDraft.arrivalHour} onChange={updateFlightDraft("arrivalHour")}>{Array.from({ length: 24 }, (_, hour) => <option key={hour}>{String(hour).padStart(2, "0")}</option>)}</select>
+                <select value={flightDraft.arrivalMinute} onChange={updateFlightDraft("arrivalMinute")}>{["00", "10", "20", "30", "40", "50"].map((minute) => <option key={minute}>{minute}</option>)}</select>
+              </div>
+              <label className={styles.fieldTitle}>항공사·편명 AIRLINE / FLIGHT</label>
+              <div className={styles.airlineFields}><input value={flightDraft.airline} onChange={updateFlightDraft("airline")} /><input value={flightDraft.flightNumber} onChange={updateFlightDraft("flightNumber")} /></div>
+              <label className={styles.fieldTitle}>터미널 TERMINAL <small>(선택)</small></label>
+              <div className={styles.airlineFields}><label><span>출발</span><input value={flightDraft.departureTerminal} onChange={updateFlightDraft("departureTerminal")} /></label><label><span>도착</span><input value={flightDraft.arrivalTerminal} onChange={updateFlightDraft("arrivalTerminal")} /></label></div>
+            </section>
+
+            <section className={styles.flightPreview}>
+              <p>CHANGE PREVIEW · 변경 미리보기</p>
+              <div><span>출발　{flightInfo.departureHour}:{flightInfo.departureMinute} → <b>{flightDraft.departureHour}:{flightDraft.departureMinute}</b></span><span>도착　{flightInfo.arrivalHour}:{flightInfo.arrivalMinute} → <b>{flightDraft.arrivalHour}:{flightDraft.arrivalMinute}</b></span></div>
+            </section>
+            <p className={styles.autoNotice}><b>현재 시각 기준 입국 및 수하물 이동 시간 90분 자동 반영</b><small>저장 전 변경 내용을 한 번 더 확인해 주세요.</small></p>
+            <div className={styles.flightActions}><button type="button" onClick={() => setIsFlightOpen(false)}>취소</button><button type="button" onClick={saveFlight}>변경 내용 저장하기</button></div>
+          </div>
+        </div>
+      )}
       {isEditOpen && (
         <div className={styles.modalBackdrop} role="presentation" onMouseDown={() => setIsEditOpen(false)}>
           <div

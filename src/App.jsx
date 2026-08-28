@@ -8,6 +8,7 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import Plan from "./pages/Plan";
+import Search from "./pages/Search";
 import TravelPlanner from "./pages/TravelPlanner";
 import Plans from "./pages/Plans";
 import Event from "./pages/Event";
@@ -70,7 +71,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
-          <Route path="/search" element={<Plan />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />

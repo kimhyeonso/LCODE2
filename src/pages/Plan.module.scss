@@ -1,269 +1,77 @@
 @use "../styles/variables" as *;
-@use "../styles/mixins" as *;
 
-.plan {
-  @include page;
-  max-width: 760px;
-  padding: 64px 0 110px;
+.plan { width: min(100%, 760px); margin: 0 auto; padding-bottom: 92px; background: #fff; color: #171717; }
+.hero { position: relative; height: 510px; padding: 68px 40px 34px; background: linear-gradient(#b6b6b6, #303030); background-position: center; background-size: cover; color: #eee; }
+.heroTop { display: flex; justify-content: space-between; font-size: 9px; letter-spacing: 2px; }
+.heroTags, .heroWeather { position: absolute; left: 20px; margin: 0; color: #bbb; font-size: 10px; letter-spacing: 1px; }
+.heroTags { bottom: 128px; }
+.heroWeather { bottom: 30px; display: flex; gap: 14px; }
+.heroWeather b { color: #ddd; font-weight: 500; }
+.intro { padding: 34px 20px 0; }
+.intro h1 { margin: 0; white-space: pre-line; font-size: 34px; line-height: 1.08; letter-spacing: -1.5px; }
+.intro > p { margin: 18px 0 30px; color: #999; font-size: 13px; line-height: 1.65; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; padding: 16px 0; border-block: 1px solid #dedbd6; }
+.stats div { text-align: center; }
+.stats div + div { border-left: 1px solid #dedbd6; }
+.stats dt { font: 27px/1.1 $serif; }
+.stats dd { margin: 8px 0 0; color: #aaa; font-size: 9px; letter-spacing: 2px; }
+.points h2 { margin: 27px 0 10px; text-align: center; font-size: 18px; }
+.points > div { display: grid; grid-template-columns: repeat(3, 1fr); background: #f1f1f1; }
+.points p { display: grid; place-items: center; gap: 7px; margin: 0; padding: 13px 4px; font-size: 11px; }
+.points img { width: 22px; height: 22px; }
+.visualBreak { height: 195px; background: #ddd; }
+.itinerary { padding-top: 28px; }
+.dayHeader { display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 18px; padding: 18px 23px; border-bottom: 1px solid #dedbd6; }
+.dayHeader h2 { margin: 0; font: 19px $serif; }
+.dayHeader span { color: #aaa; font-size: 9px; letter-spacing: 1px; }
+.dayHeader b { color: #aaa; font-size: 9px; font-weight: 400; }
+.timeline { margin: 0; padding: 20px 23px 12px; list-style: none; }
+.timeline li { position: relative; display: grid; grid-template-columns: 28px 38px 54px 1fr 20px; grid-template-rows: auto auto; column-gap: 8px; min-height: 112px; }
+.number { width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid #ddd; color: #999; font-size: 9px; }
+.timeline li:first-child .number { border-color: #111; background: #111; color: #fff; }
+.timeline time { padding-top: 7px; color: #aaa; font-size: 9px; }
+.placeImage { width: 54px; height: 54px; background: #ddd; overflow: hidden; }
+.placeImage img { width: 100%; height: 100%; object-fit: cover; }
+.placeCopy { min-width: 0; }
+.placeCopy small { display: block; color: #aaa; font-size: 8px; letter-spacing: 1.5px; }
+.placeCopy strong { display: block; margin-top: 5px; overflow: hidden; font-size: 12px; white-space: nowrap; text-overflow: ellipsis; }
+.placeCopy p { margin: 4px 0 0; overflow: hidden; color: #999; font-size: 9px; white-space: nowrap; text-overflow: ellipsis; }
+.timeline li > button { align-self: start; border: 0; padding: 0; background: transparent; color: #aaa; }
+.transport { grid-column: 3 / 6; margin: 13px 0 0; padding-left: 8px; border-left: 1px solid #ddd; color: #aaa; font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase; }
+.otherDays { border-top: 1px solid #dedbd6; }
+.otherDays > p { margin: 0; padding: 15px 16px; border-bottom: 1px solid #dedbd6; color: #bbb; font-size: 7px; letter-spacing: 2px; }
+.otherDays button { width: 100%; display: grid; grid-template-columns: auto 1fr auto; align-items: baseline; gap: 18px; border: 0; border-bottom: 1px solid #dedbd6; padding: 23px 16px; background: #fff; text-align: left; }
+.otherDays strong { font: 18px $serif; }
+.otherDays span, .otherDays b { color: #aaa; font-size: 8px; letter-spacing: 1px; }
+.otherDays b { font-weight: 400; }
+.saveArea { padding: 14px 12px; }
+.saveArea button { width: 100%; height: 52px; border: 0; display: grid; place-items: center; background: #111; color: #fff; font-size: 12px; letter-spacing: 1px; cursor: pointer; }
+
+.savedBackdrop { position: fixed; z-index: 300; inset: 0; display: flex; align-items: flex-end; justify-content: center; background: rgba(0,0,0,.78); }
+.savedModal { position: relative; width: min(100%, 760px); padding: 62px 20px calc(36px + env(safe-area-inset-bottom)); background: #fff; color: #171717; box-shadow: 0 -18px 50px rgba(0,0,0,.16); }
+.modalHandle { position: absolute; top: 27px; left: 50%; width: 36px; height: 3px; border-radius: 3px; transform: translateX(-50%); background: #d1cdc5; }
+.modalBrand { margin: 0 0 22px 20px; color: #aaa; font-size: 9px; letter-spacing: 2px; }
+.savedModal h2 { margin: 0 20px; font-size: 31px; font-weight: 500; letter-spacing: -1.5px; }
+.modalMessage { margin: 20px 20px 36px; color: #999; font-size: 13px; line-height: 1.65; }
+.modalActions { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; padding-top: 24px; border-top: 1px solid #dedbd6; }
+.modalActions button, .modalActions a { height: 50px; display: grid; place-items: center; border: 1px solid #ddd; background: #fff; color: #777; font-size: 11px; cursor: pointer; }
+.modalActions a { border-color: #111; background: #111; color: #fff; }
+
+@media (min-width: 800px) {
+  .plan { width: min(calc(100% - 64px), 1120px); margin-block: 40px 80px; box-shadow: 0 20px 60px rgba(0,0,0,.08); }
+  .hero { height: 600px; padding-inline: 64px; }
+  .heroTags, .heroWeather { left: 64px; }
+  .intro { padding: 50px 64px 0; }
+  .intro h1 { font-size: 48px; }
+  .points { padding-inline: 64px; }
+  .visualBreak { height: 320px; margin-top: 30px; }
+  .itinerary, .otherDays { width: min(100%, 820px); margin-inline: auto; }
+  .timeline li { grid-template-columns: 34px 52px 74px 1fr 24px; min-height: 138px; column-gap: 14px; }
+  .placeImage { width: 74px; height: 74px; }
+  .placeCopy strong { font-size: 15px; }
+  .saveArea { width: min(100%, 820px); margin-inline: auto; padding-block: 24px; }
+  .savedBackdrop { align-items: center; }
+  .savedModal { width: min(calc(100% - 64px), 560px); padding: 66px 36px 36px; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
 }
 
-.searchArea {
-  > p {
-    margin: 24px 0 10px;
-    color: $muted;
-    font-size: 10px;
-  }
-}
-
-.search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border-bottom: 1px solid $ink;
-  padding: 0 4px 12px;
-
-  span {
-    color: $muted;
-    font-size: 18px;
-  }
-
-  input {
-    flex: 1;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    font-size: 12px;
-  }
-}
-
-.regions > div {
-  display: flex;
-  align-items: center;
-  min-height: 42px;
-  border-bottom: 1px solid $line;
-  gap: 18px;
-
-  > span {
-    width: 24px;
-    color: $muted;
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
-
-  button {
-    border: 0;
-    background: transparent;
-    padding: 8px 0;
-    color: $muted;
-    font-size: 10px;
-    cursor: pointer;
-  }
-
-  .active {
-    color: $ink;
-    font-weight: 700;
-  }
-}
-
-.tools {
-  display: flex;
-  justify-content: space-between;
-  margin: 22px 0 34px;
-
-  button,
-  select {
-    min-width: 76px;
-    border: 1px solid $line;
-    background: transparent;
-    padding: 11px 14px;
-    color: $muted;
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
-}
-
-.recommendations {
-  overflow: hidden;
-
-  h2 {
-    margin: 0 0 16px;
-    font-size: 12px;
-    letter-spacing: 2px;
-  }
-
-  > div {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 4px;
-  }
-
-  button {
-    min-width: 0;
-    border: 0;
-    background: transparent;
-    padding: 0;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  b,
-  small {
-    display: block;
-    margin-top: 7px;
-    overflow: hidden;
-    font-size: 9px;
-    letter-spacing: 1px;
-    text-overflow: ellipsis;
-  }
-
-  small {
-    margin-top: 3px;
-    color: $muted;
-  }
-}
-
-.thumb {
-  display: block;
-  aspect-ratio: 0.72;
-  background-position: center;
-  background-size: cover;
-}
-
-.archive {
-  margin-top: 34px;
-}
-
-.archiveTitle {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 16px;
-  color: $muted;
-  font-size: 9px;
-  letter-spacing: 1.5px;
-
-  b {
-    color: $ink;
-    font: 18px $serif;
-  }
-}
-
-.packageList {
-  display: grid;
-  gap: 12px;
-}
-
-.packageList article {
-  background: $paper-light;
-}
-
-.packageImage {
-  position: relative;
-  height: 300px;
-  background-position: center;
-  background-size: cover;
-
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 35% 0 0;
-    background: linear-gradient(transparent, #000b);
-  }
-
-  > span,
-  > button,
-  h2 {
-    position: absolute;
-    z-index: 1;
-    color: #fff;
-  }
-
-  > span {
-    top: 14px;
-    left: 14px;
-    font-size: 9px;
-  }
-
-  > button {
-    top: 10px;
-    right: 10px;
-    border: 0;
-    background: transparent;
-    font-size: 22px;
-  }
-
-  h2 {
-    bottom: 15px;
-    left: 15px;
-    margin: 0;
-    font: 32px $serif;
-  }
-}
-
-.packageCopy {
-  padding: 14px 16px 16px;
-
-  p {
-    margin: 0;
-    color: $muted;
-    font-size: 9px;
-    letter-spacing: 1px;
-  }
-
-  p span {
-    margin-left: 12px;
-    border: 1px solid $line;
-    padding: 3px 7px;
-  }
-
-  h3 {
-    margin: 12px 0 6px;
-    font-size: 14px;
-  }
-
-  small {
-    display: block;
-    color: $muted;
-    font-size: 9px;
-  }
-
-  a {
-    display: inline-block;
-    margin-top: 14px;
-    border-bottom: 1px solid $ink;
-    padding-bottom: 3px;
-    font-size: 9px;
-  }
-}
-
-.empty {
-  padding: 80px 0;
-  text-align: center;
-  color: $muted;
-  font-size: 11px;
-}
-
-.fukuoka { background-image: url("../assets/images/fukuoka_japan.jpg"); }
-.tokyo { background-image: url("../assets/images/tokyo_japan.jpg"); }
-.kyoto { background-image: url("../assets/images/japan.jpg"); }
-.seoul { background-image: url("../assets/images/seoul_korea.jpg"); }
-.busan { background-image: url("../assets/images/busan_korea.jpg"); }
-.osaka { background-image: url("../assets/images/osaka_japan.jpg"); }
-.jeju { background-image: url("../assets/images/korea.jpg"); }
-.shanghai { background-image: url("../assets/images/shanghai_china.jpg"); }
-
-@include mobile {
-  .plan {
-    width: calc(100% - 32px);
-    padding-top: 34px;
-  }
-
-  .recommendations > div {
-    width: max-content;
-    grid-template-columns: repeat(4, 105px);
-  }
-
-  .packageImage {
-    height: 290px;
-  }
-}
+@media (max-width: 480px) { .hero { height: 485px; } }
