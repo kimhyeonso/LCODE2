@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Notice.module.scss";
 
 const notices = [
@@ -22,9 +23,9 @@ export default function Notice() {
         <span>ISSUE NO.</span><strong>002</strong><i aria-hidden="true" />
         <em>COLLECT JOURNEYS<br />DESIGN MOMENTS</em><b aria-hidden="true" />
       </aside>
-      <Link className={styles.back} to="/my" aria-label="마이페이지로 돌아가기">←</Link>
       <div className={styles.content}>
         <section className={styles.noticeList} aria-labelledby="notice-title">
+          <MypageBackLink />
           <p className={styles.eyebrow}>MY JOURNEY</p>
           <h1 id="notice-title" className={styles.title}>NOTICE</h1>
           <p className={styles.description}>공지사항</p><div className={styles.divider} />

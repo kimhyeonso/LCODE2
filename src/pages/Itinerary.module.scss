@@ -11,23 +11,21 @@ $serif-display: $display;
 
 // 여행 일정 페이지 전체 영역입니다.
 .itinerary {
-  min-height: calc(100vh - 10rem);
-  padding: 0.5rem 0 4rem;
+  min-height: 100vh;
+  padding: 92px 0 60px;
   background: $paper;
   @include korean-font;
 }
 
 // 왼쪽 소개와 오른쪽 일정 카드의 2단 레이아웃입니다.
 .content {
-
   display: grid;
-  // Keep the reference's 624 : 648 : 112 proportion, scaled inside the header's inner width.
-  grid-template-columns: 45.05% 46.87%;
-  gap: 8.08%;
-  align-items: center;
+  grid-template-columns: 550px 560px;
+  gap: 190px;
+  align-items: start;
+  width: min(1210px, calc(100% - 64px));
   margin: 0 auto;
-  width: min(1320px, calc(100% - 64px));
-  margin: 0 auto;
+  transform: translateX(48px);
 }
 
 // Left-side upcoming-trip composition, based on the supplied reference.
@@ -38,14 +36,19 @@ $serif-display: $display;
   color: #f7f7f7;
 }
 
+.intro > a {
+  margin-bottom: 8px;
+  color: $ink;
+}
+
 // Subtle world map below the quick cards; it is decorative and stays behind all text.
 .intro::after {
   position: absolute;
   z-index: -1;
-  top: calc(100% - 12.5rem);
-  left: -12rem;
-  width: 30rem;
-  height: 30rem;
+  top: 545px;
+  left: -176px;
+  width: 480px;
+  height: 300px;
   background: url("/Mypage-img/g.png") left center / contain no-repeat;
   content: "";
   opacity: .5;
@@ -62,10 +65,7 @@ $serif-display: $display;
 
 /* UPCOMING TRIP 부분 */
 .titleRow {
-  display: flex;
-  align-items: flex-end;
-  gap: 2rem;
-  margin-top: 1.25rem;
+  margin-top: 18px;
 
   h1 {
     margin: 0;
@@ -73,28 +73,21 @@ $serif-display: $display;
     letter-spacing: -0.09em;
   }
 
-  p {
-    margin: 0 0 0.5rem;
-    color: #98948d;
-    font: 400 0.66rem $korean;
-    white-space: nowrap;
-    margin-left: -3rem;
-  }
 }
 
 .divider {
   position: relative;
   height: 1px;
-  margin-top: .65rem;
+  margin-top: 24px;
   background: #ddd9d1;
-  width: 90%;
+  width: 492px;
 }
 
 // Plane decoration at the end of the divider uses public/Mypage-img/port.png.
 .divider::after {
   position: absolute;
   top: 50%;
-  right: -2rem;
+  right: -42px;
   width: 1.6rem;
   height: 1.6rem;
   background: url("/Mypage-img/port.png") center / contain no-repeat;
@@ -102,12 +95,19 @@ $serif-display: $display;
   transform: translateY(-50%);
 }
 
+.description {
+  margin: 25px 0 0;
+  color: #98948d;
+  font: 400 0.66rem $korean;
+  white-space: nowrap;
+}
+
 // D-day와 준비물 안내 카드 묶음입니다.
 .quickCards {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2.5%;
-  margin-top: 1.85rem;
+  gap: 14px;
+  margin-top: 38px;
 }
 
 .countCard,
@@ -115,9 +115,9 @@ $serif-display: $display;
 .packingCard {
   box-sizing: border-box;
   position: relative;
-  width: auto;
-  height: auto;
-  aspect-ratio: 12.5 / 15.7;
+  width: 268px;
+  height: 330px;
+  aspect-ratio: auto;
   padding: 1.7rem 1.35rem;
   overflow: hidden;
 
@@ -172,18 +172,18 @@ $serif-display: $display;
   }
 
   p { color: #d1d1d1; font-size: 0.6rem;  }
-  h2 { font-size: 2.5rem; }
+  h2 { font-size: 2rem; }
 }
 
 // 일정 카드와 좌우 이동 버튼을 감싸는 영역입니다.
-.tripArea { margin-top: 4.2rem; position: relative; }
+.tripArea { margin-top: 58px; position: relative; }
 
 .tripCard { border: 1px solid #d2d0cd; background: $paper; }
 
 .photo {
   position: relative;
-  height: auto;
-  aspect-ratio: 27 / 11.7;
+  height: 300px;
+  aspect-ratio: auto;
   background-image: url(/public/Mypage-img/3.png);
   background-size: cover;
   background-position: bottom;
@@ -200,7 +200,7 @@ $serif-display: $display;
   }
 }
 
-.tripInfo { padding: 1.7rem 1.8rem 1.6rem; }
+.tripInfo { padding: 26px 32px 26px; }
 
 /* 후쿠오카 3박 4일 부분 */
 .tripInfo h2 { margin: 0; font: 700 1.5rem $korean; letter-spacing: -0.07em; }
@@ -209,12 +209,12 @@ $serif-display: $display;
 .subtitle { margin: .45rem 0 0; color: #949494; font: 400 .86rem $korean; }
 
 /* 2026.08.17 - 08.20 | 12개 일정 부분 */
-.date { margin: 1rem 0 1.35rem; color: #666; font: 400 .78rem $korean; }
+.date { margin: 22px 0 18px; padding-bottom: 18px; border-bottom: 1px solid #ddd9d1; color: #666; font: 400 .78rem $korean; }
 
 /* 일정 상세 보기 버튼 부분 */
 .detailButton {
   width: 100%;
-  height: 3rem;
+  height: 54px;
   background: #050505;
   color: #f8f8f8;
   font: 600 0.73rem $korean;
@@ -225,8 +225,8 @@ $serif-display: $display;
   position: absolute;
   top: 50%;
   z-index: 1;
-  width: 1.8rem;
-  height: 1.8rem;
+  width: 50px;
+  height: 50px;
   border: 1px solid #888;
   border-radius: 50%;
   transform: translateY(-50%);
@@ -237,11 +237,25 @@ $serif-display: $display;
   text-align: center;
 }
 
-.previous { left: -2.7rem; }
-.next { right: -2.7rem; }
+.previous { left: -86px; }
+.next { right: -86px; }
+
+@media (max-width: 1450px) {
+  .content { grid-template-columns: minmax(430px, 520px) minmax(440px, 540px); gap: 64px; width: min(calc(100% - 96px), 1080px); transform: none; }
+  .quickCards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .countCard, .packingCard { width: 100%; height: auto; aspect-ratio: 237 / 312; }
+  .divider { width: calc(100% - 44px); }
+  .previous { left: -58px; }
+  .next { right: -58px; }
+}
 
 @include tablet {
-  .content { grid-template-columns: minmax(17rem, 22rem) minmax(22rem, 29.5rem); gap: 3rem; width: min(calc(100% - 6rem), 55.5rem); }
+  .itinerary { padding-top: 70px; }
+  .content { grid-template-columns: minmax(360px, 44%) minmax(420px, 1fr); gap: 48px; width: min(calc(100% - 64px), 920px); transform: none; }
+  .quickCards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .countCard, .packingCard { width: 100%; height: auto; aspect-ratio: 237 / 312; }
+  .divider { width: calc(100% - 44px); }
+  .photo { height: 300px; }
 }
 
 @include mobile {

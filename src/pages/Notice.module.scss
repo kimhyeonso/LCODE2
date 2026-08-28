@@ -9,6 +9,7 @@
 }
 
 .notice {
+  margin-top: -6rem;
   position: relative;
   min-height: calc(100vh - 10rem);
   padding: 3.25rem 0 4rem;
@@ -109,7 +110,7 @@
 
 .noticeLink:hover {
   padding-left: 1.1rem;
-  background: rgba(255, 255, 255, .26);
+  // background: rgba(255, 255, 255, .26);
 }
 
 // 목록 아래 고객센터 전화번호 안내 박스입니다.

@@ -1,12 +1,16 @@
+import MypageBackLink from "../components/MypageBackLink";
+import { Link } from "react-router-dom";
+import { useState } from "react";
+import products from "../data/products.json";
 import styles from "./Mystories.module.scss";
 
 const trips = ["후쿠오카 3박 4일", "후쿠오카 3박 4일"];
-const products = [
-  { name: "여행용 키트", price: "22,000원", review: "평점" },
-  { name: "멀티 어댑터", price: "호텔 패키지", review: "평점" },
-  { name: "여행용 키트", price: "22,000원", review: "평점" },
-  { name: "멀티 어댑터", price: "호텔 패키지", review: "평점" },
-];
+const filters = ["ALL", "POUCH", "FLIGHT", "TECH", "KIT"];
+const randomFilters = filters.slice(1);
+const categorizedProducts = products.map((product) => {
+  const randomIndex = [...product.id].reduce((total, character) => total + character.charCodeAt(0), 0) % randomFilters.length;
+  return { ...product, displayCategory: randomFilters[randomIndex] };
+});
 
 function StoryCard({ title }) {
   return (
@@ -18,7 +22,7 @@ function StoryCard({ title }) {
         <small>2026.08.17 - 08.20 | 12개 일정</small>
         <footer>
           <button type="button">상세 보기</button>
-          <button type="button">리뷰쓰기</button>
+          <Link className={styles.reviewLink} to="/review" state={{ tripTitle: title }}>리뷰쓰기</Link>
         </footer>
       </div>
     </article>
@@ -26,10 +30,16 @@ function StoryCard({ title }) {
 }
 
 export default function Mystories() {
+  const [selectedFilter, setSelectedFilter] = useState("ALL");
+  const visibleProducts = selectedFilter === "ALL"
+    ? categorizedProducts
+    : categorizedProducts.filter((product) => product.displayCategory === selectedFilter);
+
   return (
     <main className={styles.mystories}>
       <div className={styles.content}>
         <section className={styles.stories} aria-labelledby="my-stories-title">
+          <MypageBackLink />
           <p className={styles.eyebrow}>MY JOURNEY</p>
           <h1 id="my-stories-title">MY STORIES</h1>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
@@ -41,20 +51,30 @@ export default function Mystories() {
           <h1 id="shopping-title">SHOPPING</h1>
           <p>잊어버리고 못 산 물건이 있지는 않았나요?</p>
           <div className={styles.filters}>
-            {["ALL", "POUCH", "FLIGHT", "TECH", "KIT"].map((filter, index) => <button className={index === 0 ? styles.selected : ""} type="button" key={filter}>{filter}</button>)}
+            {filters.map((filter) => (
+              <button
+                className={selectedFilter === filter ? styles.selected : ""}
+                type="button"
+                aria-pressed={selectedFilter === filter}
+                onClick={() => setSelectedFilter(filter)}
+                key={filter}
+              >
+                {filter}
+              </button>
+            ))}
           </div>
           <div className={styles.productGrid}>
-            {products.map((product, index) => (
-              <article className={styles.productCard} key={`${product.name}-${index}`}>
+            {visibleProducts.map((product) => (
+              <article className={styles.productCard} key={product.id}>
                 <div className={styles.productImage} aria-hidden="true" />
                 <h2>{product.name}</h2>
-                <small>{product.price}</small>
-                <p>{product.review} <span>★ ★ ★ ★ ★</span></p>
+                <small>{product.price.toLocaleString("ko-KR")}원</small>
+                <p>{product.category}</p>
                 <footer><button type="button">상품 보기</button><button type="button">리뷰 쓰기</button></footer>
               </article>
             ))}
           </div>
-          <div className={styles.pagination} aria-hidden="true">● ● ●</div>
+          <Link className={styles.pagination} to="/shop" aria-label="쇼핑 페이지로 이동">쇼핑 더보기</Link>
         </section>
       </div>
     </main>

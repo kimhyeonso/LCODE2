@@ -1,54 +1,193 @@
-// 프로젝트 공통 색상 변수와 반응형 믹스인을 불러옵니다.
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
-// 본문에 사용하는 한글 글꼴입니다.
 
-// 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
-.openGuide, .openGuide * { letter-spacing: -0.01em !important; }
-
-// 가이드 본문 페이지 전체 영역입니다.
-.openGuide { min-height: calc(100vh - 10rem); padding: 2.5rem 0 5rem; background: $paper; @include korean-font; }
-// 사진 영역과 본문 영역의 2단 레이아웃입니다.
-.content { display: grid; grid-template-columns: 21.3rem 20.5rem; gap: 4rem; width: min(calc(100% - 12.5rem), 45.8rem); margin: 0 auto; }
-.articleHeader { grid-column: 1; grid-row: 1; }
-.back { display: inline-block; color: #77736c; font: 400 .54rem $korean; text-decoration: none; }
-.articleHeader h1 { margin: 1.05rem 0 1.15rem; color: #111; font: 700 1.05rem/1.5 $korean; letter-spacing: -.065em; }
-.articleHeader > p { margin: 0; color: #aaa49c; font: 400 .55rem $korean; }
-.divider { height: 1px; margin-top: 1.55rem; background: #e2dfd9; }
-// 원본 사진을 대신하는 고정 크기 회색 영역입니다.
-.imageLarge { width: 100%; height: 14.25rem; margin-top: 1.75rem; background-image: url(/public/Mypage-img/3.png); 
-background-size: cover;}
-.imageSmall { width: 11.5rem; height: 18.15rem; margin: 1rem 0 0 auto; background-image: url(/public/Mypage-img/4.png);
-background-size: cover; }
-// 안내문과 항목 목록 본문 영역입니다.
-.images { grid-column: 2; grid-row: 1 / span 2; padding-top: 2.5rem; }
-.guideContent { grid-column: 1; grid-row: 2; padding-top: 1.5rem;
+.openGuide {
+  min-height: 100vh;
+  padding: 62px 0 58px;
+  background: $paper;
+  color: $ink;
+  font-family: $korean;
 }
-.introduction { margin: 0 0 .7rem; color: #292929; font: 400 0.8rem $korean; letter-spacing: -.045em;
- }
-.sections { margin-top: 1.2rem; }
-.sections section { margin-top: 1rem; }
-.sections h2 { margin: 0; color: #111; font: 700 .75rem $korean; letter-spacing: -.055em; }
-.sections p { margin: .48rem 0 0; color: #666; font: 400 .59rem/1.75 $korean; white-space: pre-line; letter-spacing: -.04em; }
-@include tablet { .content { width: min(calc(100% - 6rem), 45.8rem); } }
+
+.openGuide * { box-sizing: border-box; letter-spacing: -.01em; }
+
+.content {
+  display: grid;
+  grid-template-columns: 650px 696px;
+  grid-template-rows: auto 1fr;
+  column-gap: 122px;
+  width: 1468px;
+  margin-left: clamp(320px, 18.4vw, 377px);
+}
+
+.articleHeader { grid-column: 1; grid-row: 1; }
+.articleHeader > a { margin: 0 0 54px; color: $ink; }
+
+.category {
+  display: block;
+  margin-bottom: 43px;
+  color: #9a7a52;
+  font-family: $display;
+  font-size: 15px;
+  letter-spacing: .04em;
+}
+
+.category::after { display: block; width: 22px; height: 1px; margin-top: 15px; background: #b99a70; content: ""; }
+
+.articleHeader h1 {
+  margin: 0;
+  color: #111;
+  font-family: $korean;
+  font-size: 39px;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -.045em;
+}
+
+.articleHeader > p { margin: 22px 0 0; color: #88847d; font-size: 16px; }
+.divider { height: 1px; margin-top: 26px; background: #cfc6b8; }
+
+.guideContent { grid-column: 1; grid-row: 2; padding-top: 30px; }
+.introduction { margin: 0 0 18px; color: #292929; font-size: 17px; line-height: 1.7; }
+.introduction + .introduction { margin-top: 4px; }
+.sections { position: relative; margin-top: 26px; }
+.sections::before { position: absolute; top: 22px; bottom: 42px; left: 20px; width: 1px; background: #cdbca3; content: ""; }
+
+.sections section {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 20px;
+  min-height: 118px;
+}
+
+.sections section > span {
+  z-index: 1;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #b89463;
+  color: #fff;
+  font-family: $display;
+  font-size: 18px;
+  place-items: center;
+}
+
+.sections section > div { padding-bottom: 18px; border-bottom: 1px solid #ded8cf; }
+.sections section:last-child > div { border-bottom: 0; }
+.sections h2 { margin: 1px 0 0; color: #111; font-size: 19px; font-weight: 700; }
+.sections p { margin: 8px 0 0; color: #55524d; font-size: 14px; line-height: 1.75; white-space: pre-line; }
+
+.images {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  min-height: 860px;
+  margin-top: 108px;
+  padding: 25px 20px 20px;
+  border: 1px solid #b8a795;
+}
+
+.imageLarge {
+  width: 100%;
+  height: 448px;
+  background: url("/Mypage-img/3.png") center / cover no-repeat;
+}
+
+.imageSmall {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  width: 354px;
+  height: 326px;
+  background: url("/Mypage-img/4.png") center / cover no-repeat;
+}
+
+.images::before {
+  position: absolute;
+  left: 42px;
+  bottom: 48px;
+  width: 245px;
+  height: 138px;
+  background: url("/Mypage-img/u.png") center / contain no-repeat;
+  content: "";
+  opacity: .16;
+}
+
+@media (min-width: 901px) and (max-height: 950px) {
+  .openGuide { padding-top: 42px; padding-bottom: 38px; }
+  .articleHeader > a { margin-bottom: 34px; }
+  .category { margin-bottom: 28px; }
+  .category::after { margin-top: 10px; }
+  .articleHeader h1 { font-size: 34px; line-height: 1.38; }
+  .articleHeader > p { margin-top: 16px; font-size: 14px; }
+  .divider { margin-top: 20px; }
+  .guideContent { padding-top: 22px; }
+  .introduction { margin-bottom: 11px; font-size: 15px; line-height: 1.55; }
+  .sections { margin-top: 18px; }
+  .sections section { min-height: 92px; }
+  .sections section > div { padding-bottom: 12px; }
+  .sections h2 { font-size: 17px; }
+  .sections p { margin-top: 5px; font-size: 12px; line-height: 1.6; }
+  .images { min-height: 680px; margin-top: 76px; padding: 20px 18px 18px; }
+  .imageLarge { height: 350px; }
+  .imageSmall { right: 18px; bottom: 18px; width: 300px; height: 250px; }
+  .images::before { left: 38px; bottom: 45px; width: 225px; height: 126px; }
+}
+
+.images::after {
+  position: absolute;
+  top: -136px;
+  right: -52px;
+  width: 1px;
+  height: 690px;
+  background: rgba($ink, .2);
+  box-shadow: 0 710px 0 rgba($ink, .2);
+  content: "";
+}
+
+@media (max-width: 1700px) {
+  .content { grid-template-columns: 570px 610px; column-gap: 82px; width: 1262px; margin-left: clamp(285px, 16.5vw, 330px); }
+  .articleHeader h1 { font-size: 34px; }
+  .images { min-height: 770px; }
+  .imageLarge { height: 390px; }
+  .imageSmall { width: 310px; height: 290px; }
+}
+
+@media (max-width: 1350px) {
+  .content { grid-template-columns: minmax(440px, 1fr) minmax(430px, 1fr); column-gap: 55px; width: calc(100% - 300px); margin-left: 270px; }
+  .images { min-height: 700px; }
+  .imageLarge { height: 340px; }
+  .imageSmall { width: 55%; height: 270px; }
+}
+
+@include tablet {
+  .openGuide { padding: 42px 32px; }
+  .content { grid-template-columns: 1fr; width: min(100%, 680px); margin: 0 auto; }
+  .articleHeader, .guideContent, .images { grid-column: 1; grid-row: auto; }
+  .articleHeader > a { margin-bottom: 30px; }
+  .category { margin-bottom: 25px; }
+  .articleHeader h1 { font-size: 30px; }
+  .images { order: 2; min-height: auto; margin-top: 40px; padding: 14px; }
+  .imageLarge { height: 360px; }
+  .imageSmall { position: static; width: 55%; height: 260px; margin: 14px 0 0 auto; }
+  .images::before, .images::after { display: none; }
+}
+
 @include mobile {
-  .openGuide { padding: 0.8rem 0 1.25rem; }
-  .content { grid-template-columns: 1fr; gap: 0; width: min(calc(100% - 2.5rem), 31rem); }
-  .articleHeader, .images, .guideContent { grid-column: 1; grid-row: auto; }
-
-  // 모바일에서는 PC 전용 안내 이미지를 숨기고 본문만 이어서 보여 줍니다.
-  .images { display: none; }
-
-  .back { margin-inline: 0.75rem; font-size: 0.44rem; }
-  .articleHeader h1 { margin: 0.7rem 0 0.55rem; padding-inline: 0.75rem; font-size: 0.78rem; line-height: 1.42; }
-  .articleHeader > p { padding-inline: 0.75rem; font-size: 0.42rem; }
-  .divider { margin-top: 0.7rem; }
-
-  .guideContent { padding: 0.7rem 0.75rem 0; }
-  .introduction { margin-bottom: 0.4rem; font-size: 0.58rem; line-height: 1.55; }
-  .sections { margin-top: 0.75rem; }
-  .sections section { margin-top: 0.65rem; }
-  .sections h2 { font-size: 0.6rem; }
-  .sections p { margin-top: 0.3rem; font-size: 0.46rem; line-height: 1.55; }
+  .openGuide { padding: 26px 18px 40px; }
+  .articleHeader > a { margin-bottom: 22px; }
+  .articleHeader h1 { font-size: 23px; }
+  .articleHeader > p { font-size: 12px; }
+  .guideContent { padding-top: 22px; }
+  .introduction { font-size: 14px; }
+  .sections section { grid-template-columns: 34px 1fr; gap: 12px; min-height: 112px; }
+  .sections::before { left: 16px; }
+  .sections section > span { width: 33px; height: 33px; font-size: 14px; }
+  .sections h2 { font-size: 16px; }
+  .sections p { font-size: 12px; }
+  .imageLarge { height: 230px; }
+  .imageSmall { width: 65%; height: 190px; }
 }

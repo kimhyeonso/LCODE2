@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./Itinerary.module.scss";
+import MypageBackLink from "../components/MypageBackLink";
 
 const slideImages = [
   "/Mypage-img/3.png",
@@ -31,12 +32,13 @@ export default function Itinerary() {
     <main className={styles.itinerary}>
       <div className={styles.content}>
         <section className={styles.intro} aria-labelledby="upcoming-trip-title">
+          <MypageBackLink />
           <p className={styles.eyebrow}>MY JOURNEY</p>
           <div className={styles.titleRow}>
             <h1 id="upcoming-trip-title">UPCOMING<br />TRIP</h1>
-            <p>다음 여행을 위해 저장해둔 장소</p>
           </div>
           <div className={styles.divider} />
+          <p className={styles.description}>다음 여행을 위해 저장해둔 장소</p>
 
           <div className={styles.quickCards}>
             <article className={styles.countCard}>
