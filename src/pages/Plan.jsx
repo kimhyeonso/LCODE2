@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
+import { useAuth } from "../hooks/useAuth";
+import { savePlan } from "../services/firestoreService";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
 import carIcon from "../assets/icons/transportation/directions_car.svg";
@@ -10,6 +12,12 @@ import styles from "./Plan.module.scss";
 const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" });
 
 const categoryNames = { airport: "AIRPORT", station: "STATION", hotel: "HOTEL", attraction: "SIGHTSEEING", restaurant: "RESTAURANT" };
+
+const cityAliases = {
+  SEOUL: "서울",
+  SHANGHAI: "상하이",
+  TOKYO: "도쿄",
+};
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return "";
@@ -36,21 +44,56 @@ const getDayPlaces = (day) => day.items.reduce((result, item, index, items) => {
 
 export default function Plan() {
   const [params] = useSearchParams();
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const selectedTrip = useMemo(() => {
     const tripId = params.get("trip");
+    const cityParam = params.get("city")?.toUpperCase();
+    const countryParam = params.get("country")?.toLowerCase();
+    const city = cityAliases[cityParam] || params.get("city");
+
     return tripRoad.trips.find((trip) => trip.id === tripId)
+      || tripRoad.trips.find((trip) => trip.city === city)
+      || tripRoad.trips.find((trip) => trip.country.toLowerCase() === countryParam)
       || tripRoad.trips.find((trip) => trip.city === "후쿠오카")
       || tripRoad.trips[0];
   }, [params]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
+  const visibleDay = Math.min(activeDay, selectedTrip.days.length - 1);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
-  const activePlaces = getDayPlaces(selectedTrip.days[activeDay]);
+  const activePlaces = getDayPlaces(selectedTrip.days[visibleDay]);
   const heroImage = allPlaces.find((place) => place.imageUrl)?.imageUrl;
   const nights = Math.max(selectedTrip.days.length - 1, 1);
   const startDate = selectedTrip.dateRange?.start;
   const endDate = selectedTrip.dateRange?.end;
+  const representativeImage = selectedTrip.days
+    .flatMap((day) => day.items)
+    .find((item) => item.type === "place" && item.image)
+    ?.image;
+
+  const handleSavePlan = async () => {
+    if (!user) {
+      navigate("/login", {
+        state: { from: `/plan?trip=${encodeURIComponent(selectedTrip.id)}` },
+      });
+      return;
+    }
+
+    await savePlan(user.uid, {
+      tripId: selectedTrip.id,
+      title: selectedTrip.title,
+      city: selectedTrip.city,
+      country: selectedTrip.country,
+      duration: selectedTrip.duration,
+      dateRange: selectedTrip.dateRange,
+      days: selectedTrip.days,
+      image: representativeImage || null,
+    });
+
+    setIsSavedOpen(true);
+  };
 
   return (
     <main className={styles.plan}>
@@ -87,8 +130,8 @@ export default function Plan() {
 
       <section className={styles.itinerary}>
         <header className={styles.dayHeader}>
-          <h2>DAY {String(activeDay + 1).padStart(2, "0")}</h2>
-          <span>{formatDate(selectedTrip.days[activeDay]?.date, `DAY ${activeDay + 1}`)}</span>
+          <h2>DAY {String(visibleDay + 1).padStart(2, "0")}</h2>
+          <span>{formatDate(selectedTrip.days[visibleDay]?.date, `DAY ${visibleDay + 1}`)}</span>
           <b>{activePlaces.length}곳</b>
         </header>
         <ol className={styles.timeline}>
@@ -112,7 +155,7 @@ export default function Plan() {
       <section className={styles.otherDays}>
         <p>OTHER DAYS</p>
         {selectedTrip.days.map((day, index) => {
-          if (index === activeDay) return null;
+          if (index === visibleDay) return null;
           return (
             <button type="button" key={day.day} onClick={() => setActiveDay(index)}>
               <strong>DAY {String(index + 1).padStart(2, "0")}</strong>
@@ -124,7 +167,7 @@ export default function Plan() {
       </section>
 
       <div className={styles.saveArea}>
-        <button type="button" onClick={() => setIsSavedOpen(true)}>내 일정에 담기</button>
+        <button type="button" onClick={handleSavePlan}>내 일정에 담기</button>
       </div>
 
       {isSavedOpen && (
