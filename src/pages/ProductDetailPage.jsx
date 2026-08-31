@@ -688,104 +688,12 @@ export default function ProductDetailPage() {
       </section>
 
 
-      {/* ===================================================
-          ACCORDION
+           {/* ===================================================
+          PRODUCT DETAIL IMAGES
+          ★ 이걸 먼저 보여줌
       =================================================== */}
 
-      <section
-        className={
-          styles.productAccordion
-        }
-      >
-        <details open>
-          <summary>
-            <span>
-              <b>
-                01
-              </b>
-
-              PRODUCT STORY
-            </span>
-
-            <i />
-          </summary>
-
-          <div
-            className={
-              styles.accordionContent
-            }
-          >
-            <p>
-              {product.desc}
-            </p>
-          </div>
-        </details>
-
-
-        <details open>
-          <summary>
-            <span>
-              <b>
-                02
-              </b>
-
-              DETAIL
-            </span>
-
-            <i />
-          </summary>
-
-          <div
-            className={
-              styles.accordionContent
-            }
-          >
-            <p>
-              {product.merit}
-            </p>
-          </div>
-        </details>
-
-
-        <details open>
-          <summary>
-            <span>
-              <b>
-                03
-              </b>
-
-              DELIVERY
-            </span>
-
-            <i />
-          </summary>
-
-          <div
-            className={
-              styles.accordionContent
-            }
-          >
-            <p>
-              결제 완료 후 평균
-              2-3일 이내 출고됩니다.
-
-              <br />
-
-              지역 및 배송 상황에
-              따라 배송 일정이
-              달라질 수 있습니다.
-            </p>
-          </div>
-        </details>
-      </section>
-
-
-      {/* ===================================================
-          DETAIL IMAGES
-      =================================================== */}
-
-      {detailImages.length >
-        0 && (
+      {detailImages.length > 0 && (
         <section
           className={
             styles.detailContents
@@ -823,8 +731,7 @@ export default function ProductDetailPage() {
                       image
                     }
                     alt={`${product.name} 상세 이미지 ${
-                      index +
-                      1
+                      index + 1
                     }`}
                     loading="lazy"
                   />
@@ -835,6 +742,123 @@ export default function ProductDetailPage() {
         </section>
       )}
 
+
+      {/* ===================================================
+          PRODUCT INFORMATION
+          ★ PRODUCT DETAIL 다음에
+          01 → 02 → 03 순서로 표시
+      =================================================== */}
+
+      <section
+        className={
+          styles.productAccordion
+        }
+      >
+        {/* =================================================
+            01 PRODUCT STORY
+        ================================================= */}
+
+        <details open>
+          <summary>
+            <span>
+              <b>
+                01
+              </b>
+
+              PRODUCT STORY
+            </span>
+
+            <i />
+          </summary>
+
+
+          <div
+            className={
+              styles.accordionContent
+            }
+          >
+            <p>
+              {product.desc}
+            </p>
+          </div>
+        </details>
+
+
+        {/* =================================================
+            02 DETAIL
+        ================================================= */}
+
+        <details open>
+          <summary>
+            <span>
+              <b>
+                02
+              </b>
+
+              DETAIL
+            </span>
+
+            <i />
+          </summary>
+
+
+          <div
+            className={
+              styles.accordionContent
+            }
+          >
+            <p>
+              {product.merit}
+            </p>
+          </div>
+        </details>
+
+
+        {/* =================================================
+            03 DELIVERY
+        ================================================= */}
+
+        <details open>
+          <summary>
+            <span>
+              <b>
+                03
+              </b>
+
+              DELIVERY
+            </span>
+
+            <i />
+          </summary>
+
+
+          <div
+            className={
+              styles.accordionContent
+            }
+          >
+            <p>
+              {product.category === "세트 상품" ||
+              product.id?.startsWith("S") ? (
+                <>
+                  9월 11일 출고 시작
+                  <br />
+                  세트 상품은 준비되는 순서대로
+                  순차 출고됩니다.
+                </>
+              ) : (
+                <>
+                  결제 완료 후 평균 2-3일
+                  이내 출고됩니다.
+                  <br />
+                  지역 및 배송 상황에 따라
+                  배송 일정이 달라질 수 있습니다.
+                </>
+              )}
+            </p>
+          </div>
+        </details>
+      </section>
 
       {/* ===================================================
           BUY CONFIRM MODAL
