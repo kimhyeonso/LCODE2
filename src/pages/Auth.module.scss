@@ -7,13 +7,14 @@
   margin-left: 220px;
   padding:
   100px
-  clamp(100px, 8vw, 200px)
+  56px
   118px
-  clamp(100px, 8vw, 200px);
+  56px;
   display: grid;
-  grid-template-columns: minmax(430px, 1fr) minmax(500px, 594px);
+  grid-template-columns: 520px 599px;
+  justify-content: center;
   align-items: center;
-  gap: clamp(70px, 8vw, 134px);
+  gap: 110px;
   overflow: hidden;
   background: #f7f2ea;
   color: #181714;

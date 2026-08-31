@@ -28,6 +28,22 @@ $serif-display: $display;
   transform: translateX(48px);
 }
 
+@media (min-width: 901px) {
+  .itinerary {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding: 60px 56px;
+    display: flex;
+    align-items: center;
+  }
+
+  .content {
+    width: min(1320px, 100%);
+    margin: 0 auto;
+    transform: none;
+  }
+}
+
 // Left-side upcoming-trip composition, based on the supplied reference.
 .intro {
   position: relative;

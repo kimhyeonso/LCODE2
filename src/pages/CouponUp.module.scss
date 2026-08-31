@@ -43,6 +43,19 @@
 .addedCoupon span { font-size: 10px; }
 @keyframes appear { from { opacity: 0; transform: translateY(8px); } }
 
+@media (min-width: 901px) {
+  .couponUp {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding-inline: 56px;
+  }
+
+  .layout {
+    width: min(1270px, 100%);
+    transform: none;
+  }
+}
+
 .benefits { margin-top: 40px; padding: 22px 34px; border: 1px solid rgba($ink, .15); border-radius: 7px; }
 .benefits > h2 { margin: 0 0 14px; padding-bottom: 14px; border-bottom: 1px solid rgba($ink, .15); font-size: 13px; }
 .benefits article { display: grid; grid-template-columns: 50px 1fr; align-items: center; min-height: 75px; border-bottom: 1px dotted rgba($ink, .2); }

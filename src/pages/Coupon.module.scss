@@ -223,11 +223,19 @@ h1 {
 
 // MY STORIES, WISH LIST와 동일한 데스크톱 본문 여백을 사용합니다.
 @media (min-width: 901px) {
+  .coupon {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding-inline: 0;
+    display: flex;
+    align-items: center;
+  }
+
   .content {
-    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
-    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
-    margin-right: 0;
-    margin-left: calc(220px + var(--desktop-left-gap));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(56px, 6vw, 104px);
+    width: min(1320px, calc(100% - 112px));
+    margin: 0 auto;
   }
 }
 

@@ -12,6 +12,21 @@
 
 .openGuide * { box-sizing: border-box; letter-spacing: -.01em; }
 
+@media (min-width: 901px) {
+  .openGuide {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding-inline: 56px;
+  }
+
+  .content {
+    grid-template-columns: minmax(0, 650px) minmax(0, 548px);
+    column-gap: 122px;
+    width: min(1320px, 100%);
+    margin: 0 auto;
+  }
+}
+
 .content {
   display: grid;
   grid-template-columns: 650px 696px;
@@ -190,4 +205,13 @@
   .sections p { font-size: 12px; }
   .imageLarge { height: 230px; }
   .imageSmall { width: 65%; height: 190px; }
+}
+
+@media (min-width: 901px) {
+  .content {
+    grid-template-columns: minmax(0, 650px) minmax(0, 548px);
+    column-gap: 122px;
+    width: min(1320px, 100%);
+    margin: 0 auto;
+  }
 }

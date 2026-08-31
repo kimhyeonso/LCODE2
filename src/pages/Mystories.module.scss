@@ -133,13 +133,20 @@ h1 {
 // 휴대폰 화면의 단일 열 레이아웃입니다.
 // Desktop layout follows the supplied MY STORIES spread. Typography rules above are intentionally unchanged.
 @media (min-width: 901px) {
+  .mystories {
+    width: calc(100% - 220px);
+    min-height: 100vh;
+    margin-left: 220px;
+    padding: 64px 0;
+    display: flex;
+    align-items: center;
+  }
+
   .content {
-    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
     grid-template-columns: minmax(0, 2.33fr) minmax(0, 1fr);
     gap: 4rem;
-    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
-    margin-right: 0;
-    margin-left: calc(220px + var(--desktop-left-gap));
+    width: min(1320px, calc(100% - 112px));
+    margin: 0 auto;
   }
 
   .stories {

@@ -59,18 +59,21 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 // Desktop alarm spread based on the supplied reference. Existing type styles stay unchanged.
 @media (min-width: 901px) {
   .alarm {
-    min-height: 977px;
-    padding-top: 94px;
+    width: calc(100% - 220px);
+    min-height: 100vh;
+    margin-top: 0;
+    margin-left: 220px;
+    padding: 76px 56px;
+    display: flex;
+    align-items: center;
   }
 
   .content {
-    --alarm-left: clamp(360px, 27.92vw, 511px);
     grid-template-columns: 465px 498px;
     gap: 148px;
     align-items: start;
-    width: min(1111px, calc(100% - var(--alarm-left) - 64px));
-    margin-right: 0;
-    margin-left: var(--alarm-left);
+    width: min(1111px, 100%);
+    margin: 0 auto;
   }
 
   .settings {
