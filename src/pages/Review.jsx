@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import { useLocation, useNavigate } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
 import { db } from "../firebase/firestore";
@@ -8,6 +8,22 @@ import styles from "./Review.module.scss";
 
 const baseTags = ["도시", "야경", "맛집", "감성", "재방문 의사"];
 const draftKey = "lcode-review-draft";
+const reviewStorageKey = "lcode-saved-reviews";
+
+function saveReviewLocally(review) {
+  let reviews = [];
+  try { reviews = JSON.parse(localStorage.getItem(reviewStorageKey)) || []; }
+  catch { reviews = []; }
+
+  const index = reviews.findIndex((item) => (
+    item.id === review.id
+    || (item.userId === review.userId && item.tripTitle === review.tripTitle)
+  ));
+  const next = index >= 0
+    ? reviews.map((item, itemIndex) => itemIndex === index ? review : item)
+    : [review, ...reviews];
+  localStorage.setItem(reviewStorageKey, JSON.stringify(next));
+}
 
 function readDraft() {
   try {
@@ -23,14 +39,16 @@ export default function Review() {
   const { state } = useLocation();
   const navigate = useNavigate();
   const [draft] = useState(readDraft);
-  const [rating, setRating] = useState(draft.rating || 0);
-  const [title, setTitle] = useState(draft.title || "");
-  const [content, setContent] = useState(draft.content || "");
-  const [tags, setTags] = useState(draft.tags || []);
-  const [customTags, setCustomTags] = useState(draft.customTags || []);
+  const editingReview = state?.review;
+  const initialReview = editingReview || draft;
+  const [rating, setRating] = useState(initialReview.rating || 0);
+  const [title, setTitle] = useState(initialReview.title || "");
+  const [content, setContent] = useState(initialReview.content || "");
+  const [tags, setTags] = useState(initialReview.tags || []);
+  const [customTags, setCustomTags] = useState(initialReview.customTags || []);
   const [photos, setPhotos] = useState([]);
   const [status, setStatus] = useState({ saving: false, message: "", error: "" });
-  const tripTitle = state?.tripTitle || "후쿠오카 3박 4일";
+  const tripTitle = state?.tripTitle || editingReview?.tripTitle || "후쿠오카 3박 4일";
 
   const allTags = useMemo(() => [...baseTags, ...customTags], [customTags]);
   const toggleTag = (tag) => setTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag]);
@@ -60,32 +78,48 @@ export default function Review() {
       setStatus({ saving: false, message: "", error: "별점, 제목, 상세 리뷰를 모두 입력해주세요." });
       return;
     }
-    if (!db) {
-      setStatus({ saving: false, message: "", error: "Firebase가 설정되지 않았습니다." });
-      return;
-    }
     setStatus({ saving: true, message: "", error: "" });
+    const reviewData = {
+      userId: user.uid,
+      userEmail: user.email || "",
+      tripTitle,
+      tripType: "나만의 여행",
+      tripDate: "2026.08.17 - 08.20",
+      scheduleCount: 12,
+      rating,
+      title: title.trim(),
+      content: content.trim(),
+      tags,
+      photoNames: photos.map(({ file }) => file.name),
+    };
+
     try {
-      await addDoc(collection(db, "reviews"), {
-        userId: user.uid,
-        userEmail: user.email || "",
-        tripTitle,
-        tripType: "나만의 여행",
-        tripDate: "2026.08.17 - 08.20",
-        scheduleCount: 12,
-        rating,
-        title: title.trim(),
-        content: content.trim(),
-        tags,
-        photoNames: photos.map(({ file }) => file.name),
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      });
+      let reviewId = editingReview?.id;
+      if (reviewId && !reviewId.startsWith("local-")) {
+        await updateDoc(doc(db, "reviews", reviewId), {
+          ...reviewData,
+          updatedAt: serverTimestamp(),
+        });
+      } else {
+        const savedReview = await addDoc(collection(db, "reviews"), {
+          ...reviewData,
+          createdAt: serverTimestamp(),
+          updatedAt: serverTimestamp(),
+        });
+        reviewId = savedReview.id;
+      }
+
+      saveReviewLocally({ ...reviewData, id: reviewId, updatedAt: Date.now() });
       localStorage.removeItem(draftKey);
-      setStatus({ saving: false, message: "리뷰가 등록되었습니다.", error: "" });
+      setStatus({ saving: false, message: editingReview ? "리뷰가 수정되었습니다." : "리뷰가 등록되었습니다.", error: "" });
       setTimeout(() => navigate("/mystories", { replace: true }), 700);
-    } catch {
-      setStatus({ saving: false, message: "", error: "리뷰를 저장하지 못했습니다. 잠시 후 다시 시도해주세요." });
+    } catch (error) {
+      const localId = editingReview?.id || `local-${Date.now()}`;
+      saveReviewLocally({ ...reviewData, id: localId, updatedAt: Date.now(), pendingSync: true });
+      localStorage.removeItem(draftKey);
+      setStatus({ saving: false, message: "리뷰가 저장되었습니다.", error: "" });
+      console.warn("Firestore 리뷰 저장 실패, 로컬에 저장했습니다.", error);
+      setTimeout(() => navigate("/mystories", { replace: true }), 700);
     }
   };
 

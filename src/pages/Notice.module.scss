@@ -240,7 +240,7 @@
     min-height: 100vh;
     margin-top: 0;
     margin-left: 220px;
-    padding: 76px 0;
+    padding: 38px 0;
     display: flex;
     align-items: center;
   }
@@ -330,7 +330,7 @@
 
   .issueRail {
     top: 158px;
-    left: max(24px, calc((100% - 1320px) / 2 - 88px));
+    left: 30px;
     width: 54px;
     font-size: 12px;
   }
@@ -392,4 +392,10 @@
   .journal { gap: 1rem; padding: .5rem; }
   .journalCard img { height: 11rem; }
   .cardCaption { gap: .5rem; padding-top: .45rem; font-size: .43rem; }
+}
+
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .notice { margin-top: 0; padding-right: 0; padding-left: 0; }
+  .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

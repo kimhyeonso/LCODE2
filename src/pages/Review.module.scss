@@ -4,7 +4,7 @@
 
 .review {
   min-height: 100vh;
-  padding: 42px 48px 44px;
+  padding: 21px 48px 44px;
   background: $paper;
   color: $ink;
   font-family: $korean;
@@ -125,4 +125,10 @@
   .tags button { min-width: 70px; height: 34px; padding: 0 12px; font-size: 11px; }
   .actions { grid-template-columns: 1fr 1.35fr; margin-left: 0; }
   .error, .success { margin-left: 0; }
+}
+
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .review { margin-top: 0; padding-right: 0; padding-left: 0; }
+  .page { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

@@ -32,7 +32,7 @@ $serif-display: $display;
   .itinerary {
     width: calc(100% - 220px);
     margin-left: 220px;
-    padding: 60px 56px;
+    padding: 30px 56px;
     display: flex;
     align-items: center;
   }
@@ -323,4 +323,11 @@ $serif-display: $display;
 
   // 모바일은 카드가 한 장씩 세로로 보여 이동 화살표를 사용하지 않습니다.
   .arrow { display: none; }
+}
+
+// Desktop workspace: same 1320px / 56px gutter rule as SHOP.
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .itinerary { margin-top: -2rem; padding-right: 0; padding-left: 0; }
+  .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

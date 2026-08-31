@@ -35,9 +35,9 @@
 
 @media (min-width: 901px) {
   .footer {
-    width: min(1320px, calc(100% - 220px - 64px));
+    width: min(1320px, calc(100% - 220px - 112px));
     margin-right: 0;
-    margin-left: calc(220px + max(32px, (100% - 1540px) / 2));
+    margin-left: calc(220px + max(56px, (100% - 1540px) / 2));
   }
 }
 

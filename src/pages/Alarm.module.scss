@@ -5,15 +5,15 @@
 // 페이지에서 사용하는 글꼴을 불러옵니다.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
-.alarm, .alarm * {  letter-spacing: -0.01em !important; }
+.alarm, .alarm * {  letter-spacing: -0.01em !important;  }
 
 // 알림 페이지 전체 배경과 여백입니다.
 .alarm { margin-top: -3rem; min-height: calc(100vh - 10rem); padding: 0.5rem 0 4rem; background: $paper; @include korean-font; }
 // 알림 설정과 이미지 영역의 2단 레이아웃입니다.
 .content { display: grid; grid-template-columns: 21rem 17.7rem; gap: 3.8rem; align-items: start; width: min(calc(100% - 10.6rem), 42.5rem); margin: 0 auto; }
-.eyebrow { margin: 0; color: #aaa49c; font: 400 .58rem $korean; letter-spacing: .24em; }
+.eyebrow { margin: 0; color: #aa9c9c; font: 400 .58rem $korean; letter-spacing: .24em; }
 h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-spacing: -.08em; }
-.description { margin: 0; color: #98948d; font: 400 .66rem $korean; }
+.description { margin: 0; color: #988d96; font: 400 .66rem $korean; }
 .divider { height: 1px; margin-top: .85rem; background: #ddd9d1; }
 // 알림 항목 목록입니다.
 .settingList { margin-top: 1.8rem; border-top: 1px solid #ebe8e3; }
@@ -63,7 +63,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     min-height: 100vh;
     margin-top: 0;
     margin-left: 220px;
-    padding: 76px 56px;
+    padding: 38px 56px;
     display: flex;
     align-items: center;
   }
@@ -182,7 +182,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .issueRail {
     position: absolute;
     top: 137px;
-    left: 325px;
+    left: 30px;
     display: flex;
     flex-direction: column;
     width: 52px;
@@ -303,4 +303,14 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 }
 .setting {
   font: 400 0.7rem $korean;
+}
+
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .alarm { margin-top: -1.5rem; padding-right: 0; padding-left: 0; }
+  .content {
+    grid-template-columns: minmax(0, 465fr) minmax(0, 498fr);
+    width: min(1320px, calc(100% - 112px));
+    margin-inline: auto;
+  }
 }
