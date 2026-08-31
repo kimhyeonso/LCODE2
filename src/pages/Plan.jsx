@@ -77,6 +77,7 @@ export default function Plan() {
   }, [hasRequestedTrip, params, savedPlan]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
+  const [saveState, setSaveState] = useState({ saving: false, error: "" });
   const visibleDay = Math.min(activeDay, selectedTrip.days.length - 1);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
@@ -100,6 +101,8 @@ export default function Plan() {
     ?.image;
 
   const handleSavePlan = async () => {
+    if (saveState.saving) return;
+
     if (!user) {
       navigate("/login", {
         state: { from: `/plan?trip=${encodeURIComponent(selectedTrip.id)}` },
@@ -107,8 +110,10 @@ export default function Plan() {
       return;
     }
 
+    setSaveState({ saving: true, error: "" });
+
     try {
-      await savePlan(user.uid, {
+      const savedDocument = await savePlan(user.uid, {
         tripId: selectedTrip.id,
         title: selectedTrip.title,
         city: selectedTrip.city,
@@ -119,9 +124,20 @@ export default function Plan() {
         image: representativeImage || null,
       });
 
+      if (!savedDocument?.id) {
+        throw new Error("저장된 일정의 문서 ID를 확인할 수 없습니다.");
+      }
+
+      setSaveState({ saving: false, error: "" });
       setIsSavedOpen(true);
     } catch (error) {
       console.error("일정 저장 실패:", error);
+      const message = error?.code === "permission-denied"
+        ? "일정을 저장할 권한이 없습니다. 다시 로그인한 후 시도해 주세요."
+        : error?.code === "unavailable"
+          ? "네트워크 연결을 확인한 후 다시 시도해 주세요."
+          : "일정을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.";
+      setSaveState({ saving: false, error: message });
     }
   };
 
@@ -230,7 +246,10 @@ export default function Plan() {
 
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
-          <button type="button" onClick={handleSavePlan}>내 일정에 담기</button>
+          <button type="button" onClick={handleSavePlan} disabled={saveState.saving}>
+            {saveState.saving ? "일정을 저장하고 있어요…" : "내 일정에 담기"}
+          </button>
+          {saveState.error && <p className={styles.saveError} role="alert">{saveState.error}</p>}
         </div>
       )}
 

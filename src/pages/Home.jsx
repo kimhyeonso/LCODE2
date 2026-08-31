@@ -100,7 +100,7 @@ export default function Home() {
         <h1>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
-          <TextLink to="/plans">VIEW ALL</TextLink>
+          <TextLink to="/itinerary">VIEW ALL</TextLink>
         </div>
         {planLoading ? (
           <div className={styles.upcomingLoading}>일정을 확인하고 있어요.</div>

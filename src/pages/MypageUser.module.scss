@@ -80,6 +80,7 @@
 
 .summary { grid-column: 1; grid-row: 1; display: grid; grid-template-columns: repeat(2, 1fr); width: 100%; }
 .summary article { position: relative; display: flex; aspect-ratio: 1; min-height: 0; flex-direction: column; justify-content: flex-end; padding: .75rem; border: 1px solid #dedad3; color: #77736c; }
+.cardLink { position: absolute; z-index: 2; inset: 0; }
 .summary small { position: absolute; top: .55rem; left: .55rem; color: #aaa49c; font: 400 .42rem $korean; letter-spacing: .12em; }
 .summary > article > span { color: #aaa49c; font: 400 .45rem $korean; letter-spacing: .14em; }
 .summary strong { font: 400 1.4rem/1 $display; }

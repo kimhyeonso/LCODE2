@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -62,4 +63,15 @@ export async function getPlans(userId) {
 export async function getPlan(id) {
   const snap = await getDoc(doc(requireDb(), "plans", id));
   return snap.exists() ? { id: snap.id, ...snap.data() } : null;
+}
+
+export async function deletePlan(userId, planId) {
+  if (!userId || !planId) throw new Error("일정 삭제 정보가 올바르지 않습니다.");
+  const planRef = doc(requireDb(), "plans", planId);
+  const snap = await getDoc(planRef);
+  if (!snap.exists()) return;
+  if (snap.data().userId !== userId) {
+    throw new Error("다른 사용자의 일정은 삭제할 수 없습니다.");
+  }
+  return deleteDoc(planRef);
 }
