@@ -178,6 +178,22 @@ $serif-display: $display;
 // 일정 카드와 좌우 이동 버튼을 감싸는 영역입니다.
 .tripArea { margin-top: 58px; position: relative; }
 
+.emptyState {
+  min-height: 470px;
+  margin-top: 58px;
+  padding: 86px 48px;
+  border: 1px solid #d2d0cd;
+  background: #f8f5ef;
+  color: #98948d;
+  text-align: center;
+
+  > span { font: 400 .56rem $korean; letter-spacing: .18em !important; }
+  h2 { margin: 24px 0 12px; color: $ink; font: 700 1.35rem $korean; }
+  p { margin: 0; font: 400 .7rem/1.8 $korean; }
+  a { width: min(100%, 260px); height: 52px; display: flex; align-items: center; justify-content: space-between; margin: 34px auto 0; padding: 0 20px; background: $ink; color: #fff; font: 600 .68rem $korean; }
+  a b { font-weight: 400; }
+}
+
 .tripCard { border: 1px solid #d2d0cd; background: $paper; }
 
 .photo {
@@ -219,6 +235,8 @@ $serif-display: $display;
   color: #f8f8f8;
   font: 600 0.73rem $korean;
   cursor: pointer;
+  display: grid;
+  place-items: center;
 }
 
 .arrow {
@@ -283,6 +301,11 @@ $serif-display: $display;
     margin: 1.85rem -0.5rem 0;
     padding: 0;
   }
+
+  .emptyState { min-height: 15rem; margin: 1.85rem -0.5rem 0; padding: 3.2rem 1.25rem; }
+  .emptyState h2 { margin-top: 1rem; font-size: 1rem; }
+  .emptyState p { font-size: .58rem; }
+  .emptyState a { height: 2.2rem; margin-top: 1.4rem; font-size: .58rem; }
 
   .photo {
     height: 4.6rem;

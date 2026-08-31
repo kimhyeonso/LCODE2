@@ -1,32 +1,63 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import styles from "./Itinerary.module.scss";
 import MypageBackLink from "../components/MypageBackLink";
+import { useAuth } from "../hooks/useAuth";
+import { getPlans } from "../services/firestoreService";
 
-const slideImages = [
-  "/Mypage-img/3.png",
-  "/Mypage-img/4.png",
-  "/Mypage-img/5.png",
-];
+const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  import: "default",
+});
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
+  const key = Object.keys(imageModules).find(
+    (path) => path.toLowerCase() === relativePath.toLowerCase(),
+  );
+  return key ? imageModules[key] : "";
+};
 
 export default function Itinerary() {
+  const { user } = useAuth();
+  const [planState, setPlanState] = useState({ userId: null, plans: [] });
   const [slideIndex, setSlideIndex] = useState(0);
 
   useEffect(() => {
-    const previousButton = document.querySelector(`.${styles.previous}`);
-    const nextButton = document.querySelector(`.${styles.next}`);
-    const moveSlide = (direction) => {
-      setSlideIndex((current) => (current + direction + slideImages.length) % slideImages.length);
-    };
+    if (!user) return undefined;
 
-    const showPrevious = () => moveSlide(-1);
-    const showNext = () => moveSlide(1);
-    previousButton?.addEventListener("click", showPrevious);
-    nextButton?.addEventListener("click", showNext);
+    let active = true;
+    getPlans(user.uid)
+      .then((savedPlans) => {
+        if (!active) return;
+        setPlanState({ userId: user.uid, plans: savedPlans });
+        setSlideIndex(0);
+      })
+      .catch(() => active && setPlanState({ userId: user.uid, plans: [] }));
+
     return () => {
-      previousButton?.removeEventListener("click", showPrevious);
-      nextButton?.removeEventListener("click", showNext);
+      active = false;
     };
-  }, []);
+  }, [user]);
+
+  const loading = Boolean(user && planState.userId !== user.uid);
+  const plans = user && planState.userId === user.uid ? planState.plans : [];
+  const currentPlan = plans[slideIndex];
+  const scheduleCount = currentPlan?.days?.reduce(
+    (total, day) => total + day.items.filter((item) => item.type === "place").length,
+    0,
+  ) ?? 0;
+  const startDate = currentPlan?.dateRange?.start;
+  const endDate = currentPlan?.dateRange?.end;
+  const dDay = startDate
+    ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
+    : null;
+  const image = getImageUrl(currentPlan?.image);
+
+  const moveSlide = (direction) => {
+    setSlideIndex((current) => (current + direction + plans.length) % plans.length);
+  };
 
   return (
     <main className={styles.itinerary}>
@@ -52,21 +83,32 @@ export default function Itinerary() {
           </div>
         </section>
 
-        <section className={styles.tripArea} aria-label="다가오는 여행">
-          <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행">&lsaquo;</button>
-          <article className={styles.tripCard}>
-            <div className={styles.photo} style={{ backgroundImage: `url(${slideImages[slideIndex]})` }} aria-hidden="true">
-              <span>D-12</span>
-            </div>
-            <div className={styles.tripInfo}>
-              <h2>후쿠오카 3박 4일</h2>
-              <p className={styles.subtitle}>나만의 여행</p>
-              <p className={styles.date}>2026.08.17 - 08.20&nbsp; | &nbsp;12개 일정</p>
-              <button className={styles.detailButton} type="button">일정 상세 보기</button>
-            </div>
-          </article>
-          <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="다음 여행">&rsaquo;</button>
-        </section>
+        {loading ? (
+          <section className={styles.emptyState} aria-live="polite">일정을 확인하고 있어요.</section>
+        ) : currentPlan ? (
+          <section className={styles.tripArea} aria-label="다가오는 여행">
+            {plans.length > 1 && <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행" onClick={() => moveSlide(-1)}>&lsaquo;</button>}
+            <article className={styles.tripCard}>
+              <div className={styles.photo} style={image ? { backgroundImage: `url(${image})` } : undefined} aria-hidden="true">
+                <span>{dDay === null ? "DATE TBD" : dDay > 0 ? `D-${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</span>
+              </div>
+              <div className={styles.tripInfo}>
+                <h2>{currentPlan.title}</h2>
+                <p className={styles.subtitle}>{currentPlan.city}, {currentPlan.country}</p>
+                <p className={styles.date}>{startDate || "날짜 미정"} - {endDate || "날짜 미정"}&nbsp; | &nbsp;{scheduleCount}개 일정</p>
+                <Link className={styles.detailButton} to={`/travel-planner?trip=${encodeURIComponent(currentPlan.tripId)}`}>일정 상세 보기</Link>
+              </div>
+            </article>
+            {plans.length > 1 && <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="다음 여행" onClick={() => moveSlide(1)}>&rsaquo;</button>}
+          </section>
+        ) : (
+          <section className={styles.emptyState}>
+            <span>NO UPCOMING TRIP</span>
+            <h2>아직 정해진 일정이 없어요.</h2>
+            <p>가고 싶은 도시를 발견하고<br />첫 여행 일정을 만들어 보세요.</p>
+            <Link to="/search">여행지 둘러보기 <b>→</b></Link>
+          </section>
+        )}
       </div>
     </main>
   );

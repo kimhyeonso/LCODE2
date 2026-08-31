@@ -86,6 +86,10 @@ $type-display: 36px;
   color: $home-muted;
   font-size: $type-caption;
 }
+.eventSection .rowTitle,
+.journal .rowTitle {
+  margin-top: $space-4;
+}
 .textLink {
   color: $home-forest;
   font-size: $type-caption;
@@ -100,6 +104,19 @@ $type-display: 36px;
   background: $home-surface;
   border: 1px solid $home-line;
 }
+.upcomingLoading,
+.upcomingEmpty {
+  min-height: 270px;
+  border: 1px solid $home-line;
+  background: $home-surface;
+}
+.upcomingLoading { display: grid; place-items: center; color: $home-muted; font-size: $type-caption; }
+.upcomingEmpty { padding: $space-5 $space-4; text-align: center; }
+.upcomingEmpty > span { color: $home-muted; font-size: 9px; letter-spacing: 2px; }
+.upcomingEmpty h2 { margin: $space-2 0 $space-1; font: 600 22px/1.35 $serif; }
+.upcomingEmpty p { margin: 0; color: $home-muted; font-size: $type-caption; line-height: 1.7; }
+.upcomingEmpty a { width: min(100%, 230px); height: 46px; display: flex; align-items: center; justify-content: space-between; margin: $space-3 auto 0; padding: 0 $space-2; background: $home-ink; color: #fff; font-size: $type-caption; }
+.upcomingEmpty a b { font-weight: 400; }
 .upcomingMain {
   min-height: 200px;
   display: grid;
@@ -440,4 +457,34 @@ $type-display: 36px;
   .journalVisual {
     height: 520px;
   }
+}
+
+@media (min-width: 901px) {
+  .home {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+  }
+
+  .sectionLabel { font-size: 12px; }
+  .section > h1 { font-size: 32px; }
+  .rowTitle > p { font-size: 16px; }
+  .rowTitle div > h2 { font-size: 32px; }
+  .rowTitle div > p, .textLink { font-size: 12px; }
+  .upcomingMain strong { font-size: 52px; }
+  .upcomingMain h2 { font-size: 24px; }
+  .upcomingMain p, .tripMeta dd { font-size: 13px; }
+  .tripMeta dt { font-size: 11px; }
+  .pickGrid h3 { font-size: 17px; }
+  .pickGrid p { font-size: 12px; }
+  .featurePick h3 { font-size: 16px; }
+  .scriptTitle { font-size: 38px; }
+  .destinationList span { font-size: 11px; }
+  .destinationList h3 { font-size: 42px; }
+  .destinationList p { font-size: 14px; }
+  .essentialGrid h3 { font-size: 13px; }
+  .essentialGrid p { font-size: 11px; }
+  .journalMeta { font-size: 11px; }
+  .journal article > h3 { font-size: 28px; }
+  .journal article > p { font-size: 15px; }
+  .journal article > footer { font-size: 12px; }
 }

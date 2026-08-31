@@ -1,9 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Header.module.scss";
 import logoBlack from "../assets/images/logo-black.png";
+import searchIcon from "../assets/icons/search.svg";
 import menuIcon from "../assets/icons/ham_menu.svg";
 import closeIcon from "../assets/icons/close.svg";
 
@@ -17,8 +18,33 @@ const links = [
 
 export default function Header() {
   const header = useRef(null);
+  const searchInput = useRef(null);
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const toggleMenu = () => {
+    setOpen((current) => !current);
+    setSearchOpen(false);
+  };
+
+  const toggleSearch = () => {
+    setSearchOpen((current) => !current);
+    setOpen(false);
+  };
+
+  const handleSearch = (event) => {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (!query) {
+      searchInput.current?.focus();
+      return;
+    }
+    navigate(`/search?city=${encodeURIComponent(query)}`);
+    setSearchOpen(false);
+  };
 
   const handleLogout = async () => {
     await logout();
@@ -33,19 +59,59 @@ export default function Header() {
     );
     return () => tween.kill();
   }, []);
+
+  useEffect(() => {
+    if (searchOpen) searchInput.current?.focus();
+  }, [searchOpen]);
+
   return (
     <header ref={header} className={styles.header}>
       <NavLink to="/" className={styles.logo}>
         <img src={logoBlack} alt="L:CODE" />
       </NavLink>
-      <button
-        className={styles.menu}
-        aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
-        aria-expanded={open}
-        onClick={() => setOpen(!open)}
+      <div className={styles.mobileActions}>
+        <button
+          className={styles.searchButton}
+          type="button"
+          aria-label={searchOpen ? "검색 닫기" : "검색 열기"}
+          aria-expanded={searchOpen}
+          aria-controls="mobile-search"
+          onClick={toggleSearch}
+        >
+          <img src={searchOpen ? closeIcon : searchIcon} alt="" aria-hidden="true" />
+        </button>
+        <button
+          className={styles.menu}
+          type="button"
+          aria-label={open ? "메뉴 닫기" : "메뉴 열기"}
+          aria-expanded={open}
+          onClick={toggleMenu}
+        >
+          <img src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
+        </button>
+      </div>
+      <form
+        id="mobile-search"
+        className={`${styles.mobileSearch} ${searchOpen ? styles.open : ""}`}
+        role="search"
+        onSubmit={handleSearch}
       >
-        <img src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
-      </button>
+        <label htmlFor="mobile-search-input">여행지 검색</label>
+        <div>
+          <input
+            ref={searchInput}
+            id="mobile-search-input"
+            type="search"
+            value={searchQuery}
+            placeholder="도시 또는 여행지를 입력하세요"
+            autoComplete="off"
+            onChange={(event) => setSearchQuery(event.target.value)}
+          />
+          <button type="submit" aria-label="검색">
+            <img src={searchIcon} alt="" aria-hidden="true" />
+          </button>
+        </div>
+      </form>
       <nav
         className={styles.navigation}
         aria-label="주요 메뉴"
