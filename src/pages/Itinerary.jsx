@@ -11,12 +11,38 @@ const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}
 });
 
 const getImageUrl = (imagePath) => {
-  if (!imagePath) return "";
+  if (!imagePath) return "/Mypage-img/trv.png";
   const relativePath = imagePath.replace(/^img\//, "../assets/images/");
   const key = Object.keys(imageModules).find(
     (path) => path.toLowerCase() === relativePath.toLowerCase(),
   );
-  return key ? imageModules[key] : "";
+  return key ? imageModules[key] : "/Mypage-img/trv.png";
+};
+
+const getRepresentativeImage = (plan) => {
+  const imagePath = plan.image || plan.days
+    ?.flatMap((day) => day.items || [])
+    .find((item) => item.type === "place" && item.image)
+    ?.image;
+  return getImageUrl(imagePath);
+};
+
+const getScheduleCount = (plan) => plan.days?.reduce(
+  (total, day) => total + (day.items || []).filter((item) => item.type === "place").length,
+  0,
+) || 0;
+
+const formatCardDate = (value) => value?.replaceAll("-", ".") || "날짜 미정";
+
+const getDday = (startDate) => {
+  if (!startDate) return "D-DAY";
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = new Date(`${startDate}T00:00:00`);
+  if (Number.isNaN(start.getTime())) return "D-DAY";
+  const days = Math.ceil((start - today) / 86400000);
+  if (days === 0) return "D-DAY";
+  return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 };
 
 export default function Itinerary() {
@@ -43,21 +69,17 @@ export default function Itinerary() {
 
   const loading = Boolean(user && planState.userId !== user.uid);
   const plans = user && planState.userId === user.uid ? planState.plans : [];
-  const currentPlan = plans[slideIndex];
-  const scheduleCount = currentPlan?.days?.reduce(
-    (total, day) => total + day.items.filter((item) => item.type === "place").length,
-    0,
-  ) ?? 0;
-  const startDate = currentPlan?.dateRange?.start;
-  const endDate = currentPlan?.dateRange?.end;
-  const dDay = startDate
-    ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
-    : null;
-  const image = getImageUrl(currentPlan?.image);
-
   const moveSlide = (direction) => {
+    if (plans.length < 2) return;
     setSlideIndex((current) => (current + direction + plans.length) % plans.length);
   };
+
+  const currentPlan = plans[slideIndex];
+  const cardTitle = currentPlan
+    ? `${currentPlan.title?.replace(" 일정", "") || currentPlan.city || "나의 여행"}${currentPlan.duration && !currentPlan.title?.includes(currentPlan.duration) ? ` ${currentPlan.duration}` : ""}`
+    : "아직 일정이 없어요";
+  const startDate = currentPlan?.dateRange?.start;
+  const endDate = currentPlan?.dateRange?.end;
 
   return (
     <main className={styles.itinerary}>
@@ -89,13 +111,13 @@ export default function Itinerary() {
           <section className={styles.tripArea} aria-label="다가오는 여행">
             {plans.length > 1 && <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행" onClick={() => moveSlide(-1)}>&lsaquo;</button>}
             <article className={styles.tripCard}>
-              <div className={styles.photo} style={image ? { backgroundImage: `url(${image})` } : undefined} aria-hidden="true">
-                <span>{dDay === null ? "DATE TBD" : dDay > 0 ? `D-${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</span>
+              <div className={styles.photo} style={{ backgroundImage: `url(${getRepresentativeImage(currentPlan)})` }} aria-hidden="true">
+                <span>{getDday(startDate)}</span>
               </div>
               <div className={styles.tripInfo}>
-                <h2>{currentPlan.title}</h2>
-                <p className={styles.subtitle}>{currentPlan.city}, {currentPlan.country}</p>
-                <p className={styles.date}>{startDate || "날짜 미정"} - {endDate || "날짜 미정"}&nbsp; | &nbsp;{scheduleCount}개 일정</p>
+                <h2>{cardTitle}</h2>
+                <p className={styles.subtitle}>{currentPlan.city || "나만의"} 여행</p>
+                <p className={styles.date}>{formatCardDate(startDate)} - {formatCardDate(endDate)}&nbsp; | &nbsp;{getScheduleCount(currentPlan)}개 일정</p>
                 <Link className={styles.detailButton} to={`/travel-planner?trip=${encodeURIComponent(currentPlan.tripId)}`}>일정 상세 보기</Link>
               </div>
             </article>

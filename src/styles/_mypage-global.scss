@@ -3,6 +3,7 @@
 $display: "DM Serif Display", serif;
 $korean: "Noto Sans KR", sans-serif;
 
+
 @mixin korean-font {
   font-family: $korean !important;
 }

@@ -140,3 +140,26 @@
   .summary strong { font-size: 1.1rem; }
   .recent h2 { font-size: .82rem; }
 }
+
+// Desktop workspace: align the my-page dashboard with SHOP's catalog gutters.
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .mypageUser {
+    margin-top: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .content {
+    grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);
+    width: min(1320px, calc(100% - 112px));
+    margin-inline: auto;
+  }
+
+  .profile {
+    padding-right: 0;
+    padding-left: 56px;
+  }
+
+  .menuList { width: 100%; }
+}

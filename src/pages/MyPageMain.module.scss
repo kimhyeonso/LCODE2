@@ -11,8 +11,10 @@ $english: $display;
 
 // 마이페이지 전체 배경과 여백입니다.
 .myPageMain {
+  /* 여기가 위쪽 마진 ----------------------- */
+  margin-top: 0;
   min-height: calc(100vh - 10rem);
-  padding: 2.25rem 0 4rem;
+  padding: 1.125rem 0 4rem;
   background: $paper;
   @include korean-font;
   // border: 1px solid red;

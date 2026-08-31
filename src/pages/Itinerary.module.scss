@@ -16,7 +16,6 @@ $serif-display: $display;
   background: $paper;
   @include korean-font;
 }
-
 // 왼쪽 소개와 오른쪽 일정 카드의 2단 레이아웃입니다.
 .content {
   display: grid;
@@ -26,6 +25,23 @@ $serif-display: $display;
   width: min(1210px, calc(100% - 64px));
   margin: 0 auto;
   transform: translateX(48px);
+}
+
+@media (min-width: 901px) {
+  .itinerary {
+    width: calc(100% - 220px);
+    margin-top: -2rem;
+    margin-left: 220px;
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .content {
+    width: min(1320px, calc(100% - 112px));
+    margin-inline: auto;
+    transform: none;
+  }
 }
 
 // Left-side upcoming-trip composition, based on the supplied reference.

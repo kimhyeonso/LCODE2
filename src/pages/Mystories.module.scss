@@ -102,12 +102,21 @@ h1 {
 
 .storyInfo footer {
   display: grid;
-  grid-template-columns: .84fr 1.65fr;
+  grid-template-columns: minmax(0, .9fr) minmax(0, 1.35fr);
   gap: .45rem;
+  width: 100%;
   margin-top: .95rem;
 }
 // 동작 없이 표시하는 카드 버튼 스타일입니다.
-.storyInfo button, .reviewLink, .productCard footer button { display: grid; height: 2.35rem; border: 1px solid #ddd9d2; background: $paper; color: #77736c; font: 400 .62rem $korean; place-items: center; text-decoration: none; }
+.storyInfo button, .reviewLink, .productCard footer button { margin-top: 0.5rem; display: grid;  padding: 0.1rem 0.5rem; border: 1px solid #ddd9d2; background: $paper; color: #77736c; font: 400 .55rem $korean; place-items: center; text-decoration: none; }
+.storyInfo button, .reviewLink {
+  width: 100%;
+  min-width: 0;
+  height: 2.15rem;
+  padding: .45rem .6rem;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
 .storyInfo .reviewLink, .productCard footer button:last-child { border-color: #111; background: #111; color: #fff; }
 // 쇼핑 카테고리 필터 버튼 행입니다.
 .shopping{
@@ -133,13 +142,20 @@ h1 {
 // 휴대폰 화면의 단일 열 레이아웃입니다.
 // Desktop layout follows the supplied MY STORIES spread. Typography rules above are intentionally unchanged.
 @media (min-width: 901px) {
+  .mystories {
+    width: calc(100% - 220px);
+    min-height: 100vh;
+    margin-left: 220px;
+    padding: 32px 0;
+    display: flex;
+    align-items: center;
+  }
+
   .content {
-    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
     grid-template-columns: minmax(0, 2.33fr) minmax(0, 1fr);
     gap: 4rem;
-    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
-    margin-right: 0;
-    margin-left: calc(220px + var(--desktop-left-gap));
+    width: min(1320px, calc(100% - 112px));
+    margin: 0 auto;
   }
 
   .stories {
@@ -230,4 +246,10 @@ h1 {
   .productCard footer { gap: 0.2rem; margin-top: 0.55rem; }
   .productCard footer button { height: 1.05rem; font-size: 0.34rem; }
   .pagination { margin-top: 0.35rem; font-size: 0.35rem; }
+}
+
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .mystories { margin-top: 0; padding-right: 0; padding-left: 0; }
+  .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

@@ -236,17 +236,20 @@
 // ALARM과 같은 편집 지면 기준을 사용하는 데스크톱 레이아웃입니다.
 @media (min-width: 901px) {
   .notice {
-    min-height: 999px;
-    padding: 157px 0 76px;
+    width: calc(100% - 220px);
+    min-height: 100vh;
+    margin-top: 0;
+    margin-left: 220px;
+    padding: 38px 0;
+    display: flex;
+    align-items: center;
   }
 
   .content {
-    --notice-left: clamp(360px, 23.79vw, 493px);
-    grid-template-columns: minmax(520px, 650px) minmax(480px, 617px);
-    gap: clamp(70px, 5.02vw, 104px);
-    width: min(1371px, calc(100% - var(--notice-left) - 64px));
-    margin-right: 0;
-    margin-left: var(--notice-left);
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: clamp(56px, 5.02vw, 104px);
+    width: min(1320px, calc(100% - 112px));
+    margin: 0 auto;
   }
 
   .noticeList {
@@ -327,7 +330,7 @@
 
   .issueRail {
     top: 158px;
-    left: 281px;
+    left: 30px;
     width: 54px;
     font-size: 12px;
   }
@@ -389,4 +392,10 @@
   .journal { gap: 1rem; padding: .5rem; }
   .journalCard img { height: 11rem; }
   .cardCaption { gap: .5rem; padding-top: .45rem; font-size: .43rem; }
+}
+
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .notice { margin-top: 0; padding-right: 0; padding-left: 0; }
+  .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

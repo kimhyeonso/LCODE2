@@ -9,10 +9,12 @@ $english: $display;
 .myPage, .myPage * { letter-spacing: -0.01em !important; }
 
 .myPage {
+  /* 여기가 위쪽 마진 ----------------------- */
+  margin-top: 0;
   @include korean-font;
   min-height: calc(100vh - 10rem);
   background: $paper-light;
-  padding: 2.25rem 0 4rem;
+  padding: 1.125rem 0 4rem;
   background: $paper;
 }
 
