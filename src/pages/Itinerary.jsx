@@ -89,6 +89,7 @@ export default function Itinerary() {
       await deletePlan(user.uid, currentPlan.id);
       const remainingPlans = plans.filter((plan) => plan.id !== currentPlan.id);
       setPlanState({ userId: user.uid, plans: remainingPlans });
+      window.dispatchEvent(new Event("plans-changed"));
       setSlideIndex((current) => Math.min(current, Math.max(remainingPlans.length - 1, 0)));
       setDeleteState({ planId: null, error: "" });
     } catch (error) {
@@ -145,7 +146,7 @@ export default function Itinerary() {
                 <h2>{cardTitle}</h2>
                 <p className={styles.subtitle}>{currentPlan.city || "나만의"} 여행</p>
                 <p className={styles.date}>{formatCardDate(startDate)} - {formatCardDate(endDate)}&nbsp; | &nbsp;{getScheduleCount(currentPlan)}개 일정</p>
-                <Link className={styles.detailButton} to={`/travel-planner?trip=${encodeURIComponent(currentPlan.tripId)}`}>일정 상세 보기</Link>
+                <Link className={styles.detailButton} to={`/travel-planner?plan=${encodeURIComponent(currentPlan.id)}`}>일정 상세 보기 / 수정</Link>
                 <button className={styles.deleteButton} type="button" onClick={handleDeletePlan} disabled={deleteState.planId === currentPlan.id}>
                   {deleteState.planId === currentPlan.id ? "삭제하고 있어요…" : "일정 삭제"}
                 </button>

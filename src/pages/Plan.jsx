@@ -42,6 +42,14 @@ const getDayPlaces = (day) => day.items.reduce((result, item, index, items) => {
   return result;
 }, []);
 
+const toDateInputValue = (date) => /^\d{4}-\d{2}-\d{2}$/.test(date || "") ? date : "";
+
+const addDays = (date, amount) => {
+  const value = new Date(`${date}T00:00:00`);
+  value.setDate(value.getDate() + amount);
+  return value.toLocaleDateString("sv-SE");
+};
+
 export default function Plan() {
   const [params] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
@@ -77,7 +85,13 @@ export default function Plan() {
   }, [hasRequestedTrip, params, savedPlan]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
+  const [savedDocumentId, setSavedDocumentId] = useState("");
+  const [isDateOpen, setIsDateOpen] = useState(false);
   const [saveState, setSaveState] = useState({ saving: false, error: "" });
+  const [dateDraft, setDateDraft] = useState(() => ({
+    start: toDateInputValue(selectedTrip.dateRange?.start),
+    end: toDateInputValue(selectedTrip.dateRange?.end),
+  }));
   const visibleDay = Math.min(activeDay, selectedTrip.days.length - 1);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
@@ -100,27 +114,49 @@ export default function Plan() {
     .find((item) => item.type === "place" && item.image)
     ?.image;
 
-  const handleSavePlan = async () => {
-    if (saveState.saving) return;
-
+  const openDateStep = () => {
     if (!user) {
       navigate("/login", {
         state: { from: `/plan?trip=${encodeURIComponent(selectedTrip.id)}` },
       });
       return;
     }
+    setDateDraft({
+      start: toDateInputValue(selectedTrip.dateRange?.start),
+      end: toDateInputValue(selectedTrip.dateRange?.end),
+    });
+    setSaveState({ saving: false, error: "" });
+    setIsDateOpen(true);
+  };
+
+  const handleSavePlan = async (event) => {
+    event.preventDefault();
+    if (saveState.saving) return;
+
+    if (!dateDraft.start || !dateDraft.end) {
+      setSaveState({ saving: false, error: "여행 시작일과 종료일을 모두 선택해 주세요." });
+      return;
+    }
+    if (dateDraft.end < dateDraft.start) {
+      setSaveState({ saving: false, error: "종료일은 시작일보다 빠를 수 없어요." });
+      return;
+    }
 
     setSaveState({ saving: true, error: "" });
 
     try {
+      const datedDays = selectedTrip.days.map((day, index) => ({
+        ...day,
+        date: addDays(dateDraft.start, index),
+      }));
       const savedDocument = await savePlan(user.uid, {
         tripId: selectedTrip.id,
         title: selectedTrip.title,
         city: selectedTrip.city,
         country: selectedTrip.country,
         duration: selectedTrip.duration,
-        dateRange: selectedTrip.dateRange,
-        days: selectedTrip.days,
+        dateRange: { start: dateDraft.start, end: dateDraft.end },
+        days: datedDays,
         image: representativeImage || null,
       });
 
@@ -129,6 +165,9 @@ export default function Plan() {
       }
 
       setSaveState({ saving: false, error: "" });
+      setIsDateOpen(false);
+      setSavedDocumentId(savedDocument.id);
+      window.dispatchEvent(new Event("plans-changed"));
       setIsSavedOpen(true);
     } catch (error) {
       console.error("일정 저장 실패:", error);
@@ -246,10 +285,39 @@ export default function Plan() {
 
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
-          <button type="button" onClick={handleSavePlan} disabled={saveState.saving}>
-            {saveState.saving ? "일정을 저장하고 있어요…" : "내 일정에 담기"}
-          </button>
-          {saveState.error && <p className={styles.saveError} role="alert">{saveState.error}</p>}
+          <button type="button" onClick={openDateStep} disabled={saveState.saving}>내 일정에 담기</button>
+        </div>
+      )}
+
+      {isDateOpen && (
+        <div className={styles.dateBackdrop} role="presentation" onMouseDown={() => !saveState.saving && setIsDateOpen(false)}>
+          <section className={styles.dateModal} role="dialog" aria-modal="true" aria-labelledby="date-modal-title" onMouseDown={(event) => event.stopPropagation()}>
+            <button className={styles.dateClose} type="button" aria-label="날짜 입력 닫기" onClick={() => setIsDateOpen(false)}>×</button>
+            <p className={styles.dateEyebrow}>TRAVEL DATE</p>
+            <h2 id="date-modal-title">언제 여행을<br />떠나시나요?</h2>
+            <p className={styles.dateDescription}>여행 시작일과 종료일을 선택해 주시면<br />내 일정에 날짜를 맞춰 저장해 드릴게요.</p>
+            <form className={styles.dateForm} onSubmit={handleSavePlan}>
+              <label>
+                <span>여행 시작일 <b>START</b></span>
+                <input type="date" required value={dateDraft.start} max={dateDraft.end || undefined} onChange={(event) => {
+                  setDateDraft((current) => ({ ...current, start: event.target.value }));
+                  setSaveState({ saving: false, error: "" });
+                }} />
+              </label>
+              <label>
+                <span>여행 종료일 <b>END</b></span>
+                <input type="date" required value={dateDraft.end} min={dateDraft.start || undefined} onChange={(event) => {
+                  setDateDraft((current) => ({ ...current, end: event.target.value }));
+                  setSaveState({ saving: false, error: "" });
+                }} />
+              </label>
+              <p className={styles.dateNotice}>선택한 날짜는 저장된 여행 일정 전체에 반영됩니다.</p>
+              {saveState.error && <p className={styles.saveError} role="alert">{saveState.error}</p>}
+              <button className={styles.dateSubmit} disabled={saveState.saving}>
+                {saveState.saving ? "저장하고 있어요…" : "여행 일정 저장하기"}
+              </button>
+            </form>
+          </section>
         </div>
       )}
 
@@ -271,11 +339,12 @@ export default function Plan() {
             <p className={styles.modalMessage}>추천 일정이<br />내 여행에 저장되었습니다.</p>
             <div className={styles.modalActions}>
               <button type="button" onClick={() => setIsSavedOpen(false)}>닫기</button>
-              <Link to={`/travel-planner?trip=${encodeURIComponent(selectedTrip.id)}`}>일정 보기</Link>
+              <Link to={`/travel-planner?plan=${encodeURIComponent(savedDocumentId)}`}>일정 보기</Link>
             </div>
           </section>
         </div>
       )}
+
     </main>
   );
 }

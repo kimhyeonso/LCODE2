@@ -55,6 +55,15 @@ const getImageUrl = (imagePath) => {
   return matchedKey ? imageModules[matchedKey] : "";
 };
 
+const getAirportCode = (airport = "") => {
+  const codes = {
+    나리타: "NRT", 인천: "ICN", 김포: "GMP", 후쿠오카: "FUK", 하네다: "HND",
+    간사이: "KIX", 제주: "CJU", 김해: "PUS", 신치토세: "CTS",
+  };
+  const matched = Object.entries(codes).find(([name]) => airport.includes(name));
+  return matched?.[1] || airport.match(/\b[A-Z]{3}\b/)?.[0] || "AIR";
+};
+
 const createStops = (trip) =>
   trip.days.map((day) =>
     day.items.reduce((stops, item, index, items) => {
@@ -81,14 +90,14 @@ const createStops = (trip) =>
     }, []),
   );
 
-export default function TravelForm({ onSubmit, loading }) {
+export default function TravelForm({ onSubmit, loading, initialTrip = null, editMode = false }) {
   const [params] = useSearchParams();
   const selectedTrip = useMemo(() => {
     const tripId = params.get("trip");
-    return tripRoad.trips.find((trip) => trip.id === tripId)
+    return initialTrip || tripRoad.trips.find((trip) => trip.id === tripId)
       || tripRoad.trips.find((trip) => trip.id === "trip-후쿠오카-3박4일")
       || tripRoad.trips[0];
-  }, [params]);
+  }, [initialTrip, params]);
   const days = selectedTrip.days.map((day, index) => [
     day.label || `DAY ${String(day.day).padStart(2, "0")}`,
     day.date ? new Date(day.date).getDate() : String(index + 1).padStart(2, "0"),
@@ -122,6 +131,7 @@ export default function TravelForm({ onSubmit, loading }) {
     flightNumber: "KE704",
     departureTerminal: "T1",
     arrivalTerminal: "T2",
+    ...(initialTrip?.flightInfo || {}),
   }));
   const [flightDraft, setFlightDraft] = useState(flightInfo);
   const [isPlaceAddOpen, setIsPlaceAddOpen] = useState(false);
@@ -132,6 +142,14 @@ export default function TravelForm({ onSubmit, loading }) {
   const [wishlistCategory, setWishlistCategory] = useState("all");
   const [wishlistSelections, setWishlistSelections] = useState([]);
   const stops = stopsByDay[activeDay] || [];
+  const estimatedBudget = 135000 + stopsByDay.flat().length * 32000;
+  const exchangeAmount = selectedTrip.country === "일본" ? 35000 : 50000;
+  const exchangeCurrency = selectedTrip.country === "일본" ? "JPY" : "LOCAL";
+  const recommendationPlaces = selectedTrip.days
+    .flatMap((day) => day.items)
+    .filter((item) => item.type === "place" && item.image && !stops.some((stop) => stop.name === item.place))
+    .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
+    .slice(0, 2);
   const suggestedTitles = [
     `맛집 따라 ${selectedTrip.city}`,
     `카페와 골목을 걷는 ${selectedTrip.city} 여행`,
@@ -144,7 +162,26 @@ export default function TravelForm({ onSubmit, loading }) {
 
   const submit = (event) => {
     event.preventDefault();
-    onSubmit({ destination: selectedTrip.city, duration: selectedTrip.duration, people: "2", budget: "800000", interest: "맛집, 관광", stops: stopsByDay });
+    const days = selectedTrip.days.map((day, dayIndex) => ({
+      ...day,
+      items: (stopsByDay[dayIndex] || []).map((stop) => {
+        const original = day.items.find((item) => item.type === "place" && item.place === stop.name) || {};
+        return {
+          ...original,
+          type: "place",
+          time: stop.time,
+          place: stop.name,
+          category: stop.category,
+          recommendation: stop.note || stop.recommendation || "",
+          image: original.image || null,
+          latitude: stop.latitude ?? original.latitude ?? null,
+          longitude: stop.longitude ?? original.longitude ?? null,
+        };
+      }),
+    }));
+    onSubmit(editMode
+      ? { title: travelTitle, dateRange: { start: flightInfo.departureDate, end: flightInfo.arrivalDate }, days, flightInfo }
+      : { destination: selectedTrip.city, duration: selectedTrip.duration, people: "2", budget: "800000", interest: "맛집, 관광", stops: stopsByDay });
   };
 
   const openTitleEdit = () => {
@@ -255,6 +292,25 @@ export default function TravelForm({ onSubmit, loading }) {
     setPlaceQuery("");
   };
 
+  const addRecommendedPlace = (place) => {
+    setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
+      ? [...dayStops, {
+        id: `recommended-${Date.now()}`,
+        time: "시간 미정",
+        icon: categoryIcons[place.category] || pinIcon,
+        name: place.place,
+        type: categoryNames[place.category] || place.category,
+        note: place.recommendation || "",
+        travel: "",
+        image: getImageUrl(place.image),
+        category: place.category,
+        recommendation: place.recommendation || "",
+        latitude: place.latitude,
+        longitude: place.longitude,
+      }]
+      : dayStops));
+  };
+
   const wishlistPlaces = selectedTrip.days
     .flatMap((day) => day.items)
     .filter((item) => item.type === "place")
@@ -299,6 +355,23 @@ export default function TravelForm({ onSubmit, loading }) {
 
       <section className={styles.summary}>
         <div className={styles.summaryTitle}><h2>{travelTitle}</h2><button type="button" onClick={openTitleEdit}>EDIT</button></div>
+        <section className={styles.tripExpense} aria-labelledby="trip-expense-title">
+          <p className={styles.sectionEyebrow}>TRAVEL EXPENSE</p>
+          <div className={styles.expenseRow}>
+            <span>패키지 예상 경비</span>
+            <strong id="trip-expense-title">약 ₩{estimatedBudget.toLocaleString("ko-KR")}</strong>
+          </div>
+          <div className={styles.expenseMeta}><span>항공권 · 숙박비 제외<br />100 JPY ≈ ₩920</span><button type="button">경비 설정하기 →</button></div>
+        </section>
+        <section className={styles.exchange} aria-labelledby="exchange-title">
+          <div className={styles.exchangeHeading}><p className={styles.sectionEyebrow}>EXCHANGE RATE</p><span>{selectedTrip.country.toUpperCase()} / {exchangeCurrency}</span></div>
+          <p className={styles.exchangeLabel}>여행 환율</p>
+          <div className={styles.exchangeCard}>
+            <span>환전 금액<strong id="exchange-title">¥{exchangeAmount.toLocaleString("ko-KR")}</strong></span>
+            <span>최근 업데이트<small>2026.08.31 15:30</small></span>
+          </div>
+          <button className={styles.exchangeLink} type="button">환율 자세히 보기 →</button>
+        </section>
         <div className={styles.flight}><span><img src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>
         <div className={styles.dayTabs}>
           {days.map(([day, date], index) => (
@@ -389,8 +462,27 @@ export default function TravelForm({ onSubmit, loading }) {
           <button type="button" onClick={() => setIsPlaceAddOpen(true)}>장소 추가</button>
           <button type="button" onClick={() => setIsWishlistOpen(true)}>찜한 장소 추가</button>
         </div>
+        {recommendationPlaces.length > 0 && (
+          <section className={styles.recommendations} aria-labelledby="recommendation-title">
+            <p className={styles.sectionEyebrow}>YOU MAY ALSO LIKE · 함께 둘러보기 좋은 곳</p>
+            <h2 id="recommendation-title">이런 곳은 어때요?</h2>
+            <p>현재 일정과 동선을 기준으로<br />함께 들르기 좋은 장소를 추천해드려요.</p>
+            <div className={styles.recommendationGrid}>
+              {recommendationPlaces.map((place) => (
+                <article key={place.place}>
+                  <span className={styles.recommendationImage}><img src={getImageUrl(place.image)} alt="" /></span>
+                  <small>{categoryNames[place.category] || place.category}</small>
+                  <strong>{place.place}</strong>
+                  <p>{place.recommendation || `${selectedTrip.city}에서 함께 둘러보기 좋은 장소`}</p>
+                  <dl><div><dt>현재 위치에서</dt><dd>약 1 km</dd></div><div><dt>예상 비용</dt><dd>약 ₩7,000</dd></div></dl>
+                  <button type="button" onClick={() => addRecommendedPlace(place)}>+ 일정에 추가</button>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
         <button className={styles.draft} type="button">임시저장</button>
-        <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : "일정 확정하기 →"}</button>
+        <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : editMode ? "변경 내용 저장하기 →" : "일정 확정하기 →"}</button>
       </section>
       {isPlaceAddOpen && (
         <div className={styles.placeAdder} role="dialog" aria-modal="true" aria-labelledby="place-adder-title">
@@ -480,7 +572,7 @@ export default function TravelForm({ onSubmit, loading }) {
 
             <section className={styles.currentFlight}>
               <p>CURRENT BOOKING · 현재 항공편 <span>변경 전</span></p>
-              <strong>{flightInfo.departureAirport}<b>⟶</b>{flightInfo.arrivalAirport}</strong>
+              <strong>{getAirportCode(flightInfo.departureAirport)}<b>⟶</b>{getAirportCode(flightInfo.arrivalAirport)}</strong>
               <small>{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} — {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute}<br />{flightInfo.airline} · {flightInfo.flightNumber}</small>
             </section>
 
@@ -488,9 +580,9 @@ export default function TravelForm({ onSubmit, loading }) {
               <p>EDIT DETAILS · 변경 정보</p>
               <label className={styles.fieldTitle}>노선 ROUTE</label>
               <div className={styles.routeFields}>
-                <label><span>출발 공항</span><input value={flightDraft.departureAirport} onChange={updateFlightDraft("departureAirport")} /></label>
+                <label><span>출발 공항</span><input value={flightDraft.departureAirport} onChange={updateFlightDraft("departureAirport")} /><small>{getAirportCode(flightDraft.departureAirport)}</small></label>
                 <b>→</b>
-                <label><span>도착 공항</span><input value={flightDraft.arrivalAirport} onChange={updateFlightDraft("arrivalAirport")} /></label>
+                <label><span>도착 공항</span><input value={flightDraft.arrivalAirport} onChange={updateFlightDraft("arrivalAirport")} /><small>{getAirportCode(flightDraft.arrivalAirport)}</small></label>
               </div>
               <label className={styles.fieldTitle}>출발 DEPARTURE</label>
               <div className={styles.dateFields}>
@@ -513,6 +605,8 @@ export default function TravelForm({ onSubmit, loading }) {
             <section className={styles.flightPreview}>
               <p>CHANGE PREVIEW · 변경 미리보기</p>
               <div><span>출발　{flightInfo.departureHour}:{flightInfo.departureMinute} → <b>{flightDraft.departureHour}:{flightDraft.departureMinute}</b></span><span>도착　{flightInfo.arrivalHour}:{flightInfo.arrivalMinute} → <b>{flightDraft.arrivalHour}:{flightDraft.arrivalMinute}</b></span></div>
+              <strong>DAY 01 첫 일정이 변경된 도착 시각에 맞춰 자동 조정됩니다.</strong>
+              <small>저장 후 충돌하는 일정이 있으면 조정이 필요한 항목을 안내해요.</small>
             </section>
             <p className={styles.autoNotice}><b>현재 시각 기준 입국 및 수하물 이동 시간 90분 자동 반영</b><small>저장 전 변경 내용을 한 번 더 확인해 주세요.</small></p>
             <div className={styles.flightActions}><button type="button" onClick={() => setIsFlightOpen(false)}>취소</button><button type="button" onClick={saveFlight}>변경 내용 저장하기</button></div>

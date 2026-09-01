@@ -438,3 +438,19 @@
     grid-template-columns: 1fr;
   }
 }
+.editSuccess,
+.editError {
+  width: min(calc(100% - 32px), 528px);
+  margin: 12px auto;
+  padding: 13px 16px;
+  font-size: 11px;
+  text-align: center;
+}
+.editSuccess {
+  background: #e9f4eb;
+  color: #276738;
+}
+.editError {
+  background: #fff0ee;
+  color: #a33b32;
+}

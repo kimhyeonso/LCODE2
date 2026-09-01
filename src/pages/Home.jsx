@@ -163,7 +163,7 @@ export default function Home() {
 
       <section className={`${styles.section} ${styles.destinationSection}`}>
         <SectionLabel number="03">DESTINATIONS</SectionLabel>
-        <h2 className={styles.scriptTitle}>Where to Next?</h2>
+        <Link to="/destinations"><h2 className={styles.scriptTitle}>Where to Next?</h2></Link>
         <div className={styles.destinationHero} />
         <div className={styles.destinationList}>
           {[
@@ -171,7 +171,7 @@ export default function Home() {
             ["JAPAN", "교토, 도쿄", styles.japanImage],
             ["CHINA", "상하이", styles.chinaImage],
           ].map(([country, cities, imageClass]) => (
-            <Link to={`/plan?country=${country}`} key={country}>
+            <Link to={`/destinations?country=${country}`} key={country}>
               <div>
                 <span>EAST ASIA</span>
                 <h3>{country}</h3>
@@ -229,7 +229,7 @@ export default function Home() {
           </div>
           <TextLink to="/contact">ALL</TextLink>
         </div>
-        <article>
+        <Link className={styles.journalLink} to="/journal/tokyo">
           <div className={styles.journalVisual}>
             <span>JOURNAL 04</span>
           </div>
@@ -251,7 +251,7 @@ export default function Home() {
             젖은 돌바닥…
           </p>
           <footer>P. 04 — TOKYO JOURNAL</footer>
-        </article>
+        </Link>
       </section>
     </main>
   );
