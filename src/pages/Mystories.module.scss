@@ -117,6 +117,7 @@ h1 {
   box-sizing: border-box;
   white-space: nowrap;
 }
+
 .storyInfo .reviewLink, .productCard footer button:last-child { border-color: #111; background: #111; color: #fff; }
 // 쇼핑 카테고리 필터 버튼 행입니다.
 .shopping{
@@ -150,7 +151,7 @@ h1 {
     display: flex;
     align-items: center;
   }
-
+  
   .content {
     grid-template-columns: minmax(0, 2.33fr) minmax(0, 1fr);
     gap: 4rem;
@@ -202,6 +203,58 @@ h1 {
   .pagination::after { position: absolute; right: 0; content: "→"; color: #77736c; font: 400 .9rem/1 $korean; }
 }
 
+.mobileBreak,
+.storyDots { display: none; }
+
+.storyInfo footer a,
+.productCard footer a {
+  display: grid;
+  border: 1px solid #ddd9d2;
+  color: #77736c;
+  font-family: $korean;
+  text-decoration: none;
+  place-items: center;
+}
+
+.storyInfo footer .reviewLink,
+.productCard footer a:last-child { border-color: #111; background: #111; color: #fff; }
+
+@media (max-width: 600px) {
+  .mystories { min-height: auto; padding: 44px 0 80px; }
+  .content { display: block; width: calc(100% - 40px); margin: 0 auto; transform: none; }
+  .eyebrow { margin-top: 22px; font-size: 9px; letter-spacing: .22em !important; }
+  h1 { margin: 17px 0 0; font-size: 40px; line-height: 1.03; letter-spacing: -.045em !important; }
+  .mobileBreak { display: inline; }
+  .description { display: none; }
+  .divider { margin-top: 12px; }
+  .storyList { margin-top: 23px; }
+  .storyCard { display: block; background: #faf9f6; }
+  .storyCard:nth-child(n + 2) { display: none; }
+  .storyImage { height: 120px; background-position: center; }
+  .storyInfo { padding: 17px 15px 8px; }
+  .storyInfo h2 { font-size: 18px; line-height: 1.35; }
+  .storyInfo > p { margin-top: 5px; font-size: 12px; }
+  .storyInfo small { margin-top: 8px; font-size: 10px; }
+  .storyInfo footer { grid-template-columns: .9fr 1.35fr; gap: 8px; margin-top: 17px; }
+  .storyInfo footer a { height: 47px; font-size: 11px; }
+  .storyDots { display: flex; justify-content: center; gap: 3px; margin: 11px 0 27px; }
+  .storyDots i { width: 5px; height: 5px; border-radius: 50%; background: #d4d1cc; }
+  .storyDots i:first-child { background: #99948d; }
+  .shopping { margin: 0; border-top: 1px solid #ddd9d1; padding-top: 17px; }
+  .shopping h1, .shopping > p { display: none; }
+  .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin: 0; }
+  .filters button { min-width: 0; width: 100%; height: 31px; padding: 0 1px; font-size: 8px; letter-spacing: .12em !important; }
+  .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 19px 3px; width: 100%; margin-top: 17px; }
+  .productImage { height: auto; aspect-ratio: 1 / 1; }
+  .productCard h2 { margin-top: 7px; font-size: 11px; }
+  .productCard small { margin-top: 2px; font-size: 8px; }
+  .productCard p { margin-top: 3px; font-size: 8px; }
+  .productCard footer { grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 13px; }
+  .productCard footer a { height: 23px; font-size: 8px; }
+  .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; height: 38px; margin-top: 22px; border: 1px solid #111; color: #111; font-size: 10px; letter-spacing: .06em !important; }
+  
+}
+
 @include mobile {
   .mystories { padding: 0.8rem 0 1.5rem; }
   // 확대된 rem 기준에서도 좌우 여백을 남겨 카드가 화면 밖으로 나가지 않게 합니다.
@@ -213,7 +266,7 @@ h1 {
     // 모바일 미리보기의 확대 rem 기준에서 오른쪽으로 밀린 폭을 보정해 좌우 여백을 맞춥니다.
     transform: translateX(-0.4rem);
   }
-
+ 
   .eyebrow { font-size: 0.48rem; }
   h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
   // 모바일 시안에는 보조 문구가 없어 제목 아래의 구분선으로 바로 이어집니다.
@@ -252,4 +305,23 @@ h1 {
   /* 여기가 위쪽 마진 ----------------------- */
   .mystories { margin-top: 0; padding-right: 0; padding-left: 0; }
   .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
+}
+
+@media (max-width: 600px) {
+  .content { width: calc(100% - 40px); margin-inline: auto; transform: none; }
+  .stories > :first-child { margin-bottom: 7px; }
+  .eyebrow { margin-top: 0; }
+  h1 { margin-top: 10px; }
+  
+}
+
+@media (max-width: 600px) {
+  .mystories { padding-top: 19px; padding-bottom: 90px; }
+  .content { width: calc(100% - 40px); margin-inline: auto; transform: none; }
+  .storyInfo footer a { align-self: stretch; height: 47px; margin-top: 0; }
+  .stories > :first-child,
+  .stories > .eyebrow {
+    margin-left: 25px;
+    transform: none;
+  }
 }

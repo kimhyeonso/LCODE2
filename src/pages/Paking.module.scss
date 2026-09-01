@@ -1,0 +1,80 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+@use "../styles/mypage-global" as *;
+
+.pakingPage, .pakingPage * { box-sizing: border-box; }
+.pakingPage { min-height: 100vh; padding: 44px 0 52px; background: $paper; color: $ink; font-family: $korean; }
+.content { width: min(1310px, calc(100% - 112px)); margin: 0 auto; }
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 100px; align-items: end; }
+.heading { position: relative; }
+.heading::after { position: absolute; top: 60px; right: -45px; width: 220px; height: 112px; background: url("/Mypage-img/u.png") center/contain no-repeat; content: ""; opacity: .38; }
+.eyebrow { margin: 0; color: #9b958d; font: 400 12px $korean; letter-spacing: .13em; }
+.heading h1 { position: relative; z-index: 1; margin: 17px 0 0; font: 400 clamp(56px, 5vw, 78px)/1 $display; letter-spacing: -.035em; }
+.description { margin: 20px 0 0; color: #918b83; font: 400 14px $korean; }
+.divider { position: relative; width: 82%; height: 1px; margin-top: 34px; background: #d5d0c8; }
+.divider::after { position: absolute; right: -35px; top: -13px; width: 28px; height: 28px; background: url("/Mypage-img/port.png") center/contain no-repeat; content: ""; }
+.postcard { position: relative; border: 1px solid #cfc8bf; padding: 10px 10px 28px; background: #f8f5ef; transform: rotate(.5deg); }
+.postcard::before { position: absolute; z-index: 1; top: -24px; left: 100px; width: 86px; height: 32px; background: rgb(222 215 201 / 72%); content: ""; transform: rotate(-7deg); }
+.postcard img { display: block; width: 100%; height: 200px; object-fit: cover; }
+.postcard span { position: absolute; right: 10px; bottom: 8px; color: #8d867d; font: 400 11px $korean; }
+.panels { display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(390px, 1fr); gap: 38px; margin-top: 30px; }
+.checklist, .tips { min-height: 510px; border: 1px solid #d2ccc3; padding: 28px 30px; background: rgb(248 245 239 / 45%); }
+.checklist > h2 { display: flex; align-items: center; gap: 14px; margin: 0 0 30px; font: 600 25px $korean; }
+.checklist > h2 span { display: grid; width: 24px; height: 30px; border: 2px solid #333; font: 600 18px/1 Arial, sans-serif; place-items: center; }
+.groups { display: grid; grid-template-columns: repeat(3, 1fr); }
+.group { padding-inline: 12px; }
+.group + .group { border-left: 1px dotted #bdb6ad; }
+.group h3 { margin: 0 0 20px; padding: 10px; background: #ece6dc; font: 600 14px $korean; text-align: center; }
+.group > div { display: grid; gap: 19px; }
+.group label { display: grid; grid-template-columns: 20px 1fr; gap: 10px; align-items: center; cursor: pointer; }
+.group input { position: absolute; opacity: 0; pointer-events: none; }
+.group label > span { display: grid; width: 19px; height: 19px; border: 1px solid #bbb2a7; background: #faf8f3; place-items: center; }
+.group input:checked + span { border-color: #171714; background: #171714; color: #fff; }
+.group input:checked + span::after { content: "✓"; font: 600 13px Arial, sans-serif; }
+.group label b { font: 400 14px $korean; }
+.group input:checked ~ b { color: #8e8880; text-decoration: line-through; }
+.tips header { display: flex; align-items: center; gap: 18px; }
+.tipIcon { display: grid; width: 58px; height: 58px; flex: 0 0 auto; border-radius: 50%; background: #111; color: #fff; font: 400 30px Arial, sans-serif; place-items: center; }
+.tips h2 { margin: 0; font: 400 27px $display; }
+.tips header p { margin: 5px 0 0; color: #928b83; font: 400 13px $korean; }
+.tips ol { margin: 20px 0 0; padding: 0; list-style: none; }
+.tips li { display: grid; grid-template-columns: 48px 1fr; gap: 18px; align-items: center; min-height: 74px; border-bottom: 1px dotted #c5beb5; }
+.tips li:last-child { border-bottom: 0; }
+.tips li > span { display: grid; width: 44px; height: 44px; border-radius: 50%; background: #ebe4d8; font: 400 22px $display; place-items: center; }
+.tips li p { margin: 0; font: 400 14px/1.65 $korean; }
+
+@media (min-width: 901px) { .pakingPage { width: calc(100% - 220px); margin-left: 220px; } }
+
+@include tablet {
+  .content { width: min(100% - 64px, 980px); }
+  .hero { grid-template-columns: 1fr 250px; gap: 45px; }
+  .postcard img { height: 170px; }
+  .panels { grid-template-columns: 1fr; }
+  .checklist, .tips { min-height: auto; }
+}
+
+@include mobile {
+  .pakingPage { padding: 26px 0 40px; }
+  .content { width: calc(100% - 32px); }
+  .hero { display: block; }
+  .heading::after, .postcard { display: none; }
+  .heading h1 { font-size: 42px; }
+  .description { font-size: 12px; line-height: 1.6; }
+  .divider { width: calc(100% - 35px); }
+  .panels { gap: 20px; margin-top: 24px; }
+  .checklist, .tips { padding: 22px 16px; }
+  .checklist > h2 { font-size: 19px; }
+  .groups { grid-template-columns: 1fr; gap: 26px; }
+  .group + .group { border-top: 1px dotted #bdb6ad; border-left: 0; padding-top: 24px; }
+  .tips h2 { font-size: 23px; }
+  .tips li { grid-template-columns: 38px 1fr; gap: 12px; }
+  .tips li > span { width: 36px; height: 36px; font-size: 18px; }
+  .tips li p { font-size: 12px; }
+}
+
+@media (max-width: 600px) {
+  .pakingPage { padding-top: 19px; padding-bottom: 90px; }
+  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .heading > :first-child { margin-bottom: 8px; }
+  .eyebrow { margin-top: 0; }
+}

@@ -150,7 +150,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .imagePlaceholder {
     position: relative;
     box-sizing: border-box;
-    width: 100%;
+    width: 80%;
     height: 724px;
     margin-top: 100px;
     border: 1px solid #d8d3cb;
@@ -163,14 +163,24 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     position: absolute;
     top: 38px;
     right: -142px;
-    width: 160px;
-    height: 83px;
+    width: 200px;
+    height: 100px;
+    transform: rotate(-25deg);
     background: url("/Mypage-img/u.png") center / contain no-repeat;
     content: "";
     opacity: .25;
     pointer-events: none;
   }
 
+}
+.tape{
+  position: absolute;
+  width: 6rem;
+  top: 5.3rem;
+  right: 39%;
+  z-index: 88;
+  transform: rotate(-34deg);
+  opacity: 0.8;
 }
 
 // Editorial side notes and stamps from the reference layout.
@@ -312,5 +322,33 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     grid-template-columns: minmax(0, 465fr) minmax(0, 498fr);
     width: min(1320px, calc(100% - 112px));
     margin-inline: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .alarm { min-height: calc(100dvh - 129px); margin-top: 0; padding: 19px 0 90px; background: $paper; }
+  .content { display: block; width: calc(100% - 40px); margin-inline: auto; }
+  .settings > :first-child { display: inline-flex; margin-bottom: 8px; }
+  .eyebrow { margin: 0; font-size: 9px; letter-spacing: .22em !important; }
+  h1 { margin: 18px 0 0; font-size: 40px; line-height: 1; }
+  .description { margin-top: 6px; font-size: 11px; }
+  .divider { margin-top: 12px; }
+  .settingList { margin-top: 29px; border-top-color: #e2e2e2; }
+  .setting { height: 57px; padding: 0 20px; border-bottom-color: #e2e2e2; font-size: 18px; }
+  .setting button { width: 38px; height: 21px; border-radius: 12px; background: #d7d8da; }
+  .setting button i { top: 3px; left: 3px; width: 15px; height: 15px; background: #fff; }
+  .setting button.enabled { background: #363636; }
+  .setting button.enabled i { transform: translateX(17px); }
+  .notice { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 67px; margin: 18px 0 0; padding: 12px 20px; background: #e6e3df; color: #666; font-size: 10px; line-height: 1.5; }
+  .notice span { margin-right: 28px; font-size: 12px; }
+  .imagePlaceholder, .tape, .issueRail, .sideCaption { display: none; }
+
+  .settings > :first-child,
+  .eyebrow,
+  h1,
+  .description,
+  .divider {
+    margin-right: 25px;
+    margin-left: 25px;
   }
 }

@@ -22,6 +22,25 @@
   width: 100%;
   margin: 0;
 }
+.dashboard { grid-column: 1; grid-row: 1; display: grid; grid-template-rows: minmax(0, 1fr) auto; min-width: 0; height: 100%; }
+.heroVisual {
+  position: relative;
+  height: 34%;
+  min-height: 0;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgb(0 0 0 / 4%), rgb(0 0 0 / 24%)),
+    url("/Mypage-img/trv.png") center 72% / cover no-repeat;
+}
+.heroVisual p {
+  position: absolute;
+  right: 1.4rem;
+  bottom: 1rem;
+  margin: 0;
+  color: #fff;
+  font: 400 2.05rem/1.12 $display;
+  text-align: right;
+}
 .profile {
   position: relative;
   grid-column: 2;
@@ -61,7 +80,7 @@
 .greeting { margin: 1rem 0 .25rem; color: #99948d; font: 400 .58rem $korean; }
 .profile h1 { margin: 0; color: #111; font: 700 1.5rem/1 $korean; }
 .email { margin-top: 1rem; letter-spacing: .04em; }
-.edit { display: inline-block; margin-top: .6rem; border: 1px solid #383837; padding: .32rem .95rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
+.edit { display: inline-block; margin-top: .6rem; border: 1px solid #cecece; padding: .32rem .95rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
 
 // Limit the menu and its dividers to two-thirds of the profile area.
 .menuList { display: grid; width: 66.6667%; gap: 0; margin-top: 7.7rem; border-top: 1px solid #dedad3; }
@@ -69,12 +88,13 @@
 .menuList a::before, .menuList button::before { width: .7rem; height: .7rem; background: center / contain no-repeat; content: ""; }
 // Menu icons are sourced from public/Mypage-img and stay attached to their own menu row.
 .menuList a:nth-child(1)::before { background-image: url("/Mypage-img/bag.svg"); }
-.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/bag2.svg"); }
-.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/pen.svg"); }
-.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/heart.svg"); }
-.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/ticket.svg"); }
-.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/bell.svg"); }
-.menuList a:nth-child(7)::before { background-image: url("/Mypage-img/set.svg"); }
+.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/mylist.svg"); }
+.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/bag2.svg"); }
+.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/pen.svg"); }
+.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/heart.svg"); }
+.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/ticket.svg"); }
+.menuList a:nth-child(7)::before { background-image: url("/Mypage-img/bell.svg"); }
+.menuList a:nth-child(8)::before { background-image: url("/Mypage-img/set.svg"); }
 .menuList button::before { background-image: url("/Mypage-img/out.svg"); }
 .menuList span { color: #aaa49c; }
 .menuList button { color: #aaa49c; }
@@ -86,10 +106,54 @@
 .summary > article > span { color: #aaa49c; font: 400 .45rem $korean; letter-spacing: .14em; }
 .summary strong { font: 400 1.4rem/1 $display; }
 .upcoming {
+  overflow: hidden;
   color: #f8f8f8 !important;
-  background:
-    linear-gradient(180deg, rgb(0 0 0 / 8%) 0%, rgb(0 0 0 / 78%) 100%),
-    url("/Mypage-img/3.png") center / cover no-repeat;
+  background: #111;
+}
+.profile::after {
+  position: absolute;
+  right: -7rem;
+  bottom: -4rem;
+  width: 30rem;
+  height: 19rem;
+  background: url("/Mypage-img/g.png") center / contain no-repeat;
+  content: "";
+  opacity: .38;
+  pointer-events: none;
+}
+.upcoming::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background: linear-gradient(180deg, rgb(0 0 0 / 8%) 0%, rgb(0 0 0 / 78%) 100%);
+  content: "";
+  pointer-events: none;
+}
+.upcomingSlideshow {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+}
+.upcomingSlideshow img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity 1.6s ease-in-out;
+  backface-visibility: hidden;
+  will-change: opacity;
+}
+.upcomingSlideshow .activeSlide { opacity: 1; }
+.upcoming > small,
+.upcoming > strong,
+.upcoming > span {
+  z-index: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .upcomingSlideshow img { transition: none; }
 }
 .upcoming > span, .upcoming small { color: #eee !important; }
 .upcoming strong{
@@ -101,7 +165,7 @@
 }
 .recent { justify-content: end !important; background: #111; color: #eee !important; }
 .recent > span { margin-top: .5rem; color: #777 !important; }
-.recent h2 { margin: .3rem 0; color: #f2f0eb; font: 400 1rem/.92 $display; font-size: 2rem;}
+.recent h2 { margin: .3rem 0; color: #f2f0eb; font: 400 2rem/.92 "DM Serif Display", "Noto Sans KR", sans-serif; }
 .recent h2 em { color: #777; font-style: normal; }
 .recent p { margin: 0; color: #777; font: 400 .42rem $korean; letter-spacing: .12em; }
 // Place the map behind the saved-place count, matching the reference card treatment.
@@ -153,14 +217,31 @@
   }
 
   .content {
-    grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);
-    width: min(1320px, calc(100% - 112px));
-    margin-inline: auto;
+    grid-template-columns: minmax(0, 39fr) minmax(0, 61fr);
+    width: calc(100% - 8vw);
+    margin-right: 0;
+    margin-left: 8vw;
   }
 
+  .heroVisual { height: 100%; }
+  .heroVisual p { right: 18px; bottom: 18px; font-size: 46px; }
+
   .profile {
+    justify-content: flex-start;
+    margin-top: 0;
+    padding-top: 55px;
     padding-right: 0;
     padding-left: 56px;
+  }
+
+  .profile::before { top: -35px; right: auto; left: 0; width: 280px; }
+  .profile::after { right: -60px; bottom: -35px; width: 430px; height: 275px; }
+
+  .summary {
+    grid-column: auto;
+    grid-row: auto;
+    height: auto;
+    aspect-ratio: 1;
   }
 
   // 프로필 정보만 아래로 이동합니다. 메뉴(.menuList)의 위치에는 영향을 주지 않습니다.
@@ -168,9 +249,81 @@
   .profile > .greeting,
   .profile > h1,
   .profile > .email,
-  .profile > .edit {
-    transform: translateY(2.5rem);
-  }
+  .profile > .edit { transform: none; }
 
-  .menuList { width: 100%; }
+  .menuList {
+    z-index: 1;
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    width: 44%;
+    margin-top: 450px;
+    margin-left: 56px;
+  }
+  .upcoming strong { font-size: 44px; }
+  .recent h2 { font-size: 38px; white-space: nowrap; }
+}
+
+@include mobile {
+  .mypageUser {
+    min-height: 100vh;
+    padding: 34px 12px 28px;
+  }
+  .content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    width: 100%;
+    margin: 0;
+  }
+  .profile {
+    grid-column: 1;
+    grid-row: 1;
+    display: block;
+    margin-top: 0;
+    padding: 0 28px 24px;
+    border-bottom: 1px solid #dedad3;
+  }
+  .profile .eyebrow { font-size: 9px; }
+  .profile .greeting { margin: 20px 0 4px; font-size: 12px; }
+  .profile h1 { font-size: 29px; }
+  .profile .email { margin-top: 16px; font-size: 10px; }
+  .profile .edit { margin-top: 12px; padding: 6px 9px; font-size: 9px; }
+  .dashboard { grid-column: 1; grid-row: 2; display: block; height: auto; margin-top: 19px; }
+  .heroVisual { display: none; }
+  .summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, 156px);
+    height: 312px;
+    aspect-ratio: auto;
+  }
+  .summary article { aspect-ratio: auto; padding: 12px; }
+  .summary small { top: 10px; left: 12px; font-size: 9px; }
+  .summary > article > span { font-size: 9px; }
+  .summary .upcoming strong { font-size: 27px; }
+  .summary .recent h2 { font-size: 27px; }
+  .summary .recent p { font-size: 9px; }
+  .summary .saved strong { font-size: 28px; }
+  .summary .stories strong { font-size: 22px; }
+  .menuList {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+    margin: 31px 0 0;
+    border-top: 1px solid #dedad3;
+  }
+  .menuList a,
+  .menuList button {
+    min-height: 54px;
+    padding: 0 28px;
+    font-size: 13px;
+  }
+  .menuList a::before,
+  .menuList button::before { width: 15px; height: 15px; }
+  .profile::after { display: none; }
+}
+
+@media (max-width: 600px) {
+  .mypageUser { padding: 19px 0 90px; }
+  .content { width: calc(100% - 40px); margin-inline: auto; transform: none; }
 }

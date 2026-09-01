@@ -132,3 +132,10 @@
   .review { margin-top: 0; padding-right: 0; padding-left: 0; }
   .page { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }
+
+@media (max-width: 600px) {
+  .review { padding: 19px 0 90px; }
+  .page { width: calc(100% - 40px); margin-inline: auto; }
+  .page > :first-child { margin-bottom: 8px; }
+  .heading { margin-top: 10px; }
+}

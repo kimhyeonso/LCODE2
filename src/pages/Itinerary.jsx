@@ -22,6 +22,7 @@ const getScheduleCount = (plan) => plan.days?.reduce(
 ) || 0;
 
 const formatCardDate = (value) => value?.replaceAll("-", ".") || "날짜 미정";
+const getCardTitle = (plan) => `${plan.title?.replace(" 일정", "") || plan.city || "나의 여행"}${plan.duration && !plan.title?.includes(plan.duration) ? ` ${plan.duration}` : ""}`;
 
 const getDday = (startDate) => {
   if (!startDate) return "D-DAY";
@@ -93,9 +94,7 @@ export default function Itinerary() {
   };
 
   const currentPlan = plans[slideIndex];
-  const cardTitle = currentPlan
-    ? `${currentPlan.title?.replace(" 일정", "") || currentPlan.city || "나의 여행"}${currentPlan.duration && !currentPlan.title?.includes(currentPlan.duration) ? ` ${currentPlan.duration}` : ""}`
-    : "아직 일정이 없어요";
+  const cardTitle = currentPlan ? getCardTitle(currentPlan) : "아직 일정이 없어요";
   const startDate = currentPlan?.dateRange?.start;
   const endDate = currentPlan?.dateRange?.end;
 
@@ -111,29 +110,20 @@ export default function Itinerary() {
           <div className={styles.divider} />
           <p className={styles.description}>다음 여행을 위해 저장해둔 장소</p>
 
-          <div className={styles.quickCards}>
-            <article className={styles.countCard}>
-              <h2>D-Day<br />count</h2>
-              <p>가장 가까운 일정을<br />쉽게 볼 수 있어요.</p>
-            </article>
-            <article className={styles.packingCard}>
-              <p>챙길 물건도 빠지지 않게<br />가져갈 수 있어요.</p>
-              <h2>Packing<br />List</h2>
-            </article>
-          </div>
         </section>
 
         {loading ? (
           <section className={styles.emptyState} aria-live="polite">일정을 확인하고 있어요.</section>
         ) : currentPlan ? (
+          <>
           <section className={styles.tripArea} aria-label="다가오는 여행">
-            <p className={styles.planCounter}>{slideIndex + 1} / {plans.length}</p>
-            {plans.length > 1 && <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행" onClick={() => moveSlide(-1)}>&lsaquo;</button>}
+            <button className={`${styles.arrow} ${styles.previous}`} type="button" aria-label="이전 여행" disabled={plans.length < 2} onClick={() => moveSlide(-1)}>&lsaquo;</button>
             <article className={styles.tripCard}>
               <div className={styles.photo} style={{ backgroundImage: `url(${getRepresentativeImage(currentPlan)})` }} aria-hidden="true">
                 <span>{getDday(startDate)}</span>
               </div>
               <div className={styles.tripInfo}>
+                <p className={styles.planLocation}>{currentPlan.city || "MY TRIP"} · {currentPlan.country || "KOREA"}</p>
                 <h2>{cardTitle}</h2>
                 <p className={styles.subtitle}>{currentPlan.city || "나만의"} 여행</p>
                 <p className={styles.date}>{formatCardDate(startDate)} - {formatCardDate(endDate)}&nbsp; | &nbsp;{getScheduleCount(currentPlan)}개 일정</p>
@@ -144,16 +134,60 @@ export default function Itinerary() {
                 {deleteState.error && <p className={styles.deleteError} role="alert">{deleteState.error}</p>}
               </div>
             </article>
-            {plans.length > 1 && <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="다음 여행" onClick={() => moveSlide(1)}>&rsaquo;</button>}
+            <button className={`${styles.arrow} ${styles.next}`} type="button" aria-label="다음 여행" disabled={plans.length < 2} onClick={() => moveSlide(1)}>&rsaquo;</button>
           </section>
+          <section className={styles.mobileTripList} aria-label="저장된 여행 일정 목록">
+            {plans.map((plan) => {
+              const mobileStartDate = plan.dateRange?.start;
+              const mobileEndDate = plan.dateRange?.end;
+              return (
+                <article className={styles.tripCard} key={plan.id}>
+                  <div className={styles.photo} style={{ backgroundImage: `url(${getRepresentativeImage(plan)})` }} aria-hidden="true">
+                    <span>{getDday(mobileStartDate)}</span>
+                  </div>
+                  <div className={styles.tripInfo}>
+                    <h2>{getCardTitle(plan)}</h2>
+                    <p className={styles.subtitle}>{plan.city || "나만의"} 여행</p>
+                    <p className={styles.date}>{formatCardDate(mobileStartDate)} - {formatCardDate(mobileEndDate)} | {getScheduleCount(plan)}개 일정</p>
+                    <Link className={styles.detailButton} to={`/travel-planner?trip=${encodeURIComponent(plan.tripId)}`}>일정 상세 보기</Link>
+                  </div>
+                </article>
+              );
+            })}
+          </section>
+          </>
         ) : (
-          <section className={styles.emptyState}>
-            <span>NO UPCOMING TRIP</span>
-            <h2>아직 정해진 일정이 없어요.</h2>
-            <p>가고 싶은 도시를 발견하고<br />첫 여행 일정을 만들어 보세요.</p>
-            <Link to="/search">여행지 둘러보기 <b>→</b></Link>
+          <section className={`${styles.tripArea} ${styles.emptyState}`} aria-label="다가오는 여행 없음">
+            <article className={styles.tripCard}>
+              <div className={`${styles.photo} ${styles.emptyPhoto}`} aria-hidden="true">
+                <span>NO TRIP</span>
+              </div>
+              <div className={`${styles.tripInfo} ${styles.emptyInfo}`}>
+                <p className={styles.emptyEyebrow}>NO UPCOMING TRIP</p>
+                <h2>아직 정해진 일정이 없어요.</h2>
+                <p className={styles.emptyDescription}>가고 싶은 도시를 발견하고<br />첫 여행 일정을 만들어 보세요.</p>
+                <Link className={styles.detailButton} to="/search">여행지 둘러보기 <b>→</b></Link>
+              </div>
+            </article>
           </section>
         )}
+
+        <div className={styles.quickCards}>
+          <article className={styles.countCard}>
+            <h2>D-Day<br />count</h2>
+            <p>가장 가까운 일정을<br />쉽게 볼 수 있어요.</p>
+            <Link
+              className={styles.quickCardAction}
+              to={currentPlan ? `/travel-planner?trip=${encodeURIComponent(currentPlan.tripId)}` : "/search"}
+              aria-label={currentPlan ? "가장 가까운 일정 상세 보기" : "여행 일정 만들기"}
+            >→</Link>
+          </article>
+          <article className={styles.packingCard}>
+            <p>챙길 물건도 빠지지 않게<br />가져갈 수 있어요.</p>
+            <h2>Packing<br />List</h2>
+            <Link className={styles.quickCardAction} to="/paking" aria-label="패킹 리스트 보기">→</Link>
+          </article>
+        </div>
       </div>
     </main>
   );

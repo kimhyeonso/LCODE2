@@ -137,6 +137,7 @@
   gap: 1rem;
   padding: .6rem;
   border: 1px solid #d4cec5;
+ 
 }
 
 .journalCard {
@@ -398,4 +399,20 @@
   /* 여기가 위쪽 마진 ----------------------- */
   .notice { margin-top: 0; padding-right: 0; padding-left: 0; }
   .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
+}
+
+@media (max-width: 600px) {
+  .notice { margin-top: 0; padding: 33px 0 90px; }
+  .content { width: calc(100% - 40px); margin: 0 auto; transform: none; }
+  .noticeList > :first-child { margin-bottom: 8px; }
+  .eyebrow { margin-top: 0; }
+  .title { margin-top: 10px; }
+  .noticeList > :first-child,
+  .eyebrow,
+  .title,
+  .description,
+  .divider {
+    margin-right: 25px;
+    margin-left: 25px;
+  }
 }

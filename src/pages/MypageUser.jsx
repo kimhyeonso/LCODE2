@@ -7,6 +7,7 @@ import styles from "./MypageUser.module.scss";
 const menuItems = [
   ["여행 주문 내역", "/itinerary"],
   ["상품 주문 내역", "/buy"],
+  ["내 일정", "/mypagemain"],
   ["나의 리뷰", "/mystories"],
   ["찜한 상품", "/wishlist"],
   ["찜한 장소", "/favorite-places"],
@@ -15,6 +16,9 @@ const menuItems = [
   ["고객센터", "/notice"],
 ];
 
+const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
+
+const getCreatedTime = (plan) => plan.createdAt?.toMillis?.()
 const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
   || plan.updatedAt?.seconds * 1000
   || plan.createdAt?.toMillis?.()
@@ -22,9 +26,9 @@ const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
   || 0;
 
 const getDday = (startDate) => {
-  if (!startDate) return "NEW";
+  if (!startDate) return "D-DAY";
   const start = new Date(`${startDate}T00:00:00`);
-  if (Number.isNaN(start.getTime())) return "NEW";
+  if (Number.isNaN(start.getTime())) return "D-DAY";
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const days = Math.ceil((start - today) / 86400000);
@@ -36,6 +40,7 @@ export default function MypageUser() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
+  const [slideIndex, setSlideIndex] = useState(0);
   const [favoriteCount, setFavoriteCount] = useState(0);
   const displayName = user.displayName || user.email?.split("@")[0] || "여행자";
 
@@ -57,6 +62,12 @@ export default function MypageUser() {
   }, [user]);
 
   useEffect(() => {
+    const timer = window.setInterval(() => {
+      setSlideIndex((current) => (current + 1) % slideshowImages.length);
+    }, 5500);
+
+    return () => window.clearInterval(timer);
+  }, []);
     if (!user) return undefined;
     let active = true;
     const loadFavorites = () => getFavoritePlaces(user.uid)
@@ -72,7 +83,7 @@ export default function MypageUser() {
 
   const plans = planState.userId === user.uid ? planState.plans : [];
   const latestPlan = plans[0];
-  const planTitle = latestPlan?.title?.replace(" 일정", "") || latestPlan?.city || "추가한 일정 없음";
+  const planTitle = latestPlan?.title?.replace(" 일정", "") || latestPlan?.city || "NO UPCOMING TRIP";
   const planPeriod = latestPlan?.dateRange?.start && latestPlan?.dateRange?.end
     ? `${latestPlan.dateRange.start} — ${latestPlan.dateRange.end}`
     : latestPlan?.duration || "여행 일정을 추가해 보세요";
@@ -93,16 +104,25 @@ export default function MypageUser() {
           <p className={styles.email}>{user.email}</p>
           <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
 
-          <nav className={styles.menuList} aria-label="마이페이지 메뉴">
-            {menuItems.map(([label, to]) => (
-              <Link key={label} to={to}>{label}<span aria-hidden="true">→</span></Link>
-            ))}
-            <button type="button" onClick={handleLogout}>로그아웃</button>
-          </nav>
         </section>
 
-        <section className={styles.summary} aria-label="나의 여행 요약">
+        <section className={styles.dashboard} aria-label="나의 여행 대시보드">
+          <div className={styles.heroVisual}>
+            <p>We meet again,<br />traveler.</p>
+          </div>
+          <div className={styles.summary} aria-label="나의 여행 요약">
           <article className={styles.upcoming}>
+            <div className={styles.upcomingSlideshow} aria-hidden="true">
+              {slideshowImages.map((image, index) => (
+                <img
+                  className={index === slideIndex ? styles.activeSlide : ""}
+                  key={image}
+                  src={`/Mypage-img/${image}`}
+                  alt=""
+                  decoding="async"
+                />
+              ))}
+            </div>
             <small>01</small>
             <strong>{latestPlan ? getDday(latestPlan.dateRange?.start) : "—"}</strong>
             <span>{latestPlan ? "MY TRIP" : "NO TRIP"}</span>
@@ -126,7 +146,15 @@ export default function MypageUser() {
             <span>STORIES</span>
             <strong>★ ★ ★ ★ ★<br />05</strong>
           </article>
+          </div>
         </section>
+
+        <nav className={styles.menuList} aria-label="마이페이지 메뉴">
+          {menuItems.map(([label, to]) => (
+            <Link key={label} to={to}>{label}<span aria-hidden="true">→</span></Link>
+          ))}
+          <button type="button" onClick={handleLogout}>로그아웃</button>
+        </nav>
       </div>
     </main>
   );
