@@ -1,0 +1,497 @@
+@use "../styles/variables" as *;
+
+.page {
+  width: calc(100% - 32px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 42px 0 96px;
+  background: transparent;
+  color: $ink;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  margin-bottom: 28px;
+  color: #aaa6a0;
+  font-size: 12px;
+  letter-spacing: .2em;
+}
+
+.intro {
+  padding-bottom: 30px;
+  border-bottom: 2px solid #dedbd5;
+
+  > p, h2, h3 {
+    margin: 0;
+    color: #aaa6a0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .18em;
+  }
+
+  h1 {
+    margin: 25px 0 24px;
+    font-family: $serif;
+    font-size: 54px;
+    font-weight: 400;
+    line-height: .95;
+    letter-spacing: -.05em;
+  }
+
+  div {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    color: #918d87;
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  small {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+}
+
+.currencySection {
+  padding: 30px 0 44px;
+}
+
+.currencySelect {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  height: 105px;
+  padding: 0 28px;
+  border: 2px solid #e3e0da;
+  background: #fafafa;
+  color: #302e2b;
+  font-family: $sans;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.flag {
+  font-size: 24px;
+}
+
+.currencyText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.currencyText small {
+  color: #9a9690;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+}
+
+.currencySelect b {
+  padding: 4px 8px;
+  background: #ffd4d4;
+  color: #5c5954;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.arrow {
+  margin-left: 8px;
+  color: #555;
+  font-size: 22px;
+}
+
+.selectorLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: end;
+}
+
+.selectorOverlay {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, .36);
+}
+
+.selectorSheet {
+  position: relative;
+  width: 100%;
+  height: 86vh;
+  overflow-y: auto;
+  padding-top: 34px;
+  background: #fff;
+
+  > header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px 26px;
+  }
+
+  h2, .popularTitle {
+    margin: 0;
+    color: #aaa6a0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .2em;
+  }
+
+  > header button {
+    border: 0;
+    background: transparent;
+    color: #777;
+    font-family: $sans;
+    font-size: 14px;
+  }
+}
+
+.searchBox {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 0 20px;
+  padding-bottom: 18px;
+  border-bottom: 2px solid #dedbd5;
+  color: #888;
+
+  span { font-size: 24px; }
+
+  input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: $ink;
+    font-family: $sans;
+    font-size: 18px;
+  }
+
+  input::placeholder { color: #aaa6a0; }
+}
+
+.popularTitle {
+  display: block;
+  padding: 34px 20px 18px;
+}
+
+.popularList {
+  display: flex;
+  gap: 8px;
+  margin: 0 20px 28px;
+
+  button {
+    flex: 1;
+    height: 56px;
+    border: 2px solid #e1ddd7;
+    background: #fff;
+    color: #777;
+    font-family: $sans;
+    font-size: 15px;
+  }
+
+  .activeCurrency {
+    border-color: #111;
+    background: #111;
+    color: #fff;
+  }
+}
+
+.currencyList button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 124px;
+  padding: 20px;
+  border: 0;
+  border-top: 2px solid #e4e0db;
+  background: #fff;
+  color: $ink;
+  font-family: $sans;
+  text-align: left;
+}
+
+.currencyList .selectedCurrency {
+  background: #111;
+  color: #fff;
+}
+
+.selectedCurrency .listName,
+.selectedCurrency .listName strong,
+.selectedCurrency .listRate {
+  color: #fff;
+}
+
+.selectedCurrency .listName small,
+.selectedCurrency .listRate small,
+.selectedCurrency .listRate .down {
+  color: rgba(255, 255, 255, .68);
+}
+
+.listName {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  margin-left: 18px;
+  color: #777;
+  font-size: 16px;
+
+  strong { color: #222; font-size: 17px; letter-spacing: .08em; }
+  small { grid-column: 1 / -1; color: #aaa6a0; font-size: 14px; }
+}
+
+.listRate {
+  display: grid;
+  gap: 6px;
+  margin-left: auto;
+  color: #222;
+  font-size: 20px;
+  text-align: right;
+
+  small { color: #888; font-size: 14px; }
+  .down { color: #d45a5a; }
+}
+
+.rateCard {
+  margin-top: 35px;
+  padding: 45px 36px 32px;
+  background: #111;
+  color: #fff;
+
+  > p {
+    margin: 0;
+    color: #929292;
+    font-size: 13px;
+    letter-spacing: .16em;
+  }
+
+  > strong {
+    display: block;
+    margin-top: 18px;
+    font-family: $serif;
+    font-size: 70px;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  em {
+    margin-left: 9px;
+    color: #999;
+    font-family: $sans;
+    font-size: 18px;
+    font-style: normal;
+  }
+
+  > span {
+    display: block;
+    margin-top: 16px;
+    color: #999;
+  }
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 28px;
+    padding-top: 25px;
+    border-top: 1px solid #333;
+    color: #707070;
+    font-size: 12px;
+  }
+
+  b { color: #d93737; }
+  time { color: #555; }
+}
+
+.convertSection {
+  padding-bottom: 48px;
+
+  h2, h3 {
+    margin: 0 0 24px;
+    color: #aaa6a0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .18em;
+  }
+
+  h3 { margin: 27px 0 14px; }
+}
+
+.amountBox {
+  display: block;
+  padding: 24px;
+  border: 1px solid #d8d1c3;
+  background: #e2dbc9;
+  color: #777;
+
+  > span {
+    font-size: 12px;
+    letter-spacing: .16em;
+  }
+
+  > div {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+
+  i, strong {
+    color: #777;
+    font-size: 37px;
+    font-style: normal;
+    font-weight: 400;
+  }
+
+  input {
+    width: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: #777;
+    font-family: $sans;
+    font-size: 40px;
+  }
+}
+
+.krwBox {
+  border-color: #d8d1c3;
+  background: #ebe7dd;
+}
+
+.swap {
+  width: 48px;
+  height: 48px;
+  margin: 20px auto;
+  border: 1px solid #d8d1c3;
+  background: #f6f3ec;
+  color: #777;
+  font-size: 27px;
+  line-height: 42px;
+  text-align: center;
+}
+
+.quickButtons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+
+  button {
+    height: 58px;
+    border: 2px solid #e1ddd7;
+    background: #fff;
+    color: #777;
+    font-family: $sans;
+    font-size: 15px;
+  }
+}
+
+.otherRates {
+  border-top: 2px solid #dedbd5;
+}
+
+.otherTitle {
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 0 18px;
+
+  h2 {
+    margin: 0;
+    color: #aaa6a0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .18em;
+  }
+
+  span { color: #777; font-size: 13px; }
+}
+
+.rateRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 102px;
+  padding: 16px 20px;
+  border: 0;
+  border-top: 2px solid #e4e0db;
+  background: transparent;
+  text-align: left;
+}
+
+.selectedRate {
+  background: #111;
+  color: #fff;
+}
+
+.selectedRate .rateName,
+.selectedRate .rateNumber {
+  color: #fff;
+}
+
+.selectedRate .rateName small,
+.selectedRate .rateNumber small,
+.selectedRate .down {
+  color: rgba(255, 255, 255, .68);
+}
+
+.rateName {
+  display: grid;
+  gap: 4px;
+  margin-left: 16px;
+  color: #555;
+  font-size: 16px;
+
+  small {
+    color: #aaa6a0;
+    font-size: 12px;
+    letter-spacing: .12em;
+  }
+}
+
+.rateNumber {
+  display: grid;
+  gap: 5px;
+  margin-left: auto;
+  color: #272522;
+  font-size: 19px;
+  text-align: right;
+
+  small { color: #888; font-size: 13px; }
+  .down { color: #d45a5a; }
+}
+
+@media (min-width: 641px) {
+  .page {
+    width: min(1100px, calc(100% - 64px));
+    margin: 36px auto 70px;
+    padding: 58px 0 90px;
+  }
+
+  .intro h1 { font-size: 66px; }
+}
+
+@media (min-width: 901px) {
+  .page {
+    width: min(1320px, calc(100% - 332px));
+    margin: 36px 0 70px max(276px, calc(50% - 550px));
+    padding: 58px 0 90px;
+  }
+}
+
+@media (min-width: 641px) {
+  .selectorLayer {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .selectorSheet {
+    width: min(640px, calc(100% - 48px));
+    height: min(86vh, 860px);
+  }
+}
