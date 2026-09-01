@@ -1,0 +1,155 @@
+@use "../styles/variables" as *;
+
+.page {
+  width: min(100%, 720px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 22px 16px 92px;
+  color: $ink;
+}
+
+.back {
+  display: inline-block;
+  color: $muted;
+  font-size: 11px;
+  letter-spacing: .18em;
+}
+
+.intro {
+  padding: 26px 24px 22px;
+  border-bottom: 1px solid $line;
+
+  > p, > span, .question {
+    color: #aaa6a0;
+    font-size: 12px;
+    letter-spacing: .16em;
+  }
+
+  > p { margin: 0; }
+
+  h1 {
+    margin: 20px 0 18px;
+    font-family: $serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -.05em;
+  }
+}
+
+.packageSection {
+  padding: 20px 0 0;
+}
+
+.question {
+  margin: 0 24px 17px;
+  color: #aaa6a0;
+  font-size: 11px;
+}
+
+.tabs {
+  display: flex;
+  gap: 20px;
+  margin: 0 24px 22px;
+
+  a {
+    color: #aaa6a0;
+    font-size: 11px;
+    letter-spacing: .13em;
+  }
+
+  .active {
+    color: $ink;
+    font-weight: 700;
+  }
+}
+
+.cardList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 12px;
+}
+
+.tripCard {
+  min-width: 0;
+}
+
+.tripImage {
+  display: grid;
+  aspect-ratio: 1 / 1;
+  place-items: center;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #aaa6a0;
+  font-size: 10px;
+  letter-spacing: .16em;
+}
+
+.tripCopy {
+  min-height: 150px;
+  padding: 15px 11px 13px;
+
+  > small {
+    color: #8c897f;
+    font-size: 9px;
+    letter-spacing: -.02em;
+  }
+
+  h2 {
+    margin: 13px 0 7px;
+    font-family: $serif;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.05;
+  }
+
+  p {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: #77736c;
+    font-size: 12px;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  strong {
+    display: block;
+    margin-top: 11px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  em {
+    display: block;
+    margin-top: 10px;
+    color: #77736c;
+    font-size: 9px;
+    font-style: normal;
+  }
+}
+
+@media (min-width: 641px) {
+  .page {
+    width: min(1100px, calc(100% - 64px));
+    margin: 36px auto 70px;
+    padding: 36px 0 90px;
+  }
+
+  .intro { padding: 36px 0 28px; }
+  .question, .tabs { margin-left: 0; }
+  .cardList { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 16px; }
+}
+
+@media (min-width: 901px) {
+  .page {
+    width: min(1320px, calc(100% - 332px));
+    margin: 36px 0 70px max(276px, calc(50% - 550px));
+  }
+
+  .intro h1 { font-size: 54px; }
+  .cardList { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
