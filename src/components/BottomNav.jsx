@@ -9,7 +9,7 @@ import userIcon from "../assets/icons/menu_bar/05user.svg";
 const items = [
   { to: "/", icon: homeIcon, label: "HOME", end: true },
   { to: "/plan", icon: planIcon, label: "PLAN" },
-  { to: "/travel-planner", icon: addIcon, label: "", add: true },
+  { to: "/search", icon: addIcon, label: "", add: true },
   { to: "/shop", icon: shopIcon, label: "SHOP" },
   { to: "/my", icon: userIcon, label: "MY" },
 ];

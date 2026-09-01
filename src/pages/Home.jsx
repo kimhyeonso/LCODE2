@@ -1,10 +1,26 @@
 import { Link } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { useAuth } from "../hooks/useAuth";
+import { getPlans } from "../services/firestoreService";
 import styles from "./Home.module.scss";
 import travelKitImage from "../assets/images/travel_kit.webp";
 import travelPouchImage from "../assets/images/travel_pouch.webp";
 import travelAdapterImage from "../assets/images/travel_adapter.webp";
+
+const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  import: "default",
+});
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
+  const key = Object.keys(imageModules).find(
+    (path) => path.toLowerCase() === relativePath.toLowerCase(),
+  );
+  return key ? imageModules[key] : "";
+};
 
 const SectionLabel = ({ number, children }) => (
   <div className={styles.sectionLabel}>
@@ -22,6 +38,8 @@ const TextLink = ({ to, children }) => (
 
 export default function Home() {
   const page = useRef(null);
+  const { user, loading: authLoading } = useAuth();
+  const [planState, setPlanState] = useState({ userId: null, plans: [] });
 
   useEffect(() => {
     const context = gsap.context(() => {
@@ -33,6 +51,41 @@ export default function Home() {
     }, page);
     return () => context.revert();
   }, []);
+
+  useEffect(() => {
+    if (authLoading || !user) return undefined;
+
+    let active = true;
+    getPlans(user.uid)
+      .then((plans) => {
+        if (!active) return;
+        const sortedPlans = [...plans].sort((a, b) => {
+          const first = new Date(a.dateRange?.start || "9999-12-31").getTime();
+          const second = new Date(b.dateRange?.start || "9999-12-31").getTime();
+          return first - second;
+        });
+        setPlanState({ userId: user.uid, plans: sortedPlans });
+      })
+      .catch(() => active && setPlanState({ userId: user.uid, plans: [] }));
+
+    return () => {
+      active = false;
+    };
+  }, [authLoading, user]);
+
+  const planLoading = authLoading || Boolean(user && planState.userId !== user.uid);
+  const upcomingPlan = user && planState.userId === user.uid ? planState.plans[0] : null;
+  const scheduleCount = upcomingPlan?.days?.reduce(
+    (total, day) => total + day.items.filter((item) => item.type === "place").length,
+    0,
+  ) ?? 0;
+  const startDate = upcomingPlan?.dateRange?.start;
+  const endDate = upcomingPlan?.dateRange?.end;
+  const dayCount = upcomingPlan?.days?.length ?? 0;
+  const upcomingImage = getImageUrl(upcomingPlan?.image);
+  const dDay = startDate
+    ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
+    : null;
 
   return (
     <main ref={page} className={styles.home}>
@@ -47,35 +100,37 @@ export default function Home() {
         <h1>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
-          <TextLink to="/plans">VIEW ALL</TextLink>
+          <TextLink to="/itinerary">VIEW ALL</TextLink>
         </div>
-        <Link to="/plans" className={styles.upcomingCard}>
-          <div className={styles.upcomingMain}>
-            <div>
-              <strong>D−14</strong>
-              <h2>FUKUOKA</h2>
-              <p>후쿠오카 3박 4일</p>
+        {planLoading ? (
+          <div className={styles.upcomingLoading}>일정을 확인하고 있어요.</div>
+        ) : upcomingPlan ? (
+          <Link to="/itinerary" className={styles.upcomingCard}>
+            <div className={styles.upcomingMain}>
+              <div>
+                <strong>{dDay === null ? "DATE TBD" : dDay > 0 ? `D−${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</strong>
+                <h2>{upcomingPlan.city?.toUpperCase()}</h2>
+                <p>{upcomingPlan.title}</p>
+              </div>
+              <div
+                className={styles.upcomingImage}
+                style={upcomingImage ? { backgroundImage: `url(${upcomingImage})` } : undefined}
+              />
             </div>
-            <div className={styles.upcomingImage} />
+            <dl className={styles.tripMeta}>
+              <div><dt>DATE</dt><dd>{startDate || "미정"}<br />{endDate ? `— ${endDate}` : ""}</dd></div>
+              <div><dt>DAYS</dt><dd>{String(dayCount).padStart(2, "0")} DAYS</dd></div>
+              <div><dt>SPOTS</dt><dd>{String(scheduleCount).padStart(2, "0")} SPOTS</dd></div>
+            </dl>
+          </Link>
+        ) : (
+          <div className={styles.upcomingEmpty}>
+            <span>NO TRIP YET</span>
+            <h2>아직 정해진 여행이 없어요.</h2>
+            <p>마음에 드는 여행지를 찾아<br />나만의 첫 일정을 만들어 보세요.</p>
+            <Link to={user ? "/search" : "/login"}>{user ? "여행 찾기" : "로그인하고 시작하기"} <b>→</b></Link>
           </div>
-          <dl className={styles.tripMeta}>
-            <div>
-              <dt>DATE</dt>
-              <dd>
-                AUG 17 —<br />
-                AUG 21
-              </dd>
-            </div>
-            <div>
-              <dt>DAYS</dt>
-              <dd>04 DAYS</dd>
-            </div>
-            <div>
-              <dt>SPOTS</dt>
-              <dd>07 SPOTS</dd>
-            </div>
-          </dl>
-        </Link>
+        )}
       </section>
 
       <section className={styles.section}>
@@ -128,7 +183,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.section}>
+      <section className={`${styles.section} ${styles.eventSection}`}>
         <SectionLabel number="04">EVENT</SectionLabel>
         <div className={styles.rowTitle}>
           <div>

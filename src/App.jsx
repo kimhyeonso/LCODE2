@@ -13,6 +13,7 @@ import Plans from "./pages/Plans";
 import Event from "./pages/Event";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
+import Search from "./pages/Search";
 import MypageUser from "./pages/MypageUser";
 import ProfileEdit from "./pages/ProfileEdit";
 import Itinerary from "./pages/Itinerary";
@@ -76,7 +77,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
-          <Route path="/search" element={<Plan />} />
+          <Route path="/search" element={<Search />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />

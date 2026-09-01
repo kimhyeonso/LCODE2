@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
+import { useAuth } from "../hooks/useAuth";
+import { getPlans, savePlan } from "../services/firestoreService";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
 import carIcon from "../assets/icons/transportation/directions_car.svg";
@@ -10,6 +12,12 @@ import styles from "./Plan.module.scss";
 const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" });
 
 const categoryNames = { airport: "AIRPORT", station: "STATION", hotel: "HOTEL", attraction: "SIGHTSEEING", restaurant: "RESTAURANT" };
+
+const cityAliases = {
+  SEOUL: "서울",
+  SHANGHAI: "상하이",
+  TOKYO: "도쿄",
+};
 
 const getImageUrl = (imagePath) => {
   if (!imagePath) return "";
@@ -36,21 +44,117 @@ const getDayPlaces = (day) => day.items.reduce((result, item, index, items) => {
 
 export default function Plan() {
   const [params] = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
+  const navigate = useNavigate();
+  const [savedState, setSavedState] = useState({ userId: null, plans: [] });
+  const hasRequestedTrip = Boolean(params.get("trip") || params.get("city") || params.get("country"));
+
+  useEffect(() => {
+    if (hasRequestedTrip || authLoading || !user) return undefined;
+    let active = true;
+    getPlans(user.uid)
+      .then((plans) => active && setSavedState({ userId: user.uid, plans }))
+      .catch(() => active && setSavedState({ userId: user.uid, plans: [] }));
+    return () => {
+      active = false;
+    };
+  }, [authLoading, hasRequestedTrip, user]);
+
+  const savedPlan = user && savedState.userId === user.uid ? savedState.plans[0] : null;
+  const savedPlanLoading = !hasRequestedTrip && (authLoading || Boolean(user && savedState.userId !== user.uid));
   const selectedTrip = useMemo(() => {
     const tripId = params.get("trip");
-    return tripRoad.trips.find((trip) => trip.id === tripId)
+    const cityParam = params.get("city")?.toUpperCase();
+    const countryParam = params.get("country")?.toLowerCase();
+    const city = cityAliases[cityParam] || params.get("city");
+
+    return (!hasRequestedTrip ? savedPlan : null)
+      || tripRoad.trips.find((trip) => trip.id === tripId)
+      || tripRoad.trips.find((trip) => trip.city === city)
+      || tripRoad.trips.find((trip) => trip.country.toLowerCase() === countryParam)
       || tripRoad.trips.find((trip) => trip.city === "후쿠오카")
       || tripRoad.trips[0];
-  }, [params]);
+  }, [hasRequestedTrip, params, savedPlan]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
+  const [saveState, setSaveState] = useState({ saving: false, error: "" });
+  const visibleDay = Math.min(activeDay, selectedTrip.days.length - 1);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
-  const activePlaces = getDayPlaces(selectedTrip.days[activeDay]);
+  const activePlaces = getDayPlaces(selectedTrip.days[visibleDay]);
   const heroImage = allPlaces.find((place) => place.imageUrl)?.imageUrl;
   const nights = Math.max(selectedTrip.days.length - 1, 1);
   const startDate = selectedTrip.dateRange?.start;
   const endDate = selectedTrip.dateRange?.end;
+  const budgetRows = [
+    ["교통", 40000 + selectedTrip.days.length * 5000],
+    ["식비", selectedTrip.days.length * 30000],
+    ["카페", selectedTrip.days.length * 10000],
+    ["관광 / 입장료", selectedTrip.days.length * 15000],
+    ["쇼핑", 50000],
+    ["기타", 15000],
+  ];
+  const estimatedExpense = budgetRows.reduce((total, [, amount]) => total + amount, 0);
+  const representativeImage = selectedTrip.days
+    .flatMap((day) => day.items)
+    .find((item) => item.type === "place" && item.image)
+    ?.image;
+
+  const handleSavePlan = async () => {
+    if (saveState.saving) return;
+
+    if (!user) {
+      navigate("/login", {
+        state: { from: `/plan?trip=${encodeURIComponent(selectedTrip.id)}` },
+      });
+      return;
+    }
+
+    setSaveState({ saving: true, error: "" });
+
+    try {
+      const savedDocument = await savePlan(user.uid, {
+        tripId: selectedTrip.id,
+        title: selectedTrip.title,
+        city: selectedTrip.city,
+        country: selectedTrip.country,
+        duration: selectedTrip.duration,
+        dateRange: selectedTrip.dateRange,
+        days: selectedTrip.days,
+        image: representativeImage || null,
+      });
+
+      if (!savedDocument?.id) {
+        throw new Error("저장된 일정의 문서 ID를 확인할 수 없습니다.");
+      }
+
+      setSaveState({ saving: false, error: "" });
+      setIsSavedOpen(true);
+    } catch (error) {
+      console.error("일정 저장 실패:", error);
+      const message = error?.code === "permission-denied"
+        ? "일정을 저장할 권한이 없습니다. 다시 로그인한 후 시도해 주세요."
+        : error?.code === "unavailable"
+          ? "네트워크 연결을 확인한 후 다시 시도해 주세요."
+          : "일정을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.";
+      setSaveState({ saving: false, error: message });
+    }
+  };
+
+  if (savedPlanLoading) {
+    return <main className={`${styles.plan} ${styles.planStatus}`}>저장된 일정을 불러오고 있어요.</main>;
+  }
+
+  if (!hasRequestedTrip && !savedPlan) {
+    return (
+      <main className={`${styles.plan} ${styles.planEmpty}`}>
+        <span>NO SAVED PLAN</span>
+        <h1>저장된 일정이 없어요.</h1>
+        <p>{user ? "가고 싶은 도시를 찾아 첫 일정을 담아보세요." : "로그인하면 저장한 일정을 여기서 확인할 수 있어요."}</p>
+        <Link to={user ? "/search" : "/login"}>{user ? "여행지 둘러보기" : "로그인하기"} <b>→</b></Link>
+      </main>
+    );
+  }
 
   return (
     <main className={styles.plan}>
@@ -85,10 +189,27 @@ export default function Plan() {
 
       <div className={styles.visualBreak} aria-hidden="true" />
 
+      <section className={styles.expense} aria-labelledby="estimated-expense-title">
+        <p>ESTIMATED EXPENSE</p>
+        <div className={styles.expenseSummary}>
+          <span>예상 여행 경비</span>
+          <h2 id="estimated-expense-title">약 ₩{estimatedExpense.toLocaleString("ko-KR")}</h2>
+          <small>항공권 · 숙박비 제외</small>
+        </div>
+        <dl className={styles.expenseList}>
+          {budgetRows.map(([label, amount]) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>₩{amount.toLocaleString("ko-KR")}</dd>
+            </div>
+          ))}
+        </dl>
+      </section>
+
       <section className={styles.itinerary}>
         <header className={styles.dayHeader}>
-          <h2>DAY {String(activeDay + 1).padStart(2, "0")}</h2>
-          <span>{formatDate(selectedTrip.days[activeDay]?.date, `DAY ${activeDay + 1}`)}</span>
+          <h2>DAY {String(visibleDay + 1).padStart(2, "0")}</h2>
+          <span>{formatDate(selectedTrip.days[visibleDay]?.date, `DAY ${visibleDay + 1}`)}</span>
           <b>{activePlaces.length}곳</b>
         </header>
         <ol className={styles.timeline}>
@@ -112,7 +233,7 @@ export default function Plan() {
       <section className={styles.otherDays}>
         <p>OTHER DAYS</p>
         {selectedTrip.days.map((day, index) => {
-          if (index === activeDay) return null;
+          if (index === visibleDay) return null;
           return (
             <button type="button" key={day.day} onClick={() => setActiveDay(index)}>
               <strong>DAY {String(index + 1).padStart(2, "0")}</strong>
@@ -123,9 +244,14 @@ export default function Plan() {
         })}
       </section>
 
-      <div className={styles.saveArea}>
-        <button type="button" onClick={() => setIsSavedOpen(true)}>내 일정에 담기</button>
-      </div>
+      {hasRequestedTrip && (
+        <div className={styles.saveArea}>
+          <button type="button" onClick={handleSavePlan} disabled={saveState.saving}>
+            {saveState.saving ? "일정을 저장하고 있어요…" : "내 일정에 담기"}
+          </button>
+          {saveState.error && <p className={styles.saveError} role="alert">{saveState.error}</p>}
+        </div>
+      )}
 
       {isSavedOpen && (
         <div className={styles.savedBackdrop} role="presentation" onMouseDown={() => setIsSavedOpen(false)}>

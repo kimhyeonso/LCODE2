@@ -1,0 +1,51 @@
+@use "../styles/variables" as *;
+
+.searchPage { width: min(100%, 760px); margin: 0 auto; padding: 22px 16px 84px; background: #fff; color: $ink; }
+.searchIntro form { display: grid; grid-template-columns: 18px 1fr; gap: 8px; align-items: center; border-bottom: 1px solid #777; }
+.searchIntro form img { width: 14px; height: 14px; opacity: .45; }
+.searchIntro input { height: 42px; border: 0; outline: 0; background: transparent; font: 12px $sans; }
+.searchIntro > p { margin: 18px 0 10px; color: #aaa; font-size: 9px; letter-spacing: .5px; }
+.keywords { display: grid; grid-template-columns: 34px repeat(3, auto); align-items: center; border-bottom: 1px solid #ece9e2; }
+.keywords span { color: #aaa; font-size: 8px; letter-spacing: 1px; }
+.keywords button { min-height: 37px; border: 0; background: transparent; color: #999; font-size: 10px; text-align: left; cursor: pointer; }
+.keywords span:nth-of-type(2), .keywords span:nth-of-type(3) { grid-column: 1; }
+
+.products { margin-top: 28px; }
+.products h1 { margin: 0 0 14px 14px; font-size: 11px; letter-spacing: 3px; }
+.products > div { display: grid; grid-template-columns: repeat(3, minmax(110px, 1fr)); gap: 4px; overflow-x: auto; scrollbar-width: none; }
+.products a { color: $ink; }
+.products img { width: 100%; aspect-ratio: 1 / 1.15; display: block; background: #ddd; object-fit: cover; }
+.products strong, .products span { display: block; margin-top: 8px; font-size: 8px; letter-spacing: 1.5px; }
+.products span { margin-top: 3px; color: #aaa; }
+
+.archive { margin-top: 28px; }
+.controls { display: flex; align-items: center; justify-content: space-between; }
+.controls button, .controls select { min-height: 32px; border: 1px solid #dedbd5; padding: 0 12px; background: #fff; color: #999; font: 8px $sans; letter-spacing: 1px; }
+.filters { display: flex; gap: 6px; margin-top: 10px; overflow-x: auto; }
+.filters button { border: 1px solid #ddd; padding: 8px 12px; background: #fff; color: #999; font-size: 8px; }
+.filters .selected { border-color: $ink; background: $ink; color: #fff; }
+.archive > h2 { margin: 30px 0 14px 14px; color: #aaa; font-size: 9px; font-weight: 400; letter-spacing: 1.8px; }
+.archive > h2 b { margin-left: 5px; color: $ink; font: 15px $serif; }
+.results { display: grid; gap: 10px; }
+.tripCard { position: relative; display: block; border: 1px solid #eeeae3; color: $ink; }
+.cardLink { display: block; color: $ink; }
+.cardImage { position: relative; height: 260px; background: linear-gradient(#ddd 35%, #777); background-position: center; background-size: cover; }
+.cardImage::after { content: ""; position: absolute; inset: 40% 0 0; background: linear-gradient(transparent, rgba(0,0,0,.62)); }
+.cardImage small, .cardImage strong { position: absolute; z-index: 1; color: #fff; }
+.cardImage small { top: 12px; left: 12px; opacity: .65; font-size: 8px; }
+.cardImage strong { bottom: 12px; left: 12px; font: 27px $serif; letter-spacing: -.5px; }
+.favoriteButton { position: absolute; z-index: 2; top: 8px; right: 8px; width: 34px; height: 34px; border: 0; padding: 0; background: transparent; color: #fff; font-size: 20px; line-height: 1; cursor: pointer; filter: drop-shadow(0 1px 3px rgba(0,0,0,.35)); }
+.favoriteButton.favorite { color: #e46f68; }
+.cardCopy { padding: 13px 16px 15px; background: #faf7f1; }
+.cardCopy p { margin: 0 0 8px; color: #aaa; font-size: 8px; letter-spacing: 1px; }
+.cardCopy h3 { margin: 0; font-size: 13px; font-weight: 600; }
+.cardCopy small { display: block; margin-top: 8px; color: #bbb; font-size: 8px; }
+.empty { padding: 60px 20px; background: #faf7f1; text-align: center; }
+.empty strong { font-size: 14px; }
+.empty p { margin: 8px 0 0; color: #999; font-size: 11px; }
+
+@media (min-width: 641px) {
+  .searchPage { margin-block: 40px 80px; padding: 44px 40px 80px; box-shadow: 0 20px 60px rgba(0,0,0,.06); }
+  .results { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .cardImage { height: 300px; }
+}
