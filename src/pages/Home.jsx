@@ -7,20 +7,7 @@ import styles from "./Home.module.scss";
 import travelKitImage from "../assets/images/travel_kit.webp";
 import travelPouchImage from "../assets/images/travel_pouch.webp";
 import travelAdapterImage from "../assets/images/travel_adapter.webp";
-
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-});
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const key = Object.keys(imageModules).find(
-    (path) => path.toLowerCase() === relativePath.toLowerCase(),
-  );
-  return key ? imageModules[key] : "";
-};
+import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 
 const SectionLabel = ({ number, children }) => (
   <div className={styles.sectionLabel}>

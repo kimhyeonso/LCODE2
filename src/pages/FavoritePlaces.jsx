@@ -3,15 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { deleteFavoritePlace, getFavoritePlaces } from "../services/firestoreService";
 import styles from "./FavoritePlaces.module.scss";
-
-const images = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" });
-
-const imageUrl = (path) => {
-  if (!path) return "";
-  const target = path.replace(/^img\//, "../assets/images/").toLowerCase();
-  const key = Object.keys(images).find((item) => item.toLowerCase() === target);
-  return key ? images[key] : "";
-};
+import { resolveImageUrl as imageUrl, useImageFallback } from "../utils/imageUtils";
 
 export default function FavoritePlaces() {
   const { user } = useAuth();
@@ -46,7 +38,7 @@ export default function FavoritePlaces() {
       <section className={styles.grid}>
         {state.places.map((place) => (
           <article key={place.id}>
-            <span className={styles.image}>{imageUrl(place.image) && <img src={imageUrl(place.image)} alt="" />}</span>
+            <span className={styles.image}>{imageUrl(place.image) && <img src={imageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
             <div><small>{place.city} · {place.category}</small><h2>{place.name}</h2><p>{place.recommendation || "다음 일정에 추가해 보세요."}</p></div>
             <button type="button" onClick={() => remove(place)}>찜 해제</button>
           </article>

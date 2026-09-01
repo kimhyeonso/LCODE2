@@ -19,11 +19,7 @@ import arrowIcon from "../assets/icons/arrow_forward.svg";
 import backIcon from "../assets/icons/arrow_back.svg";
 import heartIcon from "../assets/icons/heart.svg";
 import addIcon from "../assets/icons/menu_bar/03add.svg";
-
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-});
+import { resolveImageUrl as getImageUrl, useImageFallback } from "../utils/imageUtils";
 
 const categoryNames = {
   airport: "공항",
@@ -46,15 +42,6 @@ const getTransportIcon = (transport = "") => {
   if (/지하철|전철|열차|신칸센/.test(transport)) return subwayIcon;
   if (/자동차|택시|버스/.test(transport)) return carIcon;
   return travelIcon;
-};
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const matchedKey = Object.keys(imageModules).find(
-    (key) => key.toLowerCase() === relativePath.toLowerCase(),
-  );
-  return matchedKey ? imageModules[matchedKey] : "";
 };
 
 const toDateInputValue = (date) => {
@@ -736,7 +723,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <div className={styles.recommendationGrid}>
               {recommendationPlaces.map((place) => (
                 <article key={place.place}>
-                  <span className={styles.recommendationImage}><img src={getImageUrl(place.image)} alt="" /></span>
+                  <span className={styles.recommendationImage}><img src={getImageUrl(place.image)} alt="" onError={useImageFallback} /></span>
                   <small>{categoryNames[place.category] || place.category}</small>
                   <strong>{place.place}</strong>
                   <p>{place.recommendation || `${selectedTrip.city}에서 함께 둘러보기 좋은 장소`}</p>
@@ -780,7 +767,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   const selected = selectedCandidate?.place === place.place;
                   return <button className={selected ? styles.placeSelected : ""} type="button" key={place.place} onClick={() => setSelectedCandidate(place)}>
                     <span className={styles.resultNumber}>{index + 1}</span>
-                    <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" />}</span>
+                    <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                     <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
                     {selected && <span className={styles.selectedCheck}>✓</span>}
                   </button>;
@@ -821,7 +808,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   return (
                     <article key={place.place}>
                       <span className={styles.resultNumber}>{index + 1}</span>
-                      <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" />}</span>
+                      <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                       <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
                       <button className={selected ? styles.wishlistSelected : ""} type="button" onClick={() => toggleWishlistSelection(place)}>{selected ? "✓ 담김" : "+ 찜"}</button>
                     </article>
@@ -971,7 +958,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           </header>
           <a className={styles.mapLink} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${selectedStop.name} ${selectedTrip.city}`)}`} target="_blank" rel="noreferrer">구글 지도 앱으로 보기 &gt;</a>
           <div className={styles.detailImage}>
-            {selectedStop.image && <img src={selectedStop.image} alt={selectedStop.name} />}
+            {selectedStop.image && <img src={selectedStop.image} alt={selectedStop.name} onError={useImageFallback} />}
           </div>
           <section className={styles.detailContent}>
             <h2 id="place-detail-title">{selectedStop.name}</h2>

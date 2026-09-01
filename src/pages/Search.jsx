@@ -6,11 +6,7 @@ import travelKitImage from "../assets/images/travel_kit.webp";
 import travelPouchImage from "../assets/images/travel_pouch.webp";
 import travelAdapterImage from "../assets/images/travel_adapter.webp";
 import styles from "./Search.module.scss";
-
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-});
+import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 
 const countryLabels = { korea: "KR", japan: "JP", china: "CN" };
 const cityAliases = {
@@ -20,15 +16,6 @@ const cityAliases = {
   SEOUL: "서울",
   JEJU: "제주도",
   SHANGHAI: "상하이",
-};
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const key = Object.keys(imageModules).find(
-    (path) => path.toLowerCase() === relativePath.toLowerCase(),
-  );
-  return key ? imageModules[key] : "";
 };
 
 const getRepresentativeImage = (trip) => {

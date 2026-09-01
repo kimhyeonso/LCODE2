@@ -4,20 +4,9 @@ import styles from "./Itinerary.module.scss";
 import MypageBackLink from "../components/MypageBackLink";
 import { useAuth } from "../hooks/useAuth";
 import { deletePlan, getPlans } from "../services/firestoreService";
+import { resolveImageUrl } from "../utils/imageUtils";
 
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-});
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "/Mypage-img/trv.png";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const key = Object.keys(imageModules).find(
-    (path) => path.toLowerCase() === relativePath.toLowerCase(),
-  );
-  return key ? imageModules[key] : "/Mypage-img/trv.png";
-};
+const getImageUrl = (imagePath) => resolveImageUrl(imagePath, "/Mypage-img/trv.png");
 
 const getRepresentativeImage = (plan) => {
   const imagePath = plan.image || plan.days

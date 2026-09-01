@@ -553,6 +553,17 @@ $plan-muted: #8b8780;
   letter-spacing: 1px;
   cursor: pointer;
 }
+
+.conflictLink {
+  min-height: 44px;
+  display: grid;
+  place-items: center;
+  margin: -6px 0 14px;
+  border: 1px solid #aaa;
+  background: #fff;
+  color: $ink;
+  font-size: 10px;
+}
 .dateSubmit:disabled {
   cursor: wait;
   opacity: 0.62;

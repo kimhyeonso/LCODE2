@@ -4,14 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { deletePlan, getPlans } from "../services/firestoreService";
 import tripRoad from "../data/trip_road.json";
 import styles from "./SavedPlan.module.scss";
-
-const images = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" });
-const imageUrl = (path) => {
-  if (!path) return "";
-  const target = path.replace(/^img\//, "../assets/images/").toLowerCase();
-  const key = Object.keys(images).find((item) => item.toLowerCase() === target);
-  return key ? images[key] : "";
-};
+import { resolveImageUrl as imageUrl } from "../utils/imageUtils";
 const planImage = (plan) => imageUrl(plan?.image || plan?.days?.flatMap((day) => day.items || []).find((item) => item.image)?.image);
 const countSpots = (plan) => plan?.days?.reduce((sum, day) => sum + (day.items || []).filter((item) => item.type === "place").length, 0) || 0;
 const formatDate = (date) => date?.replaceAll("-", ".") || "날짜 미정";

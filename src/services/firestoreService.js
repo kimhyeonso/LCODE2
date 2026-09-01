@@ -62,6 +62,30 @@ export async function getPlans(userId) {
   const snap = await getDocs(ref);
   return snap.docs.map((item) => ({ id: item.id, ...item.data() }));
 }
+
+export async function getPlanDateConflict(userId, {
+  start,
+  end,
+  excludePlanId = "",
+  tripId = "",
+  draft = false,
+} = {}) {
+  if (!userId || !start || !end) return null;
+  const plans = await getPlans(userId);
+  return plans.find((plan) => {
+    if (plan.id === excludePlanId) return false;
+    const planStart = plan.dateRange?.start;
+    const planEnd = plan.dateRange?.end;
+    if (!planStart || !planEnd) return false;
+    const exactDuplicate = Boolean(tripId)
+      && plan.tripId === tripId
+      && planStart === start
+      && planEnd === end;
+    if (exactDuplicate) return true;
+    if (draft || plan.status === "draft") return false;
+    return start <= planEnd && end >= planStart;
+  }) || null;
+}
 export async function getPlan(id) {
   const snap = await getDoc(doc(requireDb(), "plans", id));
   return snap.exists() ? { id: snap.id, ...snap.data() } : null;

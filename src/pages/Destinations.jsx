@@ -2,11 +2,7 @@ import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import styles from "./Destinations.module.scss";
-
-const images = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-});
+import { resolveImageUrl as imageUrl } from "../utils/imageUtils";
 
 const countryMap = { KOREA: "korea", JAPAN: "japan", CHINA: "china" };
 const cityEnglish = {
@@ -48,13 +44,6 @@ const destinationImageFiles = {
   "\uD6C4\uCFE0\uC624\uCE74": "fukuoka.jpg",
 };
 
-const imageUrl = (path) => {
-  if (!path) return "";
-  const target = path.replace(/^img\//, "../assets/images/").toLowerCase();
-  const key = Object.keys(images).find((item) => item.toLowerCase() === target);
-  return key ? images[key] : "";
-};
-
 const tripImage = (trip) => imageUrl(trip.days
   .flatMap((day) => day.items)
   .find((item) => item.type === "place" && item.image)?.image);
@@ -62,7 +51,7 @@ const tripImage = (trip) => imageUrl(trip.days
 const destinationImage = (trip) => {
   const fileName = destinationImageFiles[trip.city];
   return fileName
-    ? images[`../assets/images/destinations/pexels/${fileName}`]
+    ? imageUrl(`img/destinations/pexels/${fileName}`)
     : tripImage(trip);
 };
 

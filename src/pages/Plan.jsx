@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
-import { deletePlan, getPlan, getPlans, savePlan } from "../services/firestoreService";
+import { deletePlan, getPlan, getPlanDateConflict, getPlans, savePlan } from "../services/firestoreService";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
 import carIcon from "../assets/icons/transportation/directions_car.svg";
 import styles from "./Plan.module.scss";
-
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" });
+import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 
 const categoryNames = { airport: "AIRPORT", station: "STATION", hotel: "HOTEL", attraction: "SIGHTSEEING", restaurant: "RESTAURANT" };
 
@@ -17,13 +16,6 @@ const cityAliases = {
   SEOUL: "서울",
   SHANGHAI: "상하이",
   TOKYO: "도쿄",
-};
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const key = Object.keys(imageModules).find((path) => path.toLowerCase() === relativePath.toLowerCase());
-  return key ? imageModules[key] : "";
 };
 
 const formatDate = (date, fallback) => {
@@ -113,6 +105,8 @@ export default function Plan() {
   const [savedDocumentId, setSavedDocumentId] = useState("");
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [saveState, setSaveState] = useState({ saving: false, error: "" });
+  const [conflictingPlan, setConflictingPlan] = useState(null);
+  const saveLockRef = useRef(false);
   const [deleteState, setDeleteState] = useState({ deleting: false, error: "" });
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [dateDraft, setDateDraft] = useState(() => ({
@@ -162,12 +156,13 @@ export default function Plan() {
     const start = savedStart >= todayValue ? savedStart : todayValue;
     setDateDraft({ start, end: addDays(start, tripLength - 1) });
     setSaveState({ saving: false, error: "" });
+    setConflictingPlan(null);
     setIsDateOpen(true);
   };
 
   const handleSavePlan = async (event) => {
     event.preventDefault();
-    if (saveState.saving) return;
+    if (saveState.saving || saveLockRef.current) return;
 
     if (!dateDraft.start || !dateDraft.end) {
       setSaveState({ saving: false, error: "여행 시작일과 종료일을 모두 선택해 주세요." });
@@ -186,9 +181,24 @@ export default function Plan() {
       return;
     }
 
+    saveLockRef.current = true;
     setSaveState({ saving: true, error: "" });
 
     try {
+      const conflict = await getPlanDateConflict(user.uid, {
+        start: dateDraft.start,
+        end: dateDraft.end,
+        tripId: selectedTrip.id,
+      });
+      if (conflict) {
+        setConflictingPlan(conflict);
+        setSaveState({
+          saving: false,
+          error: `${conflict.title || conflict.city || "저장된 일정"} (${conflict.dateRange.start} ~ ${conflict.dateRange.end})과 날짜가 겹칩니다.`,
+        });
+        saveLockRef.current = false;
+        return;
+      }
       const datedDays = selectedTrip.days.map((day, index) => ({
         ...day,
         date: addDays(dateDraft.start, index),
@@ -199,6 +209,7 @@ export default function Plan() {
         city: selectedTrip.city,
         country: selectedTrip.country,
         duration: selectedTrip.duration,
+        status: "confirmed",
         dateRange: { start: dateDraft.start, end: dateDraft.end },
         days: datedDays,
         image: representativeImage || null,
@@ -209,6 +220,7 @@ export default function Plan() {
       }
 
       setSaveState({ saving: false, error: "" });
+      saveLockRef.current = false;
       setIsDateOpen(false);
       setSavedDocumentId(savedDocument.id);
       window.dispatchEvent(new Event("plans-changed"));
@@ -221,6 +233,7 @@ export default function Plan() {
           ? "네트워크 연결을 확인한 후 다시 시도해 주세요."
           : "일정을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.";
       setSaveState({ saving: false, error: message });
+      saveLockRef.current = false;
     }
   };
 
@@ -395,6 +408,7 @@ export default function Plan() {
                   const start = event.target.value;
                   setDateDraft({ start, end: start ? addDays(start, tripLength - 1) : "" });
                   setSaveState({ saving: false, error: "" });
+                  setConflictingPlan(null);
                 }} />
               </label>
               <label>
@@ -404,6 +418,7 @@ export default function Plan() {
               <p className={styles.dateDuration}>{tripLength - 1}박 {tripLength}일 일정에 맞춰 종료일이 자동 계산됩니다.</p>
               <p className={styles.dateNotice}>선택한 날짜는 저장된 여행 일정 전체에 반영됩니다.</p>
               {saveState.error && <p className={styles.saveError} role="alert">{saveState.error}</p>}
+              {conflictingPlan && <Link className={styles.conflictLink} to={`/travel-planner?plan=${encodeURIComponent(conflictingPlan.id)}`}>겹치는 일정 확인·수정하기 →</Link>}
               <button className={styles.dateSubmit} disabled={saveState.saving}>
                 {saveState.saving ? "저장하고 있어요…" : "여행 일정 저장하기"}
               </button>
