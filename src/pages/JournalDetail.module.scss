@@ -1,0 +1,243 @@
+@use "../styles/variables" as *;
+.page {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 20px 12px 100px;
+  background: #fff;
+  color: $ink;
+}
+.back {
+  color: #777;
+  font-size: 8px;
+}
+.cover {
+  position: relative;
+  height: 330px;
+  margin-top: 20px;
+  padding: 16px;
+  background: #aaa center/cover;
+  color: #fff;
+}
+.cover > span {
+  display: inline-block;
+  padding: 7px 10px;
+  background: #b99e80;
+  color: #333;
+  font-size: 8px;
+}
+.cover > div {
+  position: absolute;
+  right: 16px;
+  bottom: 18px;
+  left: 16px;
+}
+.cover small {
+  font-size: 8px;
+}
+.cover h1 {
+  margin: 5px 0 0;
+  font: 42px/0.9 $serif;
+}
+.cover p {
+  margin: 7px 0 0;
+  font-size: 10px;
+}
+.intro {
+  padding: 22px 4px 10px;
+}
+.intro h2 {
+  margin: 0 0 18px;
+  font-size: 17px;
+  letter-spacing: 2px;
+}
+.intro h2 b {
+  margin-left: 8px;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+.intro > p,
+.story > p {
+  color: #777;
+  font-size: 11px;
+  line-height: 1.9;
+}
+.intro dl {
+  display: flex;
+  gap: 32px;
+  padding: 14px 0;
+  border-bottom: 1px solid #ddd;
+}
+.intro dl div {
+  display: flex;
+  gap: 9px;
+}
+.intro dt,
+.intro dd {
+  margin: 0;
+  color: #aaa;
+  font-size: 7px;
+}
+.tags {
+  display: flex;
+  gap: 7px;
+  padding: 16px 0;
+}
+.tags span {
+  border: 1px solid #ddd;
+  padding: 7px 12px;
+  color: #999;
+  font-size: 8px;
+}
+.day header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 18px 4px 12px;
+  border-bottom: 1px solid #ddd;
+}
+.day header h2 {
+  margin: 0;
+  font: 19px $serif;
+}
+.day header span {
+  color: #aaa;
+  font-size: 8px;
+}
+.photo,
+.photoGrid {
+  margin-inline: -12px;
+  background: #ddd;
+}
+.photo img {
+  width: 100%;
+  height: 380px;
+  display: block;
+  object-fit: cover;
+}
+.photoGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+}
+.photoGrid img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+}
+.story {
+  padding: 24px 4px 30px;
+}
+.story > small {
+  display: block;
+  margin-top: 14px;
+  color: #aaa;
+  font-size: 8px;
+  line-height: 1.7;
+}
+.story blockquote {
+  margin: 24px 0 0;
+  border-left: 2px solid #222;
+  padding-left: 12px;
+}
+.story blockquote small,
+.story blockquote strong,
+.story blockquote span {
+  display: block;
+}
+.story blockquote small {
+  color: #aaa;
+  font-size: 7px;
+}
+.story blockquote strong {
+  margin-top: 6px;
+  font: 17px $serif;
+}
+.story blockquote span {
+  margin-top: 5px;
+  color: #999;
+  font-size: 8px;
+}
+.favorites {
+  padding: 22px 4px;
+}
+.favorites > p {
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ddd;
+  color: #aaa;
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+.favorites > p span {
+  display: block;
+  margin-top: 6px;
+  font-size: 8px;
+}
+.favorites > div {
+  display: grid;
+  grid-template-columns: 34px 1fr 1fr;
+  padding: 14px 0;
+  border-bottom: 1px solid #ddd;
+}
+.favorites b {
+  color: #aaa;
+  font-size: 8px;
+}
+.favorites strong {
+  font: 14px $serif;
+}
+.favorites span {
+  color: #999;
+  font-size: 8px;
+}
+.tip {
+  margin: 18px 0;
+  padding: 18px 14px;
+  background: #f4f1eb;
+}
+.tip small {
+  color: #999;
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+.tip p {
+  margin: 12px 0 0;
+  color: #777;
+  font-size: 10px;
+  line-height: 1.8;
+}
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 8px;
+}
+.actions a {
+  height: 48px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ddd;
+  color: #888;
+  font-size: 10px;
+}
+.actions a:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+@media (min-width: 800px) {
+  .page {
+    padding-inline: 40px;
+  }
+  .cover {
+    height: 500px;
+  }
+  .photo,
+  .photoGrid {
+    margin-inline: -40px;
+  }
+  .photo img {
+    height: 600px;
+  }
+  .photoGrid img {
+    height: 360px;
+  }
+}

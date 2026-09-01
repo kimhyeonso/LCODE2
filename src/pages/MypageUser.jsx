@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { getPlans } from "../services/firestoreService";
+import { getFavoritePlaces, getPlans } from "../services/firestoreService";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
@@ -9,12 +9,15 @@ const menuItems = [
   ["상품 주문 내역", "/buy"],
   ["나의 리뷰", "/mystories"],
   ["찜한 상품", "/wishlist"],
+  ["찜한 장소", "/favorite-places"],
   ["쿠폰함", "/coupon"],
   ["알림 설정", "/alarm"],
   ["고객센터", "/notice"],
 ];
 
-const getCreatedTime = (plan) => plan.createdAt?.toMillis?.()
+const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
+  || plan.updatedAt?.seconds * 1000
+  || plan.createdAt?.toMillis?.()
   || plan.createdAt?.seconds * 1000
   || 0;
 
@@ -33,6 +36,7 @@ export default function MypageUser() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
+  const [favoriteCount, setFavoriteCount] = useState(0);
   const displayName = user.displayName || user.email?.split("@")[0] || "여행자";
 
   useEffect(() => {
@@ -49,6 +53,20 @@ export default function MypageUser() {
 
     return () => {
       active = false;
+    };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return undefined;
+    let active = true;
+    const loadFavorites = () => getFavoritePlaces(user.uid)
+      .then((places) => active && setFavoriteCount(places.length))
+      .catch(() => active && setFavoriteCount(0));
+    loadFavorites();
+    window.addEventListener("favorite-places-changed", loadFavorites);
+    return () => {
+      active = false;
+      window.removeEventListener("favorite-places-changed", loadFavorites);
     };
   }, [user]);
 
@@ -100,7 +118,8 @@ export default function MypageUser() {
           <article className={styles.saved}>
             <small>03</small>
             <span>PLACES SAVED</span>
-            <strong>♥ 12</strong>
+            <strong>♥ {favoriteCount}</strong>
+            <Link className={styles.cardLink} to="/favorite-places" aria-label="찜한 장소 보기" />
           </article>
           <article className={styles.stories}>
             <small>04</small>

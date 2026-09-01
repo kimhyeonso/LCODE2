@@ -54,7 +54,7 @@ export default function MyPageMain() {
       {/* 작업 중인 페이지를 빠르게 확인하기 위한 임시 메뉴입니다. */}
       <nav className={styles.pageSwitcher} aria-label="페이지 미리보기">
         <Link to="/">main</Link>
-        <Link to="/mypage-main">mypage main</Link>
+        <Link to="/my">mypage main</Link>
         <Link to="/mypage-user">mypage user</Link>
         <Link to="/profile/edit">profile edit</Link>
         <Link to="/login">login</Link>

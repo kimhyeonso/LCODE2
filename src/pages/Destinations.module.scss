@@ -1,0 +1,153 @@
+@use "../styles/variables" as *;
+
+.page {
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 22px 17px 100px;
+  background: #fff;
+  color: $ink;
+}
+.back {
+  color: #777;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.eyebrow {
+  margin: 24px 0 18px 23px;
+  color: #777;
+  font-size: 9px;
+  letter-spacing: 3px;
+}
+.page > h1 {
+  margin: 0 0 18px 23px;
+  font: 40px/1.08 $serif;
+  letter-spacing: -1.5px;
+}
+.description,
+.prompt {
+  margin-left: 23px;
+  color: #aaa;
+  font-size: 11px;
+}
+.rule {
+  height: 1px;
+  margin: 26px -5px 20px;
+  background: #ddd;
+}
+.prompt {
+  margin-bottom: 18px;
+}
+.tabs {
+  display: flex;
+  gap: 22px;
+  margin: 0 23px 24px;
+}
+.tabs button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #aaa;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+}
+.tabs button.active {
+  color: #111;
+  font-weight: 700;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 12px;
+}
+.cardSlot {
+  display: contents;
+}
+.card {
+  position: relative;
+  padding-bottom: 34px;
+  background: #f7f7f7;
+}
+.card > a:first-child {
+  color: $ink;
+}
+.image {
+  display: block;
+  aspect-ratio: 1 / 1.08;
+  background: #ddd center/cover;
+}
+.card div {
+  padding: 14px 10px 10px;
+}
+.card small {
+  color: #8a775f;
+  font: 8px $serif;
+}
+.card h2 {
+  margin: 10px 0 7px;
+  overflow: hidden;
+  font: 18px $serif;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.card p {
+  margin: 0;
+  overflow: hidden;
+  color: #777;
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.card strong {
+  display: block;
+  margin-top: 12px;
+  font-size: 10px;
+  font-weight: 400;
+}
+.card .add {
+  position: absolute;
+  bottom: 12px;
+  left: 10px;
+  border-bottom: 1px solid;
+  color: #222;
+  font-size: 8px;
+}
+.feature {
+  grid-column: 1 / -1;
+  height: 118px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 15px;
+  background: #777 center/cover;
+  color: #fff;
+}
+.feature small,
+.feature p,
+.feature b {
+  font-size: 8px;
+  font-weight: 400;
+}
+.feature strong {
+  margin-top: 8px;
+  font: 23px $serif;
+}
+.feature p {
+  margin: 4px 0;
+  color: #ddd;
+}
+
+@media (min-width: 800px) {
+  .page {
+    padding: 48px 48px 110px;
+  }
+  .page > h1 {
+    font-size: 56px;
+  }
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .feature {
+    grid-column: 1 / -1;
+    height: 180px;
+  }
+}

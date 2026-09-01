@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { getPlans } from "../services/firestoreService";
 import Loading from "../components/Loading";
 import styles from "./Page.module.scss";
@@ -48,7 +49,7 @@ export default function Plans() {
         <div className={styles.empty}>
           <b>아직 저장된 여행이 없어요.</b>
           <p>AI 플래너에서 첫 여행을 만들어 보세요.</p>
-          <a href="/travel-planner">여행 만들기 →</a>
+          <Link to="/travel-planner">여행 만들기 →</Link>
         </div>
       )}
     </main>

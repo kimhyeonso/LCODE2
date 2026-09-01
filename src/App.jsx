@@ -28,6 +28,10 @@ import Review from "./pages/Review";
 import Buy from "./pages/Buy";
 import NotFound from "./pages/NotFound";
 import Saved from "./pages/Saved";
+import SavedPlan from "./pages/SavedPlan";
+import JournalDetail from "./pages/JournalDetail";
+import Destinations from "./pages/Destinations";
+import FavoritePlaces from "./pages/FavoritePlaces";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
@@ -85,6 +89,10 @@ export default function App() {
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />
+          <Route path="/plan/saved" element={<ProtectedRoute><SavedPlan /></ProtectedRoute>} />
+          <Route path="/journal/tokyo" element={<JournalDetail />} />
+          <Route path="/destinations" element={<Destinations />} />
+          <Route path="/favorite-places" element={<ProtectedRoute><FavoritePlaces /></ProtectedRoute>} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-complete" element={<OrderComplete />} />

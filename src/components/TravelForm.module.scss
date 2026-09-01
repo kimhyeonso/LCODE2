@@ -13,7 +13,9 @@
   position: relative;
   height: 382px;
   color: #fff;
-  background: linear-gradient(to bottom, #c7c7c7 0%, #a6a6a6 48%, #444 100%), url("../assets/images/fukuoka_japan.jpg") center/cover;
+  background:
+    linear-gradient(to bottom, #c7c7c7 0%, #a6a6a6 48%, #444 100%),
+    url("../assets/images/fukuoka_japan.jpg") center/cover;
   background-blend-mode: multiply;
 }
 
@@ -63,7 +65,7 @@
 .heroCopy h1 {
   margin: 0;
   color: #d8d8d8;
-  font: 64px/.9 $serif;
+  font: 64px/0.9 $serif;
   letter-spacing: -2px;
 }
 
@@ -93,6 +95,98 @@
   letter-spacing: 1px;
 }
 
+.sectionEyebrow {
+  margin: 0;
+  color: #aaa;
+  font-size: 7px;
+  letter-spacing: 2px;
+}
+.tripExpense {
+  padding: 26px 0 20px;
+  border-bottom: 1px solid #e2e2e2;
+}
+.expenseRow {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 18px;
+}
+.expenseRow span {
+  color: #888;
+  font-size: 10px;
+}
+.expenseRow strong {
+  font-size: 14px;
+  font-weight: 600;
+}
+.expenseMeta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-top: 12px;
+  color: #aaa;
+  font-size: 8px;
+  line-height: 1.6;
+}
+.expenseMeta button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #777;
+  font-size: 9px;
+}
+.exchange {
+  padding: 24px 0 20px;
+}
+.exchangeHeading {
+  display: flex;
+  justify-content: space-between;
+}
+.exchangeHeading > span {
+  color: #aaa;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+}
+.exchangeLabel {
+  margin: 12px 0 8px;
+  color: #aaa;
+  font-size: 9px;
+}
+.exchangeCard {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 17px 14px;
+  background: #f3f3f3;
+}
+.exchangeCard > span {
+  color: #999;
+  font-size: 8px;
+}
+.exchangeCard strong {
+  display: block;
+  margin-top: 6px;
+  color: #222;
+  font: 25px/1 $serif;
+}
+.exchangeCard > span:last-child {
+  text-align: right;
+}
+.exchangeCard small {
+  display: block;
+  margin-top: 5px;
+  font-size: 8px;
+}
+.exchangeLink {
+  display: block;
+  margin: 14px 0 0 auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #888;
+  font-size: 8px;
+}
+
 .flight {
   display: flex;
   justify-content: space-between;
@@ -102,6 +196,47 @@
   background: #ddd;
   color: #666;
   font-size: 9px;
+}
+
+.tripDateEditor {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: end;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 16px 14px;
+  background: #f5f5f5;
+}
+
+.tripDateEditor label {
+  display: grid;
+  gap: 7px;
+  color: #777;
+  font-size: 9px;
+}
+
+.tripDateEditor input {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  border: 1px solid #ccc;
+  border-radius: 0;
+  padding: 0 8px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  font-size: 11px;
+  color-scheme: light;
+}
+
+.tripDateEditor input[readonly] {
+  background: #eee;
+  color: #666;
+}
+
+.tripDateEditor > b {
+  padding-bottom: 13px;
+  font-weight: 400;
 }
 
 .flight button {
@@ -222,19 +357,19 @@
 .stopGroup {
   margin-bottom: 13px;
   transition:
-    transform 220ms cubic-bezier(.2, .8, .2, 1),
+    transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 180ms ease,
     box-shadow 180ms ease;
 }
 
 .stopGroup.dragging {
-  opacity: .45;
-  transform: scale(.99);
+  opacity: 0.45;
+  transform: scale(0.99);
   position: relative;
   z-index: 3;
 }
 
-.dragging{
+.dragging {
   z-index: 10;
   opacity: 0.92;
   transform: scale(1.015);
@@ -439,13 +574,107 @@
   background: #fff;
   color: #888;
   font-size: 11px;
-  letter-spacing: .5px;
+  letter-spacing: 0.5px;
 }
 
 .addActions button:last-child {
   border-color: #111;
   background: #111;
   color: #fff;
+}
+
+.recommendations {
+  margin: 42px -16px 24px;
+  padding: 34px 16px 28px;
+  border-top: 1px solid #e2e2e2;
+}
+.recommendations > h2 {
+  margin: 10px 0 8px;
+  font-size: 27px;
+  font-weight: 500;
+  letter-spacing: -1.2px;
+}
+.recommendations > p:not(.sectionEyebrow) {
+  margin: 0 0 22px;
+  color: #aaa;
+  font-size: 10px;
+  line-height: 1.65;
+}
+.recommendationGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  background: #ddd;
+}
+.recommendationGrid article {
+  min-width: 0;
+  padding-bottom: 12px;
+  background: #fff;
+}
+.recommendationImage {
+  display: block;
+  height: 150px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #ddd;
+}
+.recommendationImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.recommendationGrid small,
+.recommendationGrid strong,
+.recommendationGrid article > p,
+.recommendationGrid dl {
+  margin-inline: 10px;
+}
+.recommendationGrid small {
+  display: block;
+  color: #aaa;
+  font-size: 7px;
+  letter-spacing: 1.5px;
+}
+.recommendationGrid strong {
+  display: block;
+  margin-top: 6px;
+  overflow: hidden;
+  font-size: 12px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.recommendationGrid article > p {
+  height: 30px;
+  margin-top: 6px;
+  overflow: hidden;
+  color: #999;
+  font-size: 8px;
+  line-height: 1.5;
+}
+.recommendationGrid dl {
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid #eee;
+}
+.recommendationGrid dl div {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  color: #aaa;
+  font-size: 7px;
+}
+.recommendationGrid dd {
+  margin: 0;
+  color: #555;
+}
+.recommendationGrid article > button {
+  width: calc(100% - 20px);
+  height: 32px;
+  margin: 12px 10px 0;
+  border: 0;
+  background: #111;
+  color: #fff;
+  font-size: 8px;
 }
 
 .draft,
@@ -461,100 +690,673 @@
 }
 
 .confirm:disabled {
-  opacity: .55;
+  opacity: 0.55;
 }
 
-.placeAdder { position: fixed; z-index: 245; inset: 0; overflow-y: auto; background: #fff; color: #222; }
-.placeAdderInner { width: min(100%, 620px); min-height: 100dvh; margin: 0 auto; padding: 20px 14px 92px; background: #fff; }
-.placeAdderInner > header { display: grid; grid-template-columns: 28px 1fr; gap: 4px; align-items: start; }
-.placeAdderInner > header > button { border: 0; padding: 4px 0; background: transparent; font-size: 22px; }
-.placeAdder h2 { margin: 0; font-size: 22px; }
-.placeAdder header p { margin: 10px 0 18px; color: #777; font-size: 11px; }
-.placeMapArea { position: relative; height: 205px; overflow: hidden; background: #e9e9e5; }
-.placeMap { position: relative; height: 205px; overflow: hidden; background-color: #e9e9e5; background-image: linear-gradient(30deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%), linear-gradient(120deg, transparent 48%, #fff 49%, #fff 51%, transparent 52%); background-size: 70px 70px; }
-.mapDay { position: absolute; z-index: 500; top: 10px; left: 8px; border-radius: 18px; padding: 7px 10px; background: #fff; font-size: 9px; }
-.mapFilters { position: absolute; z-index: 500; top: 9px; right: 7px; display: flex; }
-.mapFilters button { border: 0; padding: 6px 8px; background: #fff; font-size: 8px; }
-.mapFilters .mapFilterActive { background: #111; color: #fff; }
-.placeMap > i { position: absolute; width: 24px; height: 34px; display: grid; place-items: center; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: #111; color: #fff; font-size: 10px; font-style: normal; }
-.placeMap > i::first-letter { transform: rotate(45deg); }
-.placeSearch { display: flex; gap: 8px; align-items: center; margin-top: 20px; border-bottom: 1px solid #aaa; padding: 0 2px 10px; color: #999; }
-.placeSearch input { width: 100%; border: 0; outline: 0; background: transparent; font-size: 12px; }
-.placeResults h3 { margin: 22px 0 8px; font-size: 15px; }
-.placeResults > div { display: grid; gap: 8px; }
-.placeResults button { position: relative; width: 100%; min-height: 96px; display: grid; grid-template-columns: 24px 92px 1fr; gap: 10px; align-items: center; border: 1px solid transparent; padding: 8px; background: #f7f7f7; text-align: left; }
-.placeResults button.placeSelected { border-color: #777; }
-.resultNumber { position: absolute; z-index: 2; top: 10px; left: 10px; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: #fff; font-size: 9px; }
-.resultImage { grid-column: 2; width: 92px; height: 80px; background: #ddd; overflow: hidden; }
-.resultImage img { width: 100%; height: 100%; object-fit: cover; }
-.resultCopy { grid-column: 3; min-width: 0; }
-.resultCopy strong, .resultCopy small, .resultCopy b, .resultCopy em { display: block; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.resultCopy strong { font-size: 12px; }
-.resultCopy small { width: max-content; margin-top: 5px; padding: 3px 7px; background: #fbf8ef; color: #999; font-size: 8px; }
-.resultCopy b { margin-top: 7px; font-size: 9px; font-weight: 400; }
-.resultCopy em { margin-top: 5px; color: #999; font-size: 8px; font-style: normal; }
-.selectedCheck { position: absolute; right: 10px; width: 20px; height: 20px; display: grid; place-items: center; border-radius: 50%; background: #222; color: #fff; }
-.noPlaces { padding: 50px 0; color: #999; font-size: 11px; text-align: center; }
-.placeAddFooter { position: fixed; z-index: 3; right: max(0px, calc((100vw - 620px) / 2)); bottom: 0; left: max(0px, calc((100vw - 620px) / 2)); display: grid; grid-template-columns: 1fr 2fr; align-items: center; gap: 12px; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid #eee; background: #fff; }
-.placeAddFooter span { color: #888; font-size: 10px; text-align: center; }
-.placeAddFooter button { height: 50px; border: 0; background: #111; color: #fff; font-size: 11px; }
-.placeAddFooter button:disabled { opacity: .4; }
+.placeAdder {
+  position: fixed;
+  z-index: 245;
+  inset: 0;
+  overflow-y: auto;
+  background: #fff;
+  color: #222;
+}
+.placeAdderInner {
+  width: min(100%, 620px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 20px 14px 92px;
+  background: #fff;
+}
+.placeAdderInner > header {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 4px;
+  align-items: start;
+}
+.placeAdderInner > header > button {
+  border: 0;
+  padding: 4px 0;
+  background: transparent;
+  font-size: 22px;
+}
+.placeAdder h2 {
+  margin: 0;
+  font-size: 22px;
+}
+.placeAdder header p {
+  margin: 10px 0 18px;
+  color: #777;
+  font-size: 11px;
+}
+.placeMapArea {
+  position: relative;
+  height: 205px;
+  overflow: hidden;
+  background: #e9e9e5;
+}
+.placeMap {
+  position: relative;
+  height: 205px;
+  overflow: hidden;
+  background-color: #e9e9e5;
+  background-image:
+    linear-gradient(
+      30deg,
+      transparent 48%,
+      #fff 49%,
+      #fff 51%,
+      transparent 52%
+    ),
+    linear-gradient(
+      120deg,
+      transparent 48%,
+      #fff 49%,
+      #fff 51%,
+      transparent 52%
+    );
+  background-size: 70px 70px;
+}
+.mapDay {
+  position: absolute;
+  z-index: 500;
+  top: 10px;
+  left: 8px;
+  border-radius: 18px;
+  padding: 7px 10px;
+  background: #fff;
+  font-size: 9px;
+}
+.mapFilters {
+  position: absolute;
+  z-index: 500;
+  top: 9px;
+  right: 7px;
+  display: flex;
+}
+.mapFilters button {
+  border: 0;
+  padding: 6px 8px;
+  background: #fff;
+  font-size: 8px;
+}
+.mapFilters .mapFilterActive {
+  background: #111;
+  color: #fff;
+}
+.placeMap > i {
+  position: absolute;
+  width: 24px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: #111;
+  color: #fff;
+  font-size: 10px;
+  font-style: normal;
+}
+.placeMap > i::first-letter {
+  transform: rotate(45deg);
+}
+.placeSearch {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 20px;
+  border-bottom: 1px solid #aaa;
+  padding: 0 2px 10px;
+  color: #999;
+}
+.placeSearch input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 12px;
+}
+.placeTime {
+  display: grid;
+  grid-template-columns: 1fr 120px;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  border: 1px solid #ddd;
+  padding: 10px 12px;
+  background: #fafafa;
+}
+.placeTime span {
+  font-size: 11px;
+  font-weight: 600;
+}
+.placeTime input {
+  width: 100%;
+  height: 38px;
+  border: 1px solid #bbb;
+  padding: 0 10px;
+  background: #fff;
+  color: #222;
+  font: inherit;
+  font-size: 12px;
+}
+.placeResults h3 {
+  margin: 22px 0 8px;
+  font-size: 15px;
+}
+.placeResults > div {
+  display: grid;
+  gap: 8px;
+}
+.placeResults button {
+  position: relative;
+  width: 100%;
+  min-height: 96px;
+  display: grid;
+  grid-template-columns: 24px 92px 1fr;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid transparent;
+  padding: 8px;
+  background: #f7f7f7;
+  text-align: left;
+}
+.placeResults button.placeSelected {
+  border-color: #777;
+}
+.resultNumber {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 9px;
+}
+.resultImage {
+  grid-column: 2;
+  width: 92px;
+  height: 80px;
+  background: #ddd;
+  overflow: hidden;
+}
+.resultImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.resultCopy {
+  grid-column: 3;
+  min-width: 0;
+}
+.resultCopy strong,
+.resultCopy small,
+.resultCopy b,
+.resultCopy em {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.resultCopy strong {
+  font-size: 12px;
+}
+.resultCopy small {
+  width: max-content;
+  margin-top: 5px;
+  padding: 3px 7px;
+  background: #fbf8ef;
+  color: #999;
+  font-size: 8px;
+}
+.resultCopy b {
+  margin-top: 7px;
+  font-size: 9px;
+  font-weight: 400;
+}
+.resultCopy em {
+  margin-top: 5px;
+  color: #999;
+  font-size: 8px;
+  font-style: normal;
+}
+.selectedCheck {
+  position: absolute;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #222;
+  color: #fff;
+}
+.noPlaces {
+  padding: 50px 0;
+  color: #999;
+  font-size: 11px;
+  text-align: center;
+}
+.placeAddFooter {
+  position: fixed;
+  z-index: 3;
+  right: max(0px, calc((100vw - 620px) / 2));
+  bottom: 0;
+  left: max(0px, calc((100vw - 620px) / 2));
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+.placeAddFooter span {
+  color: #888;
+  font-size: 10px;
+  text-align: center;
+}
+.placeAddFooter button {
+  height: 50px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+}
+.placeAddFooter button:disabled {
+  opacity: 0.4;
+}
 
-.wishlistAdder { position: fixed; z-index: 246; inset: 0; overflow-y: auto; background: #fff; color: #222; }
-.wishlistAdderInner { width: min(100%, 620px); min-height: 100dvh; margin: 0 auto; padding: 22px 16px 94px; background: #fff; }
-.wishlistAdderInner > header { display: grid; grid-template-columns: 28px 1fr; gap: 4px; }
-.wishlistAdderInner > header > button { border: 0; padding: 2px 0; background: transparent; font-size: 22px; }
-.wishlistAdder h2 { margin: 0; font-size: 22px; }
-.wishlistAdder header p { margin: 10px 0 18px; color: #777; font-size: 11px; }
-.wishlistMapArea { position: relative; height: 205px; overflow: hidden; }
-.savedCount { position: absolute; z-index: 500; bottom: 10px; left: 8px; border-radius: 18px; padding: 7px 10px; background: #fff; font-size: 9px; box-shadow: 0 2px 8px rgba(0,0,0,.12); }
-.wishlistFilters { display: flex; gap: 6px; margin: 12px 0 18px; }
-.wishlistFilters button { border: 1px solid #ddd; padding: 7px 12px; background: #fff; font-size: 8px; box-shadow: 0 2px 5px rgba(0,0,0,.08); }
-.wishlistFilters .wishlistFilterActive { border-color: #111; background: #111; color: #fff; }
-.wishlistResults h3 { margin: 0 0 8px; font-size: 15px; }
-.wishlistResults > div { display: grid; gap: 8px; }
-.wishlistResults article { position: relative; min-height: 96px; display: grid; grid-template-columns: 24px 92px 1fr; gap: 10px; align-items: center; padding: 8px; background: #f7f7f7; }
-.wishlistResults article > button { position: absolute; right: 10px; min-width: 50px; border: 0; padding: 6px 9px; background: #222; color: #fff; font-size: 9px; }
-.wishlistResults article > button.wishlistSelected { border: 1px solid #aaa; background: #fff; color: #222; }
-.wishlistFooter { position: fixed; z-index: 3; right: max(0px, calc((100vw - 620px) / 2)); bottom: 0; left: max(0px, calc((100vw - 620px) / 2)); display: grid; grid-template-columns: 1fr 2fr; gap: 12px; align-items: center; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); border-top: 1px solid #eee; background: #fff; }
-.wishlistFooter span { color: #888; font-size: 10px; text-align: center; }
-.wishlistFooter button { height: 50px; border: 0; background: #111; color: #fff; font-size: 11px; }
-.wishlistFooter button:disabled { opacity: .4; }
+.wishlistAdder {
+  position: fixed;
+  z-index: 246;
+  inset: 0;
+  overflow-y: auto;
+  background: #fff;
+  color: #222;
+}
+.wishlistAdderInner {
+  width: min(100%, 620px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 22px 16px 94px;
+  background: #fff;
+}
+.wishlistAdderInner > header {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 4px;
+}
+.wishlistAdderInner > header > button {
+  border: 0;
+  padding: 2px 0;
+  background: transparent;
+  font-size: 22px;
+}
+.wishlistAdder h2 {
+  margin: 0;
+  font-size: 22px;
+}
+.wishlistAdder header p {
+  margin: 10px 0 18px;
+  color: #777;
+  font-size: 11px;
+}
+.wishlistMapArea {
+  position: relative;
+  height: 205px;
+  overflow: hidden;
+}
+.savedCount {
+  position: absolute;
+  z-index: 500;
+  bottom: 10px;
+  left: 8px;
+  border-radius: 18px;
+  padding: 7px 10px;
+  background: #fff;
+  font-size: 9px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+}
+.wishlistFilters {
+  display: flex;
+  gap: 6px;
+  margin: 12px 0 18px;
+}
+.wishlistFilters button {
+  border: 1px solid #ddd;
+  padding: 7px 12px;
+  background: #fff;
+  font-size: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+.wishlistFilters .wishlistFilterActive {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+.wishlistResults h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+.wishlistResults > div {
+  display: grid;
+  gap: 8px;
+}
+.wishlistResults article {
+  position: relative;
+  min-height: 96px;
+  display: grid;
+  grid-template-columns: 24px 92px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 8px;
+  background: #f7f7f7;
+}
+.wishlistResults article > button {
+  position: absolute;
+  right: 10px;
+  min-width: 50px;
+  border: 0;
+  padding: 6px 9px;
+  background: #222;
+  color: #fff;
+  font-size: 9px;
+}
+.wishlistResults article > button.wishlistSelected {
+  border: 1px solid #aaa;
+  background: #fff;
+  color: #222;
+}
+.wishlistFooter {
+  position: fixed;
+  z-index: 3;
+  right: max(0px, calc((100vw - 620px) / 2));
+  bottom: 0;
+  left: max(0px, calc((100vw - 620px) / 2));
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  border-top: 1px solid #eee;
+  background: #fff;
+}
+.wishlistFooter span {
+  color: #888;
+  font-size: 10px;
+  text-align: center;
+}
+.wishlistFooter button {
+  height: 50px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+}
+.wishlistFooter button:disabled {
+  opacity: 0.4;
+}
 
-.flightEditor { position: fixed; z-index: 240; inset: 0; overflow-y: auto; background: #fff; color: #222; }
-.flightEditorInner { width: min(100%, 620px); margin: 0 auto; padding: 38px 20px 110px; }
-.flightEyebrow { margin: 0 0 20px; color: #999; font-size: 9px; letter-spacing: 2px; }
-.flightEditor h2 { margin: 0; font-size: 28px; font-weight: 500; }
-.flightDescription { margin: 16px 0 38px; color: #777; font-size: 13px; line-height: 1.5; }
-.currentFlight { padding: 14px 16px; background: #191a17; color: #fff; }
-.currentFlight p { display: flex; justify-content: space-between; margin: 0; color: #c9c4a3; font-size: 8px; }
-.currentFlight p span { padding: 5px 10px; background: #aaa574; color: #fff; }
-.currentFlight strong { display: flex; align-items: center; gap: 16px; margin: 5px 0 8px; font: 25px $serif; }
-.currentFlight strong b { font-size: 24px; font-weight: 300; }
-.currentFlight small { color: #aaa; font-size: 8px; line-height: 1.6; }
-.flightFields { margin-top: 22px; padding: 20px 12px 24px; background: #f5f5f5; }
-.flightFields > p, .flightPreview > p { margin: 0 0 18px; color: #8e927d; font-size: 11px; }
-.fieldTitle { display: block; margin: 18px 0 8px; font-size: 13px; }
-.fieldTitle small { color: #888; font-weight: 400; }
-.routeFields { display: grid; grid-template-columns: 1fr 28px 1fr; align-items: center; gap: 8px; }
-.routeFields > b { width: 25px; height: 25px; display: grid; place-items: center; border-radius: 50%; background: #111; color: #fff; }
-.routeFields label, .airlineFields label { border: 1px solid #bbb; padding: 8px 10px; background: #fff; }
-.routeFields span, .airlineFields label span { display: block; color: #777; font-size: 9px; }
-.routeFields input, .airlineFields label input { width: 100%; border: 0; outline: 0; padding: 5px 0 0; background: transparent; font-size: 11px; }
-.dateFields { display: grid; grid-template-columns: 1fr 58px 58px; gap: 10px; }
-.dateFields input, .dateFields select, .airlineFields > input { min-width: 0; height: 48px; border: 1px solid #bbb; padding: 0 10px; background: #fff; font-size: 11px; }
-.airlineFields { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; }
-.airlineFields label { height: 50px; }
-.flightPreview { margin-top: 12px; padding: 20px 12px; background: #f5f5f5; }
-.flightPreview > p { margin-bottom: 14px; }
-.flightPreview div { display: flex; justify-content: space-between; gap: 10px; padding-bottom: 12px; border-bottom: 1px solid #ccc; color: #777; font-size: 9px; }
-.flightPreview b { color: #222; font-size: 12px; }
-.autoNotice { display: grid; gap: 5px; margin: 12px 0 24px; border-radius: 8px; padding: 14px 12px; background: #ddd; text-align: center; }
-.autoNotice b { font-size: 11px; }
-.autoNotice small { color: #777; font-size: 8px; }
-.flightActions { display: grid; grid-template-columns: 1fr 2fr; gap: 10px; }
-.flightActions button { height: 50px; border: 1px solid #ddd; background: #fff; color: #777; font-size: 11px; }
-.flightActions button:last-child { border-color: #111; background: #111; color: #fff; }
+.flightEditor {
+  position: fixed;
+  z-index: 240;
+  inset: 0;
+  overflow-y: auto;
+  background: #fff;
+  color: #222;
+}
+.flightEditorInner {
+  width: min(100%, 620px);
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 38px 20px calc(110px + env(safe-area-inset-bottom));
+}
+.flightEyebrow {
+  margin: 0 0 20px;
+  color: #999;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.flightEditor h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+}
+.flightDescription {
+  margin: 16px 0 38px;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.currentFlight {
+  padding: 14px 16px;
+  background: #191a17;
+  color: #fff;
+}
+.currentFlight p {
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  color: #c9c4a3;
+  font-size: 8px;
+}
+.currentFlight p span {
+  padding: 5px 10px;
+  background: #aaa574;
+  color: #fff;
+}
+.currentFlight strong {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 5px 0 8px;
+  font: 25px $serif;
+}
+.currentFlight strong b {
+  font-size: 24px;
+  font-weight: 300;
+}
+.currentFlight small {
+  color: #aaa;
+  font-size: 8px;
+  line-height: 1.6;
+}
+.flightFields {
+  margin-top: 22px;
+  padding: 20px 12px 24px;
+  background: #f5f5f5;
+}
+.flightFields > p,
+.flightPreview > p {
+  margin: 0 0 18px;
+  color: #8e927d;
+  font-size: 11px;
+}
+.fieldTitle {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 13px;
+}
+.fieldTitle small {
+  color: #888;
+  font-weight: 400;
+}
+.routeFields {
+  display: grid;
+  grid-template-columns: 1fr 28px 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.routeFields > b {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #111;
+  color: #fff;
+}
+.routeFields label,
+.airlineFields label {
+  border: 1px solid #bbb;
+  padding: 8px 10px;
+  background: #fff;
+}
+.routeFields span,
+.airlineFields label span {
+  display: block;
+  color: #777;
+  font-size: 9px;
+}
+.routeFields input,
+.airlineFields label input {
+  width: 100%;
+  border: 0;
+  outline: 0;
+  padding: 5px 0 0;
+  background: transparent;
+  font-size: 11px;
+}
+.routeFields label > small {
+  display: block;
+  margin-top: 2px;
+  color: #333;
+  font-size: 9px;
+}
+
+.timeZoneFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.timeZoneFields label {
+  display: grid;
+  gap: 6px;
+  color: #777;
+  font-size: 9px;
+}
+
+.timeZoneFields select {
+  min-width: 0;
+  height: 42px;
+  border: 1px solid #bbb;
+  border-radius: 0;
+  padding: 0 8px;
+  background: #fff;
+  color: #333;
+  font-size: 10px;
+}
+.dateFields {
+  display: grid;
+  grid-template-columns: 1fr 58px 58px;
+  gap: 10px;
+}
+.dateFields input,
+.dateFields select,
+.airlineFields > input {
+  min-width: 0;
+  height: 48px;
+  border: 1px solid #bbb;
+  padding: 0 10px;
+  background: #fff;
+  font-size: 11px;
+}
+.airlineFields {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 10px;
+}
+.airlineFields label {
+  height: 50px;
+}
+.flightPreview {
+  margin-top: 12px;
+  padding: 20px 12px;
+  background: #f5f5f5;
+}
+.flightPreview > p {
+  margin-bottom: 14px;
+}
+
+.flightPreview .flightDuration {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0 0;
+  color: #777;
+  font-size: 10px;
+}
+.flightPreview div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #ccc;
+  color: #777;
+  font-size: 9px;
+}
+.flightPreview b {
+  color: #222;
+  font-size: 12px;
+}
+.flightPreview > strong,
+.flightPreview > small {
+  display: block;
+  margin-top: 9px;
+  font-size: 8px;
+}
+.flightPreview > small {
+  margin-top: 5px;
+  color: #999;
+}
+.autoNotice {
+  display: grid;
+  gap: 5px;
+  margin: 12px 0 24px;
+  border-radius: 8px;
+  padding: 14px 12px;
+  background: #ddd;
+  text-align: center;
+}
+.autoNotice b {
+  font-size: 11px;
+}
+.autoNotice small {
+  color: #777;
+  font-size: 8px;
+}
+.flightActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+}
+
+.flightValidationError {
+  margin: 12px 0 0;
+  padding: 11px 12px;
+  background: #fff0f0;
+  color: #a33;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.flightActions button {
+  height: 50px;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #777;
+  font-size: 11px;
+}
+.flightActions button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
 
 .modalBackdrop {
   position: fixed;
@@ -909,15 +1711,28 @@
   color: #fff;
 }
 
+.favoriteError {
+  position: fixed;
+  right: max(0px, calc((100vw - 560px) / 2));
+  bottom: 86px;
+  left: max(0px, calc((100vw - 560px) / 2));
+  margin: 0;
+  padding: 10px 20px;
+  background: #fff3f3;
+  color: #a33;
+  font-size: 11px;
+  text-align: center;
+}
+
 @media (min-width: 641px) {
   .form {
     margin-top: 40px;
     margin-bottom: 80px;
-    box-shadow: 0 16px 50px rgba(0, 0, 0, .08);
+    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.08);
   }
 }
 
-@media (min-width: 900px) {
+@media (min-width: 1180px) {
   .form {
     width: min(calc(100% - 64px), 1180px);
     display: grid;
@@ -981,12 +1796,33 @@
     left: max(40px, calc((100vw - 760px) / 2));
   }
 
-  .flightEditor { background: rgba(0,0,0,.72); padding-block: 40px; }
-  .flightEditorInner { padding: 45px 38px; background: #fff; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
-  .placeAdder { background: rgba(0,0,0,.72); padding-block: 40px; }
-  .placeAdderInner { min-height: auto; padding: 32px 28px 100px; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
-  .wishlistAdder { background: rgba(0,0,0,.72); padding-block: 40px; }
-  .wishlistAdderInner { min-height: auto; padding: 32px 28px 100px; box-shadow: 0 24px 80px rgba(0,0,0,.3); }
+  .flightEditor {
+    background: rgba(0, 0, 0, 0.72);
+    padding-block: 40px;
+  }
+  .flightEditorInner {
+    padding: 45px 38px;
+    background: #fff;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+  }
+  .placeAdder {
+    background: rgba(0, 0, 0, 0.72);
+    padding-block: 40px;
+  }
+  .placeAdderInner {
+    min-height: auto;
+    padding: 32px 28px 100px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+  }
+  .wishlistAdder {
+    background: rgba(0, 0, 0, 0.72);
+    padding-block: 40px;
+  }
+  .wishlistAdderInner {
+    min-height: auto;
+    padding: 32px 28px 100px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+  }
 }
 
 @include mobile {

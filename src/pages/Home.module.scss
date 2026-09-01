@@ -162,13 +162,46 @@ $type-display: 36px;
   border: 1px solid $home-line;
   background: $home-surface;
 }
-.upcomingLoading { display: grid; place-items: center; color: $home-muted; font-size: $type-caption; }
-.upcomingEmpty { padding: $space-5 $space-4; text-align: center; }
-.upcomingEmpty > span { color: $home-muted; font-size: 9px; letter-spacing: 2px; }
-.upcomingEmpty h2 { margin: $space-2 0 $space-1; font: 600 22px/1.35 $serif; }
-.upcomingEmpty p { margin: 0; color: $home-muted; font-size: $type-caption; line-height: 1.7; }
-.upcomingEmpty a { width: min(100%, 230px); height: 46px; display: flex; align-items: center; justify-content: space-between; margin: $space-3 auto 0; padding: 0 $space-2; background: $home-ink; color: #fff; font-size: $type-caption; }
-.upcomingEmpty a b { font-weight: 400; }
+.upcomingLoading {
+  display: grid;
+  place-items: center;
+  color: $home-muted;
+  font-size: $type-caption;
+}
+.upcomingEmpty {
+  padding: $space-5 $space-4;
+  text-align: center;
+}
+.upcomingEmpty > span {
+  color: $home-muted;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.upcomingEmpty h2 {
+  margin: $space-2 0 $space-1;
+  font: 600 22px/1.35 $serif;
+}
+.upcomingEmpty p {
+  margin: 0;
+  color: $home-muted;
+  font-size: $type-caption;
+  line-height: 1.7;
+}
+.upcomingEmpty a {
+  width: min(100%, 230px);
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: $space-3 auto 0;
+  padding: 0 $space-2;
+  background: $home-ink;
+  color: #fff;
+  font-size: $type-caption;
+}
+.upcomingEmpty a b {
+  font-weight: 400;
+}
 .upcomingMain {
   min-height: 300px;
   display: grid;
@@ -489,18 +522,18 @@ $type-display: 36px;
   height: 1px;
   background: $home-line;
 }
-.journal article > h3 {
+.journalLink > h3 {
   font: 500 24px/1.35 $sans;
   letter-spacing: -1px;
   margin: 0 $space-2 $space-2;
 }
-.journal article > p {
+.journalLink > p {
   color: $home-muted;
   font-size: $type-body;
   line-height: 1.8;
   margin: 0 $space-2 $space-3;
 }
-.journal article > footer {
+.journalLink > footer {
   border-top: 1px solid $home-line;
   border-bottom: 1px solid $home-line;
   padding: $space-2;
@@ -557,6 +590,10 @@ $type-display: 36px;
   .journalVisual {
     height: 520px;
   }
+}
+.journalLink {
+  display: block;
+  color: inherit;
 }
 
 @media (min-width: 901px) {

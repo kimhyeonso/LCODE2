@@ -314,7 +314,7 @@ export default function Home() {
           </div>
           <TextLink to="/contact">ALL</TextLink>
         </div>
-        <article>
+        <Link className={styles.journalLink} to="/journal/tokyo">
           <div className={styles.journalVisual}>
             <span>JOURNAL 04</span>
           </div>
@@ -336,7 +336,7 @@ export default function Home() {
             젖은 돌바닥…
           </p>
           <footer>P. 04 — TOKYO JOURNAL</footer>
-        </article>
+        </Link>
       </section>
     </main>
   );
