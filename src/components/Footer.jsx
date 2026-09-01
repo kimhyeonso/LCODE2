@@ -1,7 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
+import { usePlanDestination } from "../hooks/usePlanDestination";
 import styles from "./Footer.module.scss";
 export default function Footer() {
   const { pathname } = useLocation();
+  const planDestination = usePlanDestination();
 
   if (pathname === "/login") return null;
 
@@ -16,9 +18,9 @@ export default function Footer() {
         </p>
       </div>
       <div className={`${styles.links} ${styles.desktopLinks}`}>
-        <Link to="/plan">여행 찾기</Link>
+        <Link to="/search">여행 찾기</Link>
         <Link to="/travel-planner">AI 플래너</Link>
-        <Link to="/plans">나의 일정</Link>
+        <Link to={planDestination}>나의 일정</Link>
         <Link to="/contact">문의하기</Link>
       </div>
       <div className={`${styles.note} ${styles.desktopNote}`}>
@@ -29,7 +31,7 @@ export default function Footer() {
         <strong>L:CODE</strong>
         <p>당신의 여행 코드를 찾아주는 스마트한 여행 메이트</p>
         <nav aria-label="푸터 바로가기">
-          <Link to="/plans">&gt; My Journey</Link>
+          <Link to={planDestination}>&gt; My Journey</Link>
           <Link to="/contact">&gt; Community</Link>
           <Link to="/saved">&gt; Wishlist</Link>
           <Link to="/my">&gt; My Page</Link>

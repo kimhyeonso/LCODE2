@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useAuth } from "../hooks/useAuth";
+import { usePlanDestination } from "../hooks/usePlanDestination";
 import styles from "./Header.module.scss";
 import logoBlack from "../assets/images/logo-black.png";
 import searchIcon from "../assets/icons/search.svg";
@@ -10,7 +11,7 @@ import closeIcon from "../assets/icons/close.svg";
 
 const links = [
   ["/", "HOME"],
-  ["/plan", "PLAN"],
+  ["PLAN", "PLAN"],
   ["/shop", "SHOP"],
   ["/event", "EVENT"],
   ["/contact", "CONTACT"],
@@ -24,6 +25,7 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState("");
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const planDestination = usePlanDestination();
 
   const toggleMenu = () => {
     setOpen((current) => !current);
@@ -116,7 +118,9 @@ export default function Header() {
         className={styles.navigation}
         aria-label="주요 메뉴"
       >
-        {links.map(([to, label]) => (
+        {links.map(([link, label]) => {
+          const to = link === "PLAN" ? planDestination : link;
+          return (
           <NavLink
             key={to}
             to={to}
@@ -125,7 +129,8 @@ export default function Header() {
           >
             {label}
           </NavLink>
-        ))}
+          );
+        })}
         <div className={styles.memberMenu}>
           {user ? (
             <>
@@ -165,13 +170,16 @@ export default function Header() {
 
         <span className={styles.contentsLabel}>CONTENTS</span>
         <div className={styles.mobileLinks}>
-          {links.map(([to, label], index) => (
+          {links.map(([link, label], index) => {
+            const to = link === "PLAN" ? planDestination : link;
+            return (
             <NavLink key={label} to={to} onClick={() => setOpen(false)}>
               <b>{String(index + 1).padStart(2, "0")}</b>
               <strong>{label}</strong>
               <span>→</span>
             </NavLink>
-          ))}
+            );
+          })}
         </div>
         <div className={styles.mobileMemberMenu}>
           {user ? (

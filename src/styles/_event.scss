@@ -1,0 +1,24 @@
+// Shared layout primitives for the four /event page modules
+// (Event.jsx list page, GachaEvent, MysteryEvent, MagazineEvent).
+// Each *.module.scss below duplicates these via @include rather than
+// sharing a literal class, because CSS Modules scope class names per file —
+// a selector like `.scene.draw` only matches when both classes are hashed
+// from the same module.
+
+@mixin scene {
+  width: min(1320px, calc(100% - 112px));
+  min-height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+@mixin background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  object-fit: cover;
+  object-position: center;
+}

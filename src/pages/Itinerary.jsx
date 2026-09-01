@@ -4,20 +4,9 @@ import styles from "./Itinerary.module.scss";
 import MypageBackLink from "../components/MypageBackLink";
 import { useAuth } from "../hooks/useAuth";
 import { deletePlan, getPlans } from "../services/firestoreService";
+import { resolveImageUrl } from "../utils/imageUtils";
 
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: "default",
-});
-
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "/Mypage-img/trv.png";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const key = Object.keys(imageModules).find(
-    (path) => path.toLowerCase() === relativePath.toLowerCase(),
-  );
-  return key ? imageModules[key] : "/Mypage-img/trv.png";
-};
+const getImageUrl = (imagePath) => resolveImageUrl(imagePath, "/Mypage-img/trv.png");
 
 const getRepresentativeImage = (plan) => {
   const imagePath = plan.image || plan.days
@@ -46,7 +35,9 @@ const getDday = (startDate) => {
   return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 };
 
-const getCreatedTime = (plan) => plan.createdAt?.toMillis?.()
+const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
+  || plan.updatedAt?.seconds * 1000
+  || plan.createdAt?.toMillis?.()
   || plan.createdAt?.seconds * 1000
   || 0;
 
@@ -90,6 +81,7 @@ export default function Itinerary() {
       await deletePlan(user.uid, currentPlan.id);
       const remainingPlans = plans.filter((plan) => plan.id !== currentPlan.id);
       setPlanState({ userId: user.uid, plans: remainingPlans });
+      window.dispatchEvent(new Event("plans-changed"));
       setSlideIndex((current) => Math.min(current, Math.max(remainingPlans.length - 1, 0)));
       setDeleteState({ planId: null, error: "" });
     } catch (error) {
@@ -135,7 +127,7 @@ export default function Itinerary() {
                 <h2>{cardTitle}</h2>
                 <p className={styles.subtitle}>{currentPlan.city || "나만의"} 여행</p>
                 <p className={styles.date}>{formatCardDate(startDate)} - {formatCardDate(endDate)}&nbsp; | &nbsp;{getScheduleCount(currentPlan)}개 일정</p>
-                <Link className={styles.detailButton} to={`/travel-planner?trip=${encodeURIComponent(currentPlan.tripId)}`}>일정 상세 보기</Link>
+                <Link className={styles.detailButton} to={`/travel-planner?plan=${encodeURIComponent(currentPlan.id)}`}>일정 상세 보기 / 수정</Link>
                 <button className={styles.deleteButton} type="button" onClick={handleDeletePlan} disabled={deleteState.planId === currentPlan.id}>
                   {deleteState.planId === currentPlan.id ? "삭제하고 있어요…" : "일정 삭제"}
                 </button>

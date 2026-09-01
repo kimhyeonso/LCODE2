@@ -29,10 +29,16 @@ import Buy from "./pages/Buy";
 import Paking from "./pages/Paking";
 import NotFound from "./pages/NotFound";
 import Saved from "./pages/Saved";
+import SavedPlan from "./pages/SavedPlan";
+import JournalDetail from "./pages/JournalDetail";
+import Destinations from "./pages/Destinations";
+import FavoritePlaces from "./pages/FavoritePlaces";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
 import MyPageMain from "./pages/MyPageMain";
+import ExchangeRate from "./pages/ExchangeRate";
+import Desrination from "./pages/Desrination";
 import styles from "./App.module.scss";
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -82,9 +88,15 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/destination" element={<ExchangeRate />} />
+          <Route path="/desrination" element={<Desrination />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />
+          <Route path="/plan/saved" element={<ProtectedRoute><SavedPlan /></ProtectedRoute>} />
+          <Route path="/journal/tokyo" element={<JournalDetail />} />
+          <Route path="/destinations" element={<Destinations />} />
+          <Route path="/favorite-places" element={<ProtectedRoute><FavoritePlaces /></ProtectedRoute>} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-complete" element={<OrderComplete />} />
