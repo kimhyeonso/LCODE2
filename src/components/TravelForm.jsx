@@ -1,7 +1,9 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
+import { useAuth } from "../hooks/useAuth";
+import { deleteFavoritePlace, getFavoritePlaces, saveFavoritePlace } from "../services/firestoreService";
 import PlaceMap from "./PlaceMap";
 import styles from "./TravelForm.module.scss";
 import travelIcon from "../assets/icons/transportation/travel.svg";
@@ -55,6 +57,19 @@ const getImageUrl = (imagePath) => {
   return matchedKey ? imageModules[matchedKey] : "";
 };
 
+const toDateInputValue = (date) => {
+  if (!date) return "";
+  const matched = String(date).match(/\d{4}-\d{2}-\d{2}/);
+  return matched?.[0] || "";
+};
+
+const addDays = (date, amount) => {
+  if (!date) return "";
+  const value = new Date(`${date}T00:00:00`);
+  value.setDate(value.getDate() + amount);
+  return value.toLocaleDateString("sv-SE");
+};
+
 const getAirportCode = (airport = "") => {
   const codes = {
     나리타: "NRT", 인천: "ICN", 김포: "GMP", 후쿠오카: "FUK", 하네다: "HND",
@@ -63,6 +78,82 @@ const getAirportCode = (airport = "") => {
   const matched = Object.entries(codes).find(([name]) => airport.includes(name));
   return matched?.[1] || airport.match(/\b[A-Z]{3}\b/)?.[0] || "AIR";
 };
+
+const airportTimeZones = {
+  ICN: "Asia/Seoul", GMP: "Asia/Seoul", PUS: "Asia/Seoul", CJU: "Asia/Seoul",
+  NRT: "Asia/Tokyo", HND: "Asia/Tokyo", KIX: "Asia/Tokyo", FUK: "Asia/Tokyo", CTS: "Asia/Tokyo",
+  PVG: "Asia/Shanghai", SHA: "Asia/Shanghai", PEK: "Asia/Shanghai", PKX: "Asia/Shanghai",
+  HKG: "Asia/Hong_Kong", TPE: "Asia/Taipei", SIN: "Asia/Singapore", BKK: "Asia/Bangkok",
+  LAX: "America/Los_Angeles", SFO: "America/Los_Angeles", JFK: "America/New_York", EWR: "America/New_York",
+  LHR: "Europe/London", CDG: "Europe/Paris", FCO: "Europe/Rome", SYD: "Australia/Sydney", HNL: "Pacific/Honolulu",
+};
+
+const timeZoneOptions = [
+  "Asia/Seoul", "Asia/Tokyo", "Asia/Shanghai", "Asia/Hong_Kong", "Asia/Taipei",
+  "Asia/Singapore", "Asia/Bangkok", "America/Los_Angeles", "America/New_York",
+  "Europe/London", "Europe/Paris", "Europe/Rome", "Australia/Sydney", "Pacific/Honolulu",
+];
+
+const getAirportTimeZone = (airport = "") => airportTimeZones[getAirportCode(airport)] || "Asia/Seoul";
+
+const zonedDateTimeToUtc = (date, hour, minute, timeZone) => {
+  if (!date || hour === undefined || minute === undefined || !timeZone) return null;
+  const [year, month, day] = date.split("-").map(Number);
+  if (![year, month, day, Number(hour), Number(minute)].every(Number.isFinite)) return null;
+  const target = Date.UTC(year, month - 1, day, Number(hour), Number(minute));
+  let guess = target;
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric", month: "2-digit", day: "2-digit",
+    hour: "2-digit", minute: "2-digit", hourCycle: "h23",
+  });
+  for (let attempt = 0; attempt < 2; attempt += 1) {
+    const values = Object.fromEntries(
+      formatter.formatToParts(new Date(guess)).filter((part) => part.type !== "literal").map((part) => [part.type, part.value]),
+    );
+    const represented = Date.UTC(Number(values.year), Number(values.month) - 1, Number(values.day), Number(values.hour), Number(values.minute));
+    guess += target - represented;
+  }
+  return new Date(guess);
+};
+
+const getFlightDurationMinutes = (flight) => {
+  const departureAt = zonedDateTimeToUtc(
+    flight.departureDate, flight.departureHour, flight.departureMinute, flight.departureTimeZone,
+  );
+  const arrivalAt = zonedDateTimeToUtc(
+    flight.arrivalDate, flight.arrivalHour, flight.arrivalMinute, flight.arrivalTimeZone,
+  );
+  if (!departureAt || !arrivalAt) return null;
+  return Math.round((arrivalAt.getTime() - departureAt.getTime()) / 60000);
+};
+
+const formatFlightDuration = (minutes) => {
+  if (!Number.isFinite(minutes) || minutes <= 0) return "계산 불가";
+  const hours = Math.floor(minutes / 60);
+  const remainder = minutes % 60;
+  return `${hours ? `${hours}시간 ` : ""}${remainder ? `${remainder}분` : ""}`.trim();
+};
+
+const getDateDifference = (start, end) => {
+  if (!start || !end) return null;
+  const startAt = new Date(`${start}T00:00:00`);
+  const endAt = new Date(`${end}T00:00:00`);
+  if (Number.isNaN(startAt.getTime()) || Number.isNaN(endAt.getTime())) return null;
+  return Math.round((endAt.getTime() - startAt.getTime()) / 86400000);
+};
+
+const addMinutesToTime = (hour, minute, amount) => {
+  const total = Number(hour) * 60 + Number(minute) + amount;
+  if (!Number.isFinite(total) || total < 0 || total >= 1440) return "";
+  return `${String(Math.floor(total / 60)).padStart(2, "0")}:${String(total % 60).padStart(2, "0")}`;
+};
+
+const sortStopsByTime = (items) => [...items].sort((left, right) => {
+  const leftTime = /^\d{2}:\d{2}$/.test(left.time || "") ? left.time : "99:99";
+  const rightTime = /^\d{2}:\d{2}$/.test(right.time || "") ? right.time : "99:99";
+  return leftTime.localeCompare(rightTime);
+});
 
 const createStops = (trip) =>
   trip.days.map((day) =>
@@ -78,6 +169,7 @@ const createStops = (trip) =>
         note: item.recommendation || "",
         travel: nextTransport?.transport || "",
         image: getImageUrl(item.image),
+        imagePath: item.image || "",
         category: item.category,
         dayLabel: day.label || `DAY ${String(day.day).padStart(2, "0")}`,
         recommendation: item.recommendation || "",
@@ -90,7 +182,7 @@ const createStops = (trip) =>
     }, []),
   );
 
-export default function TravelForm({ onSubmit, loading, initialTrip = null, editMode = false }) {
+export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loading, draftLoading = false, initialTrip = null, editMode = false }) {
   const [params] = useSearchParams();
   const selectedTrip = useMemo(() => {
     const tripId = params.get("trip");
@@ -98,14 +190,26 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
       || tripRoad.trips.find((trip) => trip.id === "trip-후쿠오카-3박4일")
       || tripRoad.trips[0];
   }, [initialTrip, params]);
+  const todayValue = new Date().toLocaleDateString("sv-SE");
+  const [tripDateRange, setTripDateRange] = useState(() => {
+    const savedStart = toDateInputValue(selectedTrip.dateRange?.start);
+    const start = editMode || savedStart >= todayValue ? savedStart : todayValue;
+    return {
+      start,
+      end: start ? addDays(start, Math.max(0, selectedTrip.days.length - 1)) : "",
+    };
+  });
   const days = selectedTrip.days.map((day, index) => [
     day.label || `DAY ${String(day.day).padStart(2, "0")}`,
-    day.date ? new Date(day.date).getDate() : String(index + 1).padStart(2, "0"),
+    tripDateRange.start
+      ? String(new Date(`${addDays(tripDateRange.start, index)}T00:00:00`).getDate()).padStart(2, "0")
+      : day.date ? new Date(day.date).getDate() : String(index + 1).padStart(2, "0"),
   ]);
   const heroImage = getImageUrl(
     selectedTrip.days.flatMap((day) => day.items).find((item) => item.image)?.image,
   );
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
+  const { user } = useAuth();
   const [activeDay, setActiveDay] = useState(0);
   const [stopsByDay, setStopsByDay] = useState(() => createStops(selectedTrip));
   const [travelTitle, setTravelTitle] = useState(selectedTrip.title);
@@ -113,34 +217,47 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedStop, setSelectedStop] = useState(null);
   const [savedPlaces, setSavedPlaces] = useState([]);
+  const [favoriteState, setFavoriteState] = useState({ loading: false, saving: false, error: "" });
   const [memoTarget, setMemoTarget] = useState(null);
   const [memoDraft, setMemoDraft] = useState("");
   const [draggedStopId, setDraggedStopId] = useState(null);
   const [isFlightOpen, setIsFlightOpen] = useState(false);
+  const [flightError, setFlightError] = useState("");
   const airportStops = selectedTrip.days.flatMap((day) => day.items).filter((item) => item.type === "place" && item.category === "airport");
   const [flightInfo, setFlightInfo] = useState(() => ({
     departureAirport: airportStops[0]?.place || "출발 공항",
     arrivalAirport: airportStops.at(-1)?.place || selectedTrip.city,
-    departureDate: selectedTrip.dateRange.start || "2026-08-17",
+    departureDate: tripDateRange.start || selectedTrip.dateRange.start || "2026-08-17",
     departureHour: "15",
     departureMinute: "30",
-    arrivalDate: selectedTrip.dateRange.end || "2026-08-20",
+    arrivalDate: tripDateRange.start || selectedTrip.dateRange.start || "2026-08-17",
     arrivalHour: "20",
     arrivalMinute: "30",
     airline: "대한항공",
     flightNumber: "KE704",
     departureTerminal: "T1",
     arrivalTerminal: "T2",
+    departureTimeZone: getAirportTimeZone(airportStops[0]?.place),
+    arrivalTimeZone: getAirportTimeZone(airportStops.at(-1)?.place || selectedTrip.city),
     ...(initialTrip?.flightInfo || {}),
   }));
   const [flightDraft, setFlightDraft] = useState(flightInfo);
+  const flightDurationMinutes = getFlightDurationMinutes(flightDraft);
+  const flightArrivalDayIndex = getDateDifference(tripDateRange.start, flightDraft.arrivalDate);
+  const adjustedArrivalTime = addMinutesToTime(flightDraft.arrivalHour, flightDraft.arrivalMinute, 90);
+  const canAdjustArrivalSchedule = flightArrivalDayIndex !== null
+    && flightArrivalDayIndex >= 0
+    && flightArrivalDayIndex < selectedTrip.days.length
+    && Boolean(adjustedArrivalTime);
   const [isPlaceAddOpen, setIsPlaceAddOpen] = useState(false);
   const [placeQuery, setPlaceQuery] = useState("");
   const [placeCategory, setPlaceCategory] = useState("all");
   const [selectedCandidate, setSelectedCandidate] = useState(null);
+  const [selectedPlaceTime, setSelectedPlaceTime] = useState("10:00");
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [wishlistCategory, setWishlistCategory] = useState("all");
   const [wishlistSelections, setWishlistSelections] = useState([]);
+  const dirtyTrackingStarted = useRef(false);
   const stops = stopsByDay[activeDay] || [];
   const estimatedBudget = 135000 + stopsByDay.flat().length * 32000;
   const exchangeAmount = selectedTrip.country === "일본" ? 35000 : 50000;
@@ -156,33 +273,121 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
     `SLOW ${selectedTrip.city.toUpperCase()}`,
   ];
 
+  useEffect(() => {
+    if (!user) {
+      setSavedPlaces([]);
+      return undefined;
+    }
+    let active = true;
+    setFavoriteState((current) => ({ ...current, loading: true, error: "" }));
+    getFavoritePlaces(user.uid)
+      .then((places) => {
+        if (!active) return;
+        setSavedPlaces(places);
+        setFavoriteState({ loading: false, saving: false, error: "" });
+      })
+      .catch(() => active && setFavoriteState({ loading: false, saving: false, error: "찜한 장소를 불러오지 못했습니다." }));
+    return () => { active = false; };
+  }, [user]);
+
+  const favoriteKey = (place) => encodeURIComponent(`${selectedTrip.city}::${place.name || place.place}`);
+
+  const toggleFavorite = async (place) => {
+    if (!user || favoriteState.saving) {
+      if (!user) setFavoriteState((current) => ({ ...current, error: "로그인 후 장소를 찜할 수 있습니다." }));
+      return;
+    }
+    const key = favoriteKey(place);
+    const existing = savedPlaces.find((item) => item.id === key || item.key === key);
+    setFavoriteState((current) => ({ ...current, saving: true, error: "" }));
+    try {
+      if (existing) {
+        await deleteFavoritePlace(user.uid, existing.id || key);
+        setSavedPlaces((current) => current.filter((item) => item.id !== (existing.id || key)));
+      } else {
+        const favorite = await saveFavoritePlace(user.uid, {
+          key,
+          name: place.name || place.place,
+          city: selectedTrip.city,
+          country: selectedTrip.country,
+          category: place.category || "attraction",
+          recommendation: place.recommendation || place.note || "",
+          image: place.imagePath || place.image || "",
+          latitude: place.latitude ?? null,
+          longitude: place.longitude ?? null,
+        });
+        setSavedPlaces((current) => [...current, favorite]);
+      }
+      window.dispatchEvent(new Event("favorite-places-changed"));
+      setFavoriteState({ loading: false, saving: false, error: "" });
+    } catch {
+      setFavoriteState({ loading: false, saving: false, error: "찜 상태를 변경하지 못했습니다." });
+    }
+  };
+
   const removeStop = (id) => setStopsByDay((current) => current.map((dayStops, index) =>
     index === activeDay ? dayStops.filter((stop) => stop.id !== id) : dayStops,
   ));
 
-  const submit = (event) => {
-    event.preventDefault();
-    const days = selectedTrip.days.map((day, dayIndex) => ({
-      ...day,
-      items: (stopsByDay[dayIndex] || []).map((stop) => {
+  const buildPlanPayload = () => {
+    const days = selectedTrip.days.map((day, dayIndex) => {
+      const dayStops = stopsByDay[dayIndex] || [];
+      return {
+        ...day,
+        date: tripDateRange.start ? addDays(tripDateRange.start, dayIndex) : day.date,
+        items: dayStops.flatMap((stop, stopIndex) => {
         const original = day.items.find((item) => item.type === "place" && item.place === stop.name) || {};
-        return {
+        const place = {
           ...original,
           type: "place",
           time: stop.time,
           place: stop.name,
           category: stop.category,
           recommendation: stop.note || stop.recommendation || "",
-          image: original.image || null,
+          image: original.image || stop.imagePath || null,
           latitude: stop.latitude ?? original.latitude ?? null,
           longitude: stop.longitude ?? original.longitude ?? null,
         };
-      }),
-    }));
-    onSubmit(editMode
-      ? { title: travelTitle, dateRange: { start: flightInfo.departureDate, end: flightInfo.arrivalDate }, days, flightInfo }
-      : { destination: selectedTrip.city, duration: selectedTrip.duration, people: "2", budget: "800000", interest: "맛집, 관광", stops: stopsByDay });
+        const transport = stop.travel && stopIndex < dayStops.length - 1
+          ? [{ type: "transport", transport: stop.travel }]
+          : [];
+        return [place, ...transport];
+        }),
+      };
+    });
+    return {
+      tripId: selectedTrip.tripId || selectedTrip.id,
+      title: travelTitle,
+      city: selectedTrip.city,
+      country: selectedTrip.country,
+      duration: selectedTrip.duration,
+      dateRange: tripDateRange,
+      days,
+      flightInfo,
+      image: selectedTrip.image || selectedTrip.days.flatMap((day) => day.items).find((item) => item.image)?.image || null,
+    };
   };
+
+  const submit = (event) => {
+    event.preventDefault();
+    const payload = buildPlanPayload();
+    onSubmit(editMode
+      ? { ...payload, status: "confirmed" }
+      : { destination: selectedTrip.city, duration: selectedTrip.duration, people: "2", budget: "800000", interest: "맛집, 관광", stops: stopsByDay, plan: { ...payload, status: "confirmed" } });
+  };
+
+  const saveDraft = () => onDraftSave?.({
+    ...buildPlanPayload(),
+    status: initialTrip?.status === "confirmed" ? "confirmed" : "draft",
+  });
+
+  useEffect(() => {
+    if (!dirtyTrackingStarted.current) {
+      dirtyTrackingStarted.current = true;
+      return;
+    }
+    onDirtyChange?.(true);
+  }, [flightInfo, onDirtyChange, stopsByDay, travelTitle, tripDateRange]);
 
   const openTitleEdit = () => {
     setDraftTitle(travelTitle);
@@ -246,16 +451,47 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
   };
 
   const openFlightEdit = () => {
-    setFlightDraft(flightInfo);
+    setFlightDraft({
+      ...flightInfo,
+      departureTimeZone: flightInfo.departureTimeZone || getAirportTimeZone(flightInfo.departureAirport),
+      arrivalTimeZone: flightInfo.arrivalTimeZone || getAirportTimeZone(flightInfo.arrivalAirport),
+    });
+    setFlightError("");
     setIsFlightOpen(true);
   };
 
   const updateFlightDraft = (field) => (event) => {
-    setFlightDraft((current) => ({ ...current, [field]: event.target.value }));
+    const value = event.target.value;
+    setFlightDraft((current) => {
+      const next = { ...current, [field]: value };
+      if (field === "departureAirport") next.departureTimeZone = getAirportTimeZone(value);
+      if (field === "arrivalAirport") next.arrivalTimeZone = getAirportTimeZone(value);
+      return next;
+    });
+    setFlightError("");
   };
 
   const saveFlight = () => {
+    if (!flightDraft.departureDate || !flightDraft.arrivalDate || flightDurationMinutes === null) {
+      setFlightError("출발일과 도착일을 모두 입력해 주세요.");
+      return;
+    }
+    if (flightDurationMinutes <= 0) {
+      setFlightError("도착 일시는 출발 일시보다 이후여야 합니다.");
+      return;
+    }
     setFlightInfo(flightDraft);
+    if (canAdjustArrivalSchedule) {
+      setStopsByDay((current) => current.map((dayStops, dayIndex) => {
+        if (dayIndex !== flightArrivalDayIndex) return dayStops;
+        const firstDestinationIndex = dayStops.findIndex((stop) => stop.category !== "airport");
+        if (firstDestinationIndex < 0) return dayStops;
+        return sortStopsByTime(dayStops.map((stop, stopIndex) => stopIndex === firstDestinationIndex
+          ? { ...stop, time: adjustedArrivalTime }
+          : stop));
+      }));
+    }
+    setFlightError("");
     setIsFlightOpen(false);
   };
 
@@ -263,6 +499,7 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
     .flatMap((day) => day.items)
     .filter((item) => item.type === "place")
     .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
+    .filter((item) => !stops.some((stop) => stop.name === item.place))
     .filter((item) => placeCategory === "all" || item.category === placeCategory)
     .filter((item) => {
       const keyword = placeQuery.trim().toLowerCase();
@@ -270,31 +507,33 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
     });
 
   const addSelectedPlace = () => {
-    if (!selectedCandidate) return;
+    if (!selectedCandidate || !selectedPlaceTime) return;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? [...dayStops, {
+      ? sortStopsByTime([...dayStops, {
         id: `added-${Date.now()}`,
-        time: "시간 미정",
+        time: selectedPlaceTime,
         icon: categoryIcons[selectedCandidate.category] || pinIcon,
         name: selectedCandidate.place,
         type: categoryNames[selectedCandidate.category] || selectedCandidate.category,
         note: selectedCandidate.recommendation || "",
         travel: "",
         image: getImageUrl(selectedCandidate.image),
+        imagePath: selectedCandidate.image || "",
         category: selectedCandidate.category,
         recommendation: selectedCandidate.recommendation || "",
         latitude: selectedCandidate.latitude,
         longitude: selectedCandidate.longitude,
-      }]
+      }])
       : dayStops));
     setIsPlaceAddOpen(false);
     setSelectedCandidate(null);
+    setSelectedPlaceTime("10:00");
     setPlaceQuery("");
   };
 
   const addRecommendedPlace = (place) => {
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? [...dayStops, {
+      ? sortStopsByTime([...dayStops, {
         id: `recommended-${Date.now()}`,
         time: "시간 미정",
         icon: categoryIcons[place.category] || pinIcon,
@@ -303,18 +542,18 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
         note: place.recommendation || "",
         travel: "",
         image: getImageUrl(place.image),
+        imagePath: place.image || "",
         category: place.category,
         recommendation: place.recommendation || "",
         latitude: place.latitude,
         longitude: place.longitude,
-      }]
+      }])
       : dayStops));
   };
 
-  const wishlistPlaces = selectedTrip.days
-    .flatMap((day) => day.items)
-    .filter((item) => item.type === "place")
-    .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
+  const wishlistPlaces = savedPlaces
+    .map((item) => ({ ...item, place: item.name, image: item.image || "" }))
+    .filter((item) => !stops.some((stop) => stop.name === item.place))
     .filter((item) => wishlistCategory === "all" || item.category === wishlistCategory)
     .slice(0, 12);
 
@@ -328,7 +567,7 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
     const selectedItems = wishlistPlaces.filter((place) => wishlistSelections.includes(place.place));
     if (!selectedItems.length) return;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? [...dayStops, ...selectedItems.map((place, placeIndex) => ({
+      ? sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
         id: `wishlist-${Date.now()}-${placeIndex}`,
         time: "시간 미정",
         icon: categoryIcons[place.category] || pinIcon,
@@ -337,11 +576,12 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
         note: place.recommendation || "",
         travel: "",
         image: getImageUrl(place.image),
+        imagePath: place.image || "",
         category: place.category,
         recommendation: place.recommendation || "",
         latitude: place.latitude,
         longitude: place.longitude,
-      }))]
+      }))])
       : dayStops));
     setWishlistSelections([]);
     setIsWishlistOpen(false);
@@ -372,6 +612,29 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
           </div>
           <button className={styles.exchangeLink} type="button">환율 자세히 보기 →</button>
         </section>
+        <section className={styles.tripDateEditor} aria-label="여행 날짜">
+          <label>
+            <span>여행 시작일</span>
+            <input
+              type="date"
+              required
+              value={tripDateRange.start}
+              min={editMode ? undefined : todayValue}
+              onChange={(event) => {
+                const start = event.target.value;
+                setTripDateRange({
+                  start,
+                  end: start ? addDays(start, Math.max(0, selectedTrip.days.length - 1)) : "",
+                });
+              }}
+            />
+          </label>
+          <b aria-hidden="true">→</b>
+          <label>
+            <span>여행 종료일 · 자동 계산</span>
+            <input type="date" required value={tripDateRange.end} readOnly />
+          </label>
+        </section>
         <div className={styles.flight}><span><img src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>
         <div className={styles.dayTabs}>
           {days.map(([day, date], index) => (
@@ -384,7 +647,7 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
       </section>
 
       <section className={styles.schedule}>
-        <header><h2>DAY {String(activeDay + 1).padStart(2, "0")}</h2><span>{selectedTrip.days[activeDay]?.date || "DATE TBD"}</span></header>
+        <header><h2>DAY {String(activeDay + 1).padStart(2, "0")}</h2><span>{tripDateRange.start ? addDays(tripDateRange.start, activeDay) : selectedTrip.days[activeDay]?.date || "DATE TBD"}</span></header>
         <p className={styles.guide}>✶ {selectedTrip.city} 여행 {activeDay + 1}일차 일정이에요</p>
         <p className={styles.arrival}>총 {stops.length}개의 장소</p>
 
@@ -459,7 +722,10 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
         </div>
 
         <div className={styles.addActions}>
-          <button type="button" onClick={() => setIsPlaceAddOpen(true)}>장소 추가</button>
+          <button type="button" onClick={() => {
+            setSelectedPlaceTime("10:00");
+            setIsPlaceAddOpen(true);
+          }}>장소 추가</button>
           <button type="button" onClick={() => setIsWishlistOpen(true)}>찜한 장소 추가</button>
         </div>
         {recommendationPlaces.length > 0 && (
@@ -481,13 +747,13 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
             </div>
           </section>
         )}
-        <button className={styles.draft} type="button">임시저장</button>
+        <button className={styles.draft} type="button" disabled={draftLoading || loading} onClick={saveDraft}>{draftLoading ? "임시저장 중…" : "임시저장"}</button>
         <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : editMode ? "변경 내용 저장하기 →" : "일정 확정하기 →"}</button>
       </section>
       {isPlaceAddOpen && (
         <div className={styles.placeAdder} role="dialog" aria-modal="true" aria-labelledby="place-adder-title">
           <div className={styles.placeAdderInner}>
-            <header><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}>←</button><div><h2 id="place-adder-title">장소 추가하기</h2><p>일정에 추가할 장소를 찾아보세요 · {selectedTrip.city}</p></div></header>
+            <header><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}>←</button><div><h2 id="place-adder-title">장소 추가하기</h2><p>일정에 추가할 장소와 방문 시간을 설정하세요 · {selectedTrip.city}</p></div></header>
             <section className={styles.placeMapArea}>
               <PlaceMap
                 places={placeCandidates}
@@ -503,6 +769,10 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
               </div>
             </section>
             <label className={styles.placeSearch}><span>⌕</span><input value={placeQuery} onChange={(event) => setPlaceQuery(event.target.value)} placeholder="관광지, 맛집, 쇼핑 검색하기" /></label>
+            <label className={styles.placeTime}>
+              <span>방문 시간</span>
+              <input type="time" value={selectedPlaceTime} onChange={(event) => setSelectedPlaceTime(event.target.value)} required />
+            </label>
             <section className={styles.placeResults}>
               <h3>검색 결과</h3>
               <div>
@@ -518,7 +788,7 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
                 {!placeCandidates.length && <p className={styles.noPlaces}>검색 결과가 없습니다.</p>}
               </div>
             </section>
-            <footer className={styles.placeAddFooter}><span>선택한 장소 {selectedCandidate ? 1 : 0}개</span><button type="button" disabled={!selectedCandidate} onClick={addSelectedPlace}>선택한 장소 추가</button></footer>
+            <footer className={styles.placeAddFooter}><span>{selectedCandidate ? `${selectedPlaceTime} · 1개 장소` : "선택한 장소 0개"}</span><button type="button" disabled={!selectedCandidate || !selectedPlaceTime} onClick={addSelectedPlace}>선택한 장소 추가</button></footer>
           </div>
         </div>
       )}
@@ -584,6 +854,10 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
                 <b>→</b>
                 <label><span>도착 공항</span><input value={flightDraft.arrivalAirport} onChange={updateFlightDraft("arrivalAirport")} /><small>{getAirportCode(flightDraft.arrivalAirport)}</small></label>
               </div>
+              <div className={styles.timeZoneFields}>
+                <label><span>출발지 시간대</span><select value={flightDraft.departureTimeZone} onChange={updateFlightDraft("departureTimeZone")}>{timeZoneOptions.map((zone) => <option key={zone}>{zone}</option>)}</select></label>
+                <label><span>도착지 시간대</span><select value={flightDraft.arrivalTimeZone} onChange={updateFlightDraft("arrivalTimeZone")}>{timeZoneOptions.map((zone) => <option key={zone}>{zone}</option>)}</select></label>
+              </div>
               <label className={styles.fieldTitle}>출발 DEPARTURE</label>
               <div className={styles.dateFields}>
                 <input type="date" value={flightDraft.departureDate} onChange={updateFlightDraft("departureDate")} />
@@ -601,12 +875,16 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
               <label className={styles.fieldTitle}>터미널 TERMINAL <small>(선택)</small></label>
               <div className={styles.airlineFields}><label><span>출발</span><input value={flightDraft.departureTerminal} onChange={updateFlightDraft("departureTerminal")} /></label><label><span>도착</span><input value={flightDraft.arrivalTerminal} onChange={updateFlightDraft("arrivalTerminal")} /></label></div>
             </section>
+            {flightError && <p className={styles.flightValidationError} role="alert">{flightError}</p>}
 
             <section className={styles.flightPreview}>
               <p>CHANGE PREVIEW · 변경 미리보기</p>
               <div><span>출발　{flightInfo.departureHour}:{flightInfo.departureMinute} → <b>{flightDraft.departureHour}:{flightDraft.departureMinute}</b></span><span>도착　{flightInfo.arrivalHour}:{flightInfo.arrivalMinute} → <b>{flightDraft.arrivalHour}:{flightDraft.arrivalMinute}</b></span></div>
-              <strong>DAY 01 첫 일정이 변경된 도착 시각에 맞춰 자동 조정됩니다.</strong>
-              <small>저장 후 충돌하는 일정이 있으면 조정이 필요한 항목을 안내해요.</small>
+              <p className={styles.flightDuration}>시차 반영 예상 비행시간 <b>{formatFlightDuration(flightDurationMinutes)}</b></p>
+              <strong>{canAdjustArrivalSchedule
+                ? `DAY ${String(flightArrivalDayIndex + 1).padStart(2, "0")} 첫 장소가 입국·이동 90분을 반영한 ${adjustedArrivalTime}로 조정됩니다.`
+                : "도착일이 여행 기간 밖이거나 자정을 넘으면 일정 시간은 자동 조정되지 않습니다."}</strong>
+              <small>시차를 반영한 도착 현지 시각을 기준으로 계산합니다.</small>
             </section>
             <p className={styles.autoNotice}><b>현재 시각 기준 입국 및 수하물 이동 시간 90분 자동 반영</b><small>저장 전 변경 내용을 한 번 더 확인해 주세요.</small></p>
             <div className={styles.flightActions}><button type="button" onClick={() => setIsFlightOpen(false)}>취소</button><button type="button" onClick={saveFlight}>변경 내용 저장하기</button></div>
@@ -712,11 +990,13 @@ export default function TravelForm({ onSubmit, loading, initialTrip = null, edit
             <button type="button" onClick={() => setSelectedStop(null)}>일정 추가</button>
             <button
               type="button"
-              onClick={() => setSavedPlaces((current) => current.includes(selectedStop.id) ? current.filter((id) => id !== selectedStop.id) : [...current, selectedStop.id])}
+              disabled={favoriteState.saving}
+              onClick={() => toggleFavorite(selectedStop)}
             >
-              {savedPlaces.includes(selectedStop.id) ? "찜 취소" : "장소 찜하기"}
+              {savedPlaces.some((place) => place.id === favoriteKey(selectedStop) || place.key === favoriteKey(selectedStop)) ? "찜 취소" : "장소 찜하기"}
             </button>
           </div>
+          {favoriteState.error && <p className={styles.favoriteError} role="alert">{favoriteState.error}</p>}
         </div>
       )}
     </form>

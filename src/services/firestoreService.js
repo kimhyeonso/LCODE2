@@ -51,6 +51,7 @@ export async function savePlan(userId, plan) {
     ...plan,
     userId,
     createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
   });
 }
 export async function getPlans(userId) {
@@ -87,4 +88,25 @@ export async function deletePlan(userId, planId) {
     throw new Error("다른 사용자의 일정은 삭제할 수 없습니다.");
   }
   return deleteDoc(planRef);
+}
+
+export async function getFavoritePlaces(userId) {
+  if (!db || !userId) return [];
+  const snap = await getDocs(collection(db, "users", userId, "favoritePlaces"));
+  return snap.docs.map((item) => ({ id: item.id, ...item.data() }));
+}
+
+export async function saveFavoritePlace(userId, place) {
+  if (!userId || !place?.key) throw new Error("찜할 장소 정보가 올바르지 않습니다.");
+  await setDoc(doc(requireDb(), "users", userId, "favoritePlaces", place.key), {
+    ...place,
+    userId,
+    updatedAt: serverTimestamp(),
+  }, { merge: true });
+  return { id: place.key, ...place, userId };
+}
+
+export async function deleteFavoritePlace(userId, placeId) {
+  if (!userId || !placeId) throw new Error("삭제할 찜 장소 정보가 올바르지 않습니다.");
+  return deleteDoc(doc(requireDb(), "users", userId, "favoritePlaces", placeId));
 }

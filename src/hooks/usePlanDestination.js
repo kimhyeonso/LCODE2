@@ -3,9 +3,10 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "./useAuth";
 import { getPlans } from "../services/firestoreService";
 
-const createdTime = (plan) => plan.createdAt?.toMillis?.()
+const createdTime = (plan) => plan.updatedAt?.toMillis?.()
+  || (plan.updatedAt?.seconds || 0) * 1000
+  || plan.createdAt?.toMillis?.()
   || (plan.createdAt?.seconds || 0) * 1000
-  || plan.updatedAt?.toMillis?.()
   || 0;
 
 export function usePlanDestination() {

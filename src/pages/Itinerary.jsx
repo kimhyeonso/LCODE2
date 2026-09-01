@@ -45,7 +45,9 @@ const getDday = (startDate) => {
   return days > 0 ? `D-${days}` : `D+${Math.abs(days)}`;
 };
 
-const getCreatedTime = (plan) => plan.createdAt?.toMillis?.()
+const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
+  || plan.updatedAt?.seconds * 1000
+  || plan.createdAt?.toMillis?.()
   || plan.createdAt?.seconds * 1000
   || 0;
 

@@ -169,25 +169,6 @@
   font: 27px $serif;
   letter-spacing: -0.5px;
 }
-.favoriteButton {
-  position: absolute;
-  z-index: 2;
-  top: 8px;
-  right: 8px;
-  width: 34px;
-  height: 34px;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #fff;
-  font-size: 20px;
-  line-height: 1;
-  cursor: pointer;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
-}
-.favoriteButton.favorite {
-  color: #e46f68;
-}
 .cardCopy {
   padding: 13px 16px 15px;
   background: #faf7f1;

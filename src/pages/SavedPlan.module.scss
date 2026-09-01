@@ -65,6 +65,21 @@
 .heroCard footer span {
   color: #888;
 }
+.heroCard footer nav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.heroCard footer nav a:first-child {
+  color: #aaa;
+}
+.heroCard footer nav button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 9px;
+}
 .heroCard a {
   color: #fff;
 }
@@ -87,6 +102,16 @@
   margin: 0;
   font-size: 21px;
 }
+.others h2 em {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 3px 6px;
+  background: #eee9dc;
+  color: #7f755c;
+  font-size: 8px;
+  font-style: normal;
+  vertical-align: middle;
+}
 .others p {
   margin: 8px 0;
   color: #999;
@@ -102,15 +127,18 @@
   gap: 9px;
   margin-top: 18px;
 }
-.others nav a {
+.others nav a,
+.others nav button {
   height: 46px;
   display: grid;
   place-items: center;
   border: 1px solid #ddd;
+  background: #fff;
   color: #888;
   font-size: 10px;
 }
-.others nav a:last-child {
+.others nav a:last-child,
+.others nav button:last-child {
   border-color: #111;
   background: #111;
   color: #fff;
@@ -174,6 +202,12 @@
 .trending strong {
   font: 16px $serif;
 }
+.trending strong em {
+  font-family: inherit;
+  font-size: 0.72em;
+  font-style: normal;
+  font-weight: 500;
+}
 .trending p {
   color: #777;
   font-size: 9px;
@@ -186,6 +220,75 @@
   display: grid;
   place-items: center;
   color: #888;
+  text-align: center;
+}
+.status strong {
+  color: #222;
+  font-size: 20px;
+}
+.status p {
+  margin: 12px 0 22px;
+  font-size: 12px;
+}
+.status a {
+  display: inline-grid;
+  min-height: 44px;
+  place-items: center;
+  padding: 0 20px;
+  background: #111;
+  color: #fff;
+  font-size: 11px;
+}
+.deleteBackdrop {
+  position: fixed;
+  z-index: 330;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.72);
+}
+.deleteModal {
+  width: min(100%, 390px);
+  padding: 32px 22px 22px;
+  background: #fff;
+  color: #222;
+  text-align: center;
+}
+.deleteModal > p {
+  color: #999;
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+.deleteModal h2 {
+  margin: 16px 0 10px;
+  font-size: 22px;
+}
+.deleteModal > span,
+.deleteModal > small {
+  display: block;
+  color: #888;
+  font-size: 11px;
+}
+.deleteModal > small {
+  margin-top: 10px;
+  color: #a33;
+}
+.deleteModal > div {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 26px;
+}
+.deleteModal button {
+  height: 46px;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.deleteModal button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
 }
 @media (min-width: 800px) {
   .page {
@@ -204,5 +307,47 @@
   }
   .others > article {
     margin: 0;
+  }
+
+  .notice,
+  .newPlan {
+    width: min(100%, 820px);
+    margin-inline: auto;
+  }
+
+  .notice {
+    margin-top: 32px;
+  }
+
+  .trending {
+    margin-right: 0;
+    margin-left: 0;
+    padding-left: 0;
+    overflow: visible;
+  }
+
+  .trending > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    overflow: visible;
+  }
+
+  .trending a {
+    min-width: 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .page {
+    width: min(1100px, calc(100% - 220px - 64px));
+    margin-right: 0;
+    margin-left: calc(220px + max(32px, (100% - 1320px) / 2));
+    padding: 54px 42px 100px;
+  }
+
+  .status {
+    width: calc(100% - 220px);
+    margin-left: 220px;
   }
 }

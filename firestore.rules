@@ -12,6 +12,10 @@ service cloud.firestore {
 
     match /users/{userId} {
       allow create, read, update, delete: if isOwner(userId);
+
+      match /favoritePlaces/{placeId} {
+        allow create, read, update, delete: if isOwner(userId);
+      }
     }
 
     match /plans/{planId} {

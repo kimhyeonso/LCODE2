@@ -3,7 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
-import { getPlans, savePlan } from "../services/firestoreService";
+import { deletePlan, getPlan, getPlans, savePlan } from "../services/firestoreService";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
 import carIcon from "../assets/icons/transportation/directions_car.svg";
@@ -54,8 +54,32 @@ export default function Plan() {
   const [params] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const savedPlanId = params.get("saved");
+  const viewingSavedPlan = Boolean(savedPlanId);
   const [savedState, setSavedState] = useState({ userId: null, plans: [] });
-  const hasRequestedTrip = Boolean(params.get("trip") || params.get("city") || params.get("country"));
+  const [savedDetailState, setSavedDetailState] = useState({ loading: viewingSavedPlan, plan: null, error: "" });
+  const hasRequestedTrip = Boolean(params.get("trip") || params.get("city") || params.get("country") || savedPlanId);
+
+  useEffect(() => {
+    if (!savedPlanId || authLoading) return undefined;
+    if (!user) {
+      setSavedDetailState({ loading: false, plan: null, error: "저장한 일정을 확인하려면 로그인해 주세요." });
+      return undefined;
+    }
+    let active = true;
+    setSavedDetailState({ loading: true, plan: null, error: "" });
+    getPlan(savedPlanId)
+      .then((plan) => {
+        if (!active) return;
+        if (!plan || plan.userId !== user.uid) {
+          setSavedDetailState({ loading: false, plan: null, error: "저장된 일정을 찾을 수 없습니다." });
+          return;
+        }
+        setSavedDetailState({ loading: false, plan, error: "" });
+      })
+      .catch(() => active && setSavedDetailState({ loading: false, plan: null, error: "저장한 일정을 불러오지 못했습니다." }));
+    return () => { active = false; };
+  }, [authLoading, savedPlanId, user]);
 
   useEffect(() => {
     if (hasRequestedTrip || authLoading || !user) return undefined;
@@ -76,22 +100,33 @@ export default function Plan() {
     const countryParam = params.get("country")?.toLowerCase();
     const city = cityAliases[cityParam] || params.get("city");
 
-    return (!hasRequestedTrip ? savedPlan : null)
+    return savedDetailState.plan
+      || (!hasRequestedTrip ? savedPlan : null)
       || tripRoad.trips.find((trip) => trip.id === tripId)
       || tripRoad.trips.find((trip) => trip.city === city)
       || tripRoad.trips.find((trip) => trip.country.toLowerCase() === countryParam)
       || tripRoad.trips.find((trip) => trip.city === "후쿠오카")
       || tripRoad.trips[0];
-  }, [hasRequestedTrip, params, savedPlan]);
+  }, [hasRequestedTrip, params, savedDetailState.plan, savedPlan]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
   const [savedDocumentId, setSavedDocumentId] = useState("");
   const [isDateOpen, setIsDateOpen] = useState(false);
   const [saveState, setSaveState] = useState({ saving: false, error: "" });
+  const [deleteState, setDeleteState] = useState({ deleting: false, error: "" });
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [dateDraft, setDateDraft] = useState(() => ({
     start: toDateInputValue(selectedTrip.dateRange?.start),
     end: toDateInputValue(selectedTrip.dateRange?.end),
   }));
+  useEffect(() => {
+    if (!savedDetailState.plan) return;
+    setActiveDay(0);
+    setDateDraft({
+      start: toDateInputValue(savedDetailState.plan.dateRange?.start),
+      end: toDateInputValue(savedDetailState.plan.dateRange?.end),
+    });
+  }, [savedDetailState.plan]);
   const visibleDay = Math.min(activeDay, selectedTrip.days.length - 1);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
@@ -113,6 +148,8 @@ export default function Plan() {
     .flatMap((day) => day.items)
     .find((item) => item.type === "place" && item.image)
     ?.image;
+  const todayValue = new Date().toLocaleDateString("sv-SE");
+  const tripLength = Math.max(1, selectedTrip.days.length);
 
   const openDateStep = () => {
     if (!user) {
@@ -121,10 +158,9 @@ export default function Plan() {
       });
       return;
     }
-    setDateDraft({
-      start: toDateInputValue(selectedTrip.dateRange?.start),
-      end: toDateInputValue(selectedTrip.dateRange?.end),
-    });
+    const savedStart = toDateInputValue(selectedTrip.dateRange?.start);
+    const start = savedStart >= todayValue ? savedStart : todayValue;
+    setDateDraft({ start, end: addDays(start, tripLength - 1) });
     setSaveState({ saving: false, error: "" });
     setIsDateOpen(true);
   };
@@ -135,6 +171,14 @@ export default function Plan() {
 
     if (!dateDraft.start || !dateDraft.end) {
       setSaveState({ saving: false, error: "여행 시작일과 종료일을 모두 선택해 주세요." });
+      return;
+    }
+    if (dateDraft.start < todayValue) {
+      setSaveState({ saving: false, error: "오늘 이후의 여행 시작일을 선택해 주세요." });
+      return;
+    }
+    if (dateDraft.end !== addDays(dateDraft.start, tripLength - 1)) {
+      setSaveState({ saving: false, error: `이 일정은 ${tripLength}일 일정입니다. 종료일을 다시 확인해 주세요.` });
       return;
     }
     if (dateDraft.end < dateDraft.start) {
@@ -179,6 +223,28 @@ export default function Plan() {
       setSaveState({ saving: false, error: message });
     }
   };
+
+  const handleDeletePlan = async () => {
+    if (!user || !savedPlanId || deleteState.deleting) return;
+    setDeleteState({ deleting: true, error: "" });
+    try {
+      await deletePlan(user.uid, savedPlanId);
+      window.dispatchEvent(new Event("plans-changed"));
+      const remainingPlans = (await getPlans(user.uid)).filter((plan) => plan.id !== savedPlanId);
+      setIsDeleteOpen(false);
+      navigate(remainingPlans.length ? `/plan/saved?id=${encodeURIComponent(remainingPlans[0].id)}` : "/search", { replace: true });
+    } catch {
+      setDeleteState({ deleting: false, error: "일정을 삭제하지 못했습니다. 잠시 후 다시 시도해 주세요." });
+    }
+  };
+
+  if (viewingSavedPlan && (authLoading || savedDetailState.loading)) {
+    return <main className={`${styles.plan} ${styles.planStatus}`}>저장된 일정을 불러오고 있어요.</main>;
+  }
+
+  if (viewingSavedPlan && savedDetailState.error) {
+    return <main className={`${styles.plan} ${styles.planEmpty}`}><span>PLAN ERROR</span><h1>일정을 확인할 수 없어요.</h1><p>{savedDetailState.error}</p><Link to="/plan/saved">저장 일정으로 돌아가기 <b>→</b></Link></main>;
+  }
 
   if (savedPlanLoading) {
     return <main className={`${styles.plan} ${styles.planStatus}`}>저장된 일정을 불러오고 있어요.</main>;
@@ -285,7 +351,33 @@ export default function Plan() {
 
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
-          <button type="button" onClick={openDateStep} disabled={saveState.saving}>내 일정에 담기</button>
+          {viewingSavedPlan ? (
+            <div className={styles.savedActions}>
+              <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>수정</button>
+              <button type="button" onClick={() => {
+                setDeleteState({ deleting: false, error: "" });
+                setIsDeleteOpen(true);
+              }}>삭제</button>
+            </div>
+          ) : (
+            <button type="button" onClick={openDateStep} disabled={saveState.saving}>내 일정에 담기</button>
+          )}
+          {deleteState.error && <p className={styles.saveError} role="alert">{deleteState.error}</p>}
+        </div>
+      )}
+
+      {isDeleteOpen && (
+        <div className={styles.deleteBackdrop} role="presentation" onMouseDown={() => !deleteState.deleting && setIsDeleteOpen(false)}>
+          <section className={styles.deleteModal} role="dialog" aria-modal="true" aria-labelledby="delete-modal-title" onMouseDown={(event) => event.stopPropagation()}>
+            <p>DELETE PLAN</p>
+            <h2 id="delete-modal-title">저장한 일정을<br />삭제할까요?</h2>
+            <span>삭제한 일정은 복구할 수 없습니다.</span>
+            {deleteState.error && <small role="alert">{deleteState.error}</small>}
+            <div>
+              <button type="button" disabled={deleteState.deleting} onClick={() => setIsDeleteOpen(false)}>취소</button>
+              <button type="button" disabled={deleteState.deleting} onClick={handleDeletePlan}>{deleteState.deleting ? "삭제 중…" : "삭제하기"}</button>
+            </div>
+          </section>
         </div>
       )}
 
@@ -299,18 +391,17 @@ export default function Plan() {
             <form className={styles.dateForm} onSubmit={handleSavePlan}>
               <label>
                 <span>여행 시작일 <b>START</b></span>
-                <input type="date" required value={dateDraft.start} max={dateDraft.end || undefined} onChange={(event) => {
-                  setDateDraft((current) => ({ ...current, start: event.target.value }));
+                <input type="date" required value={dateDraft.start} min={todayValue} onChange={(event) => {
+                  const start = event.target.value;
+                  setDateDraft({ start, end: start ? addDays(start, tripLength - 1) : "" });
                   setSaveState({ saving: false, error: "" });
                 }} />
               </label>
               <label>
                 <span>여행 종료일 <b>END</b></span>
-                <input type="date" required value={dateDraft.end} min={dateDraft.start || undefined} onChange={(event) => {
-                  setDateDraft((current) => ({ ...current, end: event.target.value }));
-                  setSaveState({ saving: false, error: "" });
-                }} />
+                <input type="date" required value={dateDraft.end} readOnly />
               </label>
+              <p className={styles.dateDuration}>{tripLength - 1}박 {tripLength}일 일정에 맞춰 종료일이 자동 계산됩니다.</p>
               <p className={styles.dateNotice}>선택한 날짜는 저장된 여행 일정 전체에 반영됩니다.</p>
               {saveState.error && <p className={styles.saveError} role="alert">{saveState.error}</p>}
               <button className={styles.dateSubmit} disabled={saveState.saving}>

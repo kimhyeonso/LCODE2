@@ -43,17 +43,6 @@ const countPlaces = (trip) => trip.days.reduce(
   0,
 );
 
-const favoriteStorageKey = "lcode-favorite-trips";
-
-const getStoredFavorites = () => {
-  try {
-    const stored = JSON.parse(localStorage.getItem(favoriteStorageKey) || "[]");
-    return Array.isArray(stored) ? stored : [];
-  } catch {
-    return [];
-  }
-};
-
 export default function Search() {
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -63,7 +52,6 @@ export default function Search() {
   const [sort, setSort] = useState("recommended");
   const [filterOpen, setFilterOpen] = useState(false);
   const [filters, setFilters] = useState({ duration: "all", companion: "all", styles: [], pace: "all", season: "all" });
-  const [favorites, setFavorites] = useState(getStoredFavorites);
 
   const trips = useMemo(() => {
     const uniqueTrips = Array.from(
@@ -115,20 +103,6 @@ export default function Search() {
   const chooseKeyword = (city) => {
     setQuery(city);
     navigate(`/search?city=${encodeURIComponent(city)}`);
-  };
-
-  const toggleFavorite = (tripId) => {
-    setFavorites((current) => {
-      const next = current.includes(tripId)
-        ? current.filter((id) => id !== tripId)
-        : [...current, tripId];
-      try {
-        localStorage.setItem(favoriteStorageKey, JSON.stringify(next));
-      } catch {
-        // 저장소를 사용할 수 없어도 현재 화면의 찜 상태는 유지합니다.
-      }
-      return next;
-    });
   };
 
   return (
@@ -190,7 +164,6 @@ export default function Search() {
         <div className={styles.results}>
           {trips.map((trip, index) => {
             const image = getRepresentativeImage(trip);
-            const favorite = favorites.includes(trip.id);
             return (
               <article className={styles.tripCard} key={trip.id}>
                 <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`} className={styles.cardLink}>
@@ -204,15 +177,6 @@ export default function Search() {
                     <small>{trip.city} 추천 여행 · {countPlaces(trip)}개 일정</small>
                   </div>
                 </Link>
-                <button
-                  className={`${styles.favoriteButton} ${favorite ? styles.favorite : ""}`}
-                  type="button"
-                  aria-label={favorite ? `${trip.title} 찜 해제` : `${trip.title} 찜하기`}
-                  aria-pressed={favorite}
-                  onClick={() => toggleFavorite(trip.id)}
-                >
-                  {favorite ? "♥" : "♡"}
-                </button>
               </article>
             );
           })}
