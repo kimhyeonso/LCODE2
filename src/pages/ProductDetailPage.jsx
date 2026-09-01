@@ -16,210 +16,134 @@ import { useShop } from "../hooks/useShop";
 /* =========================================================
    PRODUCT IMAGES
 
-   실제 상품 순서대로 번호를 다시 당겨서 사용
+   최신 products.json 실제 상품 순서 기준
+   P017, P027은 현재 상품 목록에 없어서 번호를 당겨 사용
 
-   01 여행용 크로스백
-   02 여행용 목베개
-   03 수면 온열안대
-   04 쿨링안대
-   05 아이스 넥쿨러
-   06 넥밴드
-   07 여행용 보틀
-   08 여행용 귀마개
-   09 여행용 키트 set
-   10 100ml 공병 세트
-   11 접이식 보조가방
+   각 상품:
+   - n_1.png / n_2.png = gallery
+   - n.png = PRODUCT DETAIL
 ========================================================= */
 
+/* 01 P001 여행용 크로스백 */
+import productMain01 from "../assets/images/detail/1_1.png";
+import productSub01 from "../assets/images/detail/1_2.png";
+import productDetail01 from "../assets/images/detail/1.png";
 
-/* =========================================================
-   01
-   P001 여행용 크로스백
-========================================================= */
+/* 02 P002 여행용 목베개 */
+import productMain02 from "../assets/images/detail/2_1.png";
+import productSub02 from "../assets/images/detail/2_2.png";
+import productDetail02 from "../assets/images/detail/2.png";
 
-import productMain01
-  from "../assets/images/detail/1_1.png";
+/* 03 P003 수면 온열안대 */
+import productMain03 from "../assets/images/detail/3_1.png";
+import productSub03 from "../assets/images/detail/3_2.png";
+import productDetail03 from "../assets/images/detail/3.png";
 
-import productSub01
-  from "../assets/images/detail/1_2.png";
+/* 04 P004 쿨링안대 */
+import productMain04 from "../assets/images/detail/4_1.png";
+import productSub04 from "../assets/images/detail/4_2.png";
+import productDetail04 from "../assets/images/detail/4.png";
 
-import productDetail01
-  from "../assets/images/detail/1.png";
+/* 05 P005 아이스 넥쿨러 */
+import productMain05 from "../assets/images/detail/5_1.png";
+import productSub05 from "../assets/images/detail/5_2.png";
+import productDetail05 from "../assets/images/detail/5.png";
 
+/* 06 P006 넥밴드 선풍기 */
+import productMain06 from "../assets/images/detail/6_1.png";
+import productSub06 from "../assets/images/detail/6_2.png";
+import productDetail06 from "../assets/images/detail/6.png";
 
-/* =========================================================
-   02
-   P002 여행용 목베개
-========================================================= */
+/* 07 P009 여행용 보틀 */
+import productMain07 from "../assets/images/detail/7_1.png";
+import productSub07 from "../assets/images/detail/7_2.png";
+import productDetail07 from "../assets/images/detail/7.png";
 
-import productMain02
-  from "../assets/images/detail/2_1.png";
+/* 08 P010 여행용 귀마개 */
+import productMain08 from "../assets/images/detail/8_1.png";
+import productSub08 from "../assets/images/detail/8_2.png";
+import productDetail08 from "../assets/images/detail/8.png";
 
-import productSub02
-  from "../assets/images/detail/2_2.png";
+/* 09 P011 여행용 키트 set */
+import productMain09 from "../assets/images/detail/9_1.png";
+import productSub09 from "../assets/images/detail/9_2.png";
+import productDetail09 from "../assets/images/detail/9.png";
 
-import productDetail02
-  from "../assets/images/detail/2.png";
+/* 10 P012 100ml 공병 세트 */
+import productMain10 from "../assets/images/detail/10_1.png";
+import productSub10 from "../assets/images/detail/10_2.png";
+import productDetail10 from "../assets/images/detail/10.png";
 
+/* 11 P014 접이식 보조가방 */
+import productMain11 from "../assets/images/detail/11_1.png";
+import productSub11 from "../assets/images/detail/11_2.png";
+import productDetail11 from "../assets/images/detail/11.png";
 
-/* =========================================================
-   03
-   P003 수면 온열안대
-========================================================= */
+/* 12 P015 방수 파우치 */
+import productMain12 from "../assets/images/detail/12_1.png";
+import productSub12 from "../assets/images/detail/12_2.png";
+import productDetail12 from "../assets/images/detail/12.png";
 
-import productMain03
-  from "../assets/images/detail/3_1.png";
+/* 13 P016 압축 지퍼백 */
+import productMain13 from "../assets/images/detail/13_1.png";
+import productSub13 from "../assets/images/detail/13_2.png";
+import productDetail13 from "../assets/images/detail/13.png";
 
-import productSub03
-  from "../assets/images/detail/3_2.png";
+/* 14 P018 캐리어 커버 */
+import productMain14 from "../assets/images/detail/14_1.png";
+import productSub14 from "../assets/images/detail/14_2.png";
+import productDetail14 from "../assets/images/detail/14.png";
 
-import productDetail03
-  from "../assets/images/detail/3.png";
+/* 15 P019 여행용 약통 */
+import productMain15 from "../assets/images/detail/15_1.png";
+import productSub15 from "../assets/images/detail/15_2.png";
+import productDetail15 from "../assets/images/detail/15.png";
 
+/* 16 P020 멀미 밴드 */
+import productMain16 from "../assets/images/detail/16_1.png";
+import productSub16 from "../assets/images/detail/16_2.png";
+import productDetail16 from "../assets/images/detail/16.png";
 
-/* =========================================================
-   04
-   P004 쿨링안대
-========================================================= */
+/* 17 P021 방수 밴드 */
+import productMain17 from "../assets/images/detail/17_1.png";
+import productSub17 from "../assets/images/detail/17_2.png";
+import productDetail17 from "../assets/images/detail/17.png";
 
-import productMain04
-  from "../assets/images/detail/4_1.png";
+/* 18 P022 기내용 담요 / 숄 */
+import productMain18 from "../assets/images/detail/18_1.png";
+import productSub18 from "../assets/images/detail/18_2.png";
+import productDetail18 from "../assets/images/detail/18.png";
 
-import productSub04
-  from "../assets/images/detail/4_2.png";
+/* 19 P023 미니 고데기 */
+import productMain19 from "../assets/images/detail/19_1.png";
+import productSub19 from "../assets/images/detail/19_2.png";
+import productDetail19 from "../assets/images/detail/19.png";
 
-import productDetail04
-  from "../assets/images/detail/4.png";
+/* 20 P024 멀티 어댑터 */
+import productMain20 from "../assets/images/detail/20_1.png";
+import productSub20 from "../assets/images/detail/20_2.png";
+import productDetail20 from "../assets/images/detail/20.png";
 
+/* 21 P025 멀티탭 / 분배기 */
+import productMain21 from "../assets/images/detail/21_1.png";
+import productSub21 from "../assets/images/detail/21_2.png";
+import productDetail21 from "../assets/images/detail/21.png";
 
-/* =========================================================
-   05
-   P005 아이스 넥쿨러
-========================================================= */
+/* 22 P026 보조배터리 */
+import productMain22 from "../assets/images/detail/22_1.png";
+import productSub22 from "../assets/images/detail/22_2.png";
+import productDetail22 from "../assets/images/detail/22.png";
 
-import productMain05
-  from "../assets/images/detail/5_1.png";
-
-import productSub05
-  from "../assets/images/detail/5_2.png";
-
-import productDetail05
-  from "../assets/images/detail/5.png";
-
-
-/* =========================================================
-   06
-   P006 넥밴드
-========================================================= */
-
-import productMain06
-  from "../assets/images/detail/6_1.png";
-
-import productSub06
-  from "../assets/images/detail/6_2.png";
-
-import productDetail06
-  from "../assets/images/detail/6.png";
-
-
-/* =========================================================
-   ★ 기존 P007 / P008 상품 없음
-
-   그래서 여기부터 이미지 번호를 앞으로 당김
-========================================================= */
-
-
-/* =========================================================
-   07
-   P009 여행용 보틀
-========================================================= */
-
-import productMain07
-  from "../assets/images/detail/7_1.png";
-
-import productSub07
-  from "../assets/images/detail/7_2.png";
-
-import productDetail07
-  from "../assets/images/detail/7.png";
-
-
-/* =========================================================
-   08
-   P010 여행용 귀마개
-========================================================= */
-
-import productMain08
-  from "../assets/images/detail/8_1.png";
-
-import productSub08
-  from "../assets/images/detail/8_2.png";
-
-import productDetail08
-  from "../assets/images/detail/8.png";
-
-
-/* =========================================================
-   09
-   P011 여행용 키트 set
-========================================================= */
-
-import productMain09
-  from "../assets/images/detail/9_1.png";
-
-import productSub09
-  from "../assets/images/detail/9_2.png";
-
-import productDetail09
-  from "../assets/images/detail/9.png";
-
-
-/* =========================================================
-   10
-   P012 100ml 공병 세트
-========================================================= */
-
-import productMain10
-  from "../assets/images/detail/10_1.png";
-
-import productSub10
-  from "../assets/images/detail/10_2.png";
-
-import productDetail10
-  from "../assets/images/detail/10.png";
-
-
-/* =========================================================
-   ★ P013 네임택 삭제
-
-   따라서 접이식 보조가방이
-   이미지 순서 11번이 됨
-========================================================= */
-
-
-/* =========================================================
-   11
-   P014 접이식 보조가방
-========================================================= */
-
-import productMain11
-  from "../assets/images/detail/11_1.png";
-
-import productSub11
-  from "../assets/images/detail/11_2.png";
-
-import productDetail11
-  from "../assets/images/detail/11.png";
-
+/* 23 P028 휴대폰 방수팩 */
+import productMain23 from "../assets/images/detail/23_1.png";
+import productSub23 from "../assets/images/detail/23_2.png";
+import productDetail23 from "../assets/images/detail/23.png";
 
 import styles from "./Shop.module.scss";
 
 
 /* =========================================================
    PRODUCT IMAGE MAP
-
-   ★ 상품 ID와
-   ★ 실제 이미지 순서를 여기서 연결
 ========================================================= */
 
 const productImageMap = {
@@ -229,12 +153,10 @@ const productImageMap = {
       productMain01,
       productSub01,
     ],
-
     detail: [
       productDetail01,
     ],
   },
-
 
   /* 02 여행용 목베개 */
   P002: {
@@ -242,12 +164,10 @@ const productImageMap = {
       productMain02,
       productSub02,
     ],
-
     detail: [
       productDetail02,
     ],
   },
-
 
   /* 03 수면 온열안대 */
   P003: {
@@ -255,12 +175,10 @@ const productImageMap = {
       productMain03,
       productSub03,
     ],
-
     detail: [
       productDetail03,
     ],
   },
-
 
   /* 04 쿨링안대 */
   P004: {
@@ -268,12 +186,10 @@ const productImageMap = {
       productMain04,
       productSub04,
     ],
-
     detail: [
       productDetail04,
     ],
   },
-
 
   /* 05 아이스 넥쿨러 */
   P005: {
@@ -281,30 +197,21 @@ const productImageMap = {
       productMain05,
       productSub05,
     ],
-
     detail: [
       productDetail05,
     ],
   },
 
-
-  /* 06 넥밴드 */
+  /* 06 넥밴드 선풍기 */
   P006: {
     gallery: [
       productMain06,
       productSub06,
     ],
-
     detail: [
       productDetail06,
     ],
   },
-
-
-  /*
-    P007 / P008 없음
-  */
-
 
   /* 07 여행용 보틀 */
   P009: {
@@ -312,12 +219,10 @@ const productImageMap = {
       productMain07,
       productSub07,
     ],
-
     detail: [
       productDetail07,
     ],
   },
-
 
   /* 08 여행용 귀마개 */
   P010: {
@@ -325,12 +230,10 @@ const productImageMap = {
       productMain08,
       productSub08,
     ],
-
     detail: [
       productDetail08,
     ],
   },
-
 
   /* 09 여행용 키트 set */
   P011: {
@@ -338,12 +241,10 @@ const productImageMap = {
       productMain09,
       productSub09,
     ],
-
     detail: [
       productDetail09,
     ],
   },
-
 
   /* 10 100ml 공병 세트 */
   P012: {
@@ -351,17 +252,10 @@ const productImageMap = {
       productMain10,
       productSub10,
     ],
-
     detail: [
       productDetail10,
     ],
   },
-
-
-  /*
-    P013 네임택 삭제
-  */
-
 
   /* 11 접이식 보조가방 */
   P014: {
@@ -369,9 +263,140 @@ const productImageMap = {
       productMain11,
       productSub11,
     ],
-
     detail: [
       productDetail11,
+    ],
+  },
+
+  /* 12 방수 파우치 */
+  P015: {
+    gallery: [
+      productMain12,
+      productSub12,
+    ],
+    detail: [
+      productDetail12,
+    ],
+  },
+
+  /* 13 압축 지퍼백 */
+  P016: {
+    gallery: [
+      productMain13,
+      productSub13,
+    ],
+    detail: [
+      productDetail13,
+    ],
+  },
+
+  /* 14 캐리어 커버 */
+  P018: {
+    gallery: [
+      productMain14,
+      productSub14,
+    ],
+    detail: [
+      productDetail14,
+    ],
+  },
+
+  /* 15 여행용 약통 */
+  P019: {
+    gallery: [
+      productMain15,
+      productSub15,
+    ],
+    detail: [
+      productDetail15,
+    ],
+  },
+
+  /* 16 멀미 밴드 */
+  P020: {
+    gallery: [
+      productMain16,
+      productSub16,
+    ],
+    detail: [
+      productDetail16,
+    ],
+  },
+
+  /* 17 방수 밴드 */
+  P021: {
+    gallery: [
+      productMain17,
+      productSub17,
+    ],
+    detail: [
+      productDetail17,
+    ],
+  },
+
+  /* 18 기내용 담요 / 숄 */
+  P022: {
+    gallery: [
+      productMain18,
+      productSub18,
+    ],
+    detail: [
+      productDetail18,
+    ],
+  },
+
+  /* 19 미니 고데기 */
+  P023: {
+    gallery: [
+      productMain19,
+      productSub19,
+    ],
+    detail: [
+      productDetail19,
+    ],
+  },
+
+  /* 20 멀티 어댑터 */
+  P024: {
+    gallery: [
+      productMain20,
+      productSub20,
+    ],
+    detail: [
+      productDetail20,
+    ],
+  },
+
+  /* 21 멀티탭 / 분배기 */
+  P025: {
+    gallery: [
+      productMain21,
+      productSub21,
+    ],
+    detail: [
+      productDetail21,
+    ],
+  },
+
+  /* 22 보조배터리 */
+  P026: {
+    gallery: [
+      productMain22,
+      productSub22,
+    ],
+    detail: [
+      productDetail22,
+    ],
+  },
+
+  /* 23 휴대폰 방수팩 */
+  P028: {
+    gallery: [
+      productMain23,
+      productSub23,
+    ],
+    detail: [
+      productDetail23,
     ],
   },
 };
