@@ -5,10 +5,10 @@ $cream: #f8f1e6;
 $black: #000;
 
 .eventPage {
-  height: 100vh;
+  width: calc(100% - 220px);
   min-height: 100vh;
   margin-left: 220px;
-  overflow-y: auto;
+  overflow-y: visible;
   overflow-x: hidden;
   background: $black;
   color: #fff;
@@ -18,8 +18,1048 @@ $black: #000;
   width: 100%;
   min-height: 100vh;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   background: $black;
+}
+
+.eventList {
+  min-height: 100vh;
+  padding: clamp(32px, 3vw, 48px) 0 72px;
+  background: #efeee9;
+  color: #171717;
+  overflow-y: visible;
+}
+
+.eventListInner {
+  width: min(1320px, calc(100% - 112px));
+  margin: 0 auto;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.eventNumber {
+  margin: 0 0 14px;
+  color: #b6b1aa;
+  font-size: 14px;
+}
+
+.listHeader span {
+  color: #8f887e;
+  font-size: 10px;
+  letter-spacing: 3px;
+}
+
+.listHeader h1 {
+  margin: 8px 0 12px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #cec7bb;
+  color: #141414;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(58px, 6vw, 86px);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.listHeader p {
+  margin: 0;
+  color: #8c857b;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.eventGroup {
+  margin-top: clamp(34px, 4vw, 56px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 2vw, 32px);
+}
+
+.groupLabel {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: #9d958b;
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.eventCard {
+  width: 100%;
+  border: 0;
+  display: grid;
+  align-content: start;
+  padding: 0;
+  background: #fbfaf7;
+  color: inherit;
+  text-align: left;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+}
+
+.eventCard img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  background: #d8d8d8;
+}
+
+.cardText {
+  padding: clamp(20px, 2vw, 28px);
+}
+
+.cardText h2 {
+  margin: 0;
+  color: #171717;
+  font-size: clamp(24px, 2vw, 34px);
+  font-weight: 800;
+}
+
+.cardText p {
+  margin: 12px 0 24px;
+  color: #756e65;
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.6;
+}
+
+.cardText div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  color: #a39b91;
+  font-size: clamp(11px, 0.9vw, 13px);
+}
+
+.cardText b {
+  color: #1b1b1b;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.disabledCard {
+  cursor: default;
+}
+
+.disabledCard b {
+  color: #858079;
+}
+
+.mystery {
+  min-height: 100vh;
+  padding: 102px max(28px, 5vw) 72px;
+  background: #080806;
+}
+
+.mystery::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(0, 0, 0, 0.82), rgba(0, 0, 0, 0.34) 54%, rgba(0, 0, 0, 0.86)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.64), #080806 68%);
+  pointer-events: none;
+}
+
+.mysteryHero,
+.mysteryGrid,
+.suspectSection,
+.mysteryFinal {
+  position: relative;
+  z-index: 2;
+}
+
+.mysteryHero {
+  min-height: calc(100vh - 180px);
+  display: grid;
+  grid-template-columns: minmax(280px, 0.78fr) minmax(360px, 1.22fr);
+  align-items: center;
+  gap: clamp(28px, 5vw, 78px);
+}
+
+.mysteryHero h1 {
+  margin: 0;
+  color: #f5ead7;
+  font-size: clamp(54px, 6.8vw, 112px);
+  font-weight: 900;
+  line-height: 1.02;
+}
+
+.mysteryHero p:not(.kicker) {
+  margin: 24px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: clamp(16px, 1.25vw, 22px);
+  font-weight: 700;
+  line-height: 1.8;
+}
+
+.mysteryHero img {
+  width: 100%;
+  max-height: calc(100vh - 150px);
+  object-fit: contain;
+  filter: drop-shadow(0 32px 42px rgba(0, 0, 0, 0.58));
+}
+
+.mysteryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.casePanel {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, auto) auto;
+  background: rgba(255, 255, 255, 0.07);
+  color: #fff;
+}
+
+.casePanel img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  display: block;
+  object-fit: cover;
+}
+
+.casePanel div {
+  padding: 20px;
+}
+
+.casePanel h2,
+.suspectSection h2 {
+  margin: 0;
+  color: #f5ead7;
+  font-size: clamp(22px, 2.2vw, 36px);
+  font-weight: 900;
+}
+
+.casePanel p {
+  margin: 10px 0 0;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.suspectSection {
+  margin-top: clamp(42px, 6vw, 86px);
+}
+
+.suspectList {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.suspectCard {
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.suspectCard > img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  display: block;
+  object-fit: cover;
+  object-position: top center;
+}
+
+.suspectCard div {
+  padding: 14px;
+}
+
+.suspectCard strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #f5ead7;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.suspectCard div img {
+  width: 100%;
+  display: block;
+  background: rgba(0, 0, 0, 0.22);
+}
+
+.mysteryFinal {
+  margin-top: clamp(42px, 6vw, 86px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.mysteryFinal img {
+  width: 100%;
+  display: block;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.mysteryFinal img:last-child {
+  grid-column: 1 / -1;
+}
+
+.mysteryScreen {
+  width: 100%;
+  height: 100vh;
+  min-height: 720px;
+  border: 0;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: #06080f;
+  color: #f4eee5;
+  font: inherit;
+  text-align: left;
+}
+
+button.mysteryScreen {
+  cursor: pointer;
+}
+
+.mysteryScreen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(180deg, rgba(3, 6, 13, 0.22), rgba(3, 6, 13, 0.18) 46%, rgba(3, 6, 13, 0.86)),
+    linear-gradient(90deg, rgba(3, 6, 13, 0.76), rgba(3, 6, 13, 0.1) 54%, rgba(3, 6, 13, 0.7));
+  pointer-events: none;
+}
+
+.mysteryScreen .background {
+  filter: brightness(0.74);
+}
+
+.mysteryScreen .fitBackground {
+  object-fit: contain;
+  object-position: center;
+  background: #050507;
+}
+
+.mysteryCover {
+  padding: 0 max(32px, 6vw) 56px;
+}
+
+.mysteryCopy {
+  width: min(92%, 560px);
+  position: absolute;
+  left: max(32px, 6vw);
+  bottom: clamp(136px, 16vh, 180px);
+  z-index: 2;
+}
+
+.mysteryCopy span,
+.sceneName,
+.tapGuide,
+.evidenceBoard p,
+.evidenceBoard span,
+.resultMystery span,
+.wrongResult span {
+  letter-spacing: 5px;
+}
+
+.mysteryCopy span {
+  color: rgba(244, 238, 229, 0.58);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.mysteryCopy p {
+  margin: 24px 0 8px;
+  color: #f4eee5;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(22px, 2vw, 34px);
+}
+
+.mysteryCopy h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(34px, 4vw, 64px);
+  font-weight: 900;
+  line-height: 1.08;
+}
+
+.mysteryCopy small {
+  display: block;
+  margin-top: 42px;
+  color: rgba(244, 238, 229, 0.72);
+  font-size: clamp(13px, 1vw, 16px);
+  line-height: 1.9;
+}
+
+.mysteryStart {
+  width: min(560px, calc(100% - 64px));
+  min-height: 64px;
+  position: absolute;
+  left: max(32px, 6vw);
+  bottom: 56px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  background: #f5efe8;
+  color: #090909;
+  font-size: 14px;
+  letter-spacing: 4px;
+}
+
+.flightScreen .background {
+  object-position: center;
+}
+
+.subtitleBox,
+.dialogueBox {
+  width: min(560px, calc(100% - 64px));
+  position: absolute;
+  left: max(32px, 6vw);
+  bottom: 70px;
+  z-index: 2;
+  padding: 20px 22px;
+  border: 1px solid rgba(174, 137, 73, 0.58);
+  background: rgba(0, 0, 0, 0.82);
+  color: #fff;
+}
+
+.subtitleBox strong,
+.dialogueBox strong {
+  display: block;
+  margin-bottom: 10px;
+  color: #f5efe8;
+  font-size: 13px;
+}
+
+.subtitleBox p,
+.dialogueBox p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: clamp(15px, 1.2vw, 18px);
+  line-height: 1.8;
+}
+
+.tapGuide {
+  position: absolute;
+  right: max(28px, 5vw);
+  bottom: 26px;
+  z-index: 2;
+  color: rgba(244, 238, 229, 0.58);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.storyScreen .background {
+  object-position: center bottom;
+}
+
+.sceneName {
+  position: absolute;
+  top: 82px;
+  right: max(28px, 5vw);
+  z-index: 2;
+  color: rgba(244, 238, 229, 0.68);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.caseOpenScreen {
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.caseOpenScreen div {
+  position: relative;
+  z-index: 2;
+}
+
+.caseOpenScreen h2 {
+  margin: 0;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(44px, 6vw, 92px);
+  letter-spacing: 7px;
+}
+
+.caseOpenScreen p {
+  margin: 18px 0 0;
+  color: rgba(244, 238, 229, 0.72);
+  font-size: clamp(14px, 1.2vw, 18px);
+}
+
+.evidenceScreen,
+.victimScreen,
+.suspectFileScreen,
+.suspectDetailScreen,
+.chooseScreen,
+.answerReviewScreen,
+.correctScreen,
+.wrongScreen {
+  padding: 86px max(24px, 5vw) 34px;
+}
+
+.victimScreen,
+.suspectFileScreen,
+.suspectDetailScreen,
+.answerReviewScreen,
+.correctScreen,
+.wrongScreen {
+  overflow-y: auto;
+}
+
+.evidenceBoard,
+.fileList,
+.suspectProfile,
+.answerReview,
+.chooseInner,
+.resultMystery,
+.wrongResult {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 420px);
+  margin: 0 auto;
+}
+
+.suspectProfile {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  grid-template-rows: minmax(210px, 0.9fr) auto auto auto auto auto;
+  align-items: end;
+  gap: 16px;
+}
+
+.suspectProfile > img {
+  width: min(64vw, 230px);
+  max-height: min(36vh, 360px);
+  justify-self: center;
+  object-fit: contain;
+  filter: drop-shadow(0 28px 32px rgba(0, 0, 0, 0.56));
+}
+
+.suspectInfo span,
+.answerReview span,
+.culpritScreen span {
+  color: #d6aa61;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.suspectInfo h2 {
+  margin: 8px 0 0;
+  color: #fff;
+  font-size: clamp(28px, 3vw, 38px);
+  font-weight: 900;
+}
+
+.suspectInfo p {
+  margin: 8px 0 0;
+  color: rgba(244, 238, 229, 0.62);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.statusBadge {
+  width: fit-content;
+  min-height: 24px;
+  margin-top: 12px;
+  padding: 5px 10px;
+  border: 1px solid currentColor;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.18);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.dangerBadge {
+  color: #c94b60;
+}
+
+.warnBadge {
+  color: #d5a64f;
+}
+
+.safeBadge {
+  color: #58b989;
+}
+
+.beforeCase {
+  margin-top: 24px;
+}
+
+.beforeCase span {
+  color: rgba(244, 238, 229, 0.66);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.beforeCase p {
+  margin: 12px 0 0;
+  color: rgba(244, 238, 229, 0.68);
+  font-size: 13px;
+  line-height: 1.75;
+}
+
+.incidentReport,
+.wrongReport {
+  padding: 18px;
+  border: 1px solid rgba(214, 170, 97, 0.35);
+  background: rgba(104, 97, 80, 0.52);
+}
+
+.incidentReport h3,
+.wrongReport strong {
+  margin: 0;
+  display: block;
+  color: #f5efe8;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.incidentReport p,
+.wrongReport p {
+  margin: 12px 0 0;
+  color: rgba(244, 238, 229, 0.8);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.incidentReport strong {
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid rgba(83, 185, 137, 0.48);
+  display: block;
+  color: #83d5ad;
+  font-size: 11px;
+  letter-spacing: 2px;
+  line-height: 1.6;
+}
+
+.incidentReport dl {
+  margin: 14px 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.incidentReport div {
+  min-height: 72px;
+  padding: 12px;
+  border: 1px solid rgba(244, 238, 229, 0.1);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.incidentReport dt {
+  color: rgba(244, 238, 229, 0.48);
+  font-size: 11px;
+}
+
+.incidentReport dd {
+  margin: 8px 0 0;
+  color: rgba(244, 238, 229, 0.82);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.suspectActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.suspectActions button,
+.fullAction,
+.textAction,
+.evidenceActions button,
+.fileList > button:last-child {
+  min-height: 48px;
+  border: 1px solid rgba(244, 238, 229, 0.18);
+  background: transparent;
+  color: rgba(244, 238, 229, 0.58);
+  font: inherit;
+  font-size: 11px;
+  letter-spacing: 3px;
+  cursor: pointer;
+}
+
+.fullAction,
+.evidenceActions button:last-child,
+.fileList > button:last-child {
+  background: #f5efe8;
+  color: #06080f;
+}
+
+.textAction {
+  width: fit-content;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+}
+
+.evidenceBoard {
+  min-height: calc(100vh - 120px);
+  display: grid;
+  align-content: center;
+  gap: 18px;
+}
+
+.evidenceBoard p,
+.evidenceBoard span {
+  margin: 0;
+  color: rgba(244, 238, 229, 0.7);
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.evidenceBoard img {
+  width: min(100%, 440px);
+  justify-self: center;
+  display: block;
+  filter: drop-shadow(0 24px 24px rgba(0, 0, 0, 0.42));
+}
+
+.evidenceBoard strong {
+  display: block;
+  padding: 8px 0;
+  border: 0;
+  color: rgba(244, 238, 229, 0.84);
+  font-size: 13px;
+  text-align: center;
+}
+
+.evidenceActions {
+  display: grid;
+  gap: 12px;
+}
+
+.fileList {
+  display: grid;
+  align-content: start;
+  min-height: calc(100vh - 120px);
+  gap: 12px;
+}
+
+.evidencePhoto {
+  width: min(100%, 320px);
+  justify-self: center;
+  display: block;
+  transform: rotate(-7deg);
+  filter: drop-shadow(0 24px 24px rgba(0, 0, 0, 0.42));
+}
+
+.fileList h2,
+.chooseInner h2,
+.resultMystery h2,
+.wrongResult h2 {
+  margin: 0;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(28px, 3vw, 46px);
+  letter-spacing: 2px;
+}
+
+.fileList > button:not(:last-child) {
+  min-height: 108px;
+  width: 100%;
+  border: 1px solid rgba(244, 238, 229, 0.12);
+  display: grid;
+  grid-template-columns: 74px minmax(0, 1fr);
+  gap: 16px;
+  align-items: center;
+  padding: 12px;
+  background: #0d1222;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.fileList > button:not(:last-child) img {
+  width: 74px;
+  height: 88px;
+  object-fit: contain;
+  object-position: center bottom;
+  background: #070a12;
+}
+
+.fileList small {
+  display: block;
+  margin-bottom: 8px;
+  color: rgba(244, 238, 229, 0.58);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.fileList strong {
+  color: #fff;
+  font-size: 16px;
+}
+
+.fileList p {
+  margin: 8px 0 0;
+  color: rgba(244, 238, 229, 0.62);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.chooseInner {
+  display: grid;
+  min-height: calc(100vh - 120px);
+  align-content: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.chooseInner > p {
+  margin: 0;
+  color: rgba(244, 238, 229, 0.64);
+}
+
+.chooseInner > img {
+  width: min(100%, 420px);
+  justify-self: center;
+  display: block;
+}
+
+.choiceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.choiceGrid button {
+  min-height: 148px;
+  border: 1px solid rgba(244, 238, 229, 0.14);
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: #0d1222;
+  color: #f5efe8;
+  cursor: pointer;
+}
+
+.choiceGrid img {
+  width: 86px;
+  height: 104px;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.choiceGrid span {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.answerReview {
+  min-height: calc(100svh - 120px);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 18px;
+  text-align: center;
+}
+
+.answerReview > p {
+  margin: 0;
+  color: rgba(244, 238, 229, 0.72);
+  font-size: 14px;
+  letter-spacing: 5px;
+}
+
+.answerReview > img {
+  width: min(100%, 420px);
+  display: block;
+  border: 1px solid rgba(244, 238, 229, 0.16);
+  box-shadow: 0 28px 44px rgba(0, 0, 0, 0.42);
+}
+
+.answerReview section {
+  width: 100%;
+  padding: 18px;
+  border: 1px solid rgba(244, 238, 229, 0.14);
+  background: rgba(13, 18, 34, 0.8);
+}
+
+.answerReview h2 {
+  margin: 8px 0;
+  color: #fff;
+  font-size: clamp(28px, 3vw, 42px);
+}
+
+.answerReview strong {
+  color: rgba(244, 238, 229, 0.7);
+  font-size: 13px;
+}
+
+.truthScreen {
+  display: grid;
+  place-items: center;
+  padding: 92px max(24px, 5vw) 64px;
+}
+
+.truthScreen p {
+  width: min(100%, 520px);
+  margin: 0;
+  color: rgba(244, 238, 229, 0.88);
+  font-size: clamp(18px, 1.8vw, 28px);
+  font-weight: 800;
+  line-height: 1.8;
+  text-align: center;
+}
+
+.culpritScreen {
+  display: grid;
+  place-items: center;
+  padding: 86px max(24px, 5vw) 34px;
+  text-align: center;
+}
+
+.culpritScreen div {
+  position: relative;
+  z-index: 2;
+  width: min(100%, 620px);
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.culpritScreen img {
+  width: min(72vw, 280px);
+  max-height: 56svh;
+  object-fit: contain;
+  filter: drop-shadow(0 28px 34px rgba(0, 0, 0, 0.58));
+}
+
+.culpritScreen h2 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(34px, 4vw, 58px);
+  font-weight: 900;
+}
+
+.culpritScreen p {
+  margin: 0;
+  color: rgba(244, 238, 229, 0.68);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.resultMystery,
+.wrongResult {
+  min-height: calc(100svh - 120px);
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.resultMystery > span,
+.wrongResult > span {
+  color: #d6aa61;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.resultMystery > img,
+.wrongResult > img {
+  width: min(50vw, 180px);
+  max-height: 260px;
+  object-fit: contain;
+}
+
+.resultMystery p,
+.wrongResult p {
+  max-width: 520px;
+  margin: 0;
+  color: rgba(244, 238, 229, 0.7);
+  font-size: 14px;
+  line-height: 1.8;
+}
+
+.resultMystery button,
+.wrongResult button {
+  width: min(100%, 420px);
+  min-height: 48px;
+  border: 1px solid rgba(244, 238, 229, 0.18);
+  background: #f5efe8;
+  color: #06080f;
+  font-weight: 900;
+  letter-spacing: 3px;
+  cursor: pointer;
+}
+
+.wrongResult button:last-child {
+  background: transparent;
+  color: #f5efe8;
+}
+
+.couponStack {
+  width: min(100%, 620px);
+  display: grid;
+  gap: 16px;
+}
+
+.mysteryCoupon {
+  min-height: 130px;
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  padding: 24px 28px;
+  border: 2px solid #9d8754;
+  background: #f6f6f4;
+  color: #111;
+  text-align: left;
+}
+
+.mysteryCoupon > strong {
+  color: #ed1c24;
+  font-size: 28px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.mysteryCoupon:nth-child(2) > strong {
+  color: #03c75a;
+}
+
+.mysteryCoupon div {
+  padding-left: 24px;
+  border-left: 2px solid #8c877d;
+}
+
+.mysteryCoupon span {
+  color: #b99039;
+  font-size: 16px;
+  letter-spacing: 8px;
+}
+
+.mysteryCoupon h3 {
+  margin: 14px 0 8px;
+  color: #fff;
+  font-size: clamp(26px, 3vw, 42px);
+  font-weight: 900;
+}
+
+.mysteryCoupon p {
+  margin: 0;
+  color: #d8d8d8;
+  font-size: 22px;
+}
+
+.mysteryCoupon b {
+  display: block;
+  margin-top: 8px;
+  color: #d6aa61;
+  font-size: 18px;
+  font-weight: 400;
 }
 
 .scene {
@@ -27,6 +1067,10 @@ $black: #000;
   min-height: 100vh;
   position: relative;
   overflow: hidden;
+}
+
+.mystery {
+  overflow: visible;
 }
 
 .background {
@@ -521,7 +1565,7 @@ $black: #000;
 
 @include tablet {
   .eventPage {
-    height: calc(100vh - 56px);
+    width: 100%;
     min-height: calc(100vh - 56px);
     margin-left: 0;
   }
@@ -529,6 +1573,46 @@ $black: #000;
   .stage,
   .scene {
     min-height: calc(100vh - 56px);
+  }
+
+  .eventList {
+    min-height: calc(100vh - 56px);
+    padding: 0;
+  }
+
+  .eventListInner {
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    padding: 0;
+    background: #fbfaf7;
+    box-shadow: none;
+  }
+
+  .eventGroup {
+    gap: 0;
+  }
+
+  .eventCard {
+    box-shadow: none;
+  }
+
+  .cardText {
+    padding-bottom: 12px;
+  }
+
+  .listHeader {
+    padding: 24px 22px 0;
+  }
+
+  .eventGroup {
+    grid-template-columns: 1fr;
+    margin-top: 18px;
+    gap: 0;
+  }
+
+  .groupLabel {
+    padding: 0 22px;
+    margin-bottom: 18px;
   }
 
   .eventHeader {
@@ -566,9 +1650,153 @@ $black: #000;
   .result {
     padding: 72px 18px 24px;
   }
+
+  .mystery {
+    padding: 76px 18px 42px;
+  }
+
+  .mysteryHero {
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .mysteryHero img {
+    max-height: none;
+  }
+
+  .mysteryGrid {
+    margin-top: 34px;
+    grid-template-columns: 1fr;
+  }
+
+  .suspectList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mysteryFinal {
+    grid-template-columns: 1fr;
+  }
+
+  .mysteryFinal img:last-child {
+    grid-column: auto;
+  }
+
+  .mysteryScreen {
+    min-height: calc(100svh - 56px);
+  }
+
+  .mysteryCover {
+    padding-inline: 22px;
+  }
+
+  .mysteryCopy {
+    left: 22px;
+    bottom: 132px;
+  }
+
+  .mysteryStart,
+  .subtitleBox,
+  .dialogueBox {
+    width: calc(100% - 44px);
+    left: 22px;
+  }
+
+  .mysteryStart {
+    bottom: 48px;
+  }
+
+  .subtitleBox,
+  .dialogueBox {
+    bottom: 64px;
+  }
+
+  .sceneName {
+    top: 64px;
+    right: 22px;
+  }
+
+  .tapGuide {
+    right: 22px;
+  }
+
+  .evidenceScreen,
+  .suspectFileScreen,
+  .suspectDetailScreen,
+  .chooseScreen,
+  .answerReviewScreen,
+  .truthScreen,
+  .culpritScreen,
+  .correctScreen,
+  .wrongScreen {
+    padding: 70px 18px 28px;
+  }
+
+  .suspectProfile > img {
+    width: min(78vw, 280px);
+  }
+
+  .mysteryCoupon {
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 18px;
+    padding: 20px;
+  }
+
+  .mysteryCoupon span {
+    letter-spacing: 5px;
+  }
 }
 
 @include mobile {
+  .eventPage {
+    margin-bottom: calc(-58px - env(safe-area-inset-bottom));
+  }
+
+  .eventList {
+    padding: 0;
+  }
+
+  .eventListInner {
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .listHeader {
+    padding: 24px 16px 0;
+  }
+
+  .listHeader h1 {
+    font-size: clamp(44px, 14vw, 62px);
+  }
+
+  .eventGroup {
+    margin-top: 18px;
+    gap: 0;
+  }
+
+  .groupLabel {
+    padding: 0 16px;
+    margin-bottom: 18px;
+  }
+
+  .eventCard {
+    box-shadow: none;
+  }
+
+  .cardText h2 {
+    font-size: 24px;
+  }
+
+  .cardText {
+    padding: 20px 16px 12px;
+  }
+
+  .cardText div {
+    font-size: 10px;
+  }
+
   .eventHeader button {
     font-size: 11px;
     letter-spacing: 3px;
@@ -670,5 +1898,186 @@ $black: #000;
     margin-top: -18%;
     transform: translateX(18%);
     justify-self: center;
+  }
+
+  .suspectList {
+    grid-template-columns: 1fr;
+  }
+
+  .mysteryHero h1 {
+    font-size: clamp(42px, 13vw, 62px);
+  }
+
+  .mysteryScreen {
+    min-height: calc(100svh - 56px);
+  }
+
+  .mysteryCopy {
+    width: calc(100% - 32px);
+    left: 16px;
+    bottom: 118px;
+  }
+
+  .mysteryCopy span,
+  .sceneName,
+  .tapGuide,
+  .evidenceBoard p,
+  .evidenceBoard span,
+  .resultMystery span,
+  .wrongResult span {
+    letter-spacing: 3px;
+  }
+
+  .mysteryCopy small {
+    margin-top: 28px;
+    font-size: 12px;
+  }
+
+  .mysteryStart,
+  .subtitleBox,
+  .dialogueBox {
+    width: calc(100% - 32px);
+    left: 16px;
+  }
+
+  .mysteryStart {
+    min-height: 56px;
+    bottom: 42px;
+    font-size: 12px;
+  }
+
+  .subtitleBox,
+  .dialogueBox {
+    padding: 16px;
+    bottom: 56px;
+  }
+
+  .subtitleBox p,
+  .dialogueBox p {
+    font-size: 14px;
+  }
+
+  .sceneName {
+    width: calc(100% - 32px);
+    top: 58px;
+    right: 16px;
+    text-align: right;
+  }
+
+  .tapGuide {
+    right: 16px;
+    bottom: 18px;
+    font-size: 9px;
+  }
+
+  .caseOpenScreen h2 {
+    font-size: 38px;
+    letter-spacing: 5px;
+  }
+
+  .evidenceBoard,
+  .fileList,
+  .suspectProfile,
+  .answerReview,
+  .chooseInner,
+  .resultMystery,
+  .wrongResult {
+    min-height: calc(100svh - 112px);
+  }
+
+  .suspectDetailScreen,
+  .answerReviewScreen,
+  .truthScreen,
+  .culpritScreen {
+    padding: 70px 18px 28px;
+  }
+
+  .suspectProfile {
+    grid-template-rows: minmax(220px, auto) auto auto auto;
+  }
+
+  .suspectProfile > img {
+    width: min(78vw, 220px);
+    max-height: 36svh;
+  }
+
+  .incidentReport dl {
+    grid-template-columns: 1fr;
+  }
+
+  .suspectActions {
+    min-height: 50px;
+    padding-inline: 12px;
+  }
+
+  .suspectActions b {
+    letter-spacing: 2px;
+  }
+
+  .evidenceBoard img {
+    width: min(100%, 320px);
+  }
+
+  .fileList > button:not(:last-child) {
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .fileList > button:not(:last-child) img {
+    width: 58px;
+    height: 72px;
+  }
+
+  .choiceGrid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .choiceGrid button {
+    min-height: 128px;
+    padding: 10px;
+  }
+
+  .choiceGrid img {
+    width: 64px;
+    height: 82px;
+  }
+
+  .couponStack {
+    gap: 10px;
+  }
+
+  .mysteryCoupon {
+    min-height: 116px;
+    grid-template-columns: 82px minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px 14px;
+  }
+
+  .mysteryCoupon > strong {
+    font-size: 18px;
+  }
+
+  .mysteryCoupon div {
+    padding-left: 12px;
+  }
+
+  .mysteryCoupon span {
+    font-size: 11px;
+    letter-spacing: 4px;
+  }
+
+  .mysteryCoupon h3 {
+    margin: 8px 0 4px;
+    font-size: 22px;
+  }
+
+  .mysteryCoupon p {
+    font-size: 15px;
+  }
+
+  .mysteryCoupon b {
+    font-size: 13px;
   }
 }
