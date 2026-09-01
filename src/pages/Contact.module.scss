@@ -75,3 +75,15 @@
   .helpCopy p { font-size: 11px; }
   .helpBox > a { grid-column: 1 / -1; height: 52px; gap: 36px; font-size: 14px; }
 }
+
+@media (max-width: 600px) {
+  .contactPage { padding: 19px 0 90px; }
+  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .intro h1 { font-size: 0; line-height: 1; }
+  .intro h1::after {
+    display: block;
+    content: "CONTACT";
+    font: 400 48px/1 "DM Serif Display", serif;
+    letter-spacing: -.03em;
+  }
+}

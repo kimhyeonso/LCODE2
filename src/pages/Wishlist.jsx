@@ -1,26 +1,66 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
+import tripRoad from "../data/trip_road.json";
 import styles from "./Wishlist.module.scss";
 
-const places = [
-  { location: "FUKUOKA / JAPAN", name: "나가스 야타이", category: "FOOD", image: "/Mypage-img/2.png" },
-  { location: "FUKUOKA / JAPAN", name: "캐널시티 하카타", category: "SHOPPING", image: "/Mypage-img/1.png" },
-  { location: "KYOTO / JAPAN", name: "후시미 이나리", category: "SHRINE", image: "/Mypage-img/3.png" },
-  { location: "TOKYO / JAPAN", name: "블루보틀 카페", category: "CAFE", image: "/Mypage-img/5.png" },
-];
+const favoriteStorageKey = "lcode-favorite-trips";
+const countryLabels = { korea: "KOREA", japan: "JAPAN", china: "CHINA" };
+
+const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  import: "default",
+});
+
+const getStoredFavorites = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(favoriteStorageKey) || "[]");
+    return Array.isArray(stored) ? stored : [];
+  } catch {
+    return [];
+  }
+};
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
+  const key = Object.keys(imageModules).find(
+    (path) => path.toLowerCase() === relativePath.toLowerCase(),
+  );
+  return key ? imageModules[key] : "";
+};
+
+const getRepresentativeImage = (trip) => {
+  const item = trip.days
+    .flatMap((day) => day.items)
+    .find((entry) => entry.type === "place" && entry.image);
+  return getImageUrl(item?.image);
+};
+
+const uniqueTrips = Array.from(
+  tripRoad.trips.reduce((map, trip) => {
+    if (!map.has(trip.id)) map.set(trip.id, trip);
+    return map;
+  }, new Map()).values(),
+);
 
 export default function Wishlist() {
-  // 카드별 하트 상태를 따로 저장해서 한 카드만 바뀌게 합니다.
-  const [likedPlaces, setLikedPlaces] = useState([]);
+  const [favoriteIds, setFavoriteIds] = useState(getStoredFavorites);
+  const favoriteTrips = favoriteIds
+    .map((id) => uniqueTrips.find((trip) => trip.id === id))
+    .filter(Boolean);
 
-  // 클릭한 장소만 좋아요 목록에 넣거나 다시 뺍니다.
-  function toggleLike(name) {
-    setLikedPlaces((current) =>
-      current.includes(name)
-        ? current.filter((placeName) => placeName !== name)
-        : [...current, name],
-    );
-  }
+  const removeFavorite = (tripId) => {
+    setFavoriteIds((current) => {
+      const next = current.filter((id) => id !== tripId);
+      try {
+        localStorage.setItem(favoriteStorageKey, JSON.stringify(next));
+      } catch {
+        // 저장소를 사용할 수 없어도 현재 화면에서는 즉시 삭제합니다.
+      }
+      return next;
+    });
+  };
 
   return (
     <main className={styles.wishlist}>
@@ -31,36 +71,44 @@ export default function Wishlist() {
         <p className={styles.description}>다음 여행을 위해 저장해둔 장소</p>
         <div className={styles.divider} />
 
-        <div className={styles.placeGrid}>
-          {places.map((place) => {
-            const isLiked = likedPlaces.includes(place.name);
-            return (
-              <article className={styles.placeCard} key={place.name}>
-                <div
-                  className={styles.imagePlaceholder}
-                  style={{ backgroundImage: `url("${place.image}")` }}
-                >
-                  {/* 하트 뒤에 흰색 원을 깔고, 클릭하면 하트가 커졌다 돌아옵니다. */}
+        {favoriteTrips.length ? (
+          <div className={styles.placeGrid}>
+            {favoriteTrips.map((trip) => {
+              const image = getRepresentativeImage(trip);
+              return (
+                <article className={styles.placeCard} key={trip.id}>
+                  <Link
+                    className={styles.imagePlaceholder}
+                    to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+                    style={image ? { backgroundImage: `url("${image}")` } : undefined}
+                    aria-label={`${trip.title} 상세 보기`}
+                  />
                   <button
-                    className={`${styles.heartButton} ${isLiked ? styles.liked : ""}`}
+                    className={styles.heartButton}
                     type="button"
-                    aria-label={isLiked ? "위시리스트에서 삭제" : "위시리스트에 추가"}
-                    aria-pressed={isLiked}
-                    onClick={() => toggleLike(place.name)}
+                    aria-label={`${trip.title} 위시리스트에서 삭제`}
+                    onClick={() => removeFavorite(trip.id)}
                   >
-                    <span aria-hidden="true">{isLiked ? "♥" : "♥"}</span>
+                    <span aria-hidden="true">♥</span>
                   </button>
-                </div>
-                <p className={styles.location}>{place.location}</p>
-                <h2>{place.name}</h2>
-                <footer>
-                  <span>{place.category}</span>
-                  <button type="button">+ 일정에 추가</button>
-                </footer>
-              </article>
-            );
-          })}
-        </div>
+                  <p className={styles.location}>
+                    {trip.city.toUpperCase()} / {countryLabels[trip.country] || trip.country.toUpperCase()}
+                  </p>
+                  <h2>{trip.title}</h2>
+                  <footer>
+                    <span>{trip.duration}</span>
+                    <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`}>+ 일정에 추가</Link>
+                  </footer>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className={styles.emptyState}>
+            <p>아직 저장해둔 장소가 없어요!</p>
+            <Link to="/search">패키지 여행 바로가기 <span aria-hidden="true">→</span></Link>
+          </div>
+        )}
       </section>
     </main>
   );

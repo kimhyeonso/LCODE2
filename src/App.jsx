@@ -26,11 +26,13 @@ import Notice from "./pages/Notice";
 import OpenGuide from "./pages/OpenGuide";
 import Review from "./pages/Review";
 import Buy from "./pages/Buy";
+import Paking from "./pages/Paking";
 import NotFound from "./pages/NotFound";
 import Saved from "./pages/Saved";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
+import MyPageMain from "./pages/MyPageMain";
 import styles from "./App.module.scss";
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -53,6 +55,8 @@ const enlargedPagePaths = new Set([
   "/coupon/register",
   "/alarm",
   "/open-guide",
+  "/paking",
+  "/MyPageMain",
 ]);
 
 function PageSize() {
@@ -88,8 +92,10 @@ export default function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/buy" element={<Buy />} />
+          <Route path="/paking" element={<Paking />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/mystories" element={<Mystories />} />
+          <Route path="/mypagemain" element={<MyPageMain />} />
           <Route
             path="/review"
             element={

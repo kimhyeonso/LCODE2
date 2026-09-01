@@ -10,9 +10,6 @@ import styles from "./Coupon.module.scss";
 
 const coupons = [
   { type: "SPECIAL EVENT", title: "PACK & WIN", description: "여행 짐싸고 쿠폰받자!", code: "TC-0056", expiry: "VALID UNTIL 2026.08.31", used: true },
-  // description is the main coupon description: "FLIGHT KIT".
-  { type: "L:CODE", title: "5%", suffix: "OFF", description: "FLIGHT KIT", detail: "여행 키트", code: "TC-0034", expiry: "VALID UNTIL 2026.10.15" },
-  // description is the main coupon description: "FLIGHT KIT".
   { type: "L:CODE", title: "5%", suffix: "OFF", description: "FLIGHT KIT", detail: "여행 키트", code: "TC-0034", expiry: "VALID UNTIL 2026.10.15" },
 ];
 
@@ -95,8 +92,13 @@ export default function Coupon() {
       <div className={styles.content}>
         <section className={styles.archive} aria-labelledby="coupon-title">
           <MypageBackLink />
-          <p className={styles.eyebrow}>MY JOURNEY</p>
-          <h1 id="coupon-title">COUPON ARCHIVE</h1>
+          <div className={styles.archiveHeading}>
+            <div>
+              <p className={styles.eyebrow}>ARCHIVE</p>
+              <h1 id="coupon-title">COUPON ARCHIVE</h1>
+            </div>
+            <div className={styles.available}><span>AVAILABLE</span><strong>{ownedCoupons.length + 1 < 10 ? `0${ownedCoupons.length + 1}` : ownedCoupons.length + 1}</strong></div>
+          </div>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
           <div className={styles.divider} />
           <CouponTicket coupon={welcomeCoupon} featured />

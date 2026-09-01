@@ -169,3 +169,11 @@
   .profileEdit { padding-right: 0; padding-left: 0; }
   .layout { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }
+
+@media (max-width: 600px) {
+  .profileEdit { padding: 19px 0 90px; }
+  .layout { width: calc(100% - 40px); margin-inline: auto; }
+  .formSection > :first-child { margin-bottom: 8px; }
+  .eyebrow { margin-top: 0; }
+  .hero { margin-top: 10px; }
+}

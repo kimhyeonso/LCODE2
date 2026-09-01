@@ -221,3 +221,12 @@
   .openGuide { margin-top: 0; padding-right: 0; padding-left: 0; }
   .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }
+
+@media (max-width: 600px) {
+  .openGuide { padding-top: 19px; padding-bottom: 90px; }
+  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .articleHeader > :first-child { margin-bottom: 8px; }
+  .category { margin-top: 0; }
+  .articleHeader h1 { margin-top: 10px; }
+  .images { display: none; }
+}

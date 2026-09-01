@@ -295,3 +295,8 @@
   .formFrame input { font-size: 21px; }
   .submit { height: 70px; }
 }
+
+@media (max-width: 600px) {
+  .auth { padding: 19px 20px 90px; }
+  .intro, .formFrame { margin-inline: auto; }
+}

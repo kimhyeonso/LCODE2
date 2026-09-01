@@ -12,6 +12,7 @@
 
 // 공통 헤더 아래의 위시리스트 전체 영역입니다.
 .wishlist {
+  
   min-height: calc(100vh - 10rem); // Keep short pages visually full-height.
   padding: 1.875rem 0 4rem; // Reduce the desktop top breathing room by half.
   background-color: $paper;
@@ -20,6 +21,7 @@
 
 // 페이지 내용을 가운데 정렬하는 래퍼입니다.
 .content {
+  
   width: min(calc(100% - 10rem), 48rem);
   margin: -1rem auto;
 }
@@ -57,10 +59,18 @@ h1 {
 
 // 데스크톱에서 4열로 보이는 저장 장소 카드 목록입니다.
 .placeGrid {
+  
   display: grid; // Lay cards out in a regular grid.
   grid-template-columns: repeat(4, minmax(0, 1fr)); // Create four equal-width columns.
   gap: 1.8rem; // Separate adjacent cards.
   margin-top: 1.85rem; // Separate cards from the divider.
+}
+
+.placeCard {
+  border: 1px solid #b3afaa;;
+  position: relative;
+  padding-bottom: .7rem;
+  background: #faf7f1;
 }
 
 // 카드 안의 고정 크기 이미지 플레이스홀더입니다.
@@ -79,22 +89,8 @@ h1 {
     line-height: 1; // Prevent extra line-box height around the icon.
   }
 }
-.placeCard:nth-child(1) .imagePlaceholder {
-  background-image: url('/Mypage-img/2.png');
-}
-
-.placeCard:nth-child(2) .imagePlaceholder {
-  background-image: url('/Mypage-img/1.png');
-}
-
-.placeCard:nth-child(3) .imagePlaceholder {
-  background-image: url('/Mypage-img/3.png');
-}
-.placeCard:nth-child(4) .imagePlaceholder {
-  background-image: url('/Mypage-img/5.png');
-}
-
 .imagePlaceholder {
+  display: block;
   background-size: cover;
   background-position: center;
 }
@@ -125,20 +121,9 @@ h1 {
 }
 
 // 좋아요 상태는 빨간색 채운 하트로 표시합니다.
-.heartButton.liked span { color: #e53935; }
-
-// 클릭 직후 하트가 살짝 커졌다가 원래 크기로 돌아옵니다.
-.heartButton.liked { animation: heart-pop 0.28s ease-out; }
-
-@keyframes heart-pop {
-  0% { transform: scale(1); }
-  45% { transform: scale(1.18); }
-  100% { transform: scale(1); }
-}
-
 // 국가와 도시를 보여주는 메타 정보입니다.
 .location {
-  margin: 0.65rem 0 0; // Add only space above the label.
+  margin: 0.65rem .7rem 0; // Add only space above the label.
   color: #aaa49c; // Keep location metadata subtle.
   font: 400 0.52rem $korean; // Use small metadata typography.
   letter-spacing: 0.14em; // Match the tracked uppercase reference style.
@@ -146,7 +131,7 @@ h1 {
 
 // 저장한 장소의 이름입니다.
 .placeCard h2 {
-  margin: 0.32rem 0 0.4rem; // Space the name between metadata and controls.
+  margin: 0.32rem .7rem 0.4rem; // Space the name between metadata and controls.
   color: #222; // Use readable near-black text.
   font: 500 0.8rem $korean; // Use a modest semibold Korean title.
   letter-spacing: -0.06em; // Tighten Korean heading spacing.
@@ -158,6 +143,7 @@ h1 {
   align-items: center; // Vertically align footer content.
   justify-content: space-between; // Push content to opposite ends.
   gap: 0.4rem; // Preserve space when text becomes narrow.
+  margin-inline: .7rem;
 
   span {
     border: 1px solid #dedbd5; // Outline the category pill.
@@ -167,15 +153,40 @@ h1 {
     letter-spacing: 0.08em; // Add light tracking to the category.
   }
 
-  button {
+  a {
     padding: 0; // Remove default button inset.
-    border: 0; // Remove the default button border.
-    background: transparent; // Keep this UI action visually text-only.
     color: #8c8984; // Use muted action text.
     font: 400 0.55rem $korean; // Keep the static action compact.
+    text-decoration: none;
     white-space: nowrap; // Prevent the action label from wrapping.
   }
 }
+
+.emptyState {
+  display: grid;
+  justify-items: start;
+  gap: 1rem;
+  margin-top: 3rem;
+  padding: 3rem 0;
+  font-family: $korean;
+}
+
+.emptyState p {
+  margin: 0;
+  color: #222;
+  font: 500 1rem $korean;
+}
+
+.emptyState a {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  color: #77736c;
+  font: 400 .72rem $korean;
+  text-decoration: none;
+}
+
+.emptyState a span { font-size: 1rem; }
 
 // MY STORIES와 동일한 데스크톱 본문 여백을 사용합니다.
 @media (min-width: 901px) {
@@ -242,26 +253,29 @@ h1 {
 
   .location {
     margin-top: 0.45rem;
-    padding-inline: 0.3rem;
+    margin-inline: .3rem;
+    padding-inline: 0;
     font-size: 0.45rem;
   }
 
   .placeCard h2 {
     margin: 0.2rem 0 0.25rem;
-    padding-inline: 0.3rem;
+    margin-inline: .3rem;
+    padding-inline: 0;
     font-size: 0.68rem;
   }
 
   .placeCard footer {
     gap: 0.25rem;
-    padding-inline: 0.3rem;
+    margin-inline: .3rem;
+    padding-inline: 0;
 
     span {
       padding: 0.1rem 0.24rem;
       font-size: 0.4rem;
     }
 
-    button {
+    a {
       font-size: 0.45rem;
     }
   }
@@ -270,10 +284,28 @@ h1 {
     height: auto;
     aspect-ratio: 0.97 / 1; // Keep the near-square card proportion from the mobile mockup.
   }
+
+  .emptyState { margin-top: 1.5rem; padding: 2rem 0; }
+  .emptyState p { font-size: .8rem; }
+  .emptyState a { font-size: .6rem; }
 }
 
 @media (min-width: 901px) {
   /* 여기가 위쪽 마진 ----------------------- */
   .wishlist { margin-top: -0.5rem; padding-right: 0; padding-left: 0; }
   .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
+}
+
+@media (max-width: 600px) {
+  .wishlist { margin-top: 0; padding: 19px 0 90px; }
+  .content { width: calc(100% - 40px); margin: 0 auto; transform: none; }
+  .content > :first-child { margin-bottom: 8px; }
+  .content > :first-child,
+  .eyebrow,
+  h1,
+  .description,
+  .divider { margin-right: 25px; margin-left: 25px; }
+  .eyebrow { margin-top: 0; }
+  h1 { margin-top: 10px; }
+  .placeGrid { width: 100%; margin-left: 0; }
 }

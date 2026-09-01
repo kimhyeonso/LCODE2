@@ -27,7 +27,11 @@
 .orderInfo strong { font: 400 20px "DM Serif Display", serif; }
 .orderActions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-self: stretch; padding-top: 4px; }
 .status { grid-column: 1 / -1; justify-self: end; margin-bottom: auto; border-radius: 18px; padding: 7px 16px; background: #e8e3dc; color: #292723; font-size: 11px; }
-.orderActions button { align-self: end; height: 38px; border: 1px solid #111; background: #111; color: #fff; cursor: pointer; font: 500 12px "Noto Sans KR", sans-serif; }
+.orderActions > a { display: grid; align-self: end; height: 38px; border: 1px solid #111; background: #111; color: #fff; font: 500 12px "Noto Sans KR", sans-serif; text-decoration: none; place-items: center; }
+.emptyState { display: grid; min-height: 250px; align-content: center; justify-items: center; gap: 18px; border: 1px solid #d8d2ca; background: #f8f5ef; text-align: center; }
+.emptyState p { margin: 0; color: #292723; font: 500 16px "Noto Sans KR", sans-serif; }
+.emptyState a { display: inline-flex; align-items: center; gap: 10px; color: #766e65; font: 400 13px "Noto Sans KR", sans-serif; text-decoration: none; }
+.emptyState a span { font-size: 18px; }
 .pagination { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 20px; }
 .pagination button { width: 36px; height: 36px; border: 0; background: transparent; color: #77716a; cursor: pointer; font: 400 14px "DM Serif Display", serif; }
 .pagination .current { background: #111; color: #fff; }
@@ -67,16 +71,34 @@
   .content { width: calc(100% - 32px); }
   .eyebrow { margin-top: 24px; }
   .titleRow h1 { font-size: 42px; }
-  .filters { overflow-x: auto; }
-  .filters button { min-width: 92px; }
+  .filters {  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; overflow: visible; }
+  .filters button { min-width: 0; height: 38px; padding: 0 2px; font-size: 10px; white-space: nowrap; }
   .orderCard { grid-template-columns: 88px 1fr; gap: 14px; padding: 14px; }
   .orderMeta { grid-column: 1 / -1; display: flex; gap: 8px; border-right: 0; border-bottom: 1px solid #ddd7cf; padding: 0 0 10px; }
   .orderMeta strong { margin: 0 14px 0 0; font-size: 13px; }
   .orderImage { width: 88px; height: 88px; }
   .orderInfo p { margin: 5px 0 12px; }
   .orderActions { grid-column: 1 / -1; }
-  .status { position: absolute; }
+  .status {  position: absolute; top: 135px; 
+  }
   .side { display: block; }
   .heroFrame img { height: 360px; }
   .snapshot, .contactBox { margin-top: 16px; }
+  .emptyState { min-height: 190px; padding: 28px 18px; }
+  .emptyState p { font-size: 14px; }
+}
+
+@media (max-width: 600px) {
+  .buyPage { padding: 34px 0 90px; }
+  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .back { margin: 0 25px 8px; font-size: 0; }
+  .back span { font-size: 21px; }
+  .snapshot{
+    margin-top: -2rem;
+    // border: 1px solid red;
+  }
+  .eyebrow { margin-top: 0; }
+  .eyebrow, .titleRow { margin-right: 25px; margin-left: 25px; }
+  .titleRow { margin-top: 10px; }
+  .heroFrame, .heroFrame img { display: none; }
 }
