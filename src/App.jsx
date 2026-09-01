@@ -35,6 +35,8 @@ import FavoritePlaces from "./pages/FavoritePlaces";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
+import ExchangeRate from "./pages/ExchangeRate";
+import Desrination from "./pages/Desrination";
 import styles from "./App.module.scss";
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -82,6 +84,8 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/destination" element={<ExchangeRate />} />
+          <Route path="/desrination" element={<Desrination />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />

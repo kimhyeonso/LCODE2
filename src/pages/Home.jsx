@@ -3,11 +3,44 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useAuth } from "../hooks/useAuth";
 import { getPlans } from "../services/firestoreService";
-import styles from "./Home.module.scss";
 import travelKitImage from "../assets/images/travel_kit.webp";
 import travelPouchImage from "../assets/images/travel_pouch.webp";
 import travelAdapterImage from "../assets/images/travel_adapter.webp";
-import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
+import bannerPC1 from "../assets/images/banner/banner01-pc.png";
+import bannerPC2 from "../assets/images/banner/banner02-pc.png";
+import bannerPC3 from "../assets/images/banner/banner03-pc.png";
+import bannerPC4 from "../assets/images/banner/banner04-pc.png";
+import bannerPC5 from "../assets/images/banner/banner05-pc.png";
+import bannerMO1 from "../assets/images/banner/banner01-mo.png";
+import bannerMO2 from "../assets/images/banner/banner02-mo.png";
+import bannerMO3 from "../assets/images/banner/banner03-mo.png";
+import bannerMO4 from "../assets/images/banner/banner04-mo.png";
+import bannerMO5 from "../assets/images/banner/banner05-mo.png";
+
+import styles from "./Home.module.scss";
+
+const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
+  eager: true,
+  import: "default",
+});
+
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
+  const key = Object.keys(imageModules).find(
+    (path) => path.toLowerCase() === relativePath.toLowerCase(),
+  );
+  return key ? imageModules[key] : "";
+};
+
+// Add a banner by importing its image above and appending it to this array.
+const heroSlides = [
+  { desktop: bannerPC1, mobile: bannerMO1 },
+  { desktop: bannerPC2, mobile: bannerMO2 },
+  { desktop: bannerPC3, mobile: bannerMO3 },
+  { desktop: bannerPC4, mobile: bannerMO4 },
+  { desktop: bannerPC5, mobile: bannerMO5 },
+];
 
 const SectionLabel = ({ number, children }) => (
   <div className={styles.sectionLabel}>
@@ -25,8 +58,10 @@ const TextLink = ({ to, children }) => (
 
 export default function Home() {
   const page = useRef(null);
+  const heroTouchStart = useRef(null);
   const { user, loading: authLoading } = useAuth();
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
 
   useEffect(() => {
     const context = gsap.context(() => {
@@ -38,6 +73,34 @@ export default function Home() {
     }, page);
     return () => context.revert();
   }, []);
+
+  useEffect(() => {
+    if (heroSlides.length < 2) return undefined;
+
+    const timer = window.setInterval(() => {
+      setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, []);
+
+  const handleHeroTouchStart = (event) => {
+    heroTouchStart.current = event.touches[0]?.clientX ?? null;
+  };
+
+  const handleHeroTouchEnd = (event) => {
+    const startX = heroTouchStart.current;
+    const endX = event.changedTouches[0]?.clientX;
+    heroTouchStart.current = null;
+
+    if (startX === null || endX === undefined || Math.abs(startX - endX) < 40) return;
+
+    setActiveHeroSlide((current) => (
+      startX > endX
+        ? (current + 1) % heroSlides.length
+        : (current - 1 + heroSlides.length) % heroSlides.length
+    ));
+  };
 
   useEffect(() => {
     if (authLoading || !user) return undefined;
@@ -77,8 +140,39 @@ export default function Home() {
   return (
     <main ref={page} className={styles.home}>
       <section className={styles.hero} aria-label="L:CODE 대표 여행 이미지">
-        <div className={styles.heroVisual}>
-          <span>TRAVEL, REMIXED</span>
+        <div
+          className={styles.heroVisual}
+          role="region"
+          aria-roledescription="carousel"
+          aria-label="여행 배너"
+          onTouchStart={handleHeroTouchStart}
+          onTouchEnd={handleHeroTouchEnd}
+        >
+          <div
+            className={styles.heroTrack}
+            style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}
+          >
+            {heroSlides.map(({ desktop, mobile }, index) => (
+              <div className={styles.heroSlide} key={desktop} aria-hidden={index !== activeHeroSlide}>
+                <picture>
+                  <source media="(max-width: 640px)" srcSet={mobile} />
+                  <img src={desktop} alt="" />
+                </picture>
+              </div>
+            ))}
+          </div>
+          <div className={styles.heroDots} aria-label="배너 슬라이드 선택">
+            {heroSlides.map(({ desktop }, index) => (
+              <button
+                key={desktop}
+                type="button"
+                className={`${styles.heroDot} ${index === activeHeroSlide ? styles.heroDotActive : ""}`}
+                aria-label={`${index + 1}번 배너 보기`}
+                aria-current={index === activeHeroSlide ? "true" : undefined}
+                onClick={() => setActiveHeroSlide(index)}
+              />
+            ))}
+          </div>
         </div>
       </section>
 
@@ -120,8 +214,26 @@ export default function Home() {
         )}
       </section>
 
+      <section className={`${styles.section} ${styles.exchangeSection}`}>
+        <SectionLabel number="02">EXCHANGE</SectionLabel>
+        <div className={styles.exchangeTitle}>
+          <span aria-hidden="true" />
+          <p>실시간 환율</p>
+        </div>
+            <Link to="/destination" className={styles.exchangeCard}>
+          <div>
+            <span>100 JPY</span>
+            <strong>920</strong>
+          </div>
+          <footer>
+            <span>환율 변동률&nbsp; +0.18%</span>
+            <span>자세히 보기&nbsp; →</span>
+          </footer>
+        </Link>
+      </section>
+
       <section className={styles.section}>
-        <SectionLabel number="02">EDITOR&apos;S PICK</SectionLabel>
+        <SectionLabel number="03">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
           <TextLink to="/plan">VIEW ALL</TextLink>
@@ -149,8 +261,8 @@ export default function Home() {
       </section>
 
       <section className={`${styles.section} ${styles.destinationSection}`}>
-        <SectionLabel number="03">DESTINATIONS</SectionLabel>
-        <Link to="/destinations"><h2 className={styles.scriptTitle}>Where to Next?</h2></Link>
+        <SectionLabel number="04">DESTINATIONS</SectionLabel>
+        <h2 className={styles.scriptTitle}>Where to Next?</h2>
         <div className={styles.destinationHero} />
         <div className={styles.destinationList}>
           {[
@@ -158,7 +270,7 @@ export default function Home() {
             ["JAPAN", "교토, 도쿄", styles.japanImage],
             ["CHINA", "상하이", styles.chinaImage],
           ].map(([country, cities, imageClass]) => (
-            <Link to={`/destinations?country=${country}`} key={country}>
+            <Link to={`/desrination?country=${country.toLowerCase()}`} key={country}>
               <div>
                 <span>EAST ASIA</span>
                 <h3>{country}</h3>
@@ -170,22 +282,8 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`${styles.section} ${styles.eventSection}`}>
-        <SectionLabel number="04">EVENT</SectionLabel>
-        <div className={styles.rowTitle}>
-          <div>
-            <h2>EVENT</h2>
-            <p>짐싸고 쿠폰 받자!</p>
-          </div>
-          <TextLink to="/event">자세히 보기</TextLink>
-        </div>
-        <Link to="/event" className={styles.eventVisual}>
-          <span>PACK &amp; GO</span>
-        </Link>
-      </section>
-
       <section className={styles.section}>
-        <SectionLabel number="05">ESSENTIALS</SectionLabel>
+        <SectionLabel number="05">TRAVEL SHOPPING</SectionLabel>
         <div className={styles.rowTitle}>
           <p>여행 필수템</p>
           <TextLink to="/shop">TRAVEL SHOPPING</TextLink>

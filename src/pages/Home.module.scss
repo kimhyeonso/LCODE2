@@ -18,7 +18,7 @@ $space-6: 64px;
 $type-caption: 11px;
 $type-small: 12px;
 $type-body: 14px;
-$type-section: 26px;
+$type-section: 32px;
 $type-display: 36px;
 
 .home {
@@ -30,21 +30,72 @@ $type-display: 36px;
   width: 100%;
 }
 .heroVisual {
-  height: 454px;
+  width: 100%;
+  height: 224px;
   background: $home-placeholder;
   position: relative;
   overflow: hidden;
-  background-image: url("../assets/images/busan_korea.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
 }
-.heroVisual span {
-  display: none;
+.heroTrack {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 650ms ease;
+}
+.heroSlide {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+}
+.heroSlide picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.heroSlide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  user-select: none;
+}
+.heroDots {
+  position: absolute;
+  z-index: 1;
+  bottom: 20px;
+  left: 50%;
+  display: flex;
+  gap: 9px;
+  transform: translateX(-50%);
+}
+.heroDot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, .85);
+  border-radius: 50%;
+  background: transparent;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .38);
+  cursor: pointer;
+}
+.heroDotActive {
+  background: #fff;
+}
+@media (prefers-reduced-motion: reduce) {
+  .heroTrack {
+    transition: none;
+  }
+}
+@media (max-width: 640px) {
+  .heroVisual {
+    height: auto;
+    aspect-ratio: 1122 / 1402;
+  }
 }
 .section {
   padding: 0 $space-2;
-  margin-top: $space-6;
+  margin-top: $space-3;
 }
 .sectionLabel {
   height: 32px;
@@ -58,16 +109,17 @@ $type-display: 36px;
 }
 .section > h1 {
   font-family: $serif;
-  font-size: $type-section;
+  font-size: 32px;
   font-weight: 600;
+  letter-spacing: 0.02em;
   line-height: 1.1;
-  margin: $space-4 $space-2 $space-3;
+  margin: $space-3 0 $space-2;
 }
 .rowTitle {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin: 0 $space-2 $space-2;
+  margin: 0 0 $space-2;
   min-height: 27px;
 }
 .rowTitle > p,
@@ -151,9 +203,9 @@ $type-display: 36px;
   font-weight: 400;
 }
 .upcomingMain {
-  min-height: 200px;
+  min-height: 300px;
   display: grid;
-  grid-template-columns: 54% 46%;
+  grid-template-columns: 46% 54%;
 }
 .upcomingMain > div:first-child {
   padding: $space-4 $space-2;
@@ -174,10 +226,55 @@ $type-display: 36px;
   color: $home-muted;
 }
 .upcomingImage {
-  background-image: url("../assets/images/fukuoka_japan.jpg");
+  background-color: $home-placeholder;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+}
+.exchangeTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: $space-2 0 10px;
+}
+.exchangeTitle span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #e45c55;
+}
+.exchangeTitle p {
+  margin: 0;
+  font-size: $type-body;
+}
+.exchangeCard {
+  display: block;
+  align-items: center;
+  padding: $space-2;
+  background: $home-placeholder;
+  color: $home-ink;
+}
+.exchangeCard > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 54px;
+}
+.exchangeCard > div span {
+  color: $home-muted;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+}
+.exchangeCard strong {
+  font: 600 35px/1 $serif;
+}
+.exchangeCard footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 9px;
+  border-top: 1px solid rgba($home-ink, .12);
+  color: $home-muted;
+  font-size: 10px;
 }
 .tripMeta {
   margin: 0;
@@ -271,19 +368,19 @@ $type-display: 36px;
   margin-bottom: 0;
 }
 .destinationSection {
-  padding: 0;
+  padding: 0 $space-2;
 }
 .destinationSection .sectionLabel {
-  margin: 0 $space-2;
+  margin: 0;
 }
 .scriptTitle {
   font: 600 30px/1.1 $serif;
-  margin: $space-4 $space-3;
+  margin: $space-4 0;
 }
 .destinationHero {
-  height: 313px;
+  height: 316px;
   background: $home-sage;
-  background-image: url("../assets/images/beijing_china.jpg");
+  background-image: url("../assets/images/BANNER.png");
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -363,10 +460,10 @@ $type-display: 36px;
 .essentialGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
+  gap: 10px;
 }
 .essentialGrid a > div {
-  height: 234px;
+  aspect-ratio: 1;
   background: $home-placeholder;
   overflow: hidden;
 }
@@ -445,6 +542,12 @@ $type-display: 36px;
   letter-spacing: 1px;
 }
 
+@media (max-width: 640px) {
+  .eventSection {
+    display: none;
+  }
+}
+
 @media (min-width: 641px) {
   .home {
     padding-bottom: 0;
@@ -455,12 +558,21 @@ $type-display: 36px;
     margin-left: auto;
     margin-right: auto;
   }
+  .hero {
+    width: 100%;
+  }
   .heroVisual {
     height: min(620px, 70vh);
     margin-top: 28px;
   }
+  .destinationSection > .destinationHero {
+    height: 500px;
+  }
   .section {
     margin-top: 96px;
+  }
+  .eventSection {
+    display: block;
   }
   .pickGrid {
     grid-template-columns: 2fr 1fr 1fr;
@@ -472,20 +584,8 @@ $type-display: 36px;
   .smallPick .placeholder {
     height: 360px;
   }
-  .destinationSection {
-    width: 100%;
-  }
-  .destinationSection .sectionLabel,
-  .destinationSection .scriptTitle {
-    width: min(1100px, calc(100% - 64px));
-    margin-left: auto;
-    margin-right: auto;
-  }
   .destinationList a {
     grid-template-columns: 1fr 1fr;
-  }
-  .essentialGrid a > div {
-    height: 320px;
   }
   .journalVisual {
     height: 520px;
@@ -502,72 +602,35 @@ $type-display: 36px;
     margin-left: 220px;
   }
 
-  .sectionLabel {
-    font-size: 12px;
+  .hero,
+  .section {
+    width: min(1320px, calc(100% - 112px));
   }
-  .section > h1 {
-    font-size: 32px;
+  .hero {
+    width: 100%;
   }
-  .rowTitle > p {
-    font-size: 16px;
-  }
-  .rowTitle div > h2 {
-    font-size: 32px;
-  }
-  .rowTitle div > p,
-  .textLink {
-    font-size: 12px;
-  }
-  .upcomingMain strong {
-    font-size: 52px;
-  }
-  .upcomingMain h2 {
-    font-size: 24px;
-  }
-  .upcomingMain p,
-  .tripMeta dd {
-    font-size: 13px;
-  }
-  .tripMeta dt {
-    font-size: 11px;
-  }
-  .pickGrid h3 {
-    font-size: 17px;
-  }
-  .pickGrid p {
-    font-size: 12px;
-  }
-  .featurePick h3 {
-    font-size: 16px;
-  }
-  .scriptTitle {
-    font-size: 38px;
-  }
-  .destinationList span {
-    font-size: 11px;
-  }
-  .destinationList h3 {
-    font-size: 42px;
-  }
-  .destinationList p {
-    font-size: 14px;
-  }
-  .essentialGrid h3 {
-    font-size: 13px;
-  }
-  .essentialGrid p {
-    font-size: 11px;
-  }
-  .journalMeta {
-    font-size: 11px;
-  }
-  .journalLink > h3 {
-    font-size: 28px;
-  }
-  .journalLink > p {
-    font-size: 15px;
-  }
-  .journalLink > footer {
-    font-size: 12px;
-  }
+
+  .sectionLabel { font-size: 12px; }
+  .section > h1 { font-size: 32px; }
+  .rowTitle > p { font-size: 16px; }
+  .rowTitle div > h2 { font-size: 32px; }
+  .rowTitle div > p, .textLink { font-size: 12px; }
+  .upcomingMain strong { font-size: 52px; }
+  .upcomingMain h2 { font-size: 24px; }
+  .upcomingMain p, .tripMeta dd { font-size: 13px; }
+  .tripMeta dt { font-size: 11px; }
+  .pickGrid h3 { font-size: 17px; }
+  .pickGrid p { font-size: 12px; }
+  .featurePick h3 { font-size: 16px; }
+  .scriptTitle { font-size: 38px; }
+  .destinationList a { height: 240px; }
+  .destinationList span { font-size: 11px; }
+  .destinationList h3 { font-size: 42px; }
+  .destinationList p { font-size: 14px; }
+  .essentialGrid h3 { font-size: 13px; }
+  .essentialGrid p { font-size: 11px; }
+  .journalMeta { font-size: 11px; }
+  .journal article > h3 { font-size: 28px; }
+  .journal article > p { font-size: 15px; }
+  .journal article > footer { font-size: 12px; }
 }
