@@ -148,13 +148,13 @@ $serif-display: $display;
   right: 1rem;
   bottom: 1rem;
   display: grid;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   border: 1px solid currentcolor;
   border-radius: 50%;
   place-items: center;
   content: "→";
-  font: 400 1.25rem/1 $korean;
+  font: 400 1rem/1 $korean;
 }
 
 /* D-Day count 부분 */
@@ -192,24 +192,7 @@ $serif-display: $display;
 }
 
 // 일정 카드와 좌우 이동 버튼을 감싸는 영역입니다.
-.tripArea { margin-top: 58px; position: relative; }
-.planCounter { margin: 0 0 10px; color: #98948d; font: 400 .66rem $korean; text-align: right; }
-
-.emptyState {
-  min-height: 470px;
-  margin-top: 58px;
-  padding: 86px 48px;
-  border: 1px solid #d2d0cd;
-  background: #f8f5ef;
-  color: #98948d;
-  text-align: center;
-
-  > span { font: 400 .56rem $korean; letter-spacing: .18em !important; }
-  h2 { margin: 24px 0 12px; color: $ink; font: 700 1.35rem $korean; }
-  p { margin: 0; font: 400 .7rem/1.8 $korean; }
-  a { width: min(100%, 260px); height: 52px; display: flex; align-items: center; justify-content: space-between; margin: 34px auto 0; padding: 0 20px; background: $ink; color: #fff; font: 600 .68rem $korean; }
-  a b { font-weight: 400; }
-}
+.tripArea { margin-top: 110px; position: relative; }
 
 .tripCard { border: 1px solid #d2d0cd; background: $paper; }
 
@@ -236,13 +219,20 @@ $serif-display: $display;
 .tripInfo { padding: 26px 32px 26px; }
 
 /* 후쿠오카 3박 4일 부분 */
-.tripInfo h2 { margin: 0; font: 700 1.5rem $korean; letter-spacing: -0.07em; }
+/* "아직 일정이 없어요" 제목 글자 크기는 아래 font-size에서 수정 ----------------------- */
+.tripInfo h2 {
+  margin: 0;
+  font-family: $korean;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.07em;
+}
 
 /* 나만의 여행 부분 */
-.subtitle { margin: .45rem 0 0; color: #949494; font: 400 .86rem $korean; }
+.subtitle { margin: .45rem 0 0; color: #949494; font: 400 .60rem $korean; }
 
 /* 2026.08.17 - 08.20 | 12개 일정 부분 */
-.date { margin: 22px 0 18px; padding-bottom: 18px; border-bottom: 1px solid #ddd9d1; color: #666; font: 400 .78rem $korean; }
+.date { margin: 22px 0 18px; padding-bottom: 18px; border-bottom: 1px solid #ddd9d1; color: #666; font: 400 .68rem $korean; }
 
 /* 일정 상세 보기 버튼 부분 */
 .detailButton {
@@ -339,6 +329,7 @@ $serif-display: $display;
   }
 
   .tripInfo { padding: 0.65rem 1.1rem 0.3rem; }
+  /* 모바일의 "아직 일정이 없어요" 글자 크기는 아래에서 수정 ----------------------- */
   .tripInfo h2 { font-size: 0.95rem; }
   .subtitle { margin-top: 0.22rem; font-size: 0.58rem; }
   .date { margin: 0.3rem 0 0.5rem; font-size: 0.5rem; }

@@ -60,7 +60,8 @@ h1 {
 .ticketBody {
   position: relative;
   min-height: 7rem;
-  padding: 1.05rem 1.15rem .4rem;
+  padding: 1.05rem 1.15rem 1rem;
+  margin-top: -0.5rem;
   border-bottom: 1px solid #e5e2dd;
 }
 
@@ -160,7 +161,7 @@ h1 {
 .couponList {
   display: grid;
   gap: 1.3rem;
-  padding-top: 4rem;
+  padding-top: 1.5rem;
 }
 // A barely-there paper shadow separates the stacked coupons from the page, like a magazine insert.
 .couponList .ticket {

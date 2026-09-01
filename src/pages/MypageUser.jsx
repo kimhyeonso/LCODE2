@@ -5,7 +5,8 @@ import { getPlans } from "../services/firestoreService";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  ["주문 내역", "/itinerary"],
+  ["여행 주문 내역", "/itinerary"],
+  ["상품 주문 내역", "/buy"],
   ["나의 리뷰", "/mystories"],
   ["찜한 상품", "/wishlist"],
   ["쿠폰함", "/coupon"],

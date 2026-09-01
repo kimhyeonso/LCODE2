@@ -25,6 +25,7 @@ import Alarm from "./pages/Alarm";
 import Notice from "./pages/Notice";
 import OpenGuide from "./pages/OpenGuide";
 import Review from "./pages/Review";
+import Buy from "./pages/Buy";
 import NotFound from "./pages/NotFound";
 import Saved from "./pages/Saved";
 import Cart from "./pages/Cart";
@@ -86,6 +87,7 @@ export default function App() {
           <Route path="/travel-planner" element={<TravelPlanner />} />
           <Route path="/login" element={<Login />} />
           <Route path="/itinerary" element={<Itinerary />} />
+          <Route path="/buy" element={<Buy />} />
           <Route path="/wishlist" element={<Wishlist />} />
           <Route path="/mystories" element={<Mystories />} />
           <Route
