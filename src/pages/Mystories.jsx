@@ -1,18 +1,22 @@
 import MypageBackLink from "../components/MypageBackLink";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import products from "../data/products.json";
+import { db } from "../firebase/firestore";
+import { useAuth } from "../hooks/useAuth";
 import styles from "./Mystories.module.scss";
 
 const trips = ["후쿠오카 3박 4일", "후쿠오카 3박 4일"];
 const filters = ["ALL", "POUCH", "FLIGHT", "TECH", "KIT"];
 const randomFilters = filters.slice(1);
+const reviewStorageKey = "lcode-saved-reviews";
 const categorizedProducts = products.map((product) => {
   const randomIndex = [...product.id].reduce((total, character) => total + character.charCodeAt(0), 0) % randomFilters.length;
   return { ...product, displayCategory: randomFilters[randomIndex] };
 });
 
-function StoryCard({ title }) {
+function StoryCard({ title, review }) {
   return (
     <article className={styles.storyCard}>
       <div className={styles.storyImage} aria-hidden="true" />
@@ -22,7 +26,9 @@ function StoryCard({ title }) {
         <small>2026.08.17 - 08.20 | 12개 일정</small>
         <footer>
           <button type="button">상세 보기</button>
-          <Link className={styles.reviewLink} to="/review" state={{ tripTitle: title }}>리뷰쓰기</Link>
+          <Link className={styles.reviewLink} to="/review" state={{ tripTitle: title, review }}>
+            {review ? "리뷰 수정" : "리뷰쓰기"}
+          </Link>
         </footer>
       </div>
     </article>
@@ -30,7 +36,34 @@ function StoryCard({ title }) {
 }
 
 export default function Mystories() {
+  const { user } = useAuth();
   const [selectedFilter, setSelectedFilter] = useState("ALL");
+  const [reviews, setReviews] = useState(() => {
+    try { return JSON.parse(localStorage.getItem(reviewStorageKey)) || []; }
+    catch { return []; }
+  });
+
+  useEffect(() => {
+    if (!db || !user?.uid) return;
+
+    getDocs(collection(db, "reviews"))
+      .then((snapshot) => {
+        const remoteReviews = snapshot.docs
+          .map((reviewDoc) => ({ id: reviewDoc.id, ...reviewDoc.data() }))
+          .filter((review) => review.userId === user.uid);
+        if (!remoteReviews.length) return;
+
+        setReviews((localReviews) => {
+          const merged = [...remoteReviews];
+          localReviews.forEach((review) => {
+            if (!merged.some((item) => item.id === review.id)) merged.push(review);
+          });
+          localStorage.setItem(reviewStorageKey, JSON.stringify(merged));
+          return merged;
+        });
+      })
+      .catch((error) => console.warn("저장된 리뷰를 불러오지 못했습니다.", error));
+  }, [user?.uid]);
   const visibleProducts = selectedFilter === "ALL"
     ? categorizedProducts
     : categorizedProducts.filter((product) => product.displayCategory === selectedFilter);
@@ -44,7 +77,15 @@ export default function Mystories() {
           <h1 id="my-stories-title">MY STORIES</h1>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
           <div className={styles.divider} />
-          <div className={styles.storyList}>{trips.map((title, index) => <StoryCard key={index} title={title} />)}</div>
+          <div className={styles.storyList}>
+            {trips.map((title, index) => (
+              <StoryCard
+                key={index}
+                title={title}
+                review={reviews.find((item) => item.tripTitle === title)}
+              />
+            ))}
+          </div>
         </section>
 
         <section className={styles.shopping} aria-labelledby="shopping-title">

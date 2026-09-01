@@ -14,6 +14,20 @@
 
 .profileEdit * { box-sizing: border-box; }
 
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .profileEdit {
+    width: calc(100% - 220px);
+    margin-top: 0;
+    margin-left: 220px;
+    padding-inline: 56px;
+  }
+
+  .layout {
+    width: min(1320px, 100%);
+  }
+}
+
 .layout {
   display: grid;
   grid-template-columns: 122px 525px 555px;
@@ -145,4 +159,13 @@
   .withdrawNotice span:last-child { grid-column: 2; }
   .archive { padding: .65rem; gap: 1rem; }
   .archive figcaption { gap: .5rem; font-size: .52rem; letter-spacing: .1em; }
+}
+
+@media (min-width: 1451px) {
+  .layout { width: min(1320px, 100%); }
+}
+
+@media (min-width: 901px) {
+  .profileEdit { padding-right: 0; padding-left: 0; }
+  .layout { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

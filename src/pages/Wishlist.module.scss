@@ -13,7 +13,7 @@
 // 공통 헤더 아래의 위시리스트 전체 영역입니다.
 .wishlist {
   min-height: calc(100vh - 10rem); // Keep short pages visually full-height.
-  padding: 3.75rem 0 4rem; // Create breathing room above and below content.
+  padding: 1.875rem 0 4rem; // Reduce the desktop top breathing room by half.
   background-color: $paper;
   @include korean-font;
 }
@@ -179,11 +179,17 @@ h1 {
 
 // MY STORIES와 동일한 데스크톱 본문 여백을 사용합니다.
 @media (min-width: 901px) {
+  .wishlist {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding-inline: 56px;
+    display: flex;
+    align-items: center;
+  }
+
   .content {
-    --desktop-left-gap: clamp(64px, 7.65vw, 140px);
-    width: min(1320px, calc(100% - 220px - var(--desktop-left-gap) - 64px));
-    margin-right: 0;
-    margin-left: calc(220px + var(--desktop-left-gap));
+    width: min(1320px, 100%);
+    margin: 0 auto;
   }
 }
 
@@ -264,4 +270,10 @@ h1 {
     height: auto;
     aspect-ratio: 0.97 / 1; // Keep the near-square card proportion from the mobile mockup.
   }
+}
+
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .wishlist { margin-top: -0.5rem; padding-right: 0; padding-left: 0; }
+  .content { width: min(1320px, calc(100% - 112px)); margin-inline: auto; }
 }

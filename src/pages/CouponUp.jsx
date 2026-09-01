@@ -39,6 +39,10 @@ export default function CouponUp() {
     localStorage.setItem(storageKey, JSON.stringify([...saved, coupon]));
     setRegistered(coupon);
     setError("");
+    // 등록 직후 쿠폰함으로 이동하고, 방금 등록한 쿠폰이 들어 있는 페이지를 엽니다.
+    setTimeout(() => {
+      navigate("/coupon", { state: { registeredCouponCode: coupon.code } });
+    }, 700);
   };
 
   return (

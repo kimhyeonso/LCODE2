@@ -34,7 +34,7 @@
   align-self: stretch;
   // Position the profile block like the reference without changing its existing type styles.
   padding: 0 4rem 0 clamp(2rem, 5vw, 5rem);
-  margin-top: -1rem;
+  margin-top: -2rem;
 }
 
 // Upper-right profile decoration. Adjust only opacity to change its transparency.
@@ -64,16 +64,17 @@
 .edit { display: inline-block; margin-top: .6rem; border: 1px solid #383837; padding: .32rem .95rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
 
 // Limit the menu and its dividers to two-thirds of the profile area.
-.menuList { display: grid; width: 66.6667%; gap: 0; margin-top: 1.75rem; border-top: 1px solid #dedad3; }
+.menuList { display: grid; width: 66.6667%; gap: 0; margin-top: 7.7rem; border-top: 1px solid #dedad3; }
 .menuList a, .menuList button { display: grid; grid-template-columns: .9rem 1fr auto; align-items: center; column-gap: .45rem; min-height: 1.75rem; border: 0; border-bottom: 1px solid #dedad3; background: transparent; color: #222; font: 400 .62rem $korean; text-align: left; text-decoration: none; }
 .menuList a::before, .menuList button::before { width: .7rem; height: .7rem; background: center / contain no-repeat; content: ""; }
 // Menu icons are sourced from public/Mypage-img and stay attached to their own menu row.
 .menuList a:nth-child(1)::before { background-image: url("/Mypage-img/bag.svg"); }
-.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/pen.svg"); }
-.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/heart.svg"); }
-.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/ticket.svg"); }
-.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/bell.svg"); }
-.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/set.svg"); }
+.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/bag2.svg"); }
+.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/pen.svg"); }
+.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/heart.svg"); }
+.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/ticket.svg"); }
+.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/bell.svg"); }
+.menuList a:nth-child(7)::before { background-image: url("/Mypage-img/set.svg"); }
 .menuList button::before { background-image: url("/Mypage-img/out.svg"); }
 .menuList span { color: #aaa49c; }
 .menuList button { color: #aaa49c; }
@@ -139,4 +140,36 @@
   .summary article { min-height: 0; padding: .6rem; }
   .summary strong { font-size: 1.1rem; }
   .recent h2 { font-size: .82rem; }
+}
+
+// Desktop workspace: align the my-page dashboard with SHOP's catalog gutters.
+@media (min-width: 901px) {
+  /* 여기가 위쪽 마진 ----------------------- */
+  .mypageUser {
+    margin-top: 0;
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .content {
+    grid-template-columns: minmax(0, 2fr) minmax(360px, 1fr);
+    width: min(1320px, calc(100% - 112px));
+    margin-inline: auto;
+  }
+
+  .profile {
+    padding-right: 0;
+    padding-left: 56px;
+  }
+
+  // 프로필 정보만 아래로 이동합니다. 메뉴(.menuList)의 위치에는 영향을 주지 않습니다.
+  .profile > .eyebrow,
+  .profile > .greeting,
+  .profile > h1,
+  .profile > .email,
+  .profile > .edit {
+    transform: translateY(2.5rem);
+  }
+
+  .menuList { width: 100%; }
 }

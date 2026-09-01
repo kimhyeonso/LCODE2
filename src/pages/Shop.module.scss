@@ -1908,12 +1908,15 @@
 ========================================================= */
 
 .completePage {
-  min-height: 72vh;
+  min-height: 100vh;
 
   padding:
     clamp(64px, 6vw, 96px)
     clamp(54px, 5vw, 88px)
     110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 
