@@ -12,9 +12,132 @@ import {
 import products from "../data/products.json";
 import { useShop } from "../hooks/useShop";
 
+
+/* =========================================================
+   PRODUCT IMAGES
+
+   최신 products.json 실제 상품 순서 기준
+   P017, P027은 현재 상품 목록에 없어서 번호를 당겨 사용
+
+   각 상품:
+   - n_1.png / n_2.png = gallery
+   - n.png = PRODUCT DETAIL
+========================================================= */
+
+/* 01 P001 여행용 크로스백 */
 import productMain01 from "../assets/images/detail/1_1.png";
 import productSub01 from "../assets/images/detail/1_2.png";
 import productDetail01 from "../assets/images/detail/1.png";
+
+/* 02 P002 여행용 목베개 */
+import productMain02 from "../assets/images/detail/2_1.png";
+import productSub02 from "../assets/images/detail/2_2.png";
+import productDetail02 from "../assets/images/detail/2.png";
+
+/* 03 P003 수면 온열안대 */
+import productMain03 from "../assets/images/detail/3_1.png";
+import productSub03 from "../assets/images/detail/3_2.png";
+import productDetail03 from "../assets/images/detail/3.png";
+
+/* 04 P004 쿨링안대 */
+import productMain04 from "../assets/images/detail/4_1.png";
+import productSub04 from "../assets/images/detail/4_2.png";
+import productDetail04 from "../assets/images/detail/4.png";
+
+/* 05 P005 아이스 넥쿨러 */
+import productMain05 from "../assets/images/detail/5_1.png";
+import productSub05 from "../assets/images/detail/5_2.png";
+import productDetail05 from "../assets/images/detail/5.png";
+
+/* 06 P006 넥밴드 선풍기 */
+import productMain06 from "../assets/images/detail/6_1.png";
+import productSub06 from "../assets/images/detail/6_2.png";
+import productDetail06 from "../assets/images/detail/6.png";
+
+/* 07 P009 여행용 보틀 */
+import productMain07 from "../assets/images/detail/7_1.png";
+import productSub07 from "../assets/images/detail/7_2.png";
+import productDetail07 from "../assets/images/detail/7.png";
+
+/* 08 P010 여행용 귀마개 */
+import productMain08 from "../assets/images/detail/8_1.png";
+import productSub08 from "../assets/images/detail/8_2.png";
+import productDetail08 from "../assets/images/detail/8.png";
+
+/* 09 P011 여행용 키트 set */
+import productMain09 from "../assets/images/detail/9_1.png";
+import productSub09 from "../assets/images/detail/9_2.png";
+import productDetail09 from "../assets/images/detail/9.png";
+
+/* 10 P012 100ml 공병 세트 */
+import productMain10 from "../assets/images/detail/10_1.png";
+import productSub10 from "../assets/images/detail/10_2.png";
+import productDetail10 from "../assets/images/detail/10.png";
+
+/* 11 P014 접이식 보조가방 */
+import productMain11 from "../assets/images/detail/11_1.png";
+import productSub11 from "../assets/images/detail/11_2.png";
+import productDetail11 from "../assets/images/detail/11.png";
+
+/* 12 P015 방수 파우치 */
+import productMain12 from "../assets/images/detail/12_1.png";
+import productSub12 from "../assets/images/detail/12_2.png";
+import productDetail12 from "../assets/images/detail/12.png";
+
+/* 13 P016 압축 지퍼백 */
+import productMain13 from "../assets/images/detail/13_1.png";
+import productSub13 from "../assets/images/detail/13_2.png";
+import productDetail13 from "../assets/images/detail/13.png";
+
+/* 14 P018 캐리어 커버 */
+import productMain14 from "../assets/images/detail/14_1.png";
+import productSub14 from "../assets/images/detail/14_2.png";
+import productDetail14 from "../assets/images/detail/14.png";
+
+/* 15 P019 여행용 약통 */
+import productMain15 from "../assets/images/detail/15_1.png";
+import productSub15 from "../assets/images/detail/15_2.png";
+import productDetail15 from "../assets/images/detail/15.png";
+
+/* 16 P020 멀미 밴드 */
+import productMain16 from "../assets/images/detail/16_1.png";
+import productSub16 from "../assets/images/detail/16_2.png";
+import productDetail16 from "../assets/images/detail/16.png";
+
+/* 17 P021 방수 밴드 */
+import productMain17 from "../assets/images/detail/17_1.png";
+import productSub17 from "../assets/images/detail/17_2.png";
+import productDetail17 from "../assets/images/detail/17.png";
+
+/* 18 P022 기내용 담요 / 숄 */
+import productMain18 from "../assets/images/detail/18_1.png";
+import productSub18 from "../assets/images/detail/18_2.png";
+import productDetail18 from "../assets/images/detail/18.png";
+
+/* 19 P023 미니 고데기 */
+import productMain19 from "../assets/images/detail/19_1.png";
+import productSub19 from "../assets/images/detail/19_2.png";
+import productDetail19 from "../assets/images/detail/19.png";
+
+/* 20 P024 멀티 어댑터 */
+import productMain20 from "../assets/images/detail/20_1.png";
+import productSub20 from "../assets/images/detail/20_2.png";
+import productDetail20 from "../assets/images/detail/20.png";
+
+/* 21 P025 멀티탭 / 분배기 */
+import productMain21 from "../assets/images/detail/21_1.png";
+import productSub21 from "../assets/images/detail/21_2.png";
+import productDetail21 from "../assets/images/detail/21.png";
+
+/* 22 P026 보조배터리 */
+import productMain22 from "../assets/images/detail/22_1.png";
+import productSub22 from "../assets/images/detail/22_2.png";
+import productDetail22 from "../assets/images/detail/22.png";
+
+/* 23 P028 휴대폰 방수팩 */
+import productMain23 from "../assets/images/detail/23_1.png";
+import productSub23 from "../assets/images/detail/23_2.png";
+import productDetail23 from "../assets/images/detail/23.png";
 
 import styles from "./Shop.module.scss";
 
@@ -24,56 +147,328 @@ import styles from "./Shop.module.scss";
 ========================================================= */
 
 const productImageMap = {
+  /* 01 여행용 크로스백 */
   P001: {
     gallery: [
       productMain01,
       productSub01,
     ],
-
     detail: [
       productDetail01,
+    ],
+  },
+
+  /* 02 여행용 목베개 */
+  P002: {
+    gallery: [
+      productMain02,
+      productSub02,
+    ],
+    detail: [
+      productDetail02,
+    ],
+  },
+
+  /* 03 수면 온열안대 */
+  P003: {
+    gallery: [
+      productMain03,
+      productSub03,
+    ],
+    detail: [
+      productDetail03,
+    ],
+  },
+
+  /* 04 쿨링안대 */
+  P004: {
+    gallery: [
+      productMain04,
+      productSub04,
+    ],
+    detail: [
+      productDetail04,
+    ],
+  },
+
+  /* 05 아이스 넥쿨러 */
+  P005: {
+    gallery: [
+      productMain05,
+      productSub05,
+    ],
+    detail: [
+      productDetail05,
+    ],
+  },
+
+  /* 06 넥밴드 선풍기 */
+  P006: {
+    gallery: [
+      productMain06,
+      productSub06,
+    ],
+    detail: [
+      productDetail06,
+    ],
+  },
+
+  /* 07 여행용 보틀 */
+  P009: {
+    gallery: [
+      productMain07,
+      productSub07,
+    ],
+    detail: [
+      productDetail07,
+    ],
+  },
+
+  /* 08 여행용 귀마개 */
+  P010: {
+    gallery: [
+      productMain08,
+      productSub08,
+    ],
+    detail: [
+      productDetail08,
+    ],
+  },
+
+  /* 09 여행용 키트 set */
+  P011: {
+    gallery: [
+      productMain09,
+      productSub09,
+    ],
+    detail: [
+      productDetail09,
+    ],
+  },
+
+  /* 10 100ml 공병 세트 */
+  P012: {
+    gallery: [
+      productMain10,
+      productSub10,
+    ],
+    detail: [
+      productDetail10,
+    ],
+  },
+
+  /* 11 접이식 보조가방 */
+  P014: {
+    gallery: [
+      productMain11,
+      productSub11,
+    ],
+    detail: [
+      productDetail11,
+    ],
+  },
+
+  /* 12 방수 파우치 */
+  P015: {
+    gallery: [
+      productMain12,
+      productSub12,
+    ],
+    detail: [
+      productDetail12,
+    ],
+  },
+
+  /* 13 압축 지퍼백 */
+  P016: {
+    gallery: [
+      productMain13,
+      productSub13,
+    ],
+    detail: [
+      productDetail13,
+    ],
+  },
+
+  /* 14 캐리어 커버 */
+  P018: {
+    gallery: [
+      productMain14,
+      productSub14,
+    ],
+    detail: [
+      productDetail14,
+    ],
+  },
+
+  /* 15 여행용 약통 */
+  P019: {
+    gallery: [
+      productMain15,
+      productSub15,
+    ],
+    detail: [
+      productDetail15,
+    ],
+  },
+
+  /* 16 멀미 밴드 */
+  P020: {
+    gallery: [
+      productMain16,
+      productSub16,
+    ],
+    detail: [
+      productDetail16,
+    ],
+  },
+
+  /* 17 방수 밴드 */
+  P021: {
+    gallery: [
+      productMain17,
+      productSub17,
+    ],
+    detail: [
+      productDetail17,
+    ],
+  },
+
+  /* 18 기내용 담요 / 숄 */
+  P022: {
+    gallery: [
+      productMain18,
+      productSub18,
+    ],
+    detail: [
+      productDetail18,
+    ],
+  },
+
+  /* 19 미니 고데기 */
+  P023: {
+    gallery: [
+      productMain19,
+      productSub19,
+    ],
+    detail: [
+      productDetail19,
+    ],
+  },
+
+  /* 20 멀티 어댑터 */
+  P024: {
+    gallery: [
+      productMain20,
+      productSub20,
+    ],
+    detail: [
+      productDetail20,
+    ],
+  },
+
+  /* 21 멀티탭 / 분배기 */
+  P025: {
+    gallery: [
+      productMain21,
+      productSub21,
+    ],
+    detail: [
+      productDetail21,
+    ],
+  },
+
+  /* 22 보조배터리 */
+  P026: {
+    gallery: [
+      productMain22,
+      productSub22,
+    ],
+    detail: [
+      productDetail22,
+    ],
+  },
+
+  /* 23 휴대폰 방수팩 */
+  P028: {
+    gallery: [
+      productMain23,
+      productSub23,
+    ],
+    detail: [
+      productDetail23,
     ],
   },
 };
 
 
 /* =========================================================
-   OPTIONS
+   PRODUCT OPTIONS
 ========================================================= */
 
 const PRODUCT_OPTIONS = [
   {
     id: "standard",
-    label: "기본 / Standard",
+
+    label:
+      "기본 / Standard",
+
     extraPrice: 0,
   },
 
   {
     id: "gift",
+
     label:
       "선물 포장 / Gift Wrap",
+
     extraPrice: 2500,
   },
 ];
 
 
+/* =========================================================
+   PRODUCT DETAIL PAGE
+========================================================= */
+
 export default function ProductDetailPage() {
-  const { productId } =
-    useParams();
+  /* =======================================================
+     ROUTER
+  ======================================================= */
+
+  const {
+    productId,
+  } = useParams();
+
 
   const navigate =
     useNavigate();
 
+
+  /* =======================================================
+     PRODUCT
+  ======================================================= */
+
   const product =
     products.find(
       (item) =>
-        item.id === productId
+        item.id ===
+        productId
     );
+
+
+  /* =======================================================
+     SHOP
+  ======================================================= */
 
   const {
     addToCart,
   } = useShop();
 
+
+  /* =======================================================
+     STATE
+  ======================================================= */
 
   const [
     quantity,
@@ -105,6 +500,16 @@ export default function ProductDetailPage() {
   ] = useState(0);
 
 
+  /* =======================================================
+     IMAGE SET
+
+     아직 이미지 안 넣은 상품은
+     gallery/detail이 빈 배열이 됨
+
+     → import 오류 없이
+     → 기존 플레이스홀더 표시
+  ======================================================= */
+
   const imageSet =
     productImageMap[
       productId
@@ -117,9 +522,14 @@ export default function ProductDetailPage() {
   const galleryImages =
     imageSet.gallery;
 
+
   const detailImages =
     imageSet.detail;
 
+
+  /* =======================================================
+     RESET
+  ======================================================= */
 
   useEffect(() => {
     setActiveImage(0);
@@ -138,6 +548,10 @@ export default function ProductDetailPage() {
   }, [productId]);
 
 
+  /* =======================================================
+     PRODUCT NOT FOUND
+  ======================================================= */
+
   if (!product) {
     return (
       <main
@@ -149,6 +563,7 @@ export default function ProductDetailPage() {
           상품을 찾을 수 없어요.
         </h1>
 
+
         <Link to="/shop">
           SHOP으로 돌아가기 →
         </Link>
@@ -157,10 +572,37 @@ export default function ProductDetailPage() {
   }
 
 
+  /* =======================================================
+     SET PRODUCT
+  ======================================================= */
+
+  const isSetProduct =
+    product.category ===
+      "세트 상품" ||
+    product.id?.startsWith(
+      "S"
+    );
+
+
+  /* =======================================================
+     PRICE
+  ======================================================= */
+
+  const productTotal =
+    Number(
+      product.price
+    ) *
+    Number(
+      quantity
+    );
+
+
   /*
-    ★ Gift Wrap 비용은
-    수량과 관계없이 딱 한 번
+    Gift Wrap은
+    수량과 관계없이
+    주문 단위 +2,500원
   */
+
   const giftWrapFee =
     selectedOption?.id ===
     "gift"
@@ -168,18 +610,18 @@ export default function ProductDetailPage() {
       : 0;
 
 
-  const productTotal =
-    product.price *
-    quantity;
-
-
   const total =
     productTotal +
     giftWrapFee;
 
 
+  /* =======================================================
+     GALLERY
+  ======================================================= */
+
   const hasGallery =
-    galleryImages.length > 0;
+    galleryImages.length >
+    0;
 
 
   const currentImage =
@@ -190,21 +632,31 @@ export default function ProductDetailPage() {
       : null;
 
 
+  /* =======================================================
+     PREVIOUS IMAGE
+  ======================================================= */
+
   const goPrevious =
     () => {
       if (!hasGallery) {
         return;
       }
 
+
       setActiveImage(
-        (prev) =>
-          prev === 0
+        (previous) =>
+          previous === 0
             ? galleryImages.length -
               1
-            : prev - 1
+            : previous -
+              1
       );
     };
 
+
+  /* =======================================================
+     NEXT IMAGE
+  ======================================================= */
 
   const goNext =
     () => {
@@ -212,16 +664,36 @@ export default function ProductDetailPage() {
         return;
       }
 
+
       setActiveImage(
-        (prev) =>
-          prev ===
+        (previous) =>
+          previous ===
           galleryImages.length -
             1
             ? 0
-            : prev + 1
+            : previous +
+              1
       );
     };
 
+
+  /* =======================================================
+     OPTION
+  ======================================================= */
+
+  const handleOptionSelect =
+    (
+      option
+    ) => {
+      setSelectedOption(
+        option
+      );
+    };
+
+
+  /* =======================================================
+     OPTION CHECK
+  ======================================================= */
 
   const checkOption =
     () => {
@@ -232,23 +704,28 @@ export default function ProductDetailPage() {
           "옵션을 선택해주세요."
         );
 
+
         return false;
       }
+
 
       return true;
     };
 
 
+  /* =======================================================
+     ADD TO CART
+  ======================================================= */
+
   const handleAddToCart =
     () => {
-      if (!checkOption()) {
+      if (
+        !checkOption()
+      ) {
         return;
       }
 
 
-      /*
-        ★ 옵션까지 같이 저장
-      */
       addToCart(
         product,
         quantity,
@@ -260,17 +737,28 @@ export default function ProductDetailPage() {
     };
 
 
+  /* =======================================================
+     BUY NOW
+  ======================================================= */
+
   const handleBuyNow =
     () => {
-      if (!checkOption()) {
+      if (
+        !checkOption()
+      ) {
         return;
       }
+
 
       setPurchaseConfirmOpen(
         true
       );
     };
 
+
+  /* =======================================================
+     CONFIRM PURCHASE
+  ======================================================= */
 
   const handleConfirmPurchase =
     () => {
@@ -281,32 +769,37 @@ export default function ProductDetailPage() {
           "옵션을 선택해주세요."
         );
 
+
         setPurchaseConfirmOpen(
           false
         );
+
 
         return;
       }
 
 
       /*
-        장바구니 선택구매 데이터가
-        남아있지 않게 제거
+        장바구니 선택 결제 정보 제거
       */
+
       sessionStorage.removeItem(
         "checkoutSelection"
       );
 
 
       /*
-        바로구매는 장바구니에
-        억지로 추가하지 않고
-        directPurchase만 저장
+        상세페이지 바로구매 데이터
       */
+
       sessionStorage.setItem(
         "directPurchase",
+
         JSON.stringify({
           productId:
+            product.id,
+
+          id:
             product.id,
 
           name:
@@ -314,11 +807,6 @@ export default function ProductDetailPage() {
 
           category:
             product.category,
-
-          image:
-            galleryImages[0] ||
-            product.image ||
-            "",
 
           price:
             product.price,
@@ -331,6 +819,16 @@ export default function ProductDetailPage() {
           giftWrapFee,
 
           total,
+
+          /*
+            Checkout에서도
+            썸네일 사용 가능
+          */
+
+          image:
+            galleryImages[
+              0
+            ] || "",
         })
       );
 
@@ -345,6 +843,10 @@ export default function ProductDetailPage() {
       );
     };
 
+
+  /* =======================================================
+     RENDER
+  ======================================================= */
 
   return (
     <main
@@ -361,7 +863,9 @@ export default function ProductDetailPage() {
           styles.detailSpread
         }
       >
-        {/* GALLERY */}
+        {/* ===============================================
+            GALLERY
+        =============================================== */}
 
         <div
           className={
@@ -375,6 +879,8 @@ export default function ProductDetailPage() {
           >
             {hasGallery ? (
               <>
+                {/* MAIN IMAGE */}
+
                 <img
                   key={
                     currentImage
@@ -392,9 +898,13 @@ export default function ProductDetailPage() {
                 />
 
 
+                {/* GALLERY CONTROL */}
+
                 {galleryImages.length >
                   1 && (
                   <>
+                    {/* PREV */}
+
                     <button
                       type="button"
                       className={`${styles.galleryArrow} ${styles.galleryPrev}`}
@@ -407,6 +917,8 @@ export default function ProductDetailPage() {
                     </button>
 
 
+                    {/* NEXT */}
+
                     <button
                       type="button"
                       className={`${styles.galleryArrow} ${styles.galleryNext}`}
@@ -418,6 +930,8 @@ export default function ProductDetailPage() {
                       →
                     </button>
 
+
+                    {/* DOTS */}
 
                     <div
                       className={
@@ -445,14 +959,14 @@ export default function ProductDetailPage() {
                                 index
                               )
                             }
-                            aria-label={`${
-                              index + 1
-                            }번 상품 이미지 보기`}
+                            aria-label={`${index + 1}번 상품 이미지 보기`}
                           />
                         )
                       )}
                     </div>
 
+
+                    {/* COUNT */}
 
                     <div
                       className={
@@ -467,10 +981,12 @@ export default function ProductDetailPage() {
                         "0"
                       )}
 
+
                       <span>
                         {" "}
                         /{" "}
                       </span>
+
 
                       {String(
                         galleryImages.length
@@ -483,12 +999,18 @@ export default function ProductDetailPage() {
                 )}
               </>
             ) : (
+              /*
+                아직 이미지 없는 상품
+
+                기존 디자인 유지
+              */
               <>
                 <span>
                   {
                     product.category
                   }
                 </span>
+
 
                 <b>
                   {product.name.slice(
@@ -502,7 +1024,9 @@ export default function ProductDetailPage() {
         </div>
 
 
-        {/* PRODUCT INFO */}
+        {/* ===============================================
+            PRODUCT INFO
+        =============================================== */}
 
         <section
           className={
@@ -510,19 +1034,29 @@ export default function ProductDetailPage() {
           }
         >
           <small>
-            {product.category}
+            {
+              product.category
+            }
+
             {" · "}
+
             TRAVEL ESSENTIALS
           </small>
 
 
           <h1>
-            {product.name}
+            {
+              product.name
+            }
           </h1>
 
 
+          {/* PRICE */}
+
           <strong>
-            {product.price.toLocaleString()}{" "}
+            {product.price.toLocaleString()}
+
+            {" "}
 
             <em>
               KRW
@@ -530,19 +1064,27 @@ export default function ProductDetailPage() {
           </strong>
 
 
+          {/* DESCRIPTION */}
+
           <p>
-            {product.desc}
+            {
+              product.desc
+            }
 
             <br />
 
-            {product.merit}
+            {
+              product.merit
+            }
           </p>
 
 
           <hr />
 
 
-          {/* OPTION */}
+          {/* ===========================================
+              OPTION
+          =========================================== */}
 
           <label>
             OPTION
@@ -555,11 +1097,13 @@ export default function ProductDetailPage() {
             }
           >
             {PRODUCT_OPTIONS.map(
-              (option) => {
+              (
+                option
+              ) => {
                 const isSelected =
-                  selectedOption
-                    ?.id ===
+                  selectedOption?.id ===
                   option.id;
+
 
                 return (
                   <button
@@ -573,7 +1117,7 @@ export default function ProductDetailPage() {
                         : ""
                     }
                     onClick={() =>
-                      setSelectedOption(
+                      handleOptionSelect(
                         option
                       )
                     }
@@ -582,9 +1126,15 @@ export default function ProductDetailPage() {
                       option.label
                     }
 
+
                     {option.extraPrice >
-                      0 &&
-                      ` · +${option.extraPrice.toLocaleString()} KRW`}
+                      0 && (
+                      <>
+                        {" · +"}
+                        {option.extraPrice.toLocaleString()}
+                        {" KRW"}
+                      </>
+                    )}
                   </button>
                 );
               }
@@ -592,7 +1142,9 @@ export default function ProductDetailPage() {
           </div>
 
 
-          {/* QUANTITY */}
+          {/* ===========================================
+              QUANTITY
+          =========================================== */}
 
           <label>
             QUANTITY
@@ -608,10 +1160,13 @@ export default function ProductDetailPage() {
               type="button"
               onClick={() =>
                 setQuantity(
-                  (prev) =>
+                  (
+                    previous
+                  ) =>
                     Math.max(
                       1,
-                      prev - 1
+                      previous -
+                        1
                     )
                 )
               }
@@ -622,7 +1177,9 @@ export default function ProductDetailPage() {
 
 
             <b>
-              {quantity}
+              {
+                quantity
+              }
             </b>
 
 
@@ -630,8 +1187,11 @@ export default function ProductDetailPage() {
               type="button"
               onClick={() =>
                 setQuantity(
-                  (prev) =>
-                    prev + 1
+                  (
+                    previous
+                  ) =>
+                    previous +
+                    1
                 )
               }
               aria-label="수량 늘리기"
@@ -644,7 +1204,9 @@ export default function ProductDetailPage() {
           <hr />
 
 
-          {/* TOTAL */}
+          {/* ===========================================
+              TOTAL
+          =========================================== */}
 
           <label>
             TOTAL
@@ -652,13 +1214,19 @@ export default function ProductDetailPage() {
 
 
           <strong>
-            {total.toLocaleString()}{" "}
+            {total.toLocaleString()}
+
+            {" "}
 
             <em>
               KRW
             </em>
           </strong>
 
+
+          {/* ===========================================
+              ACTIONS
+          =========================================== */}
 
           <div
             className={
@@ -688,12 +1256,14 @@ export default function ProductDetailPage() {
       </section>
 
 
-           {/* ===================================================
-          PRODUCT DETAIL IMAGES
-          ★ 이걸 먼저 보여줌
+      {/* ===================================================
+          PRODUCT DETAIL
+
+          ★ 먼저 표시
       =================================================== */}
 
-      {detailImages.length > 0 && (
+      {detailImages.length >
+        0 && (
         <section
           className={
             styles.detailContents
@@ -730,9 +1300,7 @@ export default function ProductDetailPage() {
                     src={
                       image
                     }
-                    alt={`${product.name} 상세 이미지 ${
-                      index + 1
-                    }`}
+                    alt={`${product.name} 상세 이미지 ${index + 1}`}
                     loading="lazy"
                   />
                 </div>
@@ -744,9 +1312,9 @@ export default function ProductDetailPage() {
 
 
       {/* ===================================================
-          PRODUCT INFORMATION
-          ★ PRODUCT DETAIL 다음에
-          01 → 02 → 03 순서로 표시
+          PRODUCT TEXT INFORMATION
+
+          PRODUCT DETAIL 뒤에 표시
       =================================================== */}
 
       <section
@@ -754,9 +1322,9 @@ export default function ProductDetailPage() {
           styles.productAccordion
         }
       >
-        {/* =================================================
+        {/* ===============================================
             01 PRODUCT STORY
-        ================================================= */}
+        =============================================== */}
 
         <details open>
           <summary>
@@ -768,6 +1336,7 @@ export default function ProductDetailPage() {
               PRODUCT STORY
             </span>
 
+
             <i />
           </summary>
 
@@ -778,15 +1347,17 @@ export default function ProductDetailPage() {
             }
           >
             <p>
-              {product.desc}
+              {
+                product.desc
+              }
             </p>
           </div>
         </details>
 
 
-        {/* =================================================
+        {/* ===============================================
             02 DETAIL
-        ================================================= */}
+        =============================================== */}
 
         <details open>
           <summary>
@@ -798,6 +1369,7 @@ export default function ProductDetailPage() {
               DETAIL
             </span>
 
+
             <i />
           </summary>
 
@@ -808,15 +1380,17 @@ export default function ProductDetailPage() {
             }
           >
             <p>
-              {product.merit}
+              {
+                product.merit
+              }
             </p>
           </div>
         </details>
 
 
-        {/* =================================================
+        {/* ===============================================
             03 DELIVERY
-        ================================================= */}
+        =============================================== */}
 
         <details open>
           <summary>
@@ -828,6 +1402,7 @@ export default function ProductDetailPage() {
               DELIVERY
             </span>
 
+
             <i />
           </summary>
 
@@ -838,27 +1413,32 @@ export default function ProductDetailPage() {
             }
           >
             <p>
-              {product.category === "세트 상품" ||
-              product.id?.startsWith("S") ? (
+              {isSetProduct ? (
                 <>
                   9월 11일 출고 시작
+
                   <br />
-                  세트 상품은 준비되는 순서대로
-                  순차 출고됩니다.
+
+                  세트 상품은 준비되는
+                  순서대로 순차 출고됩니다.
                 </>
               ) : (
                 <>
-                  결제 완료 후 평균 2-3일
-                  이내 출고됩니다.
+                  결제 완료 후 평균
+                  2-3일 이내 출고됩니다.
+
                   <br />
+
                   지역 및 배송 상황에 따라
-                  배송 일정이 달라질 수 있습니다.
+                  배송 일정이 달라질 수
+                  있습니다.
                 </>
               )}
             </p>
           </div>
         </details>
       </section>
+
 
       {/* ===================================================
           BUY CONFIRM MODAL
@@ -908,7 +1488,9 @@ export default function ProductDetailPage() {
 
 
               <p>
-                {product.name}
+                {
+                  product.name
+                }
               </p>
 
 
@@ -925,9 +1507,14 @@ export default function ProductDetailPage() {
                     selectedOption.label
                   }
 
+
                   {selectedOption.id ===
-                    "gift" &&
-                    " · +2,500 KRW"}
+                    "gift" && (
+                    <>
+                      {" · "}
+                      +2,500 KRW
+                    </>
+                  )}
                 </b>
               </p>
 
@@ -990,7 +1577,7 @@ export default function ProductDetailPage() {
 
 
       {/* ===================================================
-          ADDED TO CART
+          ADDED TO CART MODAL
       =================================================== */}
 
       {added &&
@@ -1000,7 +1587,9 @@ export default function ProductDetailPage() {
               styles.modalBackdrop
             }
             onClick={() =>
-              setAdded(false)
+              setAdded(
+                false
+              )
             }
           >
             <div
@@ -1019,7 +1608,9 @@ export default function ProductDetailPage() {
                   styles.close
                 }
                 onClick={() =>
-                  setAdded(false)
+                  setAdded(
+                    false
+                  )
                 }
                 aria-label="닫기"
               >
@@ -1034,17 +1625,18 @@ export default function ProductDetailPage() {
 
 
               <p>
-                {product.name}
+                {
+                  product.name
+                }
+
                 {" · "}
+
                 {
                   selectedOption.label
                 }
 
-                {selectedOption.id ===
-                  "gift" &&
-                  " (+2,500 KRW)"}
-
                 {" · "}
+
                 {quantity}개
               </p>
 
@@ -1053,8 +1645,7 @@ export default function ProductDetailPage() {
 
 
               <b>
-                함께 준비하면 좋은
-                상품
+                함께 준비하면 좋은 상품
               </b>
 
 
@@ -1065,7 +1656,9 @@ export default function ProductDetailPage() {
               >
                 {products
                   .filter(
-                    (item) =>
+                    (
+                      item
+                    ) =>
                       item.id !==
                       product.id
                   )
@@ -1074,7 +1667,9 @@ export default function ProductDetailPage() {
                     3
                   )
                   .map(
-                    (item) => (
+                    (
+                      item
+                    ) => (
                       <div
                         key={
                           item.id
@@ -1086,11 +1681,13 @@ export default function ProductDetailPage() {
                           }
                         />
 
+
                         <small>
                           {
                             item.category
                           }
                         </small>
+
 
                         <span>
                           {
@@ -1111,7 +1708,9 @@ export default function ProductDetailPage() {
                 <button
                   type="button"
                   onClick={() =>
-                    setAdded(false)
+                    setAdded(
+                      false
+                    )
                   }
                 >
                   계속 쇼핑
