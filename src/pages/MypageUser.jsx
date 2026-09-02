@@ -18,7 +18,7 @@ const menuItems = [
 
 const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
 
-const getCreatedTime = (plan) => plan.createdAt?.toMillis?.()
+
 const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
   || plan.updatedAt?.seconds * 1000
   || plan.createdAt?.toMillis?.()
@@ -68,6 +68,8 @@ export default function MypageUser() {
 
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
     if (!user) return undefined;
     let active = true;
     const loadFavorites = () => getFavoritePlaces(user.uid)

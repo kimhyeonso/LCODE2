@@ -236,7 +236,7 @@ export default function Home() {
         <SectionLabel number="03">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
-          <TextLink to="/plan">VIEW ALL</TextLink>
+          <TextLink to="/ai-remix">VIEW ALL</TextLink>
         </div>
         <div className={styles.pickGrid}>
           <Link to="/plan?city=SHANGHAI" className={styles.featurePick}>
