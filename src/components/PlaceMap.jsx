@@ -5,17 +5,31 @@ import styles from "./PlaceMap.module.scss";
 
 const FUKUOKA_CENTER = [33.5902, 130.4017];
 
-function MoveMap({ center }) {
+function MoveMap({ center, places, fitToPlaces }) {
   const map = useMap();
 
   useEffect(() => {
+    if (fitToPlaces && places.length > 1) {
+      map.fitBounds(
+        places.map((place) => [place.latitude, place.longitude]),
+        { padding: [32, 32], maxZoom: 13 },
+      );
+      return;
+    }
+
     map.setView(center, 13, { animate: true });
-  }, [center, map]);
+  }, [center, fitToPlaces, map, places]);
 
   return null;
 }
 
-export default function PlaceMap({ places, fallbackPlaces = [], selectedPlace, onSelect }) {
+export default function PlaceMap({
+  places,
+  fallbackPlaces = [],
+  selectedPlace,
+  onSelect = () => {},
+  fitToPlaces = false,
+}) {
   const availablePlaces = places.filter(
     (place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude),
   );
@@ -35,7 +49,7 @@ export default function PlaceMap({ places, fallbackPlaces = [], selectedPlace, o
 
   return (
     <MapContainer className={styles.map} center={center} zoom={13} scrollWheelZoom={false}>
-      <MoveMap center={center} />
+      <MoveMap center={center} places={availablePlaces} fitToPlaces={fitToPlaces} />
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"

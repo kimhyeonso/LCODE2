@@ -7,10 +7,27 @@ import { deletePlan, getPlan, getPlanDateConflict, getPlans, savePlan } from "..
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
 import carIcon from "../assets/icons/transportation/directions_car.svg";
+import PlaceMap from "../components/PlaceMap";
 import styles from "./Plan.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 
 const categoryNames = { airport: "AIRPORT", station: "STATION", hotel: "HOTEL", attraction: "SIGHTSEEING", restaurant: "RESTAURANT" };
+
+const currencyByCountry = {
+  japan: { code: "JPY", name: "일본 엔", symbol: "¥", rate: 9.2, note: "100 JPY ≈ ₩920" },
+  china: { code: "CNY", name: "중국 위안", symbol: "CN¥", rate: 190, note: "1 CNY ≈ ₩190" },
+  korea: { code: "KRW", symbol: "₩", rate: 1, note: "1 KRW ≈ ₩1" },
+};
+
+const countryAliases = {
+  korea: "korea",
+  "south korea": "korea",
+  "한국": "korea",
+  japan: "japan",
+  "일본": "japan",
+  china: "china",
+  "중국": "china",
+};
 
 const cityAliases = {
   SEOUL: "서울",
@@ -121,11 +138,13 @@ export default function Plan() {
       end: toDateInputValue(savedDetailState.plan.dateRange?.end),
     });
   }, [savedDetailState.plan]);
-  const visibleDay = Math.min(activeDay, selectedTrip.days.length - 1);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
-  const activePlaces = getDayPlaces(selectedTrip.days[visibleDay]);
-  const heroImage = allPlaces.find((place) => place.imageUrl)?.imageUrl;
+  const countryKey = String(selectedTrip.country || "").trim().toLowerCase();
+  const normalizedCountry = countryAliases[countryKey] || countryKey;
+  const thumbnailPath = tripRoad.thumbnailMap?.[normalizedCountry]?.[selectedTrip.city];
+  const thumbnailImage = thumbnailPath ? getImageUrl(thumbnailPath) : "";
+  const heroImage = thumbnailImage || allPlaces.find((place) => place.imageUrl)?.imageUrl;
   const nights = Math.max(selectedTrip.days.length - 1, 1);
   const startDate = selectedTrip.dateRange?.start;
   const endDate = selectedTrip.dateRange?.end;
@@ -138,6 +157,8 @@ export default function Plan() {
     ["기타", 15000],
   ];
   const estimatedExpense = budgetRows.reduce((total, [, amount]) => total + amount, 0);
+  const currency = currencyByCountry[normalizedCountry] || currencyByCountry.korea;
+  const exchangeAmount = Math.round(estimatedExpense / currency.rate);
   const representativeImage = selectedTrip.days
     .flatMap((day) => day.items)
     .find((item) => item.type === "place" && item.image)
@@ -277,6 +298,13 @@ export default function Plan() {
   return (
     <main className={styles.plan}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.7)), url(${heroImage})` } : undefined}>
+        <button
+          type="button"
+          className={styles.backButton}
+          onClick={() => window.history.length > 1 ? navigate(-1) : navigate("/")}
+        >
+          ← BACK
+        </button>
         <div className={styles.heroTop}><span>TRAVEL PLAN</span><span>{selectedTrip.country.toUpperCase()} / ISSUE 01</span></div>
         <p className={styles.heroTags}>{selectedTrip.duration} · 맛집 · 카페</p>
         <p className={styles.heroWeather}>
@@ -305,15 +333,37 @@ export default function Plan() {
         </div>
       </section>
 
-      <div className={styles.visualBreak} aria-hidden="true" />
+      <section className={styles.visualBreak} aria-label="여행 장소 지도">
+        <PlaceMap places={allPlaces} fitToPlaces />
+      </section>
 
       <section className={styles.expense} aria-labelledby="estimated-expense-title">
         <p>ESTIMATED EXPENSE</p>
         <div className={styles.expenseSummary}>
           <span>예상 여행 경비</span>
           <h2 id="estimated-expense-title">약 ₩{estimatedExpense.toLocaleString("ko-KR")}</h2>
-          <small>항공권 · 숙박비 제외</small>
+          <div className={styles.expenseMeta}>
+            <small>항공권 · 숙박비 제외<br />{currency.note}</small>
+            <button type="button" className={styles.expenseSetting}>경비 설정하기 →</button>
+          </div>
         </div>
+        {normalizedCountry !== "korea" && (
+          <section className={styles.exchangeRate} aria-label="여행 환율">
+            <header>
+              <p>EXCHANGE RATE</p>
+              <span>{normalizedCountry.toUpperCase()} / {currency.code}</span>
+            </header>
+            <small>{currency.name} 환율</small>
+            <div className={styles.exchangeBox}>
+              <div>
+                <span>환전 금액 기준</span>
+                <strong>{currency.symbol}{exchangeAmount.toLocaleString("ko-KR")}</strong>
+              </div>
+              <p>기준 환율<br />{currency.note}</p>
+            </div>
+            <Link className={styles.exchangeDetail} to={`/destination?currency=${currency.code}`}>환율 자세히 보기 →</Link>
+          </section>
+        )}
         <dl className={styles.expenseList}>
           {budgetRows.map(([label, amount]) => (
             <div key={label}>
@@ -325,39 +375,43 @@ export default function Plan() {
       </section>
 
       <section className={styles.itinerary}>
-        <header className={styles.dayHeader}>
-          <h2>DAY {String(visibleDay + 1).padStart(2, "0")}</h2>
-          <span>{formatDate(selectedTrip.days[visibleDay]?.date, `DAY ${visibleDay + 1}`)}</span>
-          <b>{activePlaces.length}곳</b>
-        </header>
-        <ol className={styles.timeline}>
-          {activePlaces.map((place, index) => (
-            <li key={`${place.place}-${index}`}>
-              <span className={styles.number}>{String(index + 1).padStart(2, "0")}</span>
-              <time>{place.time || "시간 미정"}</time>
-              <span className={styles.placeImage}>{place.imageUrl && <img src={place.imageUrl} alt="" />}</span>
-              <div className={styles.placeCopy}>
-                <small>{categoryNames[place.category] || place.category}</small>
-                <strong>{place.place}</strong>
-                <p>{place.recommendation || place.place}</p>
-              </div>
-              <button type="button" aria-label={`${place.place} 메뉴`}>···</button>
-              {place.transport && <p className={styles.transport}>{place.transport}</p>}
-            </li>
-          ))}
-        </ol>
-      </section>
-
-      <section className={styles.otherDays}>
-        <p>OTHER DAYS</p>
         {selectedTrip.days.map((day, index) => {
-          if (index === visibleDay) return null;
+          const dayPlaces = getDayPlaces(day);
+          const isOpen = activeDay === index;
+
           return (
-            <button type="button" key={day.day} onClick={() => setActiveDay(index)}>
-              <strong>DAY {String(index + 1).padStart(2, "0")}</strong>
-              <span>{formatDate(day.date, `DAY ${index + 1}`)}</span>
-              <b>{getDayPlaces(day).length}곳　›</b>
-            </button>
+            <section className={styles.dayAccordion} key={day.day || index}>
+              <button
+                type="button"
+                className={`${styles.dayHeader} ${isOpen ? styles.dayHeaderOpen : ""}`}
+                onClick={() => setActiveDay(index)}
+                aria-expanded={isOpen}
+              >
+                <h2>DAY {String(index + 1).padStart(2, "0")}</h2>
+                <span>{formatDate(day.date, `DAY ${index + 1}`)}</span>
+                <b>{dayPlaces.length}곳</b>
+                <i aria-hidden="true">{isOpen ? "−" : "+"}</i>
+              </button>
+
+              {isOpen && (
+                <ol className={styles.timeline}>
+                  {dayPlaces.map((place, placeIndex) => (
+                    <li key={`${place.place}-${placeIndex}`}>
+                      <span className={styles.number}>{String(placeIndex + 1).padStart(2, "0")}</span>
+                      <time>{place.time || "시간 미정"}</time>
+                      <span className={styles.placeImage}>{place.imageUrl && <img src={place.imageUrl} alt="" />}</span>
+                      <div className={styles.placeCopy}>
+                        <small>{categoryNames[place.category] || place.category}</small>
+                        <strong>{place.place}</strong>
+                        <p>{place.recommendation || place.place}</p>
+                      </div>
+                      <button type="button" aria-label={`${place.place} 메뉴`}>···</button>
+                      {place.transport && <p className={styles.transport}>{place.transport}</p>}
+                    </li>
+                  ))}
+                </ol>
+              )}
+            </section>
           );
         })}
       </section>

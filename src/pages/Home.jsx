@@ -58,6 +58,24 @@ const homeProducts = products.slice(0, 6).map((product, index) => ({
   ][index],
 }));
 
+const formatProductPrice = (price) => {
+  if (price === undefined || price === null || price === "") return "";
+
+  if (typeof price === "number") {
+    return `${price.toLocaleString("ko-KR")} KRW`;
+  }
+
+  const numberPrice = Number(
+    String(price).replace(/[^\d]/g, "")
+  );
+
+  if (Number.isNaN(numberPrice)) {
+    return price;
+  }
+
+  return `${numberPrice.toLocaleString("ko-KR")} KRW`;
+};
+
 const SectionLabel = ({ number, children }) => (
   <div className={styles.sectionLabel}>
     <span>{number}</span>
@@ -194,7 +212,7 @@ export default function Home() {
 
       <section className={styles.section}>
         <SectionLabel number="01">UPCOMING</SectionLabel>
-        <h1>UPCOMING TRIP</h1>
+        <h1 className={styles.matchTitle}>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
           <TextLink to="/itinerary">VIEW ALL</TextLink>
@@ -248,7 +266,7 @@ export default function Home() {
         </Link>
       </section>
 
-      <section className={styles.section}>
+      <section className={`${styles.section} ${styles.pickSection}`}>
         <SectionLabel number="03">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
@@ -286,7 +304,7 @@ export default function Home() {
             ["JAPAN", "교토, 도쿄", styles.japanImage],
             ["CHINA", "상하이", styles.chinaImage],
           ].map(([country, cities, imageClass]) => (
-            <Link to={`/desrination?country=${country.toLowerCase()}`} key={country}>
+            <Link to={`/desrinationAll?country=${country.toLowerCase()}`} key={country}>
               <div>
                 <span>EAST ASIA</span>
                 <h3>{country}</h3>
@@ -300,19 +318,85 @@ export default function Home() {
 
       <section className={styles.section}>
         <SectionLabel number="05">TRAVEL SHOPPING</SectionLabel>
+
         <div className={styles.rowTitle}>
           <p>여행 필수템</p>
-          <TextLink to="/shop">TRAVEL SHOPPING</TextLink>
+
+          <TextLink to="/shop">
+            TRAVEL SHOPPING
+          </TextLink>
         </div>
+
         <div className={styles.essentialGrid}>
           {homeProducts.map((product) => (
-            <Link to={`/shop/${product.id}`} key={product.id}>
-              <div>
-                <img src={product.image} alt={product.name} loading="lazy" />
+            <article
+              className={styles.productCard}
+              key={product.id}
+            >
+              <div className={styles.productThumbnail}>
+                {/* 상품 이미지 */}
+                <Link
+                  to={`/shop/${product.id}`}
+                  className={styles.productImageLink}
+                  aria-label={`${product.name} 상세보기`}
+                >
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    loading="lazy"
+                  />
+                </Link>
+
+                {/* 왼쪽 상단 카테고리 */}
+                <span className={styles.productBadge}>
+                  {product.category}
+                </span>
+
+                {/* 오른쪽 상단 하트 */}
+                <button
+                  type="button"
+                  className={styles.productWish}
+                  aria-label={`${product.name} 찜하기`}
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78Z" />
+                  </svg>
+                </button>
+
+                {/* 오른쪽 하단 + 버튼 */}
+                <Link
+                  to={`/shop/${product.id}`}
+                  className={styles.productAdd}
+                  aria-label={`${product.name} 상세보기`}
+                >
+                  +
+                </Link>
               </div>
-              <h3>{product.name}</h3>
-              <p>{product.category}</p>
-            </Link>
+
+              {/* 상품 정보 */}
+              <Link
+                to={`/shop/${product.id}`}
+                className={styles.productInfo}
+              >
+                <span className={styles.productCategory}>
+                  {product.category}
+                </span>
+
+                <h3>{product.name}</h3>
+
+                <p>
+                  {formatProductPrice(product.price)}
+                </p>
+              </Link>
+            </article>
           ))}
         </div>
       </section>
@@ -321,7 +405,7 @@ export default function Home() {
         <SectionLabel number="06">JOURNAL</SectionLabel>
         <div className={styles.rowTitle}>
           <div>
-            <h2>JOURNAL</h2>
+            <h2 className={styles.matchTitle}>JOURNAL</h2>
             <p>여행자의 기록</p>
           </div>
           <TextLink
