@@ -4,6 +4,8 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomNav from "./components/BottomNav";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import AdminDashboard from "./pages/AdminDashboard";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -57,8 +59,6 @@ function ScrollTop() {
 
 const enlargedPagePaths = new Set([
   "/login",
-  "/my",
-  "/mypage-user",
   "/profile/edit",
   "/itinerary",
   "/wishlist",
@@ -109,6 +109,7 @@ export default function App() {
           <Route path="/order-complete" element={<OrderComplete />} />
           <Route path="/travel-planner" element={<TravelPlanner />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/buy" element={<Buy />} />
           <Route path="/paking" element={<Paking />} />
@@ -123,8 +124,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/coupon" element={<Coupon />} />
-          <Route path="/coupon/register" element={<CouponUp />} />
+          <Route path="/coupon" element={<ProtectedRoute><Coupon /></ProtectedRoute>} />
+          <Route path="/coupon/register" element={<ProtectedRoute><CouponUp /></ProtectedRoute>} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/open-guide" element={<OpenGuide />} />

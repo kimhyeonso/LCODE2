@@ -26,11 +26,30 @@ export async function createUserProfile({ uid, email, nickname }) {
       savedTrips: [],
       favorites: [],
       orders: [],
+      role: "user",
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     },
     { merge: true },
   );
+}
+
+export async function getAdminDashboardData() {
+  const database = requireDb();
+  const [usersSnapshot, plansSnapshot, reviewsSnapshot] = await Promise.all([
+    getDocs(collection(database, "users")),
+    getDocs(collection(database, "plans")),
+    getDocs(collection(database, "reviews")),
+  ]);
+
+  const mapSnapshot = (snapshot) =>
+    snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+
+  return {
+    users: mapSnapshot(usersSnapshot),
+    plans: mapSnapshot(plansSnapshot),
+    reviews: mapSnapshot(reviewsSnapshot),
+  };
 }
 
 export async function getUserProfile(uid) {
@@ -133,4 +152,19 @@ export async function saveFavoritePlace(userId, place) {
 export async function deleteFavoritePlace(userId, placeId) {
   if (!userId || !placeId) throw new Error("삭제할 찜 장소 정보가 올바르지 않습니다.");
   return deleteDoc(doc(requireDb(), "users", userId, "favoritePlaces", placeId));
+}
+
+export async function getUserCoupons(userId) {
+  if (!userId) return [];
+
+  const snapshot = await getDocs(
+    collection(requireDb(), "users", userId, "coupons"),
+  );
+
+  return snapshot.docs
+    .map((couponDocument) => ({
+      id: couponDocument.id,
+      ...couponDocument.data(),
+    }))
+    .sort((a, b) => (b.issuedAt?.seconds || 0) - (a.issuedAt?.seconds || 0));
 }

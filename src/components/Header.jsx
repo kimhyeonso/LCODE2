@@ -23,7 +23,7 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, logout } = useAuth();
+  const { user, profile, logout } = useAuth();
   const navigate = useNavigate();
   const planDestination = usePlanDestination();
 
@@ -134,6 +134,15 @@ export default function Header() {
         <div className={styles.memberMenu}>
           {user ? (
             <>
+              {profile?.role === "admin" && (
+                <NavLink
+                  to="/admin"
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) => (isActive ? styles.active : "")}
+                >
+                  DASHBOARD
+                </NavLink>
+              )}
               <NavLink
                 to="/my"
                 onClick={() => setOpen(false)}
@@ -184,6 +193,9 @@ export default function Header() {
         <div className={styles.mobileMemberMenu}>
           {user ? (
             <>
+              {profile?.role === "admin" && (
+                <NavLink to="/admin" onClick={() => setOpen(false)}>DASHBOARD</NavLink>
+              )}
               <NavLink to="/my" onClick={() => setOpen(false)}>MYPAGE</NavLink>
               <button type="button" onClick={handleLogout}>LOGOUT</button>
             </>
