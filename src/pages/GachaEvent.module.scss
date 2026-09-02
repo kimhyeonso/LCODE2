@@ -6,6 +6,8 @@ $cream: #f8f1e6;
 
 .scene {
   @include evt.scene;
+  width: min(1320px, calc(100% - 112px));
+  margin: 0 auto;
 }
 
 .background {
@@ -36,8 +38,7 @@ $cream: #f8f1e6;
 
 .intro::before {
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.78), rgba(0, 0, 0, 0.1) 32%, rgba(0, 0, 0, 0.1) 68%, rgba(0, 0, 0, 0.78)),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.34) 45%, #000 94%);
+    linear-gradient(180deg, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.3) 45%, #000 94%);
 }
 
 .introCopy,
@@ -72,6 +73,7 @@ $cream: #f8f1e6;
   font-size: clamp(56px, 4.8vw, 116px);
   font-weight: 900;
   line-height: 1.08;
+  text-align: center;
   text-shadow: 0 4px 0 rgba(211, 151, 55, 0.6);
 }
 
@@ -190,8 +192,7 @@ $cream: #f8f1e6;
 
 .draw::before {
   background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.7), transparent 26%, transparent 74%, rgba(0, 0, 0, 0.7)),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.04) 65%, rgba(0, 0, 0, 0.64));
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.04) 60%, rgba(0, 0, 0, 0.62));
 }
 
 .drawGuide,
@@ -301,6 +302,22 @@ $cream: #f8f1e6;
   cursor: wait;
 }
 
+/* desktop: lift the machine + button cluster so it rests on the table
+   surface rather than hanging over the front edge (mobile is already fine) */
+@media (min-width: 901px) {
+  .draw {
+    padding-bottom: clamp(80px, 15vh, 170px);
+  }
+
+  .drawGuide {
+    transform: translateY(-58px);
+  }
+
+  .drawMachine {
+    transform: translateY(-54px);
+  }
+}
+
 /* =========================================================
    CAPSULE / OPEN
 ========================================================= */
@@ -313,7 +330,6 @@ $cream: #f8f1e6;
 }
 
 .capsuleScene {
-  width: 100%;
   border: 0;
   grid-template-rows: auto auto auto;
   align-content: center;
@@ -495,6 +511,11 @@ $cream: #f8f1e6;
 ========================================================= */
 
 @include tablet {
+  .scene {
+    width: 100%;
+    margin: 0;
+  }
+
   .intro {
     padding: 76px 18px 24px;
   }
@@ -546,7 +567,12 @@ $cream: #f8f1e6;
   }
 
   .intro h1 {
-    font-size: clamp(40px, 6.2vh, 58px);
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    font-size: clamp(34px, 5.2vh, 46px);
+    transform: translateX(10px);
+    text-wrap: balance;
   }
 
   .description {

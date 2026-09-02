@@ -111,7 +111,7 @@ $black: #000;
 .magazineCardVisual {
   width: 100%;
   aspect-ratio: 5 / 4;
-  background: #c8c8c8;
+  background: #ece4d6 url("/event/event04/magazinebanne.png") center / cover no-repeat;
 }
 
 .cardText {
@@ -165,12 +165,13 @@ $black: #000;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-inline: clamp(18px, 2vw, 34px);
+  padding-inline: clamp(8px, 1vw, 14px);
   box-sizing: border-box;
   transform: translateX(-50%);
 }
 
 .eventHeader button {
+  margin-left: -8px;
   border: 0;
   background: transparent;
   color: rgba(255, 255, 255, 0.7);

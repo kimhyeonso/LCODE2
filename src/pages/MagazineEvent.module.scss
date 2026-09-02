@@ -2,6 +2,9 @@
 @use "../styles/mixins" as *;
 @use "../styles/event" as evt;
 
+$rose: #b9827c;
+$label: #ece3d5;
+
 .scene {
   @include evt.scene;
 }
@@ -10,28 +13,391 @@
   width: 100%;
   margin: 0;
   min-height: 100vh;
-  display: grid;
-  place-items: start center;
-  padding: 86px 0 120px;
+  padding: clamp(88px, 9vw, 128px) 0 clamp(72px, 9vw, 120px);
   background: $paper;
+  color: $ink;
+  overflow: hidden;
 }
 
-.magazineScreen img {
-  width: min(100%, 1005px);
-  height: auto;
-  display: block;
-  object-fit: contain;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+.inner {
+  width: min(1320px, calc(100% - 112px));
+  margin-inline: auto;
 }
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+  position: relative;
+  min-height: clamp(300px, 40vw, 440px);
+  padding-bottom: clamp(36px, 4.5vw, 56px);
+  border-bottom: 1px solid $ink;
+}
+
+.heroCopy {
+  position: relative;
+  z-index: 1;
+  max-width: min(100%, 58%);
+}
+
+.eyebrow {
+  margin: 0 0 18px;
+  color: $rose;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+}
+
+.hero h1 {
+  margin: 0;
+  font-family: $serif;
+  font-weight: 400;
+  font-size: clamp(38px, 5.4vw, 68px);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+}
+
+.heroLead {
+  margin: clamp(18px, 2vw, 26px) 0 0;
+  font-size: clamp(15px, 1.4vw, 18px);
+  font-weight: 800;
+}
+
+.heroDesc {
+  margin: 12px 0 0;
+  color: $muted;
+  font-size: 13px;
+  line-height: 1.85;
+  word-break: keep-all;
+}
+
+.heroVisual {
+  position: absolute;
+  right: clamp(-14px, -1vw, 0px);
+  top: clamp(0px, 1.5vw, 22px);
+  z-index: 2;
+  width: clamp(180px, 30%, 288px);
+  transform: rotate(10deg);
+}
+
+.heroCover {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(23, 23, 20, 0.1);
+  box-shadow: 0 26px 46px rgba(23, 23, 20, 0.3);
+}
+
+.heroSticker {
+  position: absolute;
+  left: -20%;
+  bottom: -12%;
+  width: 60%;
+  transform: rotate(-16deg);
+  filter: drop-shadow(0 12px 18px rgba(23, 23, 20, 0.18));
+}
+
+/* =========================================================
+   SECTION SHELL
+========================================================= */
+
+.block {
+  margin-top: clamp(44px, 5.5vw, 82px);
+}
+
+.block > h2 {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 0 0 clamp(18px, 2.4vw, 30px);
+  font-family: $serif;
+  font-weight: 400;
+  font-size: clamp(21px, 2.4vw, 30px);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.block > h2::after {
+  content: "";
+  flex: 1 1 auto;
+  height: 1px;
+  background: $line;
+}
+
+/* =========================================================
+   PARTICIPATION STEPS
+========================================================= */
+
+.steps,
+.tips {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 1.4vw, 22px);
+}
+
+.steps li,
+.tips li {
+  padding: clamp(18px, 1.8vw, 26px) clamp(12px, 1.2vw, 18px) clamp(20px, 2vw, 28px);
+  background: $paper-light;
+  border: 1px solid $line;
+}
+
+.steps li img,
+.tips li img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  opacity: 0.82;
+}
+
+.stepNo {
+  display: block;
+  margin-bottom: 12px;
+  color: $sand;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.steps h3,
+.tips h3 {
+  margin: 14px 0 6px;
+  font-size: 13.5px;
+  font-weight: 800;
+  word-break: keep-all;
+}
+
+.steps p,
+.tips p {
+  margin: 0;
+  color: $muted;
+  font-size: 12px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+/* =========================================================
+   EVENT INFO TABLE
+========================================================= */
+
+.infoTable {
+  margin: 0;
+  border: 1px solid $ink;
+}
+
+.infoTable > div {
+  display: grid;
+  grid-template-columns: clamp(96px, 14vw, 132px) 1fr;
+  border-bottom: 1px solid $line;
+}
+
+.infoTable > div:last-child {
+  border-bottom: 0;
+}
+
+.infoTable dt {
+  padding: 14px 16px;
+  background: $label;
+  border-right: 1px solid $line;
+  color: $ink;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+.infoTable dd {
+  margin: 0;
+  padding: 14px 18px;
+  color: $muted;
+  font-size: 13px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.preview {
+  margin: 0;
+}
+
+.preview img {
+  width: 100%;
+  display: block;
+  filter: drop-shadow(0 26px 42px rgba(23, 23, 20, 0.2));
+}
+
+/* =========================================================
+   WINNER REWARD
+========================================================= */
+
+.reward {
+  display: flex;
+  align-items: center;
+  gap: clamp(24px, 4vw, 52px);
+}
+
+.rewardVisual {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(112px, 15vw, 164px);
+}
+
+.rewardCover {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(23, 23, 20, 0.1);
+  box-shadow: 0 16px 28px rgba(23, 23, 20, 0.22);
+}
+
+.rewardStamp {
+  position: absolute;
+  left: -26%;
+  bottom: -16%;
+  width: 62%;
+  transform: rotate(-8deg);
+  opacity: 0.9;
+}
+
+.reward strong {
+  display: block;
+  font-family: $serif;
+  font-weight: 400;
+  font-size: clamp(19px, 2.2vw, 26px);
+  line-height: 1.24;
+}
+
+.reward p {
+  margin: 12px 0 0;
+  color: $muted;
+  font-size: 13px;
+  line-height: 1.7;
+  word-break: keep-all;
+}
+
+.reward small {
+  display: block;
+  margin-top: 14px;
+  color: $sand;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+}
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions {
+  margin-top: clamp(40px, 5vw, 72px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.6fr) minmax(0, 1fr);
+  gap: 10px;
+}
+
+.ghost,
+.primary {
+  min-height: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.ghost {
+  border: 1px solid $ink;
+  background: transparent;
+  color: $ink;
+}
+
+.primary {
+  border: 1px solid $ink;
+  background: $ink;
+  color: $paper-light;
+  transition: background 0.2s ease;
+}
+
+.primary:hover {
+  background: #000;
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
 
 @include tablet {
-  .magazineScreen {
-    padding: 76px 24px 90px;
+  .steps,
+  .tips {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 }
 
+/* =========================================================
+   MOBILE
+========================================================= */
+
 @include mobile {
-  .magazineScreen {
-    padding: 70px 16px 64px;
+  .inner {
+    width: calc(100% - 32px);
+  }
+
+  .hero {
+    min-height: 0;
+  }
+
+  .heroCopy {
+    max-width: none;
+  }
+
+  .heroVisual {
+    position: static;
+    width: min(62%, 240px);
+    margin: 24px auto 8px;
+    transform: rotate(6deg);
+  }
+
+  .heroSticker {
+    left: -14%;
+    width: 46%;
+    transform: rotate(-12deg);
+  }
+
+  .steps,
+  .tips {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .infoTable > div {
+    grid-template-columns: 92px 1fr;
+  }
+
+  .infoTable dt {
+    padding: 12px;
+  }
+
+  .infoTable dd {
+    padding: 12px 14px;
+  }
+
+  .reward {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .ghost {
+    order: 2;
   }
 }

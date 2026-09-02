@@ -15,15 +15,27 @@
   min-height: 60vh;
 }
 
+.immersiveMain {
+  min-height: 100vh;
+}
+
 @media (max-width: 640px) {
   .main {
     padding-top: 56px;
     padding-bottom: calc(58px + env(safe-area-inset-bottom));
+  }
+
+  .immersiveMain {
+    padding-top: 0;
   }
 }
 
 @media (min-width: 641px) and (max-width: 900px) {
   .main {
     padding-top: 56px;
+  }
+
+  .immersiveMain {
+    padding-top: 0;
   }
 }

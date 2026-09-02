@@ -73,6 +73,8 @@ const enlargedPagePaths = new Set([
   "/MyPageMain",
 ]);
 
+const immersivePagePaths = new Set([]);
+
 function PageSize() {
   const { pathname } = useLocation();
 
@@ -86,12 +88,15 @@ function PageSize() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+  const isImmersivePage = immersivePagePaths.has(pathname);
+
   return (
     <div className={styles.app}>
       <ScrollTop />
       <PageSize />
-      <Header />
-      <div className={styles.main}>
+      {!isImmersivePage && <Header />}
+      <div className={`${styles.main} ${isImmersivePage ? styles.immersiveMain : ""}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
@@ -165,11 +170,13 @@ export default function App() {
             }
           />
           <Route path="/event" element={<Event />} />
+          <Route path="/ai-remix" element={<AIRemix />} />
+          <Route path="/remix" element={<AIRemix />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      <Footer />
+      {!isImmersivePage && <Footer />}
       <BottomNav />
     </div>
   );
