@@ -5,24 +5,16 @@ import { getFavoritePlaces, getPlans } from "../services/firestoreService";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  ["여행 주문 내역", "/itinerary"],
-  ["상품 주문 내역", "/buy"],
-  ["내 일정", "/mypagemain"],
-  ["나의 리뷰", "/mystories"],
-  ["찜한 상품", "/wishlist"],
-  ["찜한 장소", "/favorite-places"],
-  ["쿠폰함", "/coupon"],
-  ["알림 설정", "/alarm"],
-  ["고객센터", "/notice"],
+  ["여행 주문 내역", "/itinerary"], ["상품 주문 내역", "/buy"],
+  ["내 일정", "/mypagemain"], ["나의 리뷰", "/mystories"],
+  ["찜한 상품", "/wishlist"], ["찜한 장소", "/favorite-places"],
+  ["쿠폰함", "/coupon"], ["알림 설정", "/alarm"], ["고객센터", "/notice"],
 ];
-
 const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
 
 const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
-  || plan.updatedAt?.seconds * 1000
-  || plan.createdAt?.toMillis?.()
-  || plan.createdAt?.seconds * 1000
-  || 0;
+  || plan.updatedAt?.seconds * 1000 || plan.createdAt?.toMillis?.()
+  || plan.createdAt?.seconds * 1000 || 0;
 
 const getDday = (startDate) => {
   if (!startDate) return "D-DAY";
@@ -46,25 +38,18 @@ export default function MypageUser() {
   useEffect(() => {
     if (!user) return undefined;
     let active = true;
-
-    getPlans(user.uid)
-      .then((plans) => {
-        if (!active) return;
-        const sortedPlans = [...plans].sort((a, b) => getCreatedTime(b) - getCreatedTime(a));
-        setPlanState({ userId: user.uid, plans: sortedPlans });
-      })
-      .catch(() => active && setPlanState({ userId: user.uid, plans: [] }));
-
-    return () => {
-      active = false;
-    };
+    getPlans(user.uid).then((plans) => {
+      if (!active) return;
+      const sortedPlans = [...plans].sort((a, b) => getCreatedTime(b) - getCreatedTime(a));
+      setPlanState({ userId: user.uid, plans: sortedPlans });
+    }).catch(() => active && setPlanState({ userId: user.uid, plans: [] }));
+    return () => { active = false; };
   }, [user]);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
       setSlideIndex((current) => (current + 1) % slideshowImages.length);
     }, 5500);
-
     return () => window.clearInterval(timer);
   }, []);
 
@@ -88,7 +73,6 @@ export default function MypageUser() {
   const planPeriod = latestPlan?.dateRange?.start && latestPlan?.dateRange?.end
     ? `${latestPlan.dateRange.start} — ${latestPlan.dateRange.end}`
     : latestPlan?.duration || "여행 일정을 추가해 보세요";
-
   const handleLogout = async () => {
     await logout();
     navigate("/", { replace: true });
@@ -104,49 +88,37 @@ export default function MypageUser() {
           <h1 id="user-name">{displayName} 님.</h1>
           <p className={styles.email}>{user.email}</p>
           <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
-
         </section>
 
         <section className={styles.dashboard} aria-label="나의 여행 대시보드">
-          <div className={styles.heroVisual}>
-            <p>We meet again,<br />traveler.</p>
-          </div>
+          <div className={styles.heroVisual}><p>We meet again,<br />traveler.</p></div>
           <div className={styles.summary} aria-label="나의 여행 요약">
-          <article className={styles.upcoming}>
-            <div className={styles.upcomingSlideshow} aria-hidden="true">
-              {slideshowImages.map((image, index) => (
-                <img
-                  className={index === slideIndex ? styles.activeSlide : ""}
-                  key={image}
-                  src={`/Mypage-img/${image}`}
-                  alt=""
-                  decoding="async"
-                />
-              ))}
-            </div>
-            <small>01</small>
-            <strong>{latestPlan ? getDday(latestPlan.dateRange?.start) : "—"}</strong>
-            <span>{latestPlan ? "MY TRIP" : "NO TRIP"}</span>
-            <Link className={styles.cardLink} to={latestPlan ? "/itinerary" : "/search"} aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
-          </article>
-          <article className={styles.recent}>
-            <small>02</small>
-            <span>{latestPlan ? "RECENT PLAN" : "PLAN"}</span>
-            <h2>{planTitle}</h2>
-            <p>{planPeriod}</p>
-            <Link className={styles.cardLink} to={latestPlan ? "/itinerary" : "/search"} aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
-          </article>
-          <article className={styles.saved}>
-            <small>03</small>
-            <span>PLACES SAVED</span>
-            <strong>♥ {favoriteCount}</strong>
-            <Link className={styles.cardLink} to="/favorite-places" aria-label="찜한 장소 보기" />
-          </article>
-          <article className={styles.stories}>
-            <small>04</small>
-            <span>STORIES</span>
-            <strong>★ ★ ★ ★ ★<br />05</strong>
-          </article>
+            <article className={styles.upcoming}>
+              <div className={styles.upcomingSlideshow} aria-hidden="true">
+                {slideshowImages.map((image, index) => (
+                  <img className={index === slideIndex ? styles.activeSlide : ""} key={image}
+                    src={`/Mypage-img/${image}`} alt="" decoding="async" />
+                ))}
+              </div>
+              <small>01</small>
+              <strong>{latestPlan ? getDday(latestPlan.dateRange?.start) : "—"}</strong>
+              <span>{latestPlan ? "MY TRIP" : "NO TRIP"}</span>
+              <Link className={styles.cardLink} to={latestPlan ? "/itinerary" : "/search"}
+                aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
+            </article>
+            <article className={styles.recent}>
+              <small>02</small><span>{latestPlan ? "RECENT PLAN" : "PLAN"}</span>
+              <h2>{planTitle}</h2><p>{planPeriod}</p>
+              <Link className={styles.cardLink} to={latestPlan ? "/itinerary" : "/search"}
+                aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
+            </article>
+            <article className={styles.saved}>
+              <small>03</small><span>PLACES SAVED</span><strong>♥ {favoriteCount}</strong>
+              <Link className={styles.cardLink} to="/favorite-places" aria-label="찜한 장소 보기" />
+            </article>
+            <article className={styles.stories}>
+              <small>04</small><span>STORIES</span><strong>★ ★ ★ ★ ★<br />05</strong>
+            </article>
           </div>
         </section>
 
