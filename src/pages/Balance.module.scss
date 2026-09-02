@@ -1,0 +1,1068 @@
+.main {
+  position: relative;
+  width: calc(100% - 220px);
+  min-height: 100vh;
+  margin-left: 220px;
+  overflow: hidden;
+  background: #111;
+  color: #f7f4ed;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.background,
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.background {
+  object-fit: cover;
+  object-position: center;
+}
+
+.overlay {
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.16) 42%, rgba(0, 0, 0, 0.92) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.42) 0%, rgba(0, 0, 0, 0.06) 70%);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  width: min(760px, calc(100% - 80px));
+  min-height: 100vh;
+  margin-left: clamp(110px, 22vw, 365px);
+  padding: 78px 0 104px;
+}
+
+.eyebrow {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.eyebrow button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.eyebrow button:hover,
+.eyebrow button:focus-visible {
+  color: #fff;
+}
+
+.eyebrow p {
+  margin: 12px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.content h1 {
+  margin: 56px 0 0;
+  color: #f7f4ed;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(74px, 6.4vw, 106px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.98;
+  letter-spacing: -4px;
+}
+
+.intro {
+  margin-top: 84px;
+}
+
+.intro p {
+  margin: 0;
+}
+
+.lead {
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 18px;
+  line-height: 1.45;
+}
+
+.description {
+  margin-top: 22px !important;
+  color: rgba(255, 255, 255, 0.38);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.startButton {
+  position: absolute;
+  left: 350px;
+  bottom: 108px;
+  width: 148px;
+  height: 50px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: #f4f1eb;
+  color: #222;
+  font-size: 13px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.startButton span {
+  margin-left: 5px;
+}
+
+.startButton:hover,
+.startButton:focus-visible {
+  background: #171717;
+  color: #fff;
+}
+
+.game {
+  width: calc(100% - 220px);
+  min-height: 100vh;
+  margin-left: 220px;
+  overflow: hidden;
+  background: #111;
+  padding: 38px 0 92px;
+  color: #f3f1ed;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.gameHeader,
+.question {
+  font-family: "Noto Sans KR", sans-serif;
+  margin-left: 100px;
+}
+
+.gameHeader button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #777;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.gameHeader button:hover,
+.gameHeader button:focus-visible {
+  color: #fff;
+}
+
+.gameHeader p {
+  margin: 16px 0 0 8px;
+  color: #686868;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 27px;
+  letter-spacing: 3px;
+}
+
+.gameHeader strong {
+  color: #858585;
+  font-weight: 400;
+}
+
+.question {
+  width: fit-content;
+  margin-top: 70px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid #292929;
+  padding: 0 6px 6px;
+  color: #f4f2ee;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.choices {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  width: 100%;
+}
+
+.choice {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 570px;
+  overflow: hidden;
+  border: 0;
+  border-right: 1px solid #242424;
+  background: #181818;
+  padding: 0;
+  color: #f3f1ed;
+  text-align: left;
+  cursor: pointer;
+  transition: background 160ms ease;
+}
+
+.choice::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0 0 130px;
+  background: rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.choice:last-of-type {
+  border-right: 0;
+  text-align: right;
+}
+
+.choice:hover,
+.choice:focus-visible {
+  background: #202020;
+}
+
+.choice:hover::after,
+.choice:focus-visible::after {
+  opacity: 0;
+}
+
+.choiceImage {
+  position: absolute;
+  inset: 0 0 130px;
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: calc(100% - 130px);
+  object-fit: cover;
+  object-position: center;
+}
+
+.choiceLetter {
+  position: absolute;
+  top: 26px;
+  left: 36px;
+  display: grid;
+  width: 44px;
+  height: 30px;
+  border: 1px solid #555;
+  color: #aaa;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 19px;
+  place-items: center;
+  z-index: 2;
+}
+
+.choice:last-of-type .choiceLetter {
+  right: auto;
+  left: 36px;
+}
+
+.choiceCopy {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  min-height: 130px;
+  background: #111;
+  padding: 40px 0 0 148px;
+  z-index: 2;
+}
+
+.choiceCopy strong,
+.choiceCopy small {
+  display: block;
+}
+
+.choiceCopy strong {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.choiceCopy small {
+  margin-top: 10px;
+  color: #9b9b9b;
+  font-size: 11px;
+}
+
+.choiceCopyRight {
+  padding-right: 148px;
+  padding-left: 0;
+}
+
+.versus {
+  position: absolute;
+  z-index: 2;
+  top: 198px;
+  left: 50%;
+  display: grid;
+  width: 64px;
+  height: 64px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: #f5f2ec;
+  color: #111;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 28px;
+  font-style: italic;
+  place-items: center;
+}
+
+.analysis {
+  display: grid;
+  grid-template-columns: minmax(380px, 0.85fr) minmax(480px, 1.15fr);
+  width: calc(100% - 220px);
+  min-height: 100vh;
+  margin-left: 220px;
+  background: #111;
+  padding: 136px clamp(80px, 12vw, 230px) 100px;
+  color: #f3f1ed;
+  font-family: "Noto Sans KR", sans-serif;
+  column-gap: clamp(90px, 12vw, 210px);
+}
+
+.analysisIntro {
+  align-self: start;
+}
+
+.analysisEyebrow {
+  margin: 0;
+  color: #626262;
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.analysisIntro h1 {
+  margin: 58px 0 0;
+  color: #f5f2ec;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(54px, 4.2vw, 72px);
+  font-style: italic;
+  font-weight: 400;
+  line-height: 0.97;
+  letter-spacing: -1px;
+}
+
+.analysisDescription {
+  margin: 52px 0 0 6px;
+  color: #777;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+.analysisBars {
+  align-self: center;
+  margin-top: 70px;
+}
+
+.analysisItem {
+  padding: 0 0 30px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.analysisItem + .analysisItem {
+  margin-top: 34px;
+}
+
+.analysisLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  color: #777;
+}
+
+.analysisLabel span {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+}
+
+.analysisLabel strong {
+  min-width: 48px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  font-weight: 400;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.analysisTrack {
+  width: 100%;
+  height: 4px;
+  overflow: hidden;
+  background: #292929;
+}
+
+.analysisTrack span {
+  display: block;
+  height: 100%;
+  background: #f2efe9;
+  will-change: width;
+}
+
+.result {
+  display: grid;
+  grid-template-columns: minmax(420px, 1fr) minmax(430px, 0.9fr);
+  width: calc(100% - 220px);
+  min-height: 100vh;
+  margin-left: 220px;
+  background: #f3efe6;
+  padding: 54px clamp(72px, 11.5vw, 220px) 50px;
+  color: #111;
+  font-family: "Noto Sans KR", sans-serif;
+  column-gap: clamp(70px, 9vw, 165px);
+}
+
+.resultVisual {
+  padding-top: 28px;
+}
+
+.resultVisual h1 {
+  margin: 0;
+  color: #080808;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: clamp(68px, 5.2vw, 88px);
+  font-weight: 400;
+  line-height: 0.78;
+  letter-spacing: -2px;
+}
+
+.resultVisual h1 em {
+  font-weight: 400;
+}
+
+.resultSummary {
+  margin-top: 30px;
+}
+
+.resultSummary strong {
+  display: block;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.resultSummary p {
+  margin: 14px 0 0;
+  color: #76716a;
+  font-size: 14px;
+}
+
+.resultVisual img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1.16 / 1;
+  margin-top: 44px;
+  object-fit: cover;
+  animation: resultImageRise 700ms ease-out both;
+}
+
+@keyframes resultImageRise {
+  from {
+    transform: translateY(0.9rem);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.resultDetails {
+  padding-top: 84px;
+}
+
+.resultEyebrow {
+  margin: 0;
+  border-bottom: 1px solid #d3cec4;
+  padding-bottom: 24px;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 4px;
+}
+
+.resultQuote {
+  padding: 28px 0 48px;
+}
+
+.resultQuote h2 {
+  margin: 0;
+  font-size: 31px;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+
+.resultQuote p {
+  margin: 28px 0 0;
+  color: #77716a;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.tendencies {
+  margin-top: 0;
+}
+
+.tendency {
+  padding: 21px 0 17px;
+  border-bottom: 1px solid #d3cec4;
+}
+
+.tendency > div:first-child {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.tendency strong,
+.tendency span {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 16px;
+}
+
+.tendencyTrack {
+  width: 100%;
+  height: 1px;
+  background: #d0cbc2;
+}
+
+.tendencyTrack span {
+  display: block;
+  height: 1px;
+  background: #222;
+}
+
+.planButton {
+  width: 100%;
+  height: 70px;
+  margin-top: 46px;
+  border: 0;
+  background: #111;
+  color: #f4f1e9;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.planButton:hover,
+.planButton:focus-visible {
+  background: #302e2b;
+}
+
+.matches {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  grid-template-areas:
+    "heading more"
+    "primary more";
+  width: calc(100% - 220px);
+  min-height: 100vh;
+  margin-left: 220px;
+  background: #f3efe6;
+  padding: 120px clamp(70px, 11.5vw, 220px) 90px;
+  color: #111;
+  font-family: "Noto Sans KR", sans-serif;
+  column-gap: clamp(70px, 8vw, 140px);
+}
+
+.matchNav {
+  position: absolute;
+  top: 58px;
+  left: clamp(70px, 11.5vw, 220px);
+  display: flex;
+  align-items: center;
+  gap: 48px;
+}
+
+.matchNav button {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #282521;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 10px;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.matchNav button:hover,
+.matchNav button:focus-visible {
+  color: #8c7458;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resultVisual img {
+    animation: none;
+  }
+}
+
+.matchesHeader {
+  grid-area: heading;
+}
+
+.matchesHeader p,
+.moreLabel {
+  margin: 0;
+  color: #aaa39a;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.matchesHeader h1 {
+  margin: 5px 0 0;
+  font-size: 36px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 600;
+  letter-spacing: -1px;
+}
+
+.primaryMatch {
+  position: relative;
+  grid-area: primary;
+  width: 100%;
+  aspect-ratio: 1.15 / 1;
+  margin-top: 40px;
+  overflow: hidden;
+  background: #222;
+  color: #fff;
+}
+
+.primaryMatch > img,
+.matchShade {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.primaryMatch > img {
+  object-fit: cover;
+}
+
+.matchShade {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12) 20%, rgba(0, 0, 0, 0.82) 100%);
+}
+
+.primaryCopy {
+  position: absolute;
+  z-index: 1;
+  right: 34px;
+  bottom: 44px;
+  left: 34px;
+}
+
+.primaryCopy > p:first-child,
+.matchPercent {
+  margin: 0;
+}
+
+.primaryCopy > p:first-child strong,
+.matchPercent strong {
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.primaryCopy > p:first-child span,
+.matchPercent span {
+  margin-left: 8px;
+  color: #aaa;
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.primaryCopy h2,
+.matchRow h2 {
+  margin: 12px 0 0;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 38px;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.matchDescription {
+  margin: 22px 0 0;
+  font-size: 12px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.primaryCopy small {
+  display: block;
+  margin-top: 8px;
+  color: #aaa;
+  font-size: 7px;
+  letter-spacing: 1px;
+}
+
+.primaryCopy button,
+.matchRow button {
+  width: 145px;
+  height: 40px;
+  margin-top: 22px;
+  border: 0;
+  background: #f5f2eb;
+  color: #222;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.matchRow div > p:not(.matchPercent) {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.primaryCopy button span,
+.matchRow button span {
+  margin-left: 8px;
+}
+
+.moreMatches {
+  grid-area: more;
+  align-self: start;
+  margin-top: 80px;
+  border-top: 1px solid #cec8be;
+  padding: 42px 44px 0;
+}
+
+.moreLabel {
+  margin-bottom: 32px;
+}
+
+.matchRow {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: 26px;
+  padding: 0 0 26px;
+  border-bottom: 1px solid #cec8be;
+}
+
+.matchRow + .matchRow {
+  padding-top: 34px;
+}
+
+.matchRow > img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.matchPercent strong {
+  font-size: 25px;
+}
+
+.matchRow h2 {
+  font-size: 38px;
+}
+
+.matchRow div > p:not(.matchPercent) {
+  margin: 12px 0 0;
+  color: #827c74;
+  font-size: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.matchRow button {
+  margin-top: 18px;
+}
+@media (max-width: 1100px) {
+  .content {
+    margin-left: 80px;
+  }
+
+  .analysis {
+    grid-template-columns: minmax(300px, 0.8fr) minmax(360px, 1.2fr);
+    padding-right: 60px;
+    padding-left: 60px;
+    column-gap: 70px;
+  }
+
+  .result {
+    padding-right: 60px;
+    padding-left: 60px;
+    column-gap: 70px;
+  }
+
+  .matches {
+    padding-right: 60px;
+    padding-left: 60px;
+    column-gap: 60px;
+  }
+
+  .matchNav {
+    left: 60px;
+  }
+
+  .moreMatches {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 900px) {
+  .main,
+  .game,
+  .analysis,
+  .result,
+  .matches {
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    margin-left: 0;
+  }
+
+  .analysis {
+    grid-template-columns: 1fr;
+    padding: 70px 48px 90px;
+    row-gap: 60px;
+  }
+
+  .analysisBars {
+    width: 100%;
+    margin-top: 0;
+  }
+
+  .result {
+    grid-template-columns: 1fr;
+    padding: 54px 48px 90px;
+    row-gap: 60px;
+  }
+
+  .resultVisual img {
+    max-height: 620px;
+  }
+
+  .resultVisual {
+    padding-top: 0;
+  }
+
+  .resultDetails {
+    padding-top: 0;
+  }
+
+  .matches {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "heading"
+      "primary"
+      "more";
+    padding: 64px 48px 90px;
+  }
+
+  .matchNav {
+    top: 26px;
+    left: 48px;
+  }
+
+  .primaryMatch {
+    max-height: 620px;
+  }
+
+  .moreMatches {
+    margin-top: 70px;
+  }
+
+  .content {
+    min-height: calc(100vh - 56px);
+    margin-left: clamp(40px, 12vw, 100px);
+    padding-top: 54px;
+  }
+
+  .gameHeader,
+  .question {
+    margin-left: 48px;
+  }
+
+  .choiceCopy {
+    padding-left: 48px;
+  }
+
+  .choiceCopyRight {
+    padding-right: 48px;
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .main,
+  .content {
+    min-height: calc(100dvh - 114px);
+  }
+
+  .background {
+    object-position: 48% center;
+  }
+
+  .content {
+    width: calc(100% - 40px);
+    margin: 0 20px;
+    padding: 34px 0 86px;
+  }
+
+  .content h1 {
+    margin-top: 44px;
+    font-size: clamp(54px, 17vw, 76px);
+    letter-spacing: -2px;
+  }
+
+  .intro {
+    margin-top: 52px;
+  }
+
+  .lead {
+    font-size: 15px;
+  }
+
+  .description {
+    font-size: 12px;
+  }
+
+  .startButton {
+    right: 0;
+    bottom: 30px;
+    left: auto;
+    width: 132px;
+    height: 46px;
+  }
+
+  .game {
+    padding: 28px 0 80px;
+  }
+
+  .analysis {
+    padding: 48px 20px 80px;
+    row-gap: 48px;
+  }
+
+  .result {
+    padding: 42px 20px 80px;
+    row-gap: 48px;
+  }
+
+  .matches {
+    padding: 48px 20px 80px;
+  }
+
+  .matchNav {
+    top: 18px;
+    left: 20px;
+    gap: 30px;
+  }
+
+  .matchesHeader h1 {
+    font-size: 29px;
+  }
+
+  .primaryMatch {
+    aspect-ratio: 0.9 / 1;
+    margin-top: 38px;
+  }
+
+  .primaryCopy {
+    right: 22px;
+    bottom: 28px;
+    left: 22px;
+  }
+
+  .moreMatches {
+    margin-top: 52px;
+    padding-top: 30px;
+  }
+
+  .matchRow {
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .matchRow > img {
+    width: 110px;
+    height: 110px;
+  }
+
+  .matchRow h2 {
+    font-size: 30px;
+  }
+
+  .matchRow div > p:not(.matchPercent) {
+    font-size: 12px;
+  }
+
+  .resultVisual h1 {
+    font-size: clamp(62px, 21vw, 82px);
+  }
+
+  .resultSummary {
+    margin-top: 70px;
+  }
+
+  .resultVisual img {
+    margin-top: 34px;
+  }
+
+  .resultQuote h2 {
+    font-size: 25px;
+  }
+
+  .analysisEyebrow {
+    font-size: 11px;
+  }
+
+  .analysisIntro h1 {
+    margin-top: 36px;
+    font-size: clamp(48px, 15vw, 64px);
+  }
+
+  .analysisDescription {
+    margin-top: 34px;
+    font-size: 14px;
+  }
+
+  .gameHeader,
+  .question {
+    margin-left: 20px;
+  }
+
+  .question {
+    margin-top: 42px;
+    margin-right: 20px;
+    font-size: 19px;
+  }
+
+  .choices {
+    grid-template-columns: 1fr;
+  }
+
+  .choice {
+    height: 300px;
+    border-right: 0;
+    border-bottom: 1px solid #2c2c2c;
+  }
+
+  .choiceCopy,
+  .choiceCopyRight {
+    min-height: 96px;
+    padding: 20px;
+    text-align: left;
+  }
+
+  .choiceCopy strong {
+    font-size: 19px;
+  }
+
+  .choiceImage {
+    inset: 0 0 96px;
+    height: calc(100% - 96px);
+  }
+
+  .choice::after {
+    inset: 0 0 96px;
+  }
+
+  .versus {
+    top: calc(50% - 32px);
+  }
+}
