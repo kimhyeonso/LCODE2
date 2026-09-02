@@ -68,6 +68,19 @@ $plan-muted: #8b8780;
   background-size: cover;
   color: #eee;
 }
+.backButton {
+  position: absolute;
+  top: 24px;
+  left: 20px;
+  z-index: 1;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #fff;
+  font-size: 11px;
+  letter-spacing: .16em;
+  cursor: pointer;
+}
 .heroTop {
   display: flex;
   justify-content: space-between;
@@ -156,8 +169,11 @@ $plan-muted: #8b8780;
   height: 22px;
 }
 .visualBreak {
-  height: 195px;
+  height: 280px;
   background: #ddd;
+}
+.visualBreak :global(.leaflet-container) {
+  height: 100%;
 }
 .expense {
   padding: 32px 24px 26px;
@@ -184,6 +200,71 @@ $plan-muted: #8b8780;
   font: 29px/1 $serif;
   letter-spacing: -1px;
 }
+.expenseMeta {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.expenseSetting,
+.exchangeDetail {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: $plan-muted;
+  font-size: 9px;
+  cursor: pointer;
+}
+.exchangeRate {
+  padding: 20px 0;
+  border-top: 1px solid $plan-line;
+}
+.exchangeRate header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: $plan-muted;
+  font-size: 7px;
+  letter-spacing: 1.6px;
+}
+.exchangeRate header p {
+  margin: 0;
+}
+.exchangeRate > small {
+  display: block;
+  margin: 16px 0 8px;
+  color: $plan-muted;
+  font-size: 9px;
+}
+.exchangeBox {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  padding: 16px;
+  background: #f0f0f0;
+}
+.exchangeBox span,
+.exchangeBox p {
+  color: $plan-muted;
+  font-size: 8px;
+}
+.exchangeBox span {
+  display: block;
+}
+.exchangeBox strong {
+  display: block;
+  margin-top: 6px;
+  font: 28px/1 $serif;
+}
+.exchangeBox p {
+  margin: 0;
+  text-align: right;
+  line-height: 1.55;
+}
+.exchangeDetail {
+  display: block;
+  margin: 14px 0 0 auto;
+}
 .expenseList {
   margin: 0;
   border-top: 1px solid $plan-line;
@@ -206,14 +287,23 @@ $plan-muted: #8b8780;
 .itinerary {
   padding-top: 28px;
 }
-.dayHeader {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: baseline;
-  gap: 16px;
-  padding: 16px 24px;
+.dayAccordion {
   border-bottom: 1px solid $plan-line;
 }
+.dayHeader {
+  width: 100%;
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: baseline;
+  gap: 16px;
+  border: 0;
+  padding: 20px 24px;
+  background: transparent;
+  color: $ink;
+  text-align: left;
+  cursor: pointer;
+}
+.dayHeaderOpen { background: $plan-surface; }
 .dayHeader h2 {
   margin: 0;
   font: 19px $serif;
@@ -227,6 +317,11 @@ $plan-muted: #8b8780;
   color: #aaa;
   font-size: 9px;
   font-weight: 400;
+}
+.dayHeader i {
+  color: #999;
+  font-size: 18px;
+  font-style: normal;
 }
 .timeline {
   margin: 0;
@@ -640,16 +735,22 @@ $plan-muted: #8b8780;
 
 @media (min-width: 800px) {
   .plan {
-    width: min(calc(100% - 64px), 1100px);
-    margin-block: 40px 80px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
+    width: min(1100px, calc(100% - 64px));
+    margin: auto 70px;
+    padding: 0 0 90px;
+    background-color: transparent;
   }
   .hero {
     height: 600px;
     padding-inline: 64px;
+    width: 100vw;
+    margin-left: calc((100% - 100vw) / 2);
   }
   .heroTags,
   .heroWeather {
+    left: 64px;
+  }
+  .backButton {
     left: 64px;
   }
   .intro {
@@ -662,7 +763,7 @@ $plan-muted: #8b8780;
     padding-inline: 64px;
   }
   .visualBreak {
-    height: 320px;
+    height: 420px;
     margin-top: 30px;
   }
   .expense,
@@ -709,9 +810,22 @@ $plan-muted: #8b8780;
 
 @media (min-width: 901px) {
   .plan {
-    width: min(1100px, calc(100% - 220px - 64px));
-    margin-right: 0;
-    margin-left: calc(220px + max(32px, (100% - 1320px) / 2));
+    width: min(1320px, calc(100% - 332px));
+    margin: 0 0 70px max(276px, calc(50% - 550px));
+    padding: 0 0 90px;
+  }
+
+  .hero {
+    width: calc(100vw - 220px);
+    margin-left: calc(220px - max(276px, calc(50vw - 550px)));
+  }
+
+  .expense,
+  .itinerary,
+  .otherDays,
+  .saveArea {
+    width: calc(100% - 128px);
+    max-width: none;
   }
 
   .heroTop {
@@ -793,4 +907,39 @@ $plan-muted: #8b8780;
   .hero {
     height: 485px;
   }
+}
+
+/* Home 본문 기준: 정보 텍스트는 14px보다 작지 않게 사용합니다. */
+.planStatus,
+.planEmpty > span,
+.planEmpty p,
+.planEmpty a,
+.heroTop,
+.heroTags,
+.heroWeather,
+.stats dd,
+.points p,
+.expense > p,
+.expenseSummary span,
+.expenseSummary small,
+.expenseSetting,
+.exchangeDetail,
+.exchangeRate header,
+.exchangeRate > small,
+.exchangeBox span,
+.exchangeBox p,
+.expenseList dt,
+.expenseList dd,
+.dayHeader span,
+.dayHeader b,
+.number,
+.timeline time,
+.placeCopy small,
+.placeCopy p,
+.transport,
+.otherDays > p,
+.otherDays span,
+.otherDays b,
+.saveArea button {
+  font-size: 14px;
 }

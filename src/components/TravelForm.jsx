@@ -192,9 +192,12 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       ? String(new Date(`${addDays(tripDateRange.start, index)}T00:00:00`).getDate()).padStart(2, "0")
       : day.date ? new Date(day.date).getDate() : String(index + 1).padStart(2, "0"),
   ]);
-  const heroImage = getImageUrl(
-    selectedTrip.days.flatMap((day) => day.items).find((item) => item.image)?.image,
-  );
+  const thumbnailPath = tripRoad.thumbnailMap?.[
+    String(selectedTrip.country || "").trim().toLowerCase()
+  ]?.[selectedTrip.city];
+  const heroImage = thumbnailPath
+    ? getImageUrl(thumbnailPath)
+    : getImageUrl(selectedTrip.days.flatMap((day) => day.items).find((item) => item.image)?.image);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
   const { user } = useAuth();
   const [activeDay, setActiveDay] = useState(0);

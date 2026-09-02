@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useLayoutEffect } from "react";
 import hero from "../assets/images/journal_tokyo.jpg";
 import coffee from "../assets/images/Tokyo/Tokyo/GlitchCoffee&Roasters.png";
 import crossing from "../assets/images/Tokyo/Tokyo/ShibuyaCrossing.webp";
@@ -7,8 +8,24 @@ import station from "../assets/images/Tokyo/Tokyo/TokyoStation.jpg";
 import styles from "./JournalDetail.module.scss";
 
 export default function JournalDetail() {
+  const homeScrollY = Number(sessionStorage.getItem("homeJournalScrollY")) || 0;
+
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+    root.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    return () => {
+      root.style.scrollBehavior = previousScrollBehavior;
+    };
+  }, []);
+
   return <main className={styles.page}>
-    <Link className={styles.back} to="/">← BACK</Link>
+    <Link className={styles.back} to="/" state={{ restoreScrollY: homeScrollY }}>← BACK</Link>
     <section className={styles.cover} style={{ backgroundImage: `linear-gradient(180deg, transparent 35%, rgba(0,0,0,.6)), url(${hero})` }}><span>BEST REVIEW</span><div><small>CITY EDITION　TOKYO 14:52</small><h1>TOKYO</h1><p>나를 조금씩 닮아가는 여행</p></div></section>
     <section className={styles.intro}><h2>★★★★★ <b>4.7</b></h2><p>도쿄는 예상보다 훨씬 걷기 좋은 도시였어요. 골목마다 분위기가 다르고, 지역마다 색깔이 뚜렷해서 하루하루가 새로웠습니다. 메이지 신궁부터 시부야 야경까지, 여행의 속도를 천천히 늦춘 덕분에 더 많은 것을 담아올 수 있었어요.</p><dl><div><dt>TRAVEL</dt><dd>TOKYO</dd></div><div><dt>DATE</dt><dd>MAY 12, 2026</dd></div><div><dt>BY</dt><dd>HAEUN</dd></div></dl><div className={styles.tags}>{["도시", "야경", "맛집", "감성", "재방문 의사"].map((tag) => <span key={tag}>{tag}</span>)}</div></section>
     <JournalDay day="01" subtitle="나리타 공항 · 시부야" images={[hero]}><p>나리타 공항에서 아사쿠사를 거쳐 시부야 숙소까지 이동했다. 처음 도착한 도쿄는 낯설면서도 어딘가 익숙한 도시의 냄새가 났다. 지하철 환승 과정이 복잡했지만, 큰 불편함조차 도쿄다웠다.</p><small>첫날이라 무리하지 않고 숙소 근처 골목을 짧게 걸었다.</small></JournalDay>

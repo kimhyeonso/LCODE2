@@ -11,6 +11,7 @@ const menuItems = [
   ["쿠폰함", "/coupon"], ["알림 설정", "/alarm"], ["고객센터", "/notice"],
 ];
 const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
+
 const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
   || plan.updatedAt?.seconds * 1000 || plan.createdAt?.toMillis?.()
   || plan.createdAt?.seconds * 1000 || 0;

@@ -1,9 +1,11 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomNav from "./components/BottomNav";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import AdminDashboard from "./pages/AdminDashboard";
 import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
@@ -40,19 +42,25 @@ import MyPageMain from "./pages/MyPageMain";
 import ExchangeRate from "./pages/ExchangeRate";
 import Desrination from "./pages/Desrination";
 import Balance from "./pages/Balance";
+import DesrinationAll from "./pages/DesrinationAll";
 import styles from "./App.module.scss";
 function ScrollTop() {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  const { pathname, state } = useLocation();
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    const savedScrollY = Number(state?.restoreScrollY);
+    const scrollY = Number.isFinite(savedScrollY) ? savedScrollY : 0;
+
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, scrollY);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }, [pathname, state]);
   return null;
 }
 
 const enlargedPagePaths = new Set([
   "/login",
-  "/my",
-  "/mypage-user",
   "/profile/edit",
   "/itinerary",
   "/wishlist",
@@ -92,6 +100,7 @@ export default function App() {
           <Route path="/destination" element={<ExchangeRate />} />
           <Route path="/desrination" element={<Desrination />} />
           <Route path="/balance" element={<Balance />} />
+          <Route path="/desrinationAll" element={<DesrinationAll />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />
@@ -104,6 +113,7 @@ export default function App() {
           <Route path="/order-complete" element={<OrderComplete />} />
           <Route path="/travel-planner" element={<TravelPlanner />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/buy" element={<Buy />} />
           <Route path="/paking" element={<Paking />} />
@@ -118,8 +128,8 @@ export default function App() {
               </ProtectedRoute>
             }
           />
-          <Route path="/coupon" element={<Coupon />} />
-          <Route path="/coupon/register" element={<CouponUp />} />
+          <Route path="/coupon" element={<ProtectedRoute><Coupon /></ProtectedRoute>} />
+          <Route path="/coupon/register" element={<ProtectedRoute><CouponUp /></ProtectedRoute>} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/open-guide" element={<OpenGuide />} />
