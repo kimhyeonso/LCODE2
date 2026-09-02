@@ -217,16 +217,21 @@
   }
 
   .content {
-    grid-template-columns: minmax(0, 39fr) minmax(0, 61fr);
-    width: calc(100% - 8vw);
+    grid-template-columns: minmax(420px, 45fr) minmax(460px, 55fr);
+    grid-template-rows: auto 1fr;
+    width: calc(100% - clamp(48px, 6vw, 96px));
+    min-height: 100vh;
+    height: auto;
     margin-right: 0;
-    margin-left: 8vw;
+    margin-left: clamp(48px, 6vw, 96px);
   }
 
+  .dashboard { grid-row: 1 / span 2; height: 100vh; }
   .heroVisual { height: 100%; }
   .heroVisual p { right: 18px; bottom: 18px; font-size: 46px; }
 
   .profile {
+    grid-row: 1;
     justify-content: flex-start;
     margin-top: 0;
     padding-top: 55px;
@@ -254,14 +259,44 @@
   .menuList {
     z-index: 1;
     grid-column: 2;
-    grid-row: 1;
+    grid-row: 2;
     align-self: start;
-    width: 44%;
-    margin-top: 450px;
+    width: min(440px, calc(100% - 56px));
+    margin-top: 40px;
     margin-left: 56px;
   }
+  .profile .eyebrow,
+  .profile .email { font-size: 11px; }
+  .profile .greeting { margin-top: 22px; font-size: 13px; }
+  .profile h1 { font-size: clamp(30px, 2.5vw, 42px); }
+  .profile .edit { margin-top: 14px; padding: 8px 14px; font-size: 11px; }
+  .menuList a,
+  .menuList button {
+    min-height: 44px;
+    grid-template-columns: 20px 1fr auto;
+    column-gap: 10px;
+    font-size: 13px;
+  }
+  .menuList a::before,
+  .menuList button::before { width: 16px; height: 16px; }
+  .summary small { font-size: 10px; }
+  .summary > article > span { font-size: 11px; }
+  .recent p { font-size: 10px; }
   .upcoming strong { font-size: 44px; }
   .recent h2 { font-size: 38px; white-space: nowrap; }
+}
+
+@media (min-width: 901px) and (max-width: 1180px) {
+  .content {
+    grid-template-columns: minmax(360px, 48fr) minmax(390px, 52fr);
+    width: calc(100% - 40px);
+    margin-left: 40px;
+  }
+  .profile { padding-left: 36px; }
+  .menuList { width: calc(100% - 36px); margin-left: 36px; }
+  .heroVisual p { font-size: 36px; }
+  .upcoming strong { font-size: 36px; }
+  .recent h2 { font-size: 30px; }
 }
 
 @include mobile {

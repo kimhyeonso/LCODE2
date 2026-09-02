@@ -5,7 +5,6 @@
   position: relative;
   width: min(100%, 560px);
   margin: 0 auto;
-  background: #fff;
   color: #222;
 }
 
@@ -1726,9 +1725,9 @@
 
 @media (min-width: 641px) {
   .form {
-    margin-top: 40px;
-    margin-bottom: 80px;
-    box-shadow: 0 16px 50px rgba(0, 0, 0, 0.08);
+    width: min(1100px, calc(100% - 64px));
+    margin: 36px auto 70px;
+    padding: 58px 0 90px;
   }
 }
 
