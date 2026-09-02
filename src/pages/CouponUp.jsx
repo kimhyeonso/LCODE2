@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
+import { useAuth } from "../hooks/useAuth";
+import { getCouponStorageKey } from "../data/eventCoupons";
 import styles from "./CouponUp.module.scss";
 
-const storageKey = "lcode-registered-coupons";
-
 export default function CouponUp() {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const [code, setCode] = useState("");
   const [pin, setPin] = useState("");
@@ -30,6 +31,7 @@ export default function CouponUp() {
       expiry: "VALID UNTIL 2026.12.31",
     };
 
+    const storageKey = getCouponStorageKey(user.uid);
     let saved = [];
     try { saved = JSON.parse(localStorage.getItem(storageKey)) || []; } catch { saved = []; }
     if (saved.some((item) => item.code === normalizedCode)) {

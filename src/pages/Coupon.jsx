@@ -1,11 +1,9 @@
 import MypageBackLink from "../components/MypageBackLink";
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
-import {
-  COUPON_STORAGE_KEY,
-  EVENT_PRIZE_INBOX_KEY,
-  eventCouponCatalog,
-} from "../data/eventCoupons";
+import { useEffect, useMemo, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
+import { getUserCoupons } from "../services/firestoreService";
+import { getCouponStorageKey } from "../data/eventCoupons";
 import styles from "./Coupon.module.scss";
 
 const coupons = [
@@ -32,42 +30,46 @@ function CouponTicket({ coupon, featured = false }) {
 }
 
 export default function Coupon() {
+  const { user } = useAuth();
   const { state } = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
-  const [registeredCoupons, setRegisteredCoupons] = useState(() => {
-    try { return JSON.parse(localStorage.getItem(COUPON_STORAGE_KEY)) || []; }
-    catch { return []; }
-  });
+  const [registeredCoupons, setRegisteredCoupons] = useState([]);
+  const [loadError, setLoadError] = useState("");
 
   useEffect(() => {
-    let eventResult;
-    try {
-      eventResult = JSON.parse(localStorage.getItem(EVENT_PRIZE_INBOX_KEY));
-    } catch {
-      eventResult = null;
-    }
+    if (!user) return undefined;
+    let active = true;
+    const storageKey = getCouponStorageKey(user.uid);
+    let localCoupons = [];
+    try { localCoupons = JSON.parse(localStorage.getItem(storageKey)) || []; }
+    catch { localCoupons = []; }
 
-    const template = eventResult && eventCouponCatalog[eventResult.prizeId];
-    if (!template) return;
-
-    const eventCoupon = {
-      ...template,
-      source: "event",
-      code: eventResult.claimId,
-      wonAt: eventResult.wonAt,
-      background: "/event/coupon03.png",
-    };
-
-    setRegisteredCoupons((current) => {
-      if (current.some((coupon) => coupon.code === eventCoupon.code)) return current;
-      const next = [...current, eventCoupon];
-      localStorage.setItem(COUPON_STORAGE_KEY, JSON.stringify(next));
-      return next;
-    });
-    localStorage.removeItem(EVENT_PRIZE_INBOX_KEY);
-  }, []);
+    getUserCoupons(user.uid)
+      .then((firebaseCoupons) => {
+        if (!active) return;
+        setLoadError("");
+        setRegisteredCoupons(() => {
+          const merged = [...firebaseCoupons];
+          localCoupons.forEach((coupon) => {
+            if (!merged.some((item) => item.code === coupon.code)) merged.push(coupon);
+          });
+          return merged;
+        });
+      })
+      .catch(() => {
+        if (!active) return;
+        setRegisteredCoupons(localCoupons);
+        setLoadError("Firebase 쿠폰을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.");
+      });
+    return () => { active = false; };
+  }, [user]);
   const welcomeCoupon = { type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" };
-  const ownedCoupons = [...coupons, ...registeredCoupons];
+  const ownedCoupons = useMemo(
+    () => [...coupons, ...registeredCoupons],
+    [registeredCoupons],
+  );
+  const availableCount = [welcomeCoupon, ...ownedCoupons]
+    .filter((coupon) => !coupon.used).length;
   const pageCount = Math.max(1, Math.ceil(ownedCoupons.length / COUPONS_PER_PAGE));
   const pageCoupons = ownedCoupons.slice(
     (currentPage - 1) * COUPONS_PER_PAGE,
@@ -82,9 +84,10 @@ export default function Coupon() {
       (coupon) => coupon.code === registeredCouponCode,
     );
     if (registeredIndex >= 0) {
-      setCurrentPage(Math.floor(registeredIndex / COUPONS_PER_PAGE) + 1);
+      const targetPage = Math.floor(registeredIndex / COUPONS_PER_PAGE) + 1;
+      queueMicrotask(() => setCurrentPage(targetPage));
     }
-  }, [state?.registeredCouponCode, registeredCoupons.length]);
+  }, [state?.registeredCouponCode, ownedCoupons]);
 
   return (
     <main className={styles.coupon}>
@@ -97,7 +100,7 @@ export default function Coupon() {
               <p className={styles.eyebrow}>ARCHIVE</p>
               <h1 id="coupon-title">COUPON ARCHIVE</h1>
             </div>
-            <div className={styles.available}><span>AVAILABLE</span><strong>{ownedCoupons.length + 1 < 10 ? `0${ownedCoupons.length + 1}` : ownedCoupons.length + 1}</strong></div>
+            <div className={styles.available}><span>AVAILABLE</span><strong>{String(availableCount).padStart(2, "0")}</strong></div>
           </div>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
           <div className={styles.divider} />
@@ -105,6 +108,7 @@ export default function Coupon() {
           <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>
         </section>
         <section className={styles.couponList} aria-label="보유 쿠폰">
+          {loadError && <p role="alert">{loadError}</p>}
           {pageCoupons.map((coupon, index) => (
             <CouponTicket coupon={coupon} key={`${coupon.code}-${index}`} />
           ))}

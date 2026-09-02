@@ -10,17 +10,48 @@ service cloud.firestore {
       return isSignedIn() && userId == request.auth.uid;
     }
 
+    function isAdmin() {
+      return isSignedIn()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
     match /users/{userId} {
-      allow create, read, update, delete: if isOwner(userId);
+      allow create: if isOwner(userId)
+        && (!request.resource.data.keys().hasAny(['role']) || request.resource.data.role == 'user');
+      allow read: if isOwner(userId) || isAdmin();
+      allow update: if isAdmin() || (isOwner(userId)
+        && request.resource.data.role == resource.data.role);
+      allow delete: if isAdmin() || isOwner(userId);
 
       match /favoritePlaces/{placeId} {
         allow create, read, update, delete: if isOwner(userId);
+      }
+
+      match /coupons/{couponId} {
+        allow read: if isOwner(userId) || isAdmin();
+        // Portfolio event: one client-issued coupon per account.
+        allow create: if isOwner(userId)
+          && couponId == 'gacha-2026'
+          && request.resource.data.keys().hasOnly([
+            'prizeId', 'type', 'title', 'suffix', 'description', 'detail',
+            'eventId', 'code', 'source', 'used', 'issuedAt', 'expiresAt', 'expiry'
+          ])
+          && request.resource.data.eventId == 'gacha-2026'
+          && request.resource.data.code == 'GACHA-2026-' + userId
+          && request.resource.data.source == 'event'
+          && request.resource.data.used == false
+          && request.resource.data.issuedAt == request.time
+          && request.resource.data.expiry == 'VALID UNTIL 2026.12.31'
+          && request.resource.data.prizeId in [
+            'event-first', 'event-second', 'event-third', 'event-fourth'
+          ];
+        allow update, delete: if false;
       }
     }
 
     match /plans/{planId} {
       allow create: if isOwner(request.resource.data.userId);
-      allow read, delete: if isOwner(resource.data.userId);
+      allow read, delete: if isOwner(resource.data.userId) || isAdmin();
       allow update: if isOwner(resource.data.userId)
         && request.resource.data.userId == resource.data.userId;
     }

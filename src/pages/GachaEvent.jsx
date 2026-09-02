@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { drawEventCoupon } from "../services/eventService";
 import styles from "./GachaEvent.module.scss";
 import { EventHeader } from "./Event";
 
@@ -22,6 +25,7 @@ const asset = {
 
 const prizes = [
   {
+    prizeId: "event-first",
     rank: "1등",
     title: "10만원 쿠폰 + 여행키트증정",
     resultTitle: "1등 당첨!",
@@ -30,6 +34,7 @@ const prizes = [
     showKit: true,
   },
   {
+    prizeId: "event-second",
     rank: "2등",
     title: "5만원 쿠폰 + 여행키트증정",
     resultTitle: "2등 당첨!",
@@ -38,6 +43,7 @@ const prizes = [
     showKit: true,
   },
   {
+    prizeId: "event-third",
     rank: "3등",
     title: "여행키트증정",
     resultTitle: "3등 당첨!",
@@ -46,6 +52,7 @@ const prizes = [
     showKit: true,
   },
   {
+    prizeId: "event-fourth",
     rank: "4등",
     title: "쇼핑 10% 할인쿠폰",
     resultTitle: "4등 당첨!",
@@ -65,8 +72,12 @@ const previousStep = {
 const OPEN_AUTO_DELAY = 1000;
 
 export default function GachaEvent({ onExit }) {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const [step, setStep] = useState("intro");
   const [selectedPrize, setSelectedPrize] = useState(prizes[0]);
+  const [drawing, setDrawing] = useState(false);
+  const [drawError, setDrawError] = useState("");
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0 });
@@ -91,11 +102,32 @@ export default function GachaEvent({ onExit }) {
     setStep(previousStep[step] ?? "intro");
   };
 
-  const handleDraw = () => {
-    const randomIndex = Math.floor(Math.random() * prizes.length);
-
-    setSelectedPrize(prizes[randomIndex]);
-    setStep("capsule");
+  const handleDraw = async () => {
+    if (!user) {
+      navigate("/login", { state: { from: "/event" } });
+      return;
+    }
+    setDrawing(true);
+    setDrawError("");
+    try {
+      const result = await drawEventCoupon(user.uid);
+      const prize = prizes.find((item) => item.prizeId === result.prizeId);
+      if (!prize) throw new Error("당첨 결과를 확인할 수 없습니다.");
+      if (result.alreadyClaimed) {
+        window.alert("이미 참여한 이벤트입니다. 발급된 쿠폰은 마이페이지 쿠폰함에서 확인해 주세요.");
+        return;
+      }
+      setSelectedPrize(prize);
+      setStep("capsule");
+    } catch (error) {
+      const message = error?.code === "permission-denied"
+        ? "쿠폰 저장 권한이 없습니다. Firestore 규칙을 확인해 주세요."
+        : "쿠폰을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.";
+      setDrawError(message);
+      window.alert(message);
+    } finally {
+      setDrawing(false);
+    }
   };
 
   return (
@@ -160,14 +192,15 @@ export default function GachaEvent({ onExit }) {
             <img src={asset.gacha} alt="" />
           </div>
 
-          <button className={styles.gachaButton} type="button" onClick={handleDraw}>
+          <button className={styles.gachaButton} type="button" onClick={handleDraw} disabled={drawing}>
             <img src={asset.coin} alt="" />
             <span>
-              가차
+              {drawing ? "추첨 중" : "가차"}
               <br />
-              돌리기
+              {drawing ? "잠시만요" : "돌리기"}
             </span>
           </button>
+          {drawError && <p role="alert">{drawError}</p>}
         </section>
       )}
 
@@ -225,14 +258,14 @@ export default function GachaEvent({ onExit }) {
             <button
               className={styles.primaryButton}
               type="button"
-              onClick={() => setStep("intro")}
+              onClick={() => navigate("/coupon")}
             >
               쿠폰함 보러가기 →
             </button>
             <button
               className={styles.secondaryButton}
               type="button"
-              onClick={() => setStep("intro")}
+              onClick={onExit}
             >
               홈으로
             </button>
