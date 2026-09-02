@@ -40,7 +40,6 @@ import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
 import MyPageMain from "./pages/MyPageMain";
 import ExchangeRate from "./pages/ExchangeRate";
-import Desrination from "./pages/Desrination";
 import Balance from "./pages/Balance";
 import DesrinationAll from "./pages/DesrinationAll";
 import styles from "./App.module.scss";
@@ -98,7 +97,7 @@ export default function App() {
           <Route path="/plan" element={<Plan />} />
           <Route path="/search" element={<Search />} />
           <Route path="/destination" element={<ExchangeRate />} />
-          <Route path="/desrination" element={<Desrination />} />
+          <Route path="/desrination" element={<DesrinationAll />} />
           <Route path="/balance" element={<Balance />} />
           <Route path="/desrinationAll" element={<DesrinationAll />} />
           <Route path="/shop" element={<Products />} />
