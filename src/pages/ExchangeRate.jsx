@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import styles from "./ExchangeRate.module.scss";
 import { getExchangeRates } from "../services/exchangeRateApi";
 
@@ -17,7 +17,12 @@ const initialRates = [
 const quickAmounts = [500, 1000, 5000, 10000];
 
 const ExchangeRate = () => {
-  const [currency, setCurrency] = useState("JPY");
+  const [params] = useSearchParams();
+  const requestedCurrency = params.get("currency")?.toUpperCase();
+  const initialCurrency = initialRates.some((item) => item.code === requestedCurrency)
+    ? requestedCurrency
+    : "JPY";
+  const [currency, setCurrency] = useState(initialCurrency);
   const [amount, setAmount] = useState(0);
   const [selectedQuickAmount, setSelectedQuickAmount] = useState(null);
   const [isConvertReversed, setIsConvertReversed] = useState(false);
@@ -60,7 +65,11 @@ const ExchangeRate = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const moneySign = selectedRate.code === "JPY" ? "¥" : selectedRate.code;
+  const moneySign = selectedRate.code === "JPY"
+    ? "¥"
+    : selectedRate.code === "CNY"
+      ? "CN¥"
+      : selectedRate.code;
   const quickMoneySign = isConvertReversed ? "₩" : moneySign;
 
   const handleAmountChange = (value) => {

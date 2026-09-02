@@ -9,26 +9,38 @@ $home-sage: #657266;
 $home-forest: #344139;
 $home-terracotta: #a8664c;
 $home-placeholder: #e7e4de;
+
 $space-1: 8px;
 $space-2: 16px;
 $space-3: 24px;
 $space-4: 32px;
 $space-5: 48px;
 $space-6: 64px;
+
 $type-caption: 11px;
 $type-small: 12px;
 $type-body: 14px;
 $type-section: 32px;
 $type-display: 36px;
 
+/* ========================================
+   HOME
+======================================== */
+
 .home {
   background: $home-paper;
   color: $home-ink;
   padding-bottom: 72px;
 }
+
+/* ========================================
+   HERO
+======================================== */
+
 .hero {
   width: 100%;
 }
+
 .heroVisual {
   width: 100%;
   height: 224px;
@@ -36,22 +48,26 @@ $type-display: 36px;
   position: relative;
   overflow: hidden;
 }
+
 .heroTrack {
   display: flex;
   width: 100%;
   height: 100%;
   transition: transform 650ms ease;
 }
+
 .heroSlide {
   flex: 0 0 100%;
   min-width: 0;
   height: 100%;
 }
+
 .heroSlide picture {
   display: block;
   width: 100%;
   height: 100%;
 }
+
 .heroSlide img {
   display: block;
   width: 100%;
@@ -60,6 +76,7 @@ $type-display: 36px;
   object-position: center;
   user-select: none;
 }
+
 .heroDots {
   position: absolute;
   z-index: 1;
@@ -69,34 +86,44 @@ $type-display: 36px;
   gap: 9px;
   transform: translateX(-50%);
 }
+
 .heroDot {
   width: 8px;
   height: 8px;
   padding: 0;
-  border: 1px solid rgba(255, 255, 255, .85);
+  border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 50%;
   background: transparent;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, .38);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.38);
   cursor: pointer;
 }
+
 .heroDotActive {
   background: #fff;
 }
+
 @media (prefers-reduced-motion: reduce) {
   .heroTrack {
     transition: none;
   }
 }
+
 @media (max-width: 640px) {
   .heroVisual {
     height: auto;
     aspect-ratio: 1122 / 1402;
   }
 }
+
+/* ========================================
+   COMMON SECTION
+======================================== */
+
 .section {
   padding: 0 $space-2;
   margin-top: $space-3;
 }
+
 .sectionLabel {
   height: 32px;
   display: flex;
@@ -107,6 +134,7 @@ $type-display: 36px;
   font-size: $type-caption;
   letter-spacing: 1.8px;
 }
+
 .section > h1 {
   font-family: $serif;
   font-size: 32px;
@@ -115,6 +143,7 @@ $type-display: 36px;
   line-height: 1.1;
   margin: $space-4 0 $space-2;
 }
+
 .rowTitle {
   display: flex;
   justify-content: space-between;
@@ -122,9 +151,11 @@ $type-display: 36px;
   margin: 0 0 $space-2;
   min-height: 27px;
 }
+
 .sectionLabel + .rowTitle {
   margin-top: $space-4;
 }
+
 .rowTitle > p,
 .rowTitle div > p,
 .exchangeTitle p {
@@ -132,6 +163,7 @@ $type-display: 36px;
   font-size: 17px;
   font-weight: 400;
 }
+
 .rowTitle div > h2 {
   font-family: $serif;
   font-size: $type-section;
@@ -139,55 +171,70 @@ $type-display: 36px;
   line-height: 1.1;
   margin: 0 0 12px;
 }
+
 .rowTitle div > p {
   color: $home-muted;
   font-size: $type-caption;
 }
+
 .textLink {
   color: $home-forest;
   font-size: $type-caption;
   letter-spacing: 1.2px;
   white-space: nowrap;
 }
+
 .textLink span {
   margin-left: 2px;
 }
+
+/* ========================================
+   UPCOMING
+======================================== */
+
 .upcomingCard {
   display: block;
   background: $home-surface;
   border: 1px solid $home-line;
 }
+
 .upcomingLoading,
 .upcomingEmpty {
   min-height: 270px;
   border: 1px solid $home-line;
   background: $home-surface;
 }
+
 .upcomingLoading {
   display: grid;
   place-items: center;
   color: $home-muted;
   font-size: $type-caption;
 }
+
 .upcomingEmpty {
   padding: $space-5 $space-4;
   text-align: center;
 }
+
 .upcomingEmpty > span {
   color: $home-muted;
   font-size: 9px;
   letter-spacing: 2px;
 }
+
 .upcomingEmpty h2 {
   margin: $space-2 0 $space-1;
   font: 600 22px/1.35 $serif;
 }
+
 .upcomingEmpty p {
   margin: 0;
   color: $home-muted;
   font-size: $type-caption;
   line-height: 1.7;
 }
+
 .upcomingEmpty a {
   width: min(100%, 230px);
   height: 46px;
@@ -200,82 +247,46 @@ $type-display: 36px;
   color: #fff;
   font-size: $type-caption;
 }
+
 .upcomingEmpty a b {
   font-weight: 400;
 }
+
 .upcomingMain {
   min-height: 300px;
   display: grid;
   grid-template-columns: 46% 54%;
 }
+
 .upcomingMain > div:first-child {
   padding: $space-4 $space-2;
   background: $home-surface;
 }
+
 .upcomingMain strong {
   font: 400 44px/1 $serif;
   letter-spacing: -2px;
   color: $home-terracotta;
 }
+
 .upcomingMain h2 {
   font: 600 19px/1.1 $serif;
   margin: 18px 0 9px;
 }
+
 .upcomingMain p {
   margin: 0;
   font-size: $type-caption;
   color: $home-muted;
 }
+
 .upcomingImage {
   background-color: $home-placeholder;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
-.exchangeTitle {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  margin: $space-4 0 $space-2;
-}
-.exchangeTitle span {
-  width: 4px;
-  height: 4px;
-  border-radius: 50%;
-  background: #e45c55;
-}
-.exchangeTitle p {
-  line-height: 1.2;
-}
-.exchangeCard {
-  display: block;
-  align-items: center;
-  padding: $space-2;
-  background: $home-placeholder;
-  color: $home-ink;
-}
-.exchangeCard > div {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  min-height: 54px;
-}
-.exchangeCard > div span {
-  color: $home-muted;
-  font-size: 10px;
-  letter-spacing: 1.2px;
-}
-.exchangeCard strong {
-  font: 600 35px/1 $serif;
-}
-.exchangeCard footer {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 9px;
-  border-top: 1px solid rgba($home-ink, .12);
-  color: $home-muted;
-  font-size: 10px;
-}
+
 .tripMeta {
   margin: 0;
   padding: $space-2;
@@ -284,42 +295,111 @@ $type-display: 36px;
   background: $home-surface;
   border-top: 1px solid $home-line;
 }
+
 .tripMeta div {
   padding-left: $space-2;
   border-left: 1px solid $home-line;
 }
+
 .tripMeta div:first-child {
   padding-left: 0;
   border-left: 0;
 }
+
 .tripMeta dt {
   color: $home-muted;
   font-size: 10px;
   letter-spacing: 1.2px;
 }
+
 .tripMeta dd {
   margin: 6px 0 0;
   font-size: $type-caption;
   line-height: 1.55;
 }
+
+/* ========================================
+   EXCHANGE
+======================================== */
+
+.exchangeTitle {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: $space-4 0 $space-2;
+}
+
+.exchangeTitle span {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #e45c55;
+}
+
+.exchangeTitle p {
+  line-height: 1.2;
+}
+
+.exchangeCard {
+  display: block;
+  align-items: center;
+  padding: $space-2;
+  background: $home-placeholder;
+  color: $home-ink;
+}
+
+.exchangeCard > div {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  min-height: 54px;
+}
+
+.exchangeCard > div span {
+  color: $home-muted;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+}
+
+.exchangeCard strong {
+  font: 600 35px/1 $serif;
+}
+
+.exchangeCard footer {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 9px;
+  border-top: 1px solid rgba($home-ink, 0.12);
+  color: $home-muted;
+  font-size: 10px;
+}
+
+/* ========================================
+   EDITOR'S PICK
+======================================== */
+
 .pickGrid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: $space-3 $space-2;
 }
+
 .pickGrid h3 {
   font: 600 15px/1.4 $serif;
   margin: $space-2 $space-2 0;
 }
+
 .pickGrid p {
   margin: $space-1 0 0;
   color: $home-muted;
   font-size: $type-caption;
   line-height: 1.6;
 }
+
 .placeholder {
   background: $home-placeholder;
 }
+
 .tokyoImage,
 .seoulImage,
 .shanghaiImage,
@@ -330,53 +410,72 @@ $type-display: 36px;
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .tokyoImage {
   background-image: url("../assets/images/tokyo_japan.jpg");
 }
+
 .seoulImage {
   background-image: url("../assets/images/seoul_korea.jpg");
 }
+
 .shanghaiImage {
   background-image: url("../assets/images/shanghai_china.jpg");
 }
+
 .koreaImage {
   background-image: url("../assets/images/korea.jpg");
 }
+
 .japanImage {
   background-image: url("../assets/images/japan.jpg");
 }
+
 .chinaImage {
   background-image: url("../assets/images/china.jpg");
 }
+
 .featurePick {
   grid-column: 1/-1;
 }
+
 .featurePick .placeholder {
   height: 261px;
 }
+
 .featurePick h3 {
   font-family: $sans;
   font-size: $type-body;
   font-weight: 500;
   line-height: 1.5;
 }
+
 .smallPick .placeholder {
   height: 160px;
 }
+
 .smallPick h3 {
   margin-left: 0;
   margin-bottom: 0;
 }
+
+/* ========================================
+   DESTINATIONS
+======================================== */
+
 .destinationSection {
   padding: 0 $space-2;
 }
+
 .destinationSection .sectionLabel {
   margin: 0;
 }
+
 .scriptTitle {
   font: 600 30px/1.1 $serif;
   margin: $space-4 0;
 }
+
 .destinationHero {
   height: 316px;
   background: $home-sage;
@@ -387,6 +486,7 @@ $type-display: 36px;
   margin: 0;
   display: block;
 }
+
 .destinationList {
   display: grid;
   grid-template-columns: 1fr;
@@ -395,6 +495,7 @@ $type-display: 36px;
   padding: 0;
   overflow: hidden;
 }
+
 .destinationList a {
   height: 168px;
   display: grid;
@@ -406,25 +507,31 @@ $type-display: 36px;
   border: 0;
   background: $home-surface;
 }
+
 .destinationList a + a {
   border-top: 1px solid $home-line;
 }
+
 .destinationList a > div {
   min-height: 100%;
   margin: 0;
   border: 0;
 }
+
 .destinationList a > div + div {
   border-left: 1px solid $home-line;
 }
+
 .destinationList a > div:first-child {
   padding: $space-5 0 $space-4 $space-3;
 }
+
 .destinationList span {
   font-size: 10px;
   color: $home-sage;
   letter-spacing: 1.5px;
 }
+
 .destinationList h3 {
   font-family: $serif;
   font-size: $type-display;
@@ -432,14 +539,21 @@ $type-display: 36px;
   line-height: 1;
   margin: $space-2 0 $space-1;
 }
+
 .destinationList p {
   color: $home-muted;
   font-size: $type-small;
   margin: 0;
 }
+
 .countryImage {
   background-color: $home-placeholder;
 }
+
+/* ========================================
+   EVENT
+======================================== */
+
 .eventVisual {
   height: 312px;
   display: block;
@@ -449,46 +563,351 @@ $type-display: 36px;
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 .eventVisual span {
   display: none;
 }
+
 .mutedLabel {
   color: $home-muted;
   font-size: $type-caption;
   letter-spacing: 1px;
 }
+
+/* ========================================
+   TRAVEL SHOPPING
+======================================== */
+
 .essentialGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
-.essentialGrid a > div {
-  aspect-ratio: 1;
-  background: $home-placeholder;
+
+.productCard {
+  min-width: 0;
+}
+
+/* 상품 이미지 */
+.productThumbnail {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
   overflow: hidden;
+  background: $home-placeholder;
 }
-.essentialGrid a > div img {
+
+.productImageLink {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.productImageLink img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+
+.productCard:hover .productImageLink img {
+  transform: scale(1.025);
+}
+
+/* 이미지 왼쪽 상단 카테고리 */
+.productBadge {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 26px;
+  padding: 0 10px;
+
+  background: rgba(65, 65, 62, 0.76);
+  color: #fff;
+
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+/* 하트 버튼 */
+.productWish {
+  position: absolute;
+  z-index: 3;
+  top: 12px;
+  right: 12px;
+
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 50%;
+
+  background: rgba(252, 251, 248, 0.92);
+  color: #383834;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.productWish svg {
+  width: 20px;
+  height: 20px;
   display: block;
 }
-.essentialGrid h3 {
+
+.productWish:hover {
+  background: #fff;
+  transform: scale(1.05);
+}
+
+/* + 버튼 */
+.productAdd {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  bottom: 12px;
+
+  width: 40px;
+  height: 40px;
+
+  display: grid;
+  place-items: center;
+
+  border: 1px solid rgba(255, 255, 255, 0.9);
+
+  background: rgba(55, 55, 52, 0.72);
+  color: #fff;
+
   font-family: $sans;
-  font-size: $type-caption;
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 1px;
-  margin: $space-2 0 $space-1;
+  font-size: 25px;
+  font-weight: 300;
+  line-height: 1;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
 }
-.essentialGrid p {
-  font-size: 10px;
+
+.productAdd:hover {
+  background: #222;
+  transform: scale(1.04);
+}
+
+/* 상품 정보 */
+.productInfo {
+  display: block;
+  padding-top: 16px;
+  color: $home-ink;
+}
+
+/*
+  가방/수납
+  = 05 / TRAVEL SHOPPING과 동일한 크기
+*/
+.productCategory {
+  display: block;
+  margin-bottom: 10px;
+
   color: $home-muted;
-  margin: 0;
+
+  font-size: $type-caption;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: 1px;
 }
+
+/*
+  여행용 크로스백
+  = "여행 필수템"과 동일한 크기
+*/
+.productInfo h3 {
+  margin: 0;
+
+  color: $home-ink;
+
+  font-family: $sans;
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 1.4;
+
+  letter-spacing: 0;
+}
+
+/*
+  39,800 KRW
+  = JOURNAL 본문과 동일한 크기
+*/
+.productInfo p {
+  margin: 10px 0 0;
+
+  color: $home-muted;
+
+  font-family: $sans;
+  font-size: $type-body;
+  font-weight: 400;
+  line-height: 1.8;
+}
+
+/* ========================================
+   TRAVEL SHOPPING - MOBILE
+======================================== */
+
+@media (max-width: 640px) {
+  .essentialGrid {
+    gap: 8px;
+  }
+
+  .productThumbnail {
+    aspect-ratio: 1 / 1.12;
+  }
+
+  .productBadge {
+    top: 7px;
+    left: 7px;
+
+    min-height: 21px;
+    padding: 0 6px;
+
+    font-size: 8px;
+  }
+
+  .productWish {
+    top: 7px;
+    right: 7px;
+
+    width: 30px;
+    height: 30px;
+  }
+
+  .productWish svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .productAdd {
+    right: 7px;
+    bottom: 7px;
+
+    width: 30px;
+    height: 30px;
+
+    font-size: 20px;
+  }
+
+  .productInfo {
+    padding-top: 11px;
+  }
+
+  /*
+    글자 크기는 줄이지 않고
+    여백만 모바일에 맞게 조정
+  */
+  .productCategory {
+    margin-bottom: 7px;
+  }
+
+  .productInfo p {
+    margin-top: 7px;
+  }
+}
+
+/* ========================================
+   TRAVEL SHOPPING - DESKTOP
+======================================== */
+
+@media (min-width: 901px) {
+  .essentialGrid {
+    gap: 24px;
+  }
+
+  .productThumbnail {
+    aspect-ratio: 1 / 1.08;
+  }
+
+  .productBadge {
+    top: 14px;
+    left: 14px;
+
+    min-height: 27px;
+    padding: 0 11px;
+
+    font-size: 11px;
+  }
+
+  .productWish {
+    top: 14px;
+    right: 14px;
+
+    width: 40px;
+    height: 40px;
+  }
+
+  .productWish svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .productAdd {
+    right: 14px;
+    bottom: 14px;
+
+    width: 42px;
+    height: 42px;
+  }
+
+  .productInfo {
+    padding-top: 18px;
+  }
+
+  /*
+    PC의 05 / TRAVEL SHOPPING이 12px이므로
+    상품 카테고리도 12px
+  */
+  .productCategory {
+    margin-bottom: 11px;
+    font-size: 12px;
+  }
+
+  /*
+    여행 필수템과 동일
+  */
+  .productInfo h3 {
+    font-size: 17px;
+  }
+
+  /*
+    JOURNAL 본문과 동일
+  */
+  .productInfo p {
+    margin-top: 11px;
+    font-size: 14px;
+  }
+}
+
+/* ========================================
+   JOURNAL
+======================================== */
+
 .journal {
   padding-bottom: 28px;
 }
+
 .journalVisual {
   height: 280px;
   background: $home-placeholder;
@@ -498,49 +917,83 @@ $type-display: 36px;
   background-size: cover;
   position: relative;
 }
+
 .journalVisual span {
   position: absolute;
   top: $space-2;
   right: $space-2;
+
   padding: $space-1 $space-2;
+
   background: $home-surface;
   color: $home-forest;
+
   font-size: $type-caption;
   letter-spacing: 1px;
 }
+
 .journalMeta {
   display: flex;
   align-items: center;
   gap: $space-1;
+
   margin: $space-2;
+
   color: $home-muted;
+
   font-size: 10px;
   letter-spacing: 1px;
 }
+
 .journalMeta i {
   width: 20px;
   height: 1px;
   background: $home-line;
 }
+
+.journalLink {
+  display: block;
+  color: inherit;
+}
+
 .journalLink > h3 {
   font: 500 24px/1.35 $sans;
   letter-spacing: -1px;
   margin: 0 $space-2 $space-2;
 }
+
 .journalLink > p {
   color: $home-muted;
   font-size: $type-body;
   line-height: 1.8;
   margin: 0 $space-2 $space-3;
 }
+
 .journalLink > footer {
   border-top: 1px solid $home-line;
   border-bottom: 1px solid $home-line;
   padding: $space-2;
+
   color: $home-muted;
+
   font-size: $type-caption;
   letter-spacing: 1px;
 }
+
+/* ========================================
+   MATCH TITLE
+   UPCOMING TRIP / JOURNAL
+   = Where to Next?
+======================================== */
+
+.section > h1.matchTitle,
+.rowTitle div > h2.matchTitle {
+  font-size: 30px;
+}
+
+/* ========================================
+   MOBILE
+======================================== */
 
 @media (max-width: 640px) {
   .eventSection {
@@ -548,55 +1001,76 @@ $type-display: 36px;
   }
 }
 
+/* ========================================
+   TABLET
+======================================== */
+
 @media (min-width: 641px) {
   .home {
     padding-bottom: 0;
   }
+
   .hero,
   .section {
     width: min(1100px, calc(100% - 64px));
     margin-left: auto;
     margin-right: auto;
   }
+
   .hero {
     width: 100%;
   }
+
   .heroVisual {
     height: min(620px, 70vh);
     margin-top: 28px;
   }
+
   .destinationSection > .destinationHero {
     height: 500px;
   }
+
   .section {
     margin-top: 96px;
   }
+
   .eventSection {
     display: block;
   }
+
   .pickGrid {
     grid-template-columns: 2fr 1fr 1fr;
   }
+
   .featurePick {
     grid-column: auto;
   }
+
   .featurePick .placeholder,
   .smallPick .placeholder {
     height: 360px;
   }
+
   .destinationList a {
     grid-template-columns: 1fr 1fr;
   }
+
   .journalVisual {
     height: 520px;
   }
 }
-.journalLink {
-  display: block;
-  color: inherit;
-}
+
+/* ========================================
+   DESKTOP
+======================================== */
 
 @media (min-width: 901px) {
+  .upcomingMain {
+    min-height: 0;
+    height: 420px;
+    grid-template-columns: 46% 54%;
+  }
+
   .home {
     width: calc(100% - 220px);
     margin-left: 220px;
@@ -606,31 +1080,103 @@ $type-display: 36px;
   .section {
     width: min(1320px, calc(100% - 112px));
   }
+
   .hero {
     width: 100%;
   }
 
-  .sectionLabel { font-size: 12px; }
-  .section > h1 { font-size: 32px; }
-  .rowTitle > p { font-size: 17px; }
-  .rowTitle div > h2 { font-size: 32px; }
-  .rowTitle div > p, .textLink { font-size: 12px; }
-  .upcomingMain strong { font-size: 52px; }
-  .upcomingMain h2 { font-size: 24px; }
-  .upcomingMain p, .tripMeta dd { font-size: 13px; }
-  .tripMeta dt { font-size: 11px; }
-  .pickGrid h3 { font-size: 17px; }
-  .pickGrid p { font-size: 12px; }
-  .featurePick h3 { font-size: 16px; }
-  .scriptTitle { font-size: 38px; }
-  .destinationList a { height: 240px; }
-  .destinationList span { font-size: 11px; }
-  .destinationList h3 { font-size: 42px; }
-  .destinationList p { font-size: 14px; }
-  .essentialGrid h3 { font-size: 13px; }
-  .essentialGrid p { font-size: 11px; }
-  .journalMeta { font-size: 11px; }
-  .journal article > h3 { font-size: 28px; }
-  .journal article > p { font-size: 15px; }
-  .journal article > footer { font-size: 12px; }
+  .sectionLabel {
+    font-size: 12px;
+  }
+
+  .section > h1 {
+    font-size: 32px;
+  }
+
+  .rowTitle > p {
+    font-size: 17px;
+  }
+
+  .rowTitle div > h2 {
+    font-size: 32px;
+  }
+
+  .rowTitle div > p,
+  .textLink {
+    font-size: 12px;
+  }
+
+  .upcomingMain strong {
+    font-size: 52px;
+  }
+
+  .upcomingMain h2 {
+    font-size: 24px;
+  }
+
+  .upcomingMain p {
+    font-size: 13px;
+  }
+
+  .tripMeta dd {
+    font-size: 28px;
+    line-height: 1.2;
+  }
+
+  .tripMeta dt {
+    font-size: 11px;
+  }
+
+  .pickGrid h3 {
+    font-size: 17px;
+  }
+
+  .pickGrid p {
+    font-size: 12px;
+  }
+
+  .featurePick h3 {
+    font-size: 16px;
+  }
+
+  .scriptTitle {
+    font-size: 38px;
+  }
+
+  .destinationList a {
+    height: 240px;
+  }
+
+  .destinationList span {
+    font-size: 11px;
+  }
+
+  .destinationList h3 {
+    font-size: 42px;
+  }
+
+  .destinationList p {
+    font-size: 14px;
+  }
+
+  .journalMeta {
+    font-size: 11px;
+  }
+
+  .journal article > h3 {
+    font-size: 28px;
+  }
+
+  .journal article > p {
+    font-size: 15px;
+  }
+
+  .journal article > footer {
+    font-size: 12px;
+  }
+
+  .section > h1.matchTitle,
+  .rowTitle div > h2.matchTitle {
+    font-size: 38px;
+  }
 }

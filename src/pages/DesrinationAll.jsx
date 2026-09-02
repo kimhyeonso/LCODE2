@@ -1,6 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
-import styles from "./Desrination.module.scss";
+import styles from "./DesrinationAll.module.scss";
 
 const thumbnailModules = import.meta.glob("../assets/images/Thumbnail/Thumbnail-image/**/*.{jpg,jpeg,png,webp}", {
   eager: true,
@@ -76,7 +76,7 @@ const getTripImage = (trip, index) => {
   return thumbnails[`${trip.country}/${imageName}`];
 };
 
-const Desrination = () => {
+const DesrinationAll = () => {
   const [params] = useSearchParams();
   const requestedCountry = params.get("country")?.toLowerCase();
   const selectedCountry = countries.some(([value]) => value === requestedCountry)
@@ -102,7 +102,7 @@ const Desrination = () => {
           {countries.map(([value, label]) => (
             <Link
               key={value}
-              to={value === "all" ? "/desrination" : `/desrination?country=${value}`}
+              to={value === "all" ? "/desrinationAll" : `/desrinationAll?country=${value}`}
               className={selectedCountry === value ? styles.active : ""}
             >
               {label}
@@ -135,4 +135,4 @@ const Desrination = () => {
   );
 };
 
-export default Desrination;
+export default DesrinationAll;

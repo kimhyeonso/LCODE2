@@ -38,7 +38,7 @@ import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
 import MyPageMain from "./pages/MyPageMain";
 import ExchangeRate from "./pages/ExchangeRate";
-import Desrination from "./pages/Desrination";
+import DesrinationAll from "./pages/DesrinationAll";
 import styles from "./App.module.scss";
 function ScrollTop() {
   const { pathname, state } = useLocation();
@@ -96,7 +96,7 @@ export default function App() {
           <Route path="/plan" element={<Plan />} />
           <Route path="/search" element={<Search />} />
           <Route path="/destination" element={<ExchangeRate />} />
-          <Route path="/desrination" element={<Desrination />} />
+          <Route path="/desrinationAll" element={<DesrinationAll />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />
