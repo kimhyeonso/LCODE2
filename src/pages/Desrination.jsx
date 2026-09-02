@@ -2,10 +2,50 @@ import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import styles from "./Desrination.module.scss";
 
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", {
+const thumbnailModules = import.meta.glob("../assets/images/Thumbnail/Thumbnail-image/**/*.{jpg,jpeg,png,webp}", {
   eager: true,
   import: "default",
 });
+
+const thumbnails = Object.entries(thumbnailModules).reduce((list, [path, image]) => {
+  const parts = path.split("/");
+  const country = parts[parts.length - 2];
+  const fileName = parts[parts.length - 1].replace(/\.[^.]+$/, "");
+  list[`${country}/${fileName}`] = image;
+  return list;
+}, {});
+
+const getThumbnailImage = (imagePath) => {
+  if (!imagePath) return "";
+  const assetPath = imagePath.replace(/^img\//, "../assets/images/");
+  return thumbnailModules[assetPath] || "";
+};
+
+const cityThumbnail = {
+  "거제": "geoje",
+  "부산": "busan",
+  "경주": "gyeongju",
+  "제주도": "jeju",
+  "도쿄": "tokyo",
+  "오사카": "osaka",
+  "후쿠오카": "fukuoka",
+  "홋카이도": "hokkaido",
+  "상하이": "shanghai",
+  "칭다오": "qingdao",
+  "베이징": "beijing",
+  "장가계": "zhangjiajie",
+  "청두": "chengdu",
+  "하얼빈": "harbin",
+  "다롄": "dalian",
+  "충칭": "chongqing",
+  "항저우": "hangzhou",
+};
+
+const countryThumbnail = {
+  korea: ["geoje", "busan", "gyeongju", "jeju"],
+  japan: ["tokyo", "osaka", "kyoto", "hokkaido", "fukuoka"],
+  china: ["zhangjiajie", "shanghai", "qingdao", "harbin", "hangzhou", "dalian", "chongqing", "chengdu", "beijing"],
+};
 
 const countries = [
   ["all", "ALL"],
@@ -21,24 +61,19 @@ const themeNames = {
   airport: "START A JOURNEY",
 };
 
-const getImageUrl = (imagePath) => {
-  if (!imagePath) return "";
-  const assetPath = imagePath.replace(/^img\//, "../assets/images/");
-  const matchedPath = Object.keys(imageModules).find(
-    (path) => path.toLowerCase() === assetPath.toLowerCase(),
-  );
-  return matchedPath ? imageModules[matchedPath] : "";
-};
-
 const getFirstPlace = (trip) => trip.days
   .flatMap((day) => day.items)
   .find((item) => item.type === "place");
 
-const getTripImage = (trip) => {
-  const place = trip.days
-    .flatMap((day) => day.items)
-    .find((item) => item.type === "place" && item.image);
-  return getImageUrl(place?.image);
+const getTripImage = (trip, index) => {
+  const thumbnailPath = tripRoad.thumbnailMap?.[trip.country]?.[trip.city];
+  const jsonThumbnail = getThumbnailImage(thumbnailPath);
+  if (jsonThumbnail) return jsonThumbnail;
+
+  const thumbnailNames = countryThumbnail[trip.country];
+  const cityName = cityThumbnail[trip.city];
+  const imageName = cityName || thumbnailNames[index % thumbnailNames.length];
+  return thumbnails[`${trip.country}/${imageName}`];
 };
 
 const Desrination = () => {
@@ -78,14 +113,12 @@ const Desrination = () => {
         <div className={styles.cardList}>
           {filteredTrips.map((trip, index) => {
             const firstPlace = getFirstPlace(trip);
-            const image = getTripImage(trip);
+            const image = getTripImage(trip, index);
             const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
 
             return (
               <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`} className={styles.tripCard} key={trip.id}>
-                <div className={styles.tripImage} style={image ? { backgroundImage: `url(${image})` } : undefined}>
-                  {!image && <span>IMAGE</span>}
-                </div>
+                <div className={styles.tripImage} style={{ backgroundImage: `url(${image})` }} />
                 <div className={styles.tripCopy}>
                   <small>CITY {String(index + 1).padStart(2, "0")} · {category}</small>
                   <h2>{trip.city}</h2>

@@ -113,7 +113,7 @@ $type-display: 36px;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.1;
-  margin: $space-3 0 $space-2;
+  margin: $space-4 0 $space-2;
 }
 .rowTitle {
   display: flex;
@@ -122,10 +122,15 @@ $type-display: 36px;
   margin: 0 0 $space-2;
   min-height: 27px;
 }
+.sectionLabel + .rowTitle {
+  margin-top: $space-4;
+}
 .rowTitle > p,
-.rowTitle div > p {
+.rowTitle div > p,
+.exchangeTitle p {
   margin: 0;
-  font-size: $type-body;
+  font-size: 17px;
+  font-weight: 400;
 }
 .rowTitle div > h2 {
   font-family: $serif;
@@ -137,10 +142,6 @@ $type-display: 36px;
 .rowTitle div > p {
   color: $home-muted;
   font-size: $type-caption;
-}
-.eventSection .rowTitle,
-.journal .rowTitle {
-  margin-top: $space-4;
 }
 .textLink {
   color: $home-forest;
@@ -235,7 +236,7 @@ $type-display: 36px;
   display: flex;
   align-items: center;
   gap: 5px;
-  margin: $space-2 0 10px;
+  margin: $space-4 0 $space-2;
 }
 .exchangeTitle span {
   width: 4px;
@@ -244,8 +245,7 @@ $type-display: 36px;
   background: #e45c55;
 }
 .exchangeTitle p {
-  margin: 0;
-  font-size: $type-body;
+  line-height: 1.2;
 }
 .exchangeCard {
   display: block;
@@ -612,7 +612,7 @@ $type-display: 36px;
 
   .sectionLabel { font-size: 12px; }
   .section > h1 { font-size: 32px; }
-  .rowTitle > p { font-size: 16px; }
+  .rowTitle > p { font-size: 17px; }
   .rowTitle div > h2 { font-size: 32px; }
   .rowTitle div > p, .textLink { font-size: 12px; }
   .upcomingMain strong { font-size: 52px; }

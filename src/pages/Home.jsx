@@ -3,9 +3,13 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useAuth } from "../hooks/useAuth";
 import { getPlans } from "../services/firestoreService";
-import travelKitImage from "../assets/images/travel_kit.webp";
-import travelPouchImage from "../assets/images/travel_pouch.webp";
-import travelAdapterImage from "../assets/images/travel_adapter.webp";
+import products from "../data/products.json";
+import productImage01 from "../assets/images/detail/1_1.png";
+import productImage02 from "../assets/images/detail/2_1.png";
+import productImage03 from "../assets/images/detail/3_1.png";
+import productImage04 from "../assets/images/detail/4_1.png";
+import productImage05 from "../assets/images/detail/5_1.png";
+import productImage06 from "../assets/images/detail/6_1.png";
 import bannerPC1 from "../assets/images/banner/banner01-pc.png";
 import bannerPC2 from "../assets/images/banner/banner02-pc.png";
 import bannerPC3 from "../assets/images/banner/banner03-pc.png";
@@ -42,6 +46,18 @@ const heroSlides = [
   { desktop: bannerPC5, mobile: bannerMO5 },
 ];
 
+const homeProducts = products.slice(0, 6).map((product, index) => ({
+  ...product,
+  image: [
+    productImage01,
+    productImage02,
+    productImage03,
+    productImage04,
+    productImage05,
+    productImage06,
+  ][index],
+}));
+
 const SectionLabel = ({ number, children }) => (
   <div className={styles.sectionLabel}>
     <span>{number}</span>
@@ -50,8 +66,8 @@ const SectionLabel = ({ number, children }) => (
   </div>
 );
 
-const TextLink = ({ to, children }) => (
-  <Link className={styles.textLink} to={to}>
+const TextLink = ({ to, children, ...props }) => (
+  <Link className={styles.textLink} to={to} {...props}>
     {children} <span>→</span>
   </Link>
 );
@@ -289,17 +305,13 @@ export default function Home() {
           <TextLink to="/shop">TRAVEL SHOPPING</TextLink>
         </div>
         <div className={styles.essentialGrid}>
-          {[
-            ["TRAVEL KIT", "여행용 키트", travelKitImage],
-            ["POUCH", "파우치", travelPouchImage],
-            ["ADAPTER", "어댑터", travelAdapterImage],
-          ].map(([name, sub, image]) => (
-            <Link to="/shop" key={name}>
+          {homeProducts.map((product) => (
+            <Link to={`/shop/${product.id}`} key={product.id}>
               <div>
-                <img src={image} alt={sub} loading="lazy" />
+                <img src={product.image} alt={product.name} loading="lazy" />
               </div>
-              <h3>{name}</h3>
-              <p>{sub}</p>
+              <h3>{product.name}</h3>
+              <p>{product.category}</p>
             </Link>
           ))}
         </div>
@@ -312,9 +324,18 @@ export default function Home() {
             <h2>JOURNAL</h2>
             <p>여행자의 기록</p>
           </div>
-          <TextLink to="/contact">ALL</TextLink>
+          <TextLink
+            to="/journal/tokyo"
+            onClick={() => sessionStorage.setItem("homeJournalScrollY", String(window.scrollY))}
+          >
+            VIEW ALL
+          </TextLink>
         </div>
-        <Link className={styles.journalLink} to="/journal/tokyo">
+        <Link
+          className={styles.journalLink}
+          to="/journal/tokyo"
+          onClick={() => sessionStorage.setItem("homeJournalScrollY", String(window.scrollY))}
+        >
           <div className={styles.journalVisual}>
             <span>JOURNAL 04</span>
           </div>

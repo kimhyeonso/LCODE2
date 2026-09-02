@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomNav from "./components/BottomNav";
@@ -41,10 +41,17 @@ import ExchangeRate from "./pages/ExchangeRate";
 import Desrination from "./pages/Desrination";
 import styles from "./App.module.scss";
 function ScrollTop() {
-  const { pathname } = useLocation();
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+  const { pathname, state } = useLocation();
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const previousScrollBehavior = root.style.scrollBehavior;
+    const savedScrollY = Number(state?.restoreScrollY);
+    const scrollY = Number.isFinite(savedScrollY) ? savedScrollY : 0;
+
+    root.style.scrollBehavior = "auto";
+    window.scrollTo(0, scrollY);
+    root.style.scrollBehavior = previousScrollBehavior;
+  }, [pathname, state]);
   return null;
 }
 

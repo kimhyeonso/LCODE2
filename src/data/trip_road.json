@@ -48,6 +48,36 @@
     "recommendation": "자유 식사 카드에 표시할 추천 음식 또는 식당",
     "isFreeMeal": "사용자가 일정에 맞춰 선택하는 자유 식사 여부"
   },
+  "thumbnailMap": {
+    "korea": {
+      "강릉": "img/Thumbnail/Thumbnail-image/korea/gyeongju.png",
+      "거제": "img/Thumbnail/Thumbnail-image/korea/geoje.png",
+      "부산": "img/Thumbnail/Thumbnail-image/korea/busan.png",
+      "서울": "img/Thumbnail/Thumbnail-image/korea/gyeongju.png",
+      "여수": "img/Thumbnail/Thumbnail-image/korea/jeju.png",
+      "제주도": "img/Thumbnail/Thumbnail-image/korea/jeju.png"
+    },
+    "japan": {
+      "오사카": "img/Thumbnail/Thumbnail-image/japan/osaka.png",
+      "후쿠오카": "img/Thumbnail/Thumbnail-image/japan/fukuoka.png",
+      "도쿄": "img/Thumbnail/Thumbnail-image/japan/tokyo.png",
+      "오사카·도쿄": "img/Thumbnail/Thumbnail-image/japan/osaka.png",
+      "홋카이도": "img/Thumbnail/Thumbnail-image/japan/hokkaido.png"
+    },
+    "china": {
+      "상하이": "img/Thumbnail/Thumbnail-image/china/shanghai.png",
+      "칭다오": "img/Thumbnail/Thumbnail-image/china/qingdao.png",
+      "베이징": "img/Thumbnail/Thumbnail-image/china/beijing.png",
+      "장가계": "img/Thumbnail/Thumbnail-image/china/zhangjiajie.png",
+      "청두": "img/Thumbnail/Thumbnail-image/china/chengdu.png",
+      "시안": "img/Thumbnail/Thumbnail-image/china/beijing.png",
+      "하얼빈": "img/Thumbnail/Thumbnail-image/china/harbin.png",
+      "다롄": "img/Thumbnail/Thumbnail-image/china/dalian.png",
+      "충칭": "img/Thumbnail/Thumbnail-image/china/chongqing.png",
+      "광저우": "img/Thumbnail/Thumbnail-image/china/chengdu.png",
+      "항저우": "img/Thumbnail/Thumbnail-image/china/hangzhou.png"
+    }
+  },
   "trips": [
     {
       "id": "trip-강릉",
