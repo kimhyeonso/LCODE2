@@ -18,11 +18,32 @@ const cityAliases = {
   SHANGHAI: "상하이",
 };
 
-const getRepresentativeImage = (trip) => {
-  const item = trip.days
+const getTripImages = (trip) => {
+  const cityThumbnail = getImageUrl(
+    tripRoad.thumbnailMap?.[trip.country]?.[trip.city],
+    "",
+  );
+  const placeImages = trip.days
     .flatMap((day) => day.items)
-    .find((entry) => entry.type === "place" && entry.image);
-  return getImageUrl(item?.image);
+    .filter((entry) => entry.type === "place" && entry.image)
+    .map((entry) => getImageUrl(entry.image, ""))
+    .filter(Boolean);
+
+  return Array.from(new Set([cityThumbnail, ...placeImages].filter(Boolean)));
+};
+
+const assignRepresentativeImages = (trips) => {
+  const usedImages = new Set();
+
+  return new Map(trips.map((trip) => {
+    const candidates = getTripImages(trip);
+    const image = candidates.find((candidate) => !usedImages.has(candidate))
+      || candidates[0]
+      || "";
+
+    if (image) usedImages.add(image);
+    return [trip.id, image];
+  }));
 };
 
 const countPlaces = (trip) => trip.days.reduce(
@@ -70,6 +91,11 @@ export default function Search() {
       ? [...filtered].sort((a, b) => a.city.localeCompare(b.city, "ko"))
       : filtered;
   }, [country, filters, initialQuery, sort]);
+
+  const representativeImages = useMemo(
+    () => assignRepresentativeImages(trips),
+    [trips],
+  );
 
   const selectFilter = (key, value) => setFilters((current) => ({ ...current, [key]: value }));
   const toggleStyle = (value) => setFilters((current) => ({
@@ -150,7 +176,7 @@ export default function Search() {
         <h2 id="package-archive-title">PACKAGE ARCHIVE <b>{trips.length}</b></h2>
         <div className={styles.results}>
           {trips.map((trip, index) => {
-            const image = getRepresentativeImage(trip);
+            const image = representativeImages.get(trip.id);
             return (
               <article className={styles.tripCard} key={trip.id}>
                 <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`} className={styles.cardLink}>

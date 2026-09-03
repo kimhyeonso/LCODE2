@@ -2,48 +2,231 @@
   width: calc(100% - 220px);
   min-height: 100vh;
   margin-left: 220px;
-  padding: 72px max(32px, calc((100vw - 1460px) / 2)) 120px;
-  color: #1d2923;
+  padding: 56px max(32px, calc((100vw - 1460px) / 2)) 120px;
+  background: #f7f8f7;
+  color: #202521;
 }
-.hero { padding: 48px; border-radius: 4px; background: #183f32; color: #f7f3e9; }
-.hero h1 { margin: 8px 0 10px; font-family: "DM Serif Display", serif; font-size: clamp(40px, 6vw, 72px); font-weight: 400; }
-.hero > p:last-child { margin: 0; color: #cbd9d1; }
-.eyebrow { margin: 0; color: #dfc582; font-size: 12px; font-weight: 700; letter-spacing: .18em; }
-.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
-.metrics article { padding: 26px; border: 1px solid #dce2dd; background: #fff; }
-.metrics span { display: block; margin-bottom: 18px; color: #69766f; font-size: 13px; }
-.metrics strong { font-family: "DM Serif Display", serif; font-size: 44px; font-weight: 400; }
-.metrics small { margin-left: 6px; color: #69766f; }
-.panel { padding: 32px; border: 1px solid #dce2dd; background: #fff; }
-.panelTitle { display: flex; align-items: end; justify-content: space-between; margin-bottom: 24px; }
-.panelTitle p { margin: 0 0 6px; color: #907530; font-size: 11px; font-weight: 700; letter-spacing: .16em; }
-.panelTitle h2 { margin: 0; font-size: 24px; }
-.panelTitle > span { color: #6f7b74; font-size: 13px; }
-.tableWrap { overflow-x: auto; }
-table { width: 100%; min-width: 620px; border-collapse: collapse; text-align: left; }
-th { padding: 12px 16px; border-bottom: 1px solid #cdd5d0; color: #6f7b74; font-size: 12px; }
-td { padding: 17px 16px; border-bottom: 1px solid #edf0ee; font-size: 14px; }
-.adminBadge, .userBadge { display: inline-block; padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; }
-.adminBadge { background: #183f32; color: #fff; }
-.userBadge { background: #eef2ef; color: #526159; }
-.empty { padding: 48px; color: #78827d; text-align: center; }
-.error { padding: 14px 18px; border: 1px solid #e2b8b1; background: #fff4f2; color: #9b3026; }
+
+.hero {
+  padding-bottom: 28px;
+  border-bottom: 1px solid #dfe3e0;
+}
+
+.hero h1 {
+  margin: 8px 0;
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.hero > p:last-child {
+  margin: 0;
+  color: #68706a;
+  font-size: 14px;
+}
+
+.eyebrow {
+  margin: 0;
+  color: #7b837d;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.metrics article {
+  min-width: 0;
+  padding: 22px 24px;
+  border: 1px solid #e0e4e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.metrics span {
+  display: block;
+  margin-bottom: 14px;
+  color: #68706a;
+  font-size: 13px;
+}
+
+.metrics strong {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.metrics small {
+  margin-left: 5px;
+  color: #8a918c;
+  font-size: 12px;
+}
+
+.panel {
+  overflow: hidden;
+  border: 1px solid #e0e4e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.panelTitle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid #e8ebe9;
+}
+
+.panelTitle p {
+  margin: 0 0 4px;
+  color: #8a918c;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+
+.panelTitle h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.panelTitle > span {
+  color: #68706a;
+  font-size: 12px;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+th {
+  padding: 12px 24px;
+  border-bottom: 1px solid #e8ebe9;
+  background: #fafbfa;
+  color: #747c76;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+td {
+  padding: 15px 24px;
+  border-bottom: 1px solid #eef0ef;
+  color: #343a36;
+  font-size: 13px;
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+tbody tr:hover {
+  background: #fafbfa;
+}
+
+.adminBadge,
+.userBadge {
+  display: inline-block;
+  min-width: 48px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.adminBadge {
+  background: #29332d;
+  color: #fff;
+}
+
+.userBadge {
+  background: #eef1ef;
+  color: #58615b;
+}
+
+.empty {
+  padding: 48px;
+  color: #7b837d;
+  text-align: center;
+}
+
+.error {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  border: 1px solid #e5c5c1;
+  border-radius: 6px;
+  background: #fff7f6;
+  color: #9b3026;
+  font-size: 13px;
+}
+
 @media (max-width: 1100px) and (min-width: 901px) {
-  .metrics { grid-template-columns: repeat(2, 1fr); }
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
+
 @media (max-width: 900px) {
-  .dashboard { width: 100%; min-height: calc(100vh - 56px); margin-left: 0; padding: 32px 20px 100px; }
-  .hero { padding: 36px 28px; }
-  .metrics { grid-template-columns: repeat(2, 1fr); }
-  .panel { padding: 22px 14px; }
+  .dashboard {
+    width: 100%;
+    min-height: calc(100vh - 56px);
+    margin-left: 0;
+    padding: 36px 20px 100px;
+  }
+
+  .metrics {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
+
 @media (max-width: 480px) {
-  .dashboard { padding-inline: 16px; }
-  .hero { padding: 30px 22px; }
-  .hero h1 { font-size: 38px; }
-  .metrics { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .metrics article { padding: 20px 18px; }
-  .metrics strong { font-size: 36px; }
-  .panelTitle { align-items: flex-start; }
-  .panelTitle > span { padding-top: 4px; }
+  .dashboard {
+    padding: 28px 16px 80px;
+  }
+
+  .hero {
+    padding-bottom: 22px;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .metrics {
+    gap: 8px;
+    margin-block: 16px;
+  }
+
+  .metrics article {
+    padding: 18px 16px;
+  }
+
+  .metrics strong {
+    font-size: 29px;
+  }
+
+  .panelTitle {
+    align-items: flex-start;
+    padding: 18px 16px;
+  }
+
+  th,
+  td {
+    padding-inline: 16px;
+  }
 }
