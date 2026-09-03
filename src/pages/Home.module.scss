@@ -1,4 +1,5 @@
 @use "../styles/variables" as *;
+@use "../styles/mixins" as *;
 
 $home-paper: #f6f3ec;
 $home-surface: #fcfbf8;
@@ -125,13 +126,13 @@ $type-display: 36px;
 }
 
 .sectionLabel {
+  @include subTitle;
   height: 32px;
   display: flex;
   align-items: center;
   gap: $space-1;
   border-bottom: 1px solid $home-line;
   color: $home-muted;
-  font-size: $type-caption;
   letter-spacing: 1.8px;
 }
 
@@ -159,9 +160,9 @@ $type-display: 36px;
 .rowTitle > p,
 .rowTitle div > p,
 .exchangeTitle p {
+  @include title;
   margin: 0;
   font-family: $sans;
-  font-size: 17px;
   font-weight: 500;
   line-height: 1.45;
   letter-spacing: -0.025em;
@@ -810,7 +811,7 @@ $type-display: 36px;
     min-height: 21px;
     padding: 0 6px;
 
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .productWish {
@@ -1014,7 +1015,7 @@ $type-display: 36px;
 
 .section > h1.matchTitle,
 .rowTitle div > h2.matchTitle {
-  font-size: 30px;
+  @include mainTitle;
 }
 
 /* ========================================

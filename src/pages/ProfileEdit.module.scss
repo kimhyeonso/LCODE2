@@ -158,7 +158,7 @@
   .withdrawNotice { grid-template-columns: 1.4rem 1fr; padding: .7rem; }
   .withdrawNotice span:last-child { grid-column: 2; }
   .archive { padding: .65rem; gap: 1rem; }
-  .archive figcaption { gap: .5rem; font-size: .52rem; letter-spacing: .1em; }
+  .archive figcaption { gap: .5rem; font-size: 0.625rem; letter-spacing: .1em; }
 }
 
 @media (min-width: 1451px) {

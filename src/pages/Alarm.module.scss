@@ -289,9 +289,9 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .alarm { padding: 0.8rem 0 1.25rem; }
   .content { grid-template-columns: 1fr; width: min(calc(100% - 2.5rem), 31rem); }
 
-  .eyebrow { font-size: 0.48rem; }
+  .eyebrow { font-size: 0.625rem; }
   h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
-  .description { font-size: 0.55rem; }
+  .description { font-size: 0.625rem; }
   .divider { margin-top: 0.55rem; }
 
   .settingList { margin-top: 1rem; }
@@ -305,8 +305,8 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .setting button i { top: 0.115rem; left: 0.115rem; width: 0.52rem; height: 0.52rem; }
   .setting button.enabled i { transform: translateX(0.68rem); }
 
-  .notice { margin-top: 0.8rem; font-size: 0.45rem; }
-  .notice span { margin-right: 0.8rem; font-size: 0.55rem; }
+  .notice { margin-top: 0.8rem; font-size: 0.625rem; }
+  .notice span { margin-right: 0.8rem; font-size: 0.625rem; }
 
   // 모바일 시안에서는 PC 전용 알림 이미지를 표시하지 않습니다.
   .imagePlaceholder { display: none; }
@@ -329,7 +329,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .alarm { min-height: calc(100dvh - 129px); margin-top: 0; padding: 19px 0 90px; background: $paper; }
   .content { display: block; width: calc(100% - 40px); margin-inline: auto; }
   .settings > :first-child { display: inline-flex; margin-bottom: 8px; }
-  .eyebrow { margin: 0; font-size: 9px; letter-spacing: .22em !important; }
+  .eyebrow { margin: 0; font-size: 10px; letter-spacing: .22em !important; }
   h1 { margin: 10px 0 0; font-size: 40px; line-height: 1.08; }
   .description { margin-top: 6px; font-size: 11px; }
   .divider { margin-top: 12px; }
@@ -358,7 +358,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .alarm { margin-top: 0; padding: 60px 0; align-items: flex-start; }
   .settings { padding-top: 0; }
   .settings > a:first-child { margin-bottom: 8px; }
-  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }

@@ -136,8 +136,8 @@ h1 {
 .productCard p { margin: .22rem 0 0; color: #777; font: 400 .53rem $korean; }
 .productCard p span { margin-left: .2rem; letter-spacing: .06em; }
 .productCard footer { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; margin-top: 1.65rem; }
-.productCard footer button { height: 1.35rem; font-size: .48rem; }
-.pagination { display: block; margin-top: .6rem; color: #bbb; font-size: .42rem; letter-spacing: .25rem; text-align: center; text-decoration: none; }
+.productCard footer button { height: 1.35rem; font-size: 0.625rem; }
+.pagination { display: block; margin-top: .6rem; color: #bbb; font-size: 0.625rem; letter-spacing: .25rem; text-align: center; text-decoration: none; }
 // 태블릿 화면 여백입니다.
 @include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 48rem); } }
 // 휴대폰 화면의 단일 열 레이아웃입니다.
@@ -222,7 +222,7 @@ h1 {
 @media (max-width: 600px) {
   .mystories { min-height: auto; padding: 44px 0 80px; }
   .content { display: block; width: calc(100% - 40px); margin: 0 auto; transform: none; }
-  .eyebrow { margin-top: 22px; font-size: 9px; letter-spacing: .22em !important; }
+  .eyebrow { margin-top: 22px; font-size: 10px; letter-spacing: .22em !important; }
   h1 { margin: 17px 0 0; font-size: 40px; line-height: 1.03; letter-spacing: -.045em !important; }
   .mobileBreak { display: inline; }
   .description { display: none; }
@@ -243,14 +243,14 @@ h1 {
   .shopping { margin: 0; border-top: 1px solid #ddd9d1; padding-top: 17px; }
   .shopping h1, .shopping > p { display: none; }
   .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin: 0; }
-  .filters button { min-width: 0; width: 100%; height: 31px; padding: 0 1px; font-size: 8px; letter-spacing: .12em !important; }
+  .filters button { min-width: 0; width: 100%; height: 31px; padding: 0 1px; font-size: 10px; letter-spacing: .12em !important; }
   .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 19px 3px; width: 100%; margin-top: 17px; }
   .productImage { height: auto; aspect-ratio: 1 / 1; }
   .productCard h2 { margin-top: 7px; font-size: 11px; }
-  .productCard small { margin-top: 2px; font-size: 8px; }
-  .productCard p { margin-top: 3px; font-size: 8px; }
+  .productCard small { margin-top: 2px; font-size: 10px; }
+  .productCard p { margin-top: 3px; font-size: 10px; }
   .productCard footer { grid-template-columns: 1fr 1fr; gap: 5px; margin-top: 13px; }
-  .productCard footer a { height: 23px; font-size: 8px; }
+  .productCard footer a { height: 23px; font-size: 10px; }
   .pagination { display: flex; align-items: center; justify-content: center; gap: 8px; height: 38px; margin-top: 22px; border: 1px solid #111; color: #111; font-size: 10px; letter-spacing: .06em !important; }
   
 }
@@ -267,7 +267,7 @@ h1 {
     transform: translateX(-0.4rem);
   }
  
-  .eyebrow { font-size: 0.48rem; }
+  .eyebrow { font-size: 0.625rem; }
   h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
   // 모바일 시안에는 보조 문구가 없어 제목 아래의 구분선으로 바로 이어집니다.
   .description { display: none; }
@@ -279,26 +279,26 @@ h1 {
   .storyImage { height: 4.2rem; }
   .storyInfo { padding: 0.55rem 0.7rem 0.25rem; }
   .storyInfo h2 { font-size: 0.8rem; }
-  .storyInfo > p { margin-top: 0.2rem; font-size: 0.48rem; }
-  .storyInfo small { margin-top: 0.25rem; font-size: 0.42rem; }
+  .storyInfo > p { margin-top: 0.2rem; font-size: 0.625rem; }
+  .storyInfo small { margin-top: 0.25rem; font-size: 0.625rem; }
   .storyInfo footer { gap: 0.25rem; margin-top: 0.45rem; }
-  .storyInfo button, .reviewLink { height: 1.55rem; font-size: 0.44rem; }
+  .storyInfo button, .reviewLink { height: 1.55rem; font-size: 0.625rem; }
 
   // 여행 리뷰 아래에 쇼핑 목록을 바로 이어 붙이고, 중복 제목은 모바일에서 숨깁니다.
   .shopping { padding-top: 0.6rem; border-top: 1px solid #ddd9d1; }
   .shopping h1,
   .shopping > p { display: none; }
   .filters { gap: 0.2rem; margin-top: 0; }
-  .filters button { min-width: 2.35rem; height: 1.35rem; font-size: 0.38rem; }
+  .filters button { min-width: 2.35rem; height: 1.35rem; font-size: 0.625rem; }
 
   .productGrid { width: 100%; gap: 1rem 0.125rem; margin-top: 0.75rem; }
   .productImage { height: auto; aspect-ratio: 1 / 1; }
-  .productCard h2 { margin-top: 0.3rem; font-size: 0.5rem; }
-  .productCard small { font-size: 0.42rem; }
-  .productCard p { margin-top: 0.15rem; font-size: 0.42rem; }
+  .productCard h2 { margin-top: 0.3rem; font-size: 0.625rem; }
+  .productCard small { font-size: 0.625rem; }
+  .productCard p { margin-top: 0.15rem; font-size: 0.625rem; }
   .productCard footer { gap: 0.2rem; margin-top: 0.55rem; }
-  .productCard footer button { height: 1.05rem; font-size: 0.34rem; }
-  .pagination { margin-top: 0.35rem; font-size: 0.35rem; }
+  .productCard footer button { height: 1.05rem; font-size: 0.625rem; }
+  .pagination { margin-top: 0.35rem; font-size: 0.625rem; }
 }
 
 @media (min-width: 901px) {
@@ -326,7 +326,7 @@ h1 {
     margin-left: 25px;
     transform: none;
   }
-  .stories > .eyebrow { font-size: 9px; letter-spacing: .22em !important; }
+  .stories > .eyebrow { font-size: 10px; letter-spacing: .22em !important; }
   .stories > h1 { margin-top: 10px; font-size: 40px; line-height: 1.08; }
 }
 
@@ -334,7 +334,7 @@ h1 {
 @media (min-width: 901px) {
   .mystories { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
   .stories > a { margin-bottom: 8px; }
-  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   .stories > h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }

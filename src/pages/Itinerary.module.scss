@@ -192,7 +192,7 @@ $serif-display: $display;
   color: #f8f8f8;
 
   h2 { font-size: 2.2rem; }
-  p { margin-top: 1rem; color: #f8f8f8; font-size: 0.6rem; }
+  p { margin-top: 1rem; color: #f8f8f8; font-size: 0.625rem; }
 }
 
 .packingCard {
@@ -215,7 +215,7 @@ $serif-display: $display;
     opacity: .22;
   }
 
-  p { color: #d1d1d1; font-size: 0.6rem;  }
+  p { color: #d1d1d1; font-size: 0.625rem;  }
   h2 { font-size: 2rem; }
 }
 
@@ -361,7 +361,7 @@ $serif-display: $display;
   .intro::after { display: none; }
 
   .intro > a { margin-bottom: 12px; }
-  .eyebrow { font-size: 9px; }
+  .eyebrow { font-size: 10px; }
 
   .titleRow {
     flex-direction: column;
@@ -370,7 +370,7 @@ $serif-display: $display;
     margin-top: 18px;
 
     h1 { font-size: 40px; line-height: 1.08; }
-    p { margin: 0; font-size: 0.6rem; }
+    p { margin: 0; font-size: 0.625rem; }
   }
 
   .divider { width: 100%; margin-top: 26px; }
@@ -427,9 +427,9 @@ $serif-display: $display;
   .emptyState .tripInfo { padding: 17px 27px 7px; }
 
   .emptyState { margin: 1.85rem -0.5rem 0; }
-  .emptyEyebrow { margin-bottom: .5rem; font-size: .52rem; }
+  .emptyEyebrow { margin-bottom: .5rem; font-size: 0.625rem; }
   .emptyInfo h2 { font-size: .95rem; }
-  .emptyDescription { margin: .35rem 0 .7rem; font-size: .55rem; }
+  .emptyDescription { margin: .35rem 0 .7rem; font-size: 0.625rem; }
 
   .mobileTripList .photo {
     height: 119px;
@@ -459,8 +459,8 @@ margin-left: -12px;
   .arrow { top: 3.3rem; width: 2rem; height: 2rem; border-color: #bbb; background: rgba(246, 243, 236, .92); font-size: 1rem; }
   .previous { left: .45rem; }
   .next { right: .45rem; }
-  .planCounter { margin-right: .5rem; font-size: .55rem; }
-  .deleteButton { height: 1.8rem; margin-top: .4rem; font-size: .55rem; }
+  .planCounter { margin-right: .5rem; font-size: 0.625rem; }
+  .deleteButton { height: 1.8rem; margin-top: .4rem; font-size: 0.625rem; }
 }
 
 @media (max-width: 600px) {

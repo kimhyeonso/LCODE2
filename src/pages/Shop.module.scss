@@ -1443,6 +1443,12 @@
   font-size: 13px;
 }
 
+.detailActions button:first-child {
+  border: 1px solid #ddd;
+  background: #fff;
+  color: $ink;
+}
+
 /* PRODUCT ACCORDION */
 .productAccordion {
   width: min(1280px, 100%);
@@ -2601,7 +2607,7 @@
 
   color: $muted;
 
-  font-size: 8px;
+  font-size: 10px;
 
   letter-spacing: 0.2em;
 }
@@ -2628,7 +2634,7 @@
 
   color: $muted;
 
-  font-size: 8px;
+  font-size: 10px;
 
   letter-spacing: 0.15em;
 }
@@ -2767,7 +2773,7 @@
 
   color: $muted;
 
-  font-size: 8px;
+  font-size: 10px;
 
   letter-spacing: 0.16em;
 }
@@ -2867,7 +2873,7 @@
 
   color: $ink;
 
-  font-size: 8px;
+  font-size: 10px;
 
   letter-spacing: 0.1em;
 }
@@ -2985,7 +2991,7 @@
       4px
       6px;
 
-    font-size: 7px;
+    font-size: 10px;
   }
 
 
@@ -3021,7 +3027,7 @@
 
   .relatedProductsGrid
   .productMeta small {
-    font-size: 7px;
+    font-size: 10px;
   }
 
 
@@ -3041,7 +3047,7 @@
 
   .relatedProductsGrid
   .productMeta p {
-    font-size: 9px;
+    font-size: 10px;
   }
 
 

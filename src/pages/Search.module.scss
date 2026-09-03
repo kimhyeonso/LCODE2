@@ -1,10 +1,9 @@
 @use "../styles/variables" as *;
 
 .searchPage {
-  width: min(100%, 760px);
+  width: calc(100% - 32px);
   margin: 0 auto;
-  padding: 22px 16px 84px;
-  background: #fff;
+  padding: 22px 0 84px;
   color: $ink;
 }
 .searchIntro form {
@@ -32,29 +31,23 @@
   font-size: 13px;
   letter-spacing: 0.5px;
 }
-.keywords {
-  display: grid;
-  grid-template-columns: 34px repeat(3, auto);
-  align-items: center;
-  border-bottom: 1px solid #ece9e2;
+.tabs {
+  display: flex;
+  gap: 22px;
+  margin: 24px 23px;
 }
-.keywords span {
+.tabs button {
+  border: 0;
+  padding: 0;
+  background: transparent;
   color: #aaa;
   font-size: 13px;
-  letter-spacing: 1px;
-}
-.keywords button {
-  min-height: 37px;
-  border: 0;
-  background: transparent;
-  color: #999;
-  font-size: 13px;
-  text-align: left;
+  letter-spacing: 1.5px;
   cursor: pointer;
 }
-.keywords span:nth-of-type(2),
-.keywords span:nth-of-type(3) {
-  grid-column: 1;
+.tabs button.active {
+  color: #111;
+  font-weight: 700;
 }
 
 .products {
@@ -62,36 +55,15 @@
 }
 .products h1 {
   margin: 0 0 14px 14px;
-  font-size: 13px;
+  font-size: 30px;
   letter-spacing: 3px;
 }
 .products > div {
   display: grid;
   grid-template-columns: repeat(3, minmax(110px, 1fr));
-  gap: 4px;
+  gap: 12px;
   overflow-x: auto;
   scrollbar-width: none;
-}
-.products a {
-  color: $ink;
-}
-.products img {
-  width: 100%;
-  aspect-ratio: 1 / 1.15;
-  display: block;
-  background: #ddd;
-  object-fit: cover;
-}
-.products strong,
-.products span {
-  display: block;
-  margin-top: 8px;
-  font-size: 13px;
-  letter-spacing: 1.5px;
-}
-.products span {
-  margin-top: 3px;
-  color: #aaa;
 }
 
 .archive {
@@ -115,125 +87,19 @@
 .archive > h2 {
   margin: 30px 0 14px 14px;
   color: #aaa;
-  font-size: 13px;
+  font-size: 30px;
   font-weight: 400;
   letter-spacing: 1.8px;
 }
 .archive > h2 b {
   margin-left: 5px;
   color: $ink;
-  font: 15px $serif;
+  font-family: $serif;
+  font-size: inherit;
 }
 .results {
   display: grid;
   gap: 10px;
-}
-.tripCard {
-  position: relative;
-  display: block;
-  border: 1px solid #eeeae3;
-  color: $ink;
-}
-.cardLink {
-  display: block;
-  color: $ink;
-}
-.cardImage {
-  position: relative;
-  height: 260px;
-  background: linear-gradient(#ddd 35%, #777);
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.favoriteButton {
-  position: absolute;
-  z-index: 2;
-  top: 12px;
-  right: 12px;
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  border-radius: 50%;
-  padding: 0;
-  background: rgba(250, 248, 243, 0.78);
-  color: #3f433f;
-  box-shadow: 0 3px 12px rgba(20, 24, 21, 0.12);
-  backdrop-filter: blur(8px);
-  cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
-}
-.favoriteButton svg {
-  width: 17px;
-  height: 17px;
-  fill: transparent;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  transition: fill 160ms ease, stroke 160ms ease;
-}
-.favoriteButton:hover {
-  transform: translateY(-1px);
-}
-.favoriteButton:focus-visible {
-  outline: 2px solid #fff;
-  outline-offset: 2px;
-}
-.favoriteButton.favoriteActive {
-  border-color: rgba(201, 52, 52, 0.28);
-  background: rgba(255, 255, 255, 0.92);
-  color: #d43636;
-  box-shadow: 0 4px 14px rgba(201, 52, 52, 0.18);
-}
-.favoriteButton.favoriteActive svg {
-  fill: currentColor;
-  stroke: currentColor;
-}
-.cardImage::after {
-  content: "";
-  position: absolute;
-  inset: 40% 0 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.62));
-}
-.cardImage small,
-.cardImage strong {
-  position: absolute;
-  z-index: 1;
-  color: #fff;
-}
-.cardImage small {
-  top: 12px;
-  left: 12px;
-  opacity: 0.65;
-  font-size: 13px;
-}
-.cardImage strong {
-  bottom: 12px;
-  left: 12px;
-  font: 27px $serif;
-  letter-spacing: -0.5px;
-}
-.cardCopy {
-  padding: 13px 16px 15px;
-  background: #faf7f1;
-}
-.cardCopy p {
-  margin: 0 0 8px;
-  color: #aaa;
-  font-size: 13px;
-  letter-spacing: 1px;
-}
-.cardCopy h3 {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 600;
-}
-.cardCopy small {
-  display: block;
-  margin-top: 8px;
-  color: #bbb;
-  font-size: 13px;
 }
 .empty {
   padding: 60px 20px;
@@ -371,15 +237,12 @@
 
 @media (min-width: 641px) {
   .searchPage {
+    width: min(1100px, calc(100% - 64px));
     margin-block: 40px 80px;
-    padding: 44px 40px 80px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.06);
+    padding: 44px 0 80px;
   }
   .results {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .cardImage {
-    height: 300px;
   }
   .filterBackdrop {
     align-items: center;
@@ -389,11 +252,22 @@
   }
 }
 
+@media (min-width: 901px) {
+  .searchPage {
+    width: min(1320px, calc(100% - 332px));
+    margin: 40px 0 80px max(276px, calc(50% - 550px));
+  }
+
+  .products h1,
+  .archive > h2 {
+    font-size: 38px;
+  }
+}
+
 @media (min-width: 1024px) {
   .searchPage {
-    width: min(calc(100% - 80px), 1200px);
     margin-block: 56px 120px;
-    padding: 64px 64px 96px;
+    padding: 64px 0 96px;
   }
 
   .searchIntro form {
@@ -412,23 +286,11 @@
     margin: 28px 0 14px;
     font-size: 11px;
   }
-  .keywords {
-    grid-template-columns: 58px repeat(3, minmax(0, 1fr));
-  }
-  .keywords span {
-    font-size: 10px;
-  }
-  .keywords button {
-    min-height: 46px;
-    font-size: 12px;
-  }
-
   .products {
     margin-top: 56px;
   }
   .products h1 {
     margin: 0 0 20px;
-    font-size: 13px;
   }
   .products > div {
     gap: 18px;
@@ -440,7 +302,7 @@
   }
   .products span {
     margin-top: 5px;
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .archive {
@@ -454,41 +316,11 @@
   }
   .archive > h2 {
     margin: 38px 0 20px;
-    font-size: 11px;
-  }
-  .archive > h2 b {
-    font-size: 18px;
   }
   .results {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 20px;
   }
-  .cardImage {
-    height: auto;
-    aspect-ratio: 4 / 5;
-  }
-  .cardImage small {
-    top: 16px;
-    left: 16px;
-    font-size: 10px;
-  }
-  .cardImage strong {
-    bottom: 18px;
-    left: 18px;
-    font-size: 34px;
-  }
-  .cardCopy {
-    min-height: 112px;
-    padding: 18px 20px 20px;
-  }
-  .cardCopy p,
-  .cardCopy small {
-    font-size: 9px;
-  }
-  .cardCopy h3 {
-    font-size: 15px;
-  }
-
   .filterPanel {
     position: relative;
     width: min(calc(100% - 80px), 720px);
@@ -505,5 +337,38 @@
     width: auto;
     grid-template-columns: 120px 1fr;
     padding-inline: 32px;
+  }
+}
+
+/* Search 페이지 전용 최소 글자 크기 */
+@media (max-width: 900px) {
+  .products article small,
+  .products article span,
+  .products article p {
+    font-size: 11px !important;
+  }
+}
+
+@media (min-width: 901px) {
+  .searchIntro input,
+  .searchIntro > p,
+  .tabs button,
+  .controls button,
+  .controls select,
+  .products article small,
+  .products article span,
+  .products article p,
+  .results small,
+  .results p,
+  .results strong,
+  .results em,
+  .empty strong,
+  .empty p,
+  .filterPanel h2,
+  .filterPanel h3,
+  .filterPanel button,
+  .filterPanel span,
+  .filterPanel select {
+    font-size: 14px !important;
   }
 }
