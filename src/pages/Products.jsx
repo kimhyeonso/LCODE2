@@ -326,14 +326,13 @@ export default function Products() {
               styles.heroEyebrow
             }
           >
-            L:CODE TRAVEL
-            SELECTION
+            <p>
+              여행을 더 가볍게 만드는
+            </p>
           </span>
 
           <h1>
-            FLIGHT
-            <br />
-            KIT
+            FLIGHT KIT
           </h1>
 
           <div
@@ -341,11 +340,7 @@ export default function Products() {
               styles.heroBottom
             }
           >
-            <p>
-              여행을 더 가볍게 만드는
-              <br />
-              TRAVEL ESSENTIALS
-            </p>
+            
 
             <a
               href="#items"
@@ -366,7 +361,7 @@ export default function Products() {
             styles.heroNumber
           }
         >
-          01 / TAIPEI
+           
         </span>
       </header>
 
