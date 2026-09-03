@@ -64,64 +64,6 @@ const trendingCities = [
   "베이징",
 ];
 
-const cityMeta = {
-  서울: {
-    english: "SEOUL",
-    tag: "ART & WALK",
-    copy: "건축과 예술이 만나는 도심 여행",
-    image: "img/destinations/pexels/seoul.jpg",
-  },
-
-  부산: {
-    english: "BUSAN",
-    tag: "SEA & FOOD",
-    copy: "바다와 시장을 함께 즐기는 여행",
-    image: "img/destinations/pexels/busan.jpg",
-  },
-
-  제주도: {
-    english: "JEJU",
-    tag: "ISLAND & REST",
-    copy: "오름과 해안을 천천히 걷는 여행",
-    image: "img/destinations/pexels/jeju.jpg",
-  },
-
-  도쿄: {
-    english: "TOKYO",
-    tag: "CITY & TASTE",
-    copy: "골목과 미식으로 만나는 대도시",
-    image: "img/destinations/pexels/tokyo.jpg",
-  },
-
-  오사카: {
-    english: "OSAKA",
-    tag: "FOOD & NIGHT",
-    copy: "맛과 야경이 이어지는 활기찬 여행",
-    image: "img/destinations/pexels/osaka.jpg",
-  },
-
-  후쿠오카: {
-    english: "FUKUOKA",
-    tag: "CAFE & LOCAL",
-    copy: "카페와 로컬 맛집 중심의 짧은 여행",
-    image: "img/destinations/pexels/fukuoka.jpg",
-  },
-
-  상하이: {
-    english: "SHANGHAI",
-    tag: "CITY & RIVER",
-    copy: "강변 야경과 오래된 골목을 걷는 여행",
-    image: "img/destinations/pexels/shanghai.jpg",
-  },
-
-  베이징: {
-    english: "BEIJING",
-    tag: "HISTORY & CITY",
-    copy: "역사와 현대 건축을 함께 만나는 여행",
-    image: "img/destinations/pexels/beijing.jpg",
-  },
-};
-
 const themeNames = {
   attraction: "ART & WALK",
   restaurant: "SEA & FOOD",

@@ -26,6 +26,7 @@ import Coupon from "./pages/Coupon";
 import CouponUp from "./pages/CouponUp";
 import Alarm from "./pages/Alarm";
 import Notice from "./pages/Notice";
+import NoticeDetail from "./pages/NoticeDetail";
 import OpenGuide from "./pages/OpenGuide";
 import Review from "./pages/Review";
 import Buy from "./pages/Buy";
@@ -124,7 +125,7 @@ export default function App() {
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/buy" element={<Buy />} />
           <Route path="/paking" element={<Paking />} />
-          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
           <Route path="/mystories" element={<Mystories />} />
           <Route path="/mypagemain" element={<MyPageMain />} />
           <Route
@@ -139,6 +140,7 @@ export default function App() {
           <Route path="/coupon/register" element={<ProtectedRoute><CouponUp /></ProtectedRoute>} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/:noticeId" element={<NoticeDetail />} />
           <Route path="/open-guide" element={<OpenGuide />} />
           <Route
             path="/profile/edit"
@@ -173,8 +175,8 @@ export default function App() {
             }
           />
           <Route path="/event" element={<Event />} />
-          <Route path="/ai-remix" element={<AIRemix />} />
-          <Route path="/remix" element={<AIRemix />} />
+          <Route path="/ai-remix" element={<ProtectedRoute><AIRemix /></ProtectedRoute>} />
+          <Route path="/remix" element={<ProtectedRoute><AIRemix /></ProtectedRoute>} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

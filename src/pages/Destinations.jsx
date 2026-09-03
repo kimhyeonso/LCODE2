@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import styles from "./Destinations.module.scss";
 import { resolveImageUrl as imageUrl } from "../utils/imageUtils";
 
@@ -62,16 +63,17 @@ const tripDescription = (trip) => trip.title
   .trim() || `${trip.city}에서 만나는 특별한 하루.`;
 
 export default function Destinations() {
+  const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const initial = countryMap[(params.get("country") || "").toUpperCase()] || "all";
   const [country, setCountry] = useState(initial);
   const trips = useMemo(() => {
-    const unique = Array.from(tripRoad.trips.reduce((map, trip) => {
+    const unique = Array.from(managedTrips.reduce((map, trip) => {
       if (!map.has(trip.city)) map.set(trip.city, trip);
       return map;
     }, new Map()).values());
     return country === "all" ? unique : unique.filter((trip) => trip.country === country);
-  }, [country]);
+  }, [country, managedTrips]);
   const feature = trips.find((trip) => trip.city === "구이린") || trips[4];
 
   return (

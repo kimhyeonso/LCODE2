@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 
 import { useShop } from "../hooks/useShop";
+import { decreaseProductStocks } from "../services/firestoreService";
 import styles from "./Shop.module.scss";
 
 
@@ -245,6 +246,9 @@ function buildCheckoutItems(
               1
           ),
 
+        stock:
+          directPurchase.stock,
+
         option,
       },
     ];
@@ -275,6 +279,7 @@ function buildCheckoutItems(
 export default function Checkout() {
   const {
     cart,
+    removePurchasedItems,
   } = useShop();
 
   const navigate =
@@ -801,7 +806,7 @@ export default function Checkout() {
   ======================================================= */
 
   const handlePayment =
-    () => {
+    async () => {
       if (loading) {
         return;
       }
@@ -813,6 +818,17 @@ export default function Checkout() {
         return;
       }
 
+
+      setLoading(true);
+
+      try {
+        await decreaseProductStocks(checkoutItems);
+      } catch (error) {
+        console.error("상품 재고 차감 실패", error);
+        window.alert(error?.message || "재고를 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+        setLoading(false);
+        return;
+      }
 
       const orderData = {
         orderNumber:
@@ -888,9 +904,6 @@ export default function Checkout() {
       );
 
 
-      setLoading(true);
-
-
       paymentTimer.current =
         window.setTimeout(
           () => {
@@ -900,6 +913,10 @@ export default function Checkout() {
 
             sessionStorage.removeItem(
               "checkoutSelection"
+            );
+
+            removePurchasedItems(
+              checkoutItems
             );
 
             navigate(
