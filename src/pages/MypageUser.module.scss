@@ -266,10 +266,10 @@
     margin-left: 56px;
   }
   .profile .eyebrow,
-  .profile .email { font-size: 11px; }
+  .profile .email { font-size: 13px; }
   .profile .greeting { margin-top: 22px; font-size: 13px; }
   .profile h1 { font-size: clamp(30px, 2.5vw, 42px); }
-  .profile .edit { margin-top: 14px; padding: 8px 14px; font-size: 11px; }
+  .profile .edit { margin-top: 14px; padding: 8px 14px; font-size: 13px; }
   .menuList a,
   .menuList button {
     min-height: 44px;
@@ -279,9 +279,9 @@
   }
   .menuList a::before,
   .menuList button::before { width: 16px; height: 16px; }
-  .summary small { font-size: 10px; }
-  .summary > article > span { font-size: 11px; }
-  .recent p { font-size: 10px; }
+  .summary small { font-size: 13px; }
+  .summary > article > span { font-size: 13px; }
+  .recent p { font-size: 13px; }
   .upcoming strong { font-size: 44px; }
   .recent h2 { font-size: 38px; white-space: nowrap; }
 }

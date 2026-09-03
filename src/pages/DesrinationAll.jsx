@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
+import DesrinationThumnail from "../components/DesrinationThumnail";
 import styles from "./DesrinationAll.module.scss";
 
 const thumbnailModules = import.meta.glob("../assets/images/Thumbnail/Thumbnail-image/**/*.{jpg,jpeg,png,webp}", {
@@ -117,16 +118,14 @@ const DesrinationAll = () => {
             const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
 
             return (
-              <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`} className={styles.tripCard} key={trip.id}>
-                <div className={styles.tripImage} style={{ backgroundImage: `url(${image})` }} />
-                <div className={styles.tripCopy}>
-                  <small>CITY {String(index + 1).padStart(2, "0")} · {category}</small>
-                  <h2>{trip.city}</h2>
-                  <p>{trip.title}</p>
-                  <strong>{trip.duration} · {trip.country.toUpperCase()}</strong>
-                  <em>일정에 추가 &gt;</em>
-                </div>
-              </Link>
+              <DesrinationThumnail
+                key={trip.id}
+                trip={trip}
+                index={index}
+                image={image}
+                category={category}
+                to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+              />
             );
           })}
         </div>

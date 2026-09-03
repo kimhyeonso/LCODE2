@@ -33,10 +33,10 @@
   margin-bottom: 20px;
 
   > div > a { display: none; }
-  > div > p { margin: 0 0 14px; font-size: 11px; letter-spacing: .24em; }
+  > div > p { margin: 0 0 14px; font-size: 13px; letter-spacing: .24em; }
   h1 { margin: 0; font-family: $display; font-size: 58px; font-weight: 400; line-height: 1; letter-spacing: .08em; }
   > a { margin-top: 8px; width: auto; gap: 10px; }
-  > a::after { content: "이전으로"; font-family: $korean; font-size: 12px; }
+  > a::after { content: "이전으로"; font-family: $korean; font-size: 13px; }
 }
 
 .tripSummary {
@@ -49,8 +49,8 @@
 
   img { width: 222px; height: 106px; object-fit: cover; }
   h2 { margin: 0 0 12px; font-size: 19px; font-weight: 500; }
-  p { margin: 0 0 12px; font-size: 12px; }
-  span { font-size: 12px; }
+  p { margin: 0 0 12px; font-size: 13px; }
+  span { font-size: 13px; }
 }
 
 .formRow {
@@ -61,8 +61,8 @@
   border-bottom: 1px solid rgba($ink, .17);
 
   > h2, > label { margin: 0; font-size: 16px; font-weight: 500; }
-  h2 small { display: block; margin: 5px 0 0 22px; color: rgba($ink, .55); font-size: 11px; font-weight: 400; }
-  > input { width: 100%; height: 38px; padding: 0 16px; border: 1px solid rgba($ink, .17); background: rgba(255, 255, 255, .2); color: $ink; font: 12px $korean; outline: none; }
+  h2 small { display: block; margin: 5px 0 0 22px; color: rgba($ink, .55); font-size: 13px; font-weight: 400; }
+  > input { width: 100%; height: 38px; padding: 0 16px; border: 1px solid rgba($ink, .17); background: rgba(255, 255, 255, .2); color: $ink; font: 13px $korean; outline: none; }
   > input:focus { border-color: rgba($ink, .55); }
 }
 
@@ -73,23 +73,23 @@
 .detailRow { min-height: 158px; align-items: start; padding: 16px 0; }
 .detailRow > label { padding-top: 4px; }
 .textareaWrap { position: relative; height: 124px; }
-.textareaWrap textarea { width: 100%; height: 100%; padding: 14px 16px 30px; resize: none; border: 1px solid rgba($ink, .17); background: rgba(255, 255, 255, .2); color: $ink; font: 12px/1.6 $korean; outline: none; }
+.textareaWrap textarea { width: 100%; height: 100%; padding: 14px 16px 30px; resize: none; border: 1px solid rgba($ink, .17); background: rgba(255, 255, 255, .2); color: $ink; font: 13px/1.6 $korean; outline: none; }
 .textareaWrap textarea:focus { border-color: rgba($ink, .55); }
-.textareaWrap span { position: absolute; right: 15px; bottom: 12px; font-size: 10px; }
+.textareaWrap span { position: absolute; right: 15px; bottom: 12px; font-size: 13px; }
 
 .photoRow { min-height: 132px; padding: 10px 0; }
 .photos { display: flex; gap: 12px; overflow-x: auto; }
 .photos img, .addPhoto { flex: 0 0 160px; width: 160px; height: 108px; object-fit: cover; }
 .addPhoto { display: grid; border: 1px dashed rgba($ink, .25); cursor: pointer; place-content: center; text-align: center; font-size: 26px; }
-.addPhoto span { display: block; margin-top: 6px; font-size: 11px; }
+.addPhoto span { display: block; margin-top: 6px; font-size: 13px; }
 .addPhoto input { position: absolute; width: 1px; height: 1px; overflow: hidden; opacity: 0; }
 
 .tagRow { min-height: 80px; }
 .tags { display: flex; flex-wrap: wrap; gap: 10px; }
-.tags button { min-width: 84px; height: 38px; padding: 0 16px; border: 1px solid rgba($ink, .17); border-radius: 20px; background: transparent; color: rgba($ink, .72); cursor: pointer; font: 12px $korean; }
+.tags button { min-width: 84px; height: 38px; padding: 0 16px; border: 1px solid rgba($ink, .17); border-radius: 20px; background: transparent; color: rgba($ink, .72); cursor: pointer; font: 13px $korean; }
 .tags .selectedTag { border-color: $ink; background: $ink; color: #fff; }
 
-.error, .success { margin: 14px 0 0 184px; font-size: 12px; }
+.error, .success { margin: 14px 0 0 184px; font-size: 13px; }
 .error { color: #b32929; }
 .success { color: #547257; }
 

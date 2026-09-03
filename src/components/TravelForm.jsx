@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
@@ -35,6 +35,31 @@ const categoryIcons = {
   hotel: checkIcon,
   attraction: pinIcon,
   restaurant: diningIcon,
+};
+
+const cityDisplayNames = {
+  "강릉": "GANGNEUNG",
+  "거제": "GEOJE",
+  "광저우": "GUANGZHOU",
+  "다롄": "DALIAN",
+  "도쿄": "TOKYO",
+  "베이징": "BEIJING",
+  "부산": "BUSAN",
+  "상하이": "SHANGHAI",
+  "서울": "SEOUL",
+  "시안": "XI'AN",
+  "여수": "YEOSU",
+  "오사카": "OSAKA",
+  "오사카·도쿄": "OSAKA · TOKYO",
+  "장가계": "ZHANGJIAJIE",
+  "제주도": "JEJU",
+  "청두": "CHENGDU",
+  "충칭": "CHONGQING",
+  "칭다오": "QINGDAO",
+  "하얼빈": "HARBIN",
+  "항저우": "HANGZHOU",
+  "홋카이도": "HOKKAIDO",
+  "후쿠오카": "FUKUOKA",
 };
 
 const getTransportIcon = (transport = "") => {
@@ -169,8 +194,9 @@ const createStops = (trip) =>
     }, []),
   );
 
-export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loading, draftLoading = false, initialTrip = null, editMode = false }) {
+export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loading, draftLoading = false, initialTrip = null, editMode = false, hasUnsavedChanges = false }) {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
   const selectedTrip = useMemo(() => {
     const tripId = params.get("trip");
     return initialTrip || tripRoad.trips.find((trip) => trip.id === tripId)
@@ -199,6 +225,8 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     ? getImageUrl(thumbnailPath)
     : getImageUrl(selectedTrip.days.flatMap((day) => day.items).find((item) => item.image)?.image);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
+  const nights = Math.max(selectedTrip.days.length - 1, 1);
+  const heroCityName = cityDisplayNames[selectedTrip.city] || selectedTrip.city.toUpperCase();
   const { user } = useAuth();
   const [activeDay, setActiveDay] = useState(0);
   const [stopsByDay, setStopsByDay] = useState(() => createStops(selectedTrip));
@@ -256,7 +284,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     .flatMap((day) => day.items)
     .filter((item) => item.type === "place" && item.image && !stops.some((stop) => stop.name === item.place))
     .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
-    .slice(0, 2);
+    .slice(0, 4);
   const suggestedTitles = [
     `맛집 따라 ${selectedTrip.city}`,
     `카페와 골목을 걷는 ${selectedTrip.city} 여행`,
@@ -579,8 +607,11 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   return (
     <form className={styles.form} onSubmit={submit}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(to bottom, #c7c7c766 0%, #444 100%), url(${heroImage})` } : undefined}>
+        <button type="button" className={styles.backButton} onClick={() => window.history.length > 1 ? navigate(-1) : navigate("/")}>
+          ← BACK
+        </button>
         <div className={styles.weather} aria-live="polite"><small>LIVE WEATHER</small><strong>{weather.loading ? "--" : weather.temperature ?? "--"}°</strong><span>● {weather.error ? "OFFLINE" : weather.label}</span></div>
-        <div className={styles.heroCopy}><p>{selectedTrip.country.toUpperCase()} · {selectedTrip.duration}</p><h1>{selectedTrip.city.toUpperCase()}</h1></div>
+        <div className={styles.heroCopy}><p>{nights} NIGHTS · FOOD · CAFÉS</p><h1>{heroCityName}</h1></div>
       </section>
 
       <section className={styles.summary}>
@@ -712,34 +743,116 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         </div>
 
         <div className={styles.addActions}>
-          <button type="button" onClick={() => {
-            setSelectedPlaceTime("10:00");
-            setIsPlaceAddOpen(true);
-          }}>장소 추가</button>
-          <button type="button" onClick={() => setIsWishlistOpen(true)}>찜한 장소 추가</button>
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedPlaceTime("10:00");
+              setIsPlaceAddOpen(true);
+            }}
+          >
+            장소 추가
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsWishlistOpen(true)}
+          >
+            찜한 장소 추가
+          </button>
         </div>
-        {recommendationPlaces.length > 0 && (
-          <section className={styles.recommendations} aria-labelledby="recommendation-title">
-            <p className={styles.sectionEyebrow}>YOU MAY ALSO LIKE · 함께 둘러보기 좋은 곳</p>
-            <h2 id="recommendation-title">이런 곳은 어때요?</h2>
-            <p>현재 일정과 동선을 기준으로<br />함께 들르기 좋은 장소를 추천해드려요.</p>
+      </section>
+
+      {recommendationPlaces.length > 0 && (
+        <section
+          className={styles.recommendations}
+          aria-labelledby="recommendation-title"
+        >
+          <div className={styles.recommendationInner}>
+            <p className={styles.sectionEyebrow}>
+              YOU MAY ALSO LIKE · 함께 둘러보기 좋은 곳
+            </p>
+
+            <h2 id="recommendation-title">
+              이런 곳은 어때요?
+            </h2>
+
+            <p>
+              현재 일정과 동선을 기준으로
+              <br />
+              함께 들르기 좋은 장소를 추천해드려요.
+            </p>
+
             <div className={styles.recommendationGrid}>
               {recommendationPlaces.map((place) => (
                 <article key={place.place}>
-                  <span className={styles.recommendationImage}><img src={getImageUrl(place.image)} alt="" onError={useImageFallback} /></span>
-                  <small>{categoryNames[place.category] || place.category}</small>
+                  <span className={styles.recommendationImage}>
+                    <img
+                      src={getImageUrl(place.image)}
+                      alt=""
+                      onError={useImageFallback}
+                    />
+                  </span>
+
+                  <small>
+                    {categoryNames[place.category] || place.category}
+                  </small>
+
                   <strong>{place.place}</strong>
-                  <p>{place.recommendation || `${selectedTrip.city}에서 함께 둘러보기 좋은 장소`}</p>
-                  <dl><div><dt>현재 위치에서</dt><dd>약 1 km</dd></div><div><dt>예상 비용</dt><dd>약 ₩7,000</dd></div></dl>
-                  <button type="button" onClick={() => addRecommendedPlace(place)}>+ 일정에 추가</button>
+
+                  <p>
+                    {place.recommendation ||
+                      `${selectedTrip.city}에서 함께 둘러보기 좋은 장소`}
+                  </p>
+
+                  <dl>
+                    <div>
+                      <dt>현재 위치에서</dt>
+                      <dd>약 1 km</dd>
+                    </div>
+
+                    <div>
+                      <dt>예상 비용</dt>
+                      <dd>약 ₩7,000</dd>
+                    </div>
+                  </dl>
+
+                  <button
+                    type="button"
+                    onClick={() => addRecommendedPlace(place)}
+                  >
+                    + 일정에 추가
+                  </button>
                 </article>
               ))}
             </div>
-          </section>
-        )}
-        <button className={styles.draft} type="button" disabled={draftLoading || loading} onClick={saveDraft}>{draftLoading ? "임시저장 중…" : "임시저장"}</button>
-        <button className={styles.confirm} disabled={loading}>{loading ? "일정 저장 중…" : editMode ? "변경 내용 저장하기 →" : "일정 확정하기 →"}</button>
-      </section>
+          </div>
+        </section>
+      )}
+
+      <div className={styles.saveActions}>
+        {hasUnsavedChanges && !draftLoading && <p className={styles.unsavedNotice} role="status">저장되지 않은 변경 사항이 있습니다.</p>}
+        <button
+          className={styles.draft}
+          type="button"
+          disabled={draftLoading || loading}
+          onClick={saveDraft}
+        >
+          {draftLoading ? "임시저장 중…" : "임시저장"}
+        </button>
+
+        <button
+          className={styles.confirm}
+          type="submit"
+          disabled={loading}
+        >
+          {loading
+            ? "일정 저장 중…"
+            : editMode
+              ? "변경 내용 저장하기 →"
+              : "일정 확정하기 →"}
+        </button>
+      </div>
+
       {isPlaceAddOpen && (
         <div className={styles.placeAdder} role="dialog" aria-modal="true" aria-labelledby="place-adder-title">
           <div className={styles.placeAdderInner}>

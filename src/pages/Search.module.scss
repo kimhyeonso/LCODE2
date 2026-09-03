@@ -24,12 +24,12 @@
   border: 0;
   outline: 0;
   background: transparent;
-  font: 12px $sans;
+  font: 13px $sans;
 }
 .searchIntro > p {
   margin: 18px 0 10px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 0.5px;
 }
 .keywords {
@@ -40,7 +40,7 @@
 }
 .keywords span {
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .keywords button {
@@ -48,7 +48,7 @@
   border: 0;
   background: transparent;
   color: #999;
-  font-size: 10px;
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
 }
@@ -62,7 +62,7 @@
 }
 .products h1 {
   margin: 0 0 14px 14px;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 3px;
 }
 .products > div {
@@ -86,7 +86,7 @@
 .products span {
   display: block;
   margin-top: 8px;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1.5px;
 }
 .products span {
@@ -109,13 +109,13 @@
   padding: 0 12px;
   background: #fff;
   color: #999;
-  font: 8px $sans;
+  font: 13px $sans;
   letter-spacing: 1px;
 }
 .archive > h2 {
   margin: 30px 0 14px 14px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1.8px;
 }
@@ -161,7 +161,7 @@
   top: 12px;
   left: 12px;
   opacity: 0.65;
-  font-size: 8px;
+  font-size: 13px;
 }
 .cardImage strong {
   bottom: 12px;
@@ -176,7 +176,7 @@
 .cardCopy p {
   margin: 0 0 8px;
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .cardCopy h3 {
@@ -188,7 +188,7 @@
   display: block;
   margin-top: 8px;
   color: #bbb;
-  font-size: 8px;
+  font-size: 13px;
 }
 .empty {
   padding: 60px 20px;
@@ -201,7 +201,7 @@
 .empty p {
   margin: 8px 0 0;
   color: #999;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .filterBackdrop {
@@ -233,7 +233,7 @@
 }
 .filterPanel > header h2 {
   margin: 0;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 2px;
 }
@@ -252,7 +252,7 @@
 .filterGroup h3 {
   margin: 0 0 14px;
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1px;
 }
@@ -268,7 +268,7 @@
   padding: 0 16px;
   background: #fff;
   color: #888;
-  font-size: 10px;
+  font-size: 13px;
 }
 .filterGroup button.selected {
   border-color: #111;
@@ -289,7 +289,7 @@
 }
 .paceOptions b {
   color: #222;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1.5px;
 }
@@ -316,7 +316,7 @@
   border: 1px solid #ddd;
   background: #fff;
   color: #888;
-  font-size: 11px;
+  font-size: 13px;
 }
 .filterPanel > footer button:last-child {
   border-color: #111;

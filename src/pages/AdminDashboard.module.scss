@@ -8,7 +8,7 @@
 .hero { padding: 48px; border-radius: 4px; background: #183f32; color: #f7f3e9; }
 .hero h1 { margin: 8px 0 10px; font-family: "DM Serif Display", serif; font-size: clamp(40px, 6vw, 72px); font-weight: 400; }
 .hero > p:last-child { margin: 0; color: #cbd9d1; }
-.eyebrow { margin: 0; color: #dfc582; font-size: 12px; font-weight: 700; letter-spacing: .18em; }
+.eyebrow { margin: 0; color: #dfc582; font-size: 13px; font-weight: 700; letter-spacing: .18em; }
 .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 24px 0; }
 .metrics article { padding: 26px; border: 1px solid #dce2dd; background: #fff; }
 .metrics span { display: block; margin-bottom: 18px; color: #69766f; font-size: 13px; }
@@ -16,14 +16,14 @@
 .metrics small { margin-left: 6px; color: #69766f; }
 .panel { padding: 32px; border: 1px solid #dce2dd; background: #fff; }
 .panelTitle { display: flex; align-items: end; justify-content: space-between; margin-bottom: 24px; }
-.panelTitle p { margin: 0 0 6px; color: #907530; font-size: 11px; font-weight: 700; letter-spacing: .16em; }
+.panelTitle p { margin: 0 0 6px; color: #907530; font-size: 13px; font-weight: 700; letter-spacing: .16em; }
 .panelTitle h2 { margin: 0; font-size: 24px; }
 .panelTitle > span { color: #6f7b74; font-size: 13px; }
 .tableWrap { overflow-x: auto; }
 table { width: 100%; min-width: 620px; border-collapse: collapse; text-align: left; }
-th { padding: 12px 16px; border-bottom: 1px solid #cdd5d0; color: #6f7b74; font-size: 12px; }
+th { padding: 12px 16px; border-bottom: 1px solid #cdd5d0; color: #6f7b74; font-size: 13px; }
 td { padding: 17px 16px; border-bottom: 1px solid #edf0ee; font-size: 14px; }
-.adminBadge, .userBadge { display: inline-block; padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; }
+.adminBadge, .userBadge { display: inline-block; padding: 5px 9px; border-radius: 999px; font-size: 13px; font-weight: 700; }
 .adminBadge { background: #183f32; color: #fff; }
 .userBadge { background: #eef2ef; color: #526159; }
 .empty { padding: 48px; color: #78827d; text-align: center; }
