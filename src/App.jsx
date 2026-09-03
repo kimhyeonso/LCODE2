@@ -65,15 +65,16 @@ const enlargedPagePaths = new Set([
   "/login",
   "/profile/edit",
   "/itinerary",
+  "/buy",
   "/wishlist",
   "/mystories",
   "/review",
   "/coupon",
   "/coupon/register",
   "/alarm",
+  "/notice",
   "/open-guide",
   "/paking",
-  "/MyPageMain",
 ]);
 
 const immersivePagePaths = new Set([]);
@@ -93,9 +94,10 @@ function PageSize() {
 export default function App() {
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
+  const isBalancePage = pathname === "/balance";
 
   return (
-    <div className={styles.app}>
+    <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
       <ScrollTop />
       <PageSize />
       {!isImmersivePage && <Header />}

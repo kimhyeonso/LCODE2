@@ -402,11 +402,12 @@
 }
 
 @media (max-width: 600px) {
-  .notice { margin-top: 0; padding: 33px 0 90px; }
+  .notice { margin-top: 0; padding: 19px 0 90px; }
   .content { width: calc(100% - 40px); margin: 0 auto; transform: none; }
   .noticeList > :first-child { margin-bottom: 8px; }
-  .eyebrow { margin-top: 0; }
-  .title { margin-top: 10px; }
+  .eyebrow { margin-top: 0; font-size: 9px; letter-spacing: .22em !important; }
+  .title { margin-top: 10px; font-size: 40px; line-height: 1.08; }
+  .description { font-size: 11px; }
   .noticeList > :first-child,
   .eyebrow,
   .title,
@@ -415,4 +416,15 @@
     margin-right: 25px;
     margin-left: 25px;
   }
+}
+
+// PC 공통 헤더는 Itinerary의 크기와 간격을 기준으로 맞춥니다.
+@media (min-width: 901px) {
+  .notice { margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .noticeList { padding-top: 0; }
+  .noticeList > a:first-child { margin-bottom: 8px; }
+  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  .title { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
+  .description { font-size: .66rem; }
+  .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 }

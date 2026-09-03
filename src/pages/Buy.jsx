@@ -35,7 +35,7 @@ export default function Buy() {
     <main className={styles.buyPage}>
       <div className={styles.content}>
         <section className={styles.main}>
-          <Link className={styles.back} to="/my"><span aria-hidden="true">←</span> BACK</Link>
+          <Link className={styles.back} to="/my"><span aria-hidden="true">←</span></Link>
           <p className={styles.eyebrow}>MY L:CODE</p>
           <header className={styles.titleRow}><h1>SHOPPING ORDERS</h1><p>주문한 여행 상품을 한눈에 확인해보세요.</p></header>
           <div className={styles.filters} aria-label="배송 상태 필터">

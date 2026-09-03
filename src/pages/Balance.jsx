@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Balance.module.scss";
 import tripRoad from "../data/trip_road.json";
+import { getExchangeRates } from "../services/exchangeRateApi";
 
 const tripImageModules = import.meta.glob("../assets/images/**/*", {
   eager: true,
@@ -49,7 +50,7 @@ const resolveTripImage = (image) => (
 // { title: "선택지", description: "소제목", image: "/BalanceGame/파일명.png", imageAlt: "사진 설명" }
 const questions = [
   {
-    title: "돈을 아낄 것인가, 시간을 아낄 것인가.",
+    title: <>돈을 아낄 것인가,<br />시간을 아낄 것인가</>,
     choices: [
       { title: "20시간 경유", description: "항공권 10만 원 · 경유 3번 , 하루를 이동에", image: "/BalanceGame/bal01.png", imageAlt: "경유 여행" },
       { title: "2시간 직항", description: "항공권 80만 원 · 빠르고 편하게", image: "/BalanceGame/bal02.png", imageAlt: "직항 여행" },
@@ -190,14 +191,61 @@ const createRecommendations = () => {
   return uniqueTrips.map((trip) => {
     const place = trip.places[Math.floor(Math.random() * trip.places.length)];
     return {
+      country: trip.country,
       city: trip.city,
       cityEnglish: cityNames[trip.city] || trip.city,
       title: trip.title,
       duration: trip.duration,
       place: place.place,
       image: resolveTripImage(place.image),
+      costs: trip.costs || null,
+      totalEstimatedCostKRW: trip.totalEstimatedCostKRW || null,
+      dayCount: trip.days.length,
     };
   });
+};
+
+const formatKRW = (value) => value == null
+  ? "가격 정보 준비 중"
+  : `약 ₩${Math.round(value).toLocaleString("ko-KR")}`;
+
+const averageCost = (cost) => cost
+  ? Math.round((cost.minKRW + cost.maxKRW) / 2)
+  : null;
+
+const estimatedCostForTrip = (trip) => trip.totalEstimatedCostKRW
+  ? Math.round((trip.totalEstimatedCostKRW.min + trip.totalEstimatedCostKRW.max) / 2)
+  : 105000 + (trip.dayCount * 60000);
+
+const exchangeByCountry = {
+  japan: { code: "JPY", symbol: "¥", name: "엔화", rate: 920, baseUnit: 100 },
+  china: { code: "CNY", symbol: "CN¥", name: "위안화", rate: 190, baseUnit: 1 },
+  korea: { code: "KRW", symbol: "₩", name: "원화", rate: 1, baseUnit: 1 },
+};
+
+const ExchangeSummary = ({ exchange, estimatedExpense }) => {
+  const converted = estimatedExpense == null
+    ? null
+    : (estimatedExpense * exchange.baseUnit) / exchange.rate;
+  const formattedAmount = converted == null
+    ? `${exchange.symbol}${exchange.baseUnit.toLocaleString("ko-KR")} ≈ ₩${exchange.rate.toLocaleString("ko-KR")}`
+    : `${exchange.symbol}${converted.toLocaleString("ko-KR", {
+      minimumFractionDigits: exchange.code === "KRW" ? 0 : 2,
+      maximumFractionDigits: exchange.code === "KRW" ? 0 : 2,
+    })}`;
+
+  return (
+    <div className={styles.exchangeSummary}>
+      <div className={styles.exchangeCard}>
+        <span>예상 여행 경비 {exchange.name}</span>
+        <strong>{formattedAmount}</strong>
+        <p>최근 업데이트<small>{exchange.date || new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium" }).format(new Date())}</small></p>
+      </div>
+      <Link to={`/destination?currency=${exchange.code}`} className={styles.exchangeMore}>
+        환율 자세히 보기 <span aria-hidden="true">→</span>
+      </Link>
+    </div>
+  );
 };
 
 const Analysis = ({ onComplete }) => {
@@ -306,8 +354,42 @@ const Result = ({ result, onPlan }) => (
 
 const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
   const [primary, ...more] = recommendations;
+  const defaultExchange = exchangeByCountry[primary?.country] || exchangeByCountry.korea;
+  const [exchange, setExchange] = useState(defaultExchange);
+
+  useEffect(() => {
+    let active = true;
+
+    if (defaultExchange.code === "KRW") {
+      setExchange(defaultExchange);
+      return () => { active = false; };
+    }
+
+    getExchangeRates()
+      .then((rates) => {
+        const rate = rates.find((item) => item.code === defaultExchange.code);
+        if (active && rate) setExchange({ ...defaultExchange, ...rate });
+      })
+      .catch(() => {
+        if (active) setExchange(defaultExchange);
+      });
+
+    return () => { active = false; };
+  }, [defaultExchange.code]);
 
   if (!primary) return null;
+
+  const estimatedExpense = estimatedCostForTrip(primary);
+  const dayCount = primary.dayCount;
+  const expenseRows = [
+    ["교통", averageCost(primary.costs?.transportation) || 40000 + dayCount * 5000],
+    ["식비", averageCost(primary.costs?.food) || dayCount * 30000],
+    ["카페", dayCount * 10000],
+    ["관광 / 입장료", dayCount * 15000],
+    ["쇼핑", 50000],
+    ["기타", 15000],
+  ];
+  const quickAmounts = [1000, 5000, 10000];
 
   return (
     <section className={styles.matches}>
@@ -329,9 +411,49 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
           <h2>{primary.cityEnglish}</h2>
           <p className={styles.matchDescription}>{primary.place} · {primary.title}</p>
           <small>{primary.duration} · TRIP ROAD</small>
-          <button type="button" onClick={onItinerary}>여행 일정 보기 <span>→</span></button>
+          <button type="button" onClick={onItinerary}>경비 설정하기 <span>→</span></button>
         </div>
       </article>
+
+      <div className={styles.desktopExchange}>
+        <ExchangeSummary exchange={exchange} estimatedExpense={estimatedExpense} />
+      </div>
+
+      <section className={styles.expensePanel} aria-label="예상 여행 경비">
+        <p className={styles.expenseEyebrow}>ESTIMATED EXPENSE</p>
+        <p className={styles.expenseLabel}>예상 여행 경비</p>
+        <strong className={styles.expenseTotal}>{formatKRW(estimatedExpense)}</strong>
+        <p className={styles.expenseNotice}>
+          항공권 · 숙박비 제외
+        </p>
+
+        <ExchangeSummary exchange={exchange} estimatedExpense={estimatedExpense} />
+
+        <p className={styles.expenseEyebrow}>EXPENSE BREAKDOWN</p>
+        <div className={styles.expenseBreakdown}>
+          {expenseRows.map(([label, amount]) => (
+            <div key={label}>
+              <span>{label}</span>
+              <p>
+                <strong>₩{amount.toLocaleString("ko-KR")}</strong>
+                <small>≈ ₩{Math.round(amount * 1.08).toLocaleString("ko-KR")}</small>
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.quickExpense}>
+          <p className={styles.expenseEyebrow}>QUICK CONVERT</p>
+          <div>
+            {quickAmounts.map((amount) => (
+              <span key={amount}>
+                <b>{exchange.symbol}{amount / 1000}K</b>
+                ₩{Math.round((amount * exchange.rate) / exchange.baseUnit).toLocaleString("ko-KR")}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <aside className={styles.moreMatches}>
         <p className={styles.moreLabel}>MORE FOR YOU</p>
@@ -342,11 +464,16 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
               <p className={styles.matchPercent}><strong>{index === 0 ? 83 : 77}%</strong> <span>MATCH</span></p>
               <h2>{trip.cityEnglish}</h2>
               <p>{trip.place} · {trip.title}</p>
+              <p className={styles.moreExpense}>
+                예상 여행 경비 <strong>{formatKRW(estimatedCostForTrip(trip))}</strong>
+              </p>
               <button type="button" onClick={onItinerary}>여행 일정 보기 <span>→</span></button>
             </div>
           </article>
         ))}
       </aside>
+
+      <button type="button" className={styles.retryButton} onClick={onGame}>다시 테스트하기</button>
     </section>
   );
 };
@@ -432,6 +559,14 @@ const Balance = () => {
           <p>
             <strong>{String(questionIndex + 1).padStart(2, "0")}</strong> / 06
           </p>
+          <div className={styles.questionProgress} aria-hidden="true">
+            {questions.map((_, index) => (
+              <span
+                className={index <= questionIndex ? styles.questionProgressDone : ""}
+                key={index}
+              />
+            ))}
+          </div>
         </div>
 
         <h1 className={styles.question}>{question.title}</h1>

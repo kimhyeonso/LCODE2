@@ -89,7 +89,7 @@
 }
 
 @media (max-width: 600px) {
-  .buyPage { padding: 34px 0 90px; }
+  .buyPage { padding: 19px 0 90px; }
   .content { width: calc(100% - 40px); margin-inline: auto; }
   .back { margin: 0 25px 8px; font-size: 0; }
   .back span { font-size: 21px; }
@@ -97,8 +97,53 @@
     margin-top: -2rem;
     // border: 1px solid red;
   }
-  .eyebrow { margin-top: 0; }
+  .eyebrow { margin-top: 0; font-size: 9px; letter-spacing: .22em; }
   .eyebrow, .titleRow { margin-right: 25px; margin-left: 25px; }
   .titleRow { margin-top: 10px; }
+  .titleRow h1 { font-size: 40px; line-height: 1.08; }
+  .titleRow p { font-size: 11px; }
   .heroFrame, .heroFrame img { display: none; }
+}
+
+// PC: Itinerary와 동일한 페이지 여백, 헤더 비례와 편집 지면 장식을 사용합니다.
+@media (min-width: 901px) {
+  .buyPage { position: relative; padding: 60px 0; }
+  .back { height: 24px; margin-bottom: 8px; }
+  .eyebrow { margin-top: 0; font-size: .58rem; letter-spacing: .24em; }
+  .titleRow { width: 492px; max-width: 100%; margin-top: 18px; padding-bottom: 24px; }
+  .titleRow h1 { font-size: 3rem; line-height: 1.05; }
+  .titleRow p { margin-top: 25px; font-size: .66rem; }
+
+  .buyPage::before {
+    position: absolute;
+    top: 78px;
+    left: 30px;
+    width: 112px;
+    height: 700px;
+    border-right: 1px solid #d2ccc3;
+    color: #766e65;
+    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
+    font: 400 10px/1.7 "DM Serif Display", serif;
+    letter-spacing: .14em;
+    white-space: pre-wrap;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
+
+  .buyPage::after {
+    position: absolute;
+    bottom: 32px;
+    left: 20px;
+    width: 180px;
+    height: 220px;
+    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
+    content: "";
+    opacity: .35;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1450px) {
+  .buyPage::before,
+  .buyPage::after { display: none; }
 }
