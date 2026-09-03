@@ -2,12 +2,45 @@
 @use "../styles/mixins" as *;
 @use "../styles/event" as evt;
 
+$gold: #d9aa54;
+$goldLight: #f3ca73;
 $cream: #f8f1e6;
+
+$eventFont:
+  "Pretendard",
+  "SUIT",
+  "Noto Sans KR",
+  "Apple SD Gothic Neo",
+  "Malgun Gothic",
+  sans-serif;
+
+/* =========================================================
+   COMMON
+========================================================= */
 
 .scene {
   @include evt.scene;
-  width: min(1320px, calc(100% - 112px));
-  margin: 0 auto;
+
+  width: 100%;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  background: #000;
+
+  font-family: $eventFont;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+.scene button,
+.noticeButton,
+.noticePanel,
+.machineOverlay {
+  font-family: $eventFont;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .background {
@@ -16,375 +49,1450 @@ $cream: #f8f1e6;
 
 /* =========================================================
    INTRO
+   MOBILE FIRST
 ========================================================= */
 
 .intro {
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
-  justify-items: center;
-  justify-content: center;
-  padding: 102px 0 34px;
+  height: calc(100svh - 56px - 58px);
+  min-height: 0;
+
+  padding:
+    44px
+    14px
+    8px;
+
+  box-sizing: border-box;
 }
 
-.intro::before,
-.draw::before,
-.result::before {
+.intro::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 1;
+
   pointer-events: none;
-}
 
-.intro::before {
   background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.3) 45%, #000 94%);
+    radial-gradient(
+      ellipse at 50% 34%,
+      rgba(217, 170, 84, 0.13),
+      transparent 48%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.84) 0%,
+      rgba(0, 0, 0, 0.14) 39%,
+      rgba(0, 0, 0, 0.5) 69%,
+      #000 100%
+    );
 }
 
-.introCopy,
-.introGacha,
-.prizeArea,
-.primaryButton {
+.intro .background {
+  object-position: center center;
+}
+
+.introInner {
+  width: min(100%, 1240px);
+  height: 100%;
+
   position: relative;
   z-index: 2;
+
+  margin: 0 auto;
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+  justify-items: center;
+
+  gap: 4px;
 }
 
+/* =========================================================
+   TITLE
+========================================================= */
+
 .introCopy {
-  width: min(100%, 900px);
+  width: 100%;
+
+  display: grid;
+  justify-items: center;
+
   text-align: center;
 }
 
 .kicker {
-  width: min(100%, 680px);
-  min-height: 42px;
-  margin: 0 auto 20px;
+  width: min(100%, 305px);
+  min-height: 24px;
+
+  margin: 0 auto 5px;
+
   display: grid;
   place-items: center;
-  border-top: 1px solid rgba(248, 241, 230, 0.52);
-  border-bottom: 1px solid rgba(248, 241, 230, 0.52);
-  color: $cream;
-  font-size: clamp(15px, 1.2vw, 20px);
-  font-weight: 700;
+
+  border-top:
+    1px solid rgba(248, 241, 230, 0.44);
+
+  border-bottom:
+    1px solid rgba(248, 241, 230, 0.44);
+
+  color:
+    rgba(248, 241, 230, 0.91);
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: -0.01em;
 }
 
 .intro h1 {
-  margin: 0;
-  color: $cream;
-  font-size: clamp(56px, 4.8vw, 116px);
-  font-weight: 900;
-  line-height: 1.08;
-  text-align: center;
-  text-shadow: 0 4px 0 rgba(211, 151, 55, 0.6);
-}
-
-.description {
-  margin: 28px 0 0;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: clamp(19px, 1.4vw, 28px);
-  font-weight: 700;
-  line-height: 1.75;
-}
-
-.introGacha {
-  width: min(68vh, 60vw, 860px);
-  margin-top: 2vh;
-  align-self: center;
-  filter: drop-shadow(0 34px 44px rgba(0, 0, 0, 0.72));
-}
-
-.prizeArea {
-  width: min(100%, 980px);
-  margin-top: -1.5vh;
-}
-
-.prizeArea h2 {
-  margin: 0 0 14px;
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  color: $cream;
-  font-size: clamp(17px, 1.6vw, 24px);
-  font-weight: 900;
-}
-
-.prizeArea h2::before,
-.prizeArea h2::after {
-  content: "";
-  height: 1px;
-  flex: 1;
-  background: rgba(248, 241, 230, 0.7);
-}
-
-.prizeList {
-  display: grid;
-}
-
-.prizeList article {
-  min-height: clamp(76px, 9vh, 104px);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) clamp(120px, 12vw, 178px);
-  align-items: center;
-  gap: 28px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.prizeList span {
-  display: block;
-  margin-bottom: 10px;
-  color: rgba(255, 255, 255, 0.36);
-  font-size: clamp(13px, 1vw, 16px);
-}
-
-.prizeList strong {
-  color: $cream;
-  font-size: clamp(17px, 1.35vw, 22px);
-  font-weight: 900;
-}
-
-.prizeList img {
   width: 100%;
-  max-height: 82px;
-  justify-self: end;
-  object-fit: contain;
-}
+  margin: 0;
 
-.primaryButton,
-.secondaryButton {
-  width: min(100%, 980px);
-  min-height: clamp(56px, 6.2vh, 72px);
-  border: 0;
-  display: grid;
-  place-items: center;
-  background: $cream;
-  color: #15110c;
-  font-size: clamp(14px, 1.1vw, 18px);
+  color: $cream;
+
+  font-size:
+    clamp(23px, 6.8vw, 31px);
+
   font-weight: 800;
-  letter-spacing: 3px;
-  cursor: pointer;
-}
 
-.intro > .primaryButton {
-  margin-top: 22px;
+  line-height: 1.05;
+
+  letter-spacing: -0.045em;
+
+  white-space: nowrap;
+
+  text-align: center;
+
+  text-shadow:
+    0 2px 0 rgba(182, 122, 36, 0.5),
+    0 8px 22px rgba(0, 0, 0, 0.48);
 }
 
 /* =========================================================
-   DRAW
+   HERO
 ========================================================= */
 
-.draw {
+.introHero {
+  width: 100%;
+  min-height: 0;
+
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
+
+  grid-template-rows:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
   justify-items: center;
-  justify-content: center;
-  padding: 112px 0 36px;
+
+  gap: 1px;
 }
 
-.scene.draw {
-  /* keep the box tall enough that the bottom-anchored table photo never
-     zooms in so far that the tabletop scrolls out of frame on short,
-     wide desktop windows */
-  min-height: max(100vh, 820px);
-}
+.heroButton {
+  width: min(81vw, 300px);
+  max-height: 100%;
 
-.draw .background {
-  object-position: center bottom;
-}
-
-.draw::before {
-  background:
-    linear-gradient(180deg, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.04) 60%, rgba(0, 0, 0, 0.62));
-}
-
-.drawGuide,
-.drawGift,
-.drawMachine,
-.gachaButton {
   position: relative;
-  z-index: 2;
+
+  border: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  background: transparent;
+
+  cursor: pointer;
+
+  isolation: isolate;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
-.drawGuide {
+.heroGlow {
+  width: 83%;
+  aspect-ratio: 1.55 / 1;
+
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: -1;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      rgba(240, 187, 84, 0.26),
+      rgba(217, 170, 84, 0.08) 45%,
+      transparent 72%
+    );
+
+  opacity: 0.42;
+
+  filter: blur(15px);
+
+  transform:
+    translate(-50%, -50%);
+}
+
+.introMainPrize {
+  width: 100%;
+  height: auto;
+
+  display: block;
+
+  object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 18px 27px rgba(0, 0, 0, 0.64)
+    );
+
+  transition:
+    transform 0.28s ease,
+    filter 0.28s ease;
+}
+
+.heroButton:active
+.introMainPrize {
+  transform: scale(0.98);
+}
+
+.heroHint {
+  margin: -2px 0 0;
+
+  color:
+    rgba(248, 241, 230, 0.65);
+
+  font-size: 10px;
+  font-weight: 500;
+
+  line-height: 1.3;
+
+  letter-spacing: -0.01em;
+
+  text-align: center;
+
+  white-space: nowrap;
+}
+
+/* =========================================================
+   PRIZE PREVIEW
+
+   MOBILE = 2 x 2
+========================================================= */
+
+.prizeArea {
+  width: 100%;
+
+  align-self: end;
+}
+
+.sectionTitle {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 10px;
+
+  margin-bottom: 7px;
+}
+
+.sectionTitle span {
+  width: 100%;
+  height: 1px;
+
+  background:
+    rgba(248, 241, 230, 0.38);
+}
+
+.sectionTitle h2 {
   margin: 0;
+
   color: $cream;
-  font-size: clamp(20px, 2.2vh, 30px);
-  font-weight: 800;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: -0.025em;
+
+  white-space: nowrap;
+}
+
+.prizeList {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 7px;
+}
+
+.prizeCard {
+  min-width: 0;
+
+  height:
+    clamp(
+      112px,
+      15vh,
+      132px
+    );
+
+  position: relative;
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    minmax(0, 1fr)
+    auto;
+
+  padding:
+    8px
+    9px
+    10px;
+
+  box-sizing: border-box;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(248, 241, 230, 0.12);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(31, 27, 23, 0.76),
+      rgba(3, 3, 3, 0.84)
+    );
+}
+
+.prizeCard::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 50% 44%,
+      rgba(217, 170, 84, 0.13),
+      transparent 62%
+    );
+}
+
+.prizeTop,
+.prizeImageWrap,
+.prizeText {
+  position: relative;
+  z-index: 1;
+}
+
+.prizeTop {
+  width: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-start;
+}
+
+.prizeRank {
+  color:
+    rgba(248, 241, 230, 0.48);
+
+  font-size: 8px;
+  font-weight: 500;
+
+  line-height: 1;
+
+  letter-spacing: -0.02em;
+}
+
+/* 핵심:
+   이미지 영역 자체를 크게 확보 */
+.prizeImageWrap {
+  width: 100%;
+  min-height: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 1px 0 0;
+}
+
+/* 기존보다 확실히 크게 */
+.prizeImageWrap img {
+  width:
+    min(
+      100%,
+      155px
+    );
+
+  height:
+    min(
+      9vh,
+      76px
+    );
+
+  display: block;
+
+  object-fit: contain;
+
+  object-position: center;
+
+  transform: scale(1.12);
+
+  filter:
+    drop-shadow(
+      0 9px 13px rgba(0, 0, 0, 0.62)
+    );
+}
+
+.prizeText {
+  min-width: 0;
+
+  display: grid;
+
+  justify-items: center;
+
+  gap: 2px;
+
   text-align: center;
 }
 
-.drawGift {
-  width: min(24vh, 22vw, 260px);
-  position: absolute;
-  right: max(28px, 7vw);
-  bottom: max(82px, 8vh);
-  opacity: 0.72;
-  filter: drop-shadow(0 24px 32px rgba(0, 0, 0, 0.6));
+.prizeText strong {
+  width: 100%;
+
+  color: $cream;
+
+  font-size:
+    clamp(
+      10px,
+      2.85vw,
+      12px
+    );
+
+  font-weight: 700;
+
+  line-height: 1.2;
+
+  letter-spacing: -0.035em;
+
+  text-align: center;
+
+  word-break: keep-all;
+}
+
+.prizeText small {
+  width: 100%;
+
+  color:
+    rgba(248, 241, 230, 0.51);
+
+  font-size:
+    clamp(
+      7.5px,
+      2.15vw,
+      9px
+    );
+
+  font-weight: 400;
+
+  line-height: 1.25;
+
+  letter-spacing: -0.02em;
+
+  text-align: center;
+
+  word-break: keep-all;
+}
+
+/* =========================================================
+   MACHINE OVERLAY
+========================================================= */
+
+.machineOverlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 155;
+
+  display: grid;
+  place-items: center;
+
+  padding:
+    58px
+    14px
+    calc(66px + env(safe-area-inset-bottom));
+
+  box-sizing: border-box;
+
+  background:
+    rgba(0, 0, 0, 0);
+
+  opacity: 0;
+
+  visibility: hidden;
+
   pointer-events: none;
+
+  backdrop-filter: blur(0);
+
+  transition:
+    opacity 0.32s ease,
+    background 0.32s ease,
+    backdrop-filter 0.32s ease,
+    visibility 0s linear 0.34s;
+}
+
+.machineOverlayOpen {
+  opacity: 1;
+
+  visibility: visible;
+
+  pointer-events: auto;
+
+  background:
+    rgba(0, 0, 0, 0.72);
+
+  backdrop-filter:
+    blur(3px);
+
+  transition:
+    opacity 0.32s ease,
+    background 0.32s ease,
+    backdrop-filter 0.32s ease,
+    visibility 0s linear 0s;
+}
+
+.machineFloat {
+  width: min(95vw, 390px);
+  max-height: 100%;
+
+  position: relative;
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    minmax(0, 1fr)
+    auto
+    auto;
+
+  justify-items: center;
+
+  gap: 2px;
+
+  background: transparent;
+
+  border: 0;
+
+  box-shadow: none;
+
+  opacity: 0;
+
+  transform:
+    translateY(22px)
+    scale(0.92);
+
+  transition:
+    opacity 0.36s ease,
+    transform
+      0.46s
+      cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.machineOverlayOpen
+.machineFloat {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+.machineClose {
+  width: 34px;
+  height: 34px;
+
+  position: absolute;
+
+  top: -2px;
+  right: 1px;
+
+  z-index: 8;
+
+  border: 0;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  background:
+    rgba(0, 0, 0, 0.28);
+
+  color:
+    rgba(248, 241, 230, 0.8);
+
+  font-size: 28px;
+  font-weight: 200;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+.machineGuide {
+  margin: 0 0 1px;
+
+  color: $cream;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  letter-spacing: -0.025em;
+
+  text-align: center;
+
+  text-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.8);
 }
 
 .drawMachine {
-  width: min(82vh, 72vw, 860px);
-  align-self: end;
+  width:
+    min(
+      50vh,
+      88vw,
+      350px
+    );
+
+  min-height: 0;
+
+  position: relative;
+
   display: grid;
   place-items: center;
+
+  isolation: isolate;
+}
+
+.machineGlow {
+  width: 76%;
+  aspect-ratio: 1;
+
+  position: absolute;
+
+  top: 44%;
+  left: 50%;
+
+  z-index: -1;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(240, 190, 95, 0.35),
+      rgba(217, 170, 84, 0.08) 42%,
+      transparent 70%
+    );
+
+  filter: blur(16px);
+
+  transform:
+    translate(-50%, -50%);
+
+  animation:
+    machineGlow
+    2s ease-in-out
+    infinite alternate;
 }
 
 .drawMachine > img {
   width: 100%;
-  filter: drop-shadow(0 38px 46px rgba(0, 0, 0, 0.72));
+
+  position: relative;
+  z-index: 2;
+
+  display: block;
+
+  filter:
+    drop-shadow(
+      0 28px 38px rgba(0, 0, 0, 0.82)
+    );
 }
 
+@keyframes machineGlow {
+  from {
+    opacity: 0.46;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.92);
+  }
+
+  to {
+    opacity: 0.86;
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.07);
+  }
+}
+
+/* =========================================================
+   MACHINE BALLS
+========================================================= */
+
 .spinBalls {
-  width: 48%;
+  width: 47%;
   aspect-ratio: 1;
+
   position: absolute;
+
   top: 11%;
-  left: 26%;
+  left: 26.5%;
+
+  z-index: 3;
+
   opacity: 0;
-  transform-origin: 50% 50%;
+
+  transform-origin: center;
+
   pointer-events: none;
-  mix-blend-mode: screen;
+}
+
+.drawMachineActive {
+  animation:
+    machineShake
+    0.18s
+    linear
+    infinite alternate;
+}
+
+.drawMachineActive
+.spinBalls {
+  opacity: 1;
+
+  animation:
+    spinBalls
+    0.6s linear infinite;
 }
 
 .spinBalls i {
-  width: 23%;
+  width: 21%;
   aspect-ratio: 1;
+
   position: absolute;
+
   border-radius: 50%;
+
   background:
-    radial-gradient(circle at 30% 24%, rgba(255, 255, 255, 0.95) 0 12%, transparent 24%),
-    radial-gradient(circle at 58% 58%, #f3bb42 0 32%, #080808 68%);
-  box-shadow: 0 0 22px rgba(255, 197, 75, 0.55);
+    radial-gradient(
+      circle at 30% 25%,
+      #fff 0 10%,
+      transparent 23%
+    ),
+    radial-gradient(
+      circle at 58% 58%,
+      #f2bd4f 0 31%,
+      #15100a 69%
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(255, 194, 70, 0.55);
 }
 
-.spinBalls i:nth-child(1) { top: 7%; left: 18%; }
-.spinBalls i:nth-child(2) { top: 4%; left: 42%; }
-.spinBalls i:nth-child(3) { top: 10%; right: 15%; }
-.spinBalls i:nth-child(4) { top: 31%; left: 7%; }
-.spinBalls i:nth-child(5) { top: 30%; left: 34%; }
-.spinBalls i:nth-child(6) { top: 32%; right: 10%; }
-.spinBalls i:nth-child(7) { bottom: 28%; left: 13%; }
-.spinBalls i:nth-child(8) { bottom: 28%; left: 40%; }
-.spinBalls i:nth-child(9) { right: 16%; bottom: 25%; }
-.spinBalls i:nth-child(10) { bottom: 9%; left: 24%; }
-.spinBalls i:nth-child(11) { bottom: 8%; left: 48%; }
-.spinBalls i:nth-child(12) { right: 22%; bottom: 9%; }
+.spinBalls i:nth-child(1) {
+  top: 7%;
+  left: 18%;
+}
+
+.spinBalls i:nth-child(2) {
+  top: 4%;
+  left: 42%;
+}
+
+.spinBalls i:nth-child(3) {
+  top: 10%;
+  right: 15%;
+}
+
+.spinBalls i:nth-child(4) {
+  top: 31%;
+  left: 7%;
+}
+
+.spinBalls i:nth-child(5) {
+  top: 30%;
+  left: 34%;
+}
+
+.spinBalls i:nth-child(6) {
+  top: 32%;
+  right: 10%;
+}
+
+.spinBalls i:nth-child(7) {
+  bottom: 28%;
+  left: 13%;
+}
+
+.spinBalls i:nth-child(8) {
+  bottom: 28%;
+  left: 40%;
+}
+
+.spinBalls i:nth-child(9) {
+  right: 16%;
+  bottom: 25%;
+}
+
+.spinBalls i:nth-child(10) {
+  bottom: 9%;
+  left: 24%;
+}
+
+.spinBalls i:nth-child(11) {
+  bottom: 8%;
+  left: 48%;
+}
+
+.spinBalls i:nth-child(12) {
+  right: 22%;
+  bottom: 9%;
+}
+
+@keyframes machineShake {
+  from {
+    transform:
+      translateX(-2px)
+      rotate(-0.35deg);
+  }
+
+  to {
+    transform:
+      translateX(2px)
+      rotate(0.35deg);
+  }
+}
+
+@keyframes spinBalls {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   GACHA BUTTON
+========================================================= */
 
 .gachaButton {
-  width: clamp(148px, 18vh, 214px);
+  width:
+    clamp(
+      86px,
+      12vh,
+      105px
+    );
+
   aspect-ratio: 1;
-  margin-top: -8vh;
+
+  position: relative;
+
+  margin-top:
+    clamp(
+      -32px,
+      -3.8vh,
+      -20px
+    );
+
   border: 0;
+
   display: grid;
   place-items: center;
+
+  padding: 0;
+
   background: transparent;
+
   color: $cream;
-  font-size: clamp(22px, 3vh, 34px);
+
+  font-size: 15px;
   font-weight: 700;
-  line-height: 1.25;
-  text-align: center;
+
+  line-height: 1.16;
+
+  letter-spacing: -0.025em;
+
   cursor: pointer;
 }
 
 .gachaButton img {
   width: 100%;
+
   position: absolute;
   inset: 0;
+
   object-fit: contain;
+
+  filter:
+    drop-shadow(
+      0 12px 17px rgba(0, 0, 0, 0.65)
+    );
 }
 
 .gachaButton span {
   position: relative;
-  z-index: 1;
-  transform: translateY(-15%);
+  z-index: 2;
+
+  transform:
+    translateY(-8%);
 }
 
 .gachaButton:disabled {
+  opacity: 0.75;
+
   cursor: wait;
 }
 
-/* desktop: lift the machine + button cluster so it rests on the table
-   surface rather than hanging over the front edge (mobile is already fine) */
-@media (min-width: 901px) {
-  .draw {
-    padding-bottom: clamp(80px, 15vh, 170px);
-  }
+.drawError {
+  width: min(90vw, 330px);
 
-  .drawGuide {
-    transform: translateY(-58px);
-  }
+  margin: 1px 0 0;
 
-  .drawMachine {
-    transform: translateY(-54px);
-  }
-}
+  color: #f0cb78;
 
-/* =========================================================
-   CAPSULE / OPEN
-========================================================= */
+  font-size: 10px;
+  font-weight: 500;
 
-.capsuleScene {
-  display: grid;
-  place-items: center;
-  background: #000;
+  line-height: 1.45;
+
   text-align: center;
 }
 
-.capsuleScene {
+/* =========================================================
+   NOTICE BUTTON
+========================================================= */
+
+.noticeButton {
+  position: fixed;
+
+  right: 10px;
+
+  bottom:
+    calc(
+      64px +
+      env(safe-area-inset-bottom)
+    );
+
+  z-index: 120;
+
+  min-width: 76px;
+
+  border:
+    1px solid
+    rgba(217, 170, 84, 0.58);
+
+  padding:
+    7px
+    9px
+    6px;
+
+  display: grid;
+  place-items: center;
+
+  gap: 2px;
+
+  background:
+    rgba(7, 7, 7, 0.82);
+
+  color:
+    rgba(248, 241, 230, 0.8);
+
+  text-align: center;
+
+  backdrop-filter: blur(8px);
+
+  cursor: pointer;
+}
+
+.noticeButton span {
+  color: $gold;
+
+  font-size: 7px;
+  font-weight: 700;
+
+  letter-spacing: 0.2em;
+}
+
+.noticeButton b {
+  font-size: 9px;
+  font-weight: 500;
+
+  letter-spacing: -0.02em;
+}
+
+/* =========================================================
+   NOTICE OVERLAY
+========================================================= */
+
+.noticeOverlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 180;
+
+  display: flex;
+  align-items: flex-end;
+
+  background:
+    rgba(0, 0, 0, 0);
+
+  visibility: hidden;
+
+  pointer-events: none;
+
+  transition:
+    background 0.32s ease,
+    visibility 0s linear 0.34s;
+}
+
+.noticeOverlayOpen {
+  visibility: visible;
+
+  pointer-events: auto;
+
+  background:
+    rgba(0, 0, 0, 0.58);
+
+  transition:
+    background 0.32s ease,
+    visibility 0s linear 0s;
+}
+
+/* =========================================================
+   NOTICE MOBILE
+========================================================= */
+
+.noticePanel {
+  width: 100%;
+
+  max-height: min(75svh, 590px);
+
+  padding:
+    20px
+    18px
+    calc(
+      17px +
+      env(safe-area-inset-bottom)
+    );
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(25, 21, 16, 0.99),
+      rgba(6, 6, 6, 0.995)
+    );
+
+  border-top:
+    1px solid
+    rgba(217, 170, 84, 0.35);
+
+  color: $cream;
+
+  text-align: left;
+
+  transform:
+    translateY(105%);
+
+  box-shadow:
+    0 -26px 64px
+    rgba(0, 0, 0, 0.45);
+
+  transition:
+    transform
+    0.42s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    );
+}
+
+.noticeOverlayOpen
+.noticePanel {
+  transform: translateY(0);
+}
+
+.noticePanel header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  padding-bottom: 13px;
+
+  border-bottom:
+    1px solid
+    rgba(248, 241, 230, 0.13);
+}
+
+.noticePanel small {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: $gold;
+
+  font-size: 8px;
+  font-weight: 600;
+
+  letter-spacing: 0.18em;
+}
+
+.noticePanel h2 {
+  margin: 0;
+
+  color: $cream;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  line-height: 1.15;
+
+  letter-spacing: -0.04em;
+
+  text-align: left;
+}
+
+.noticePanel header > button {
+  width: 32px;
+  height: 32px;
+
   border: 0;
-  grid-template-rows: auto auto auto;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
+
+  background: transparent;
+
+  color: $cream;
+
+  font-size: 28px;
+  font-weight: 200;
+
+  cursor: pointer;
+}
+
+.noticeList {
+  margin: 0;
+
+  padding: 14px 0 4px;
+
+  list-style: none;
+
+  display: grid;
+
+  gap: 7px;
+
+  overflow-y: auto;
+
+  text-align: left;
+
+  overscroll-behavior: contain;
+}
+
+.noticeList li {
+  position: relative;
+
+  padding-left: 10px;
+
+  color:
+    rgba(248, 241, 230, 0.68);
+
+  font-size: 10px;
+  font-weight: 400;
+
+  line-height: 1.55;
+
+  letter-spacing: -0.02em;
+
+  text-align: left;
+
+  word-break: keep-all;
+}
+
+.noticeList li::before {
+  content: "";
+
+  width: 3px;
+  height: 3px;
+
+  position: absolute;
+
+  top: 0.68em;
+  left: 0;
+
+  border-radius: 50%;
+
+  background:
+    rgba(217, 170, 84, 0.8);
+}
+
+.noticeConfirm {
+  width: 100%;
+
+  min-height: 43px;
+
+  flex: 0 0 auto;
+
+  margin-top: 12px;
+
+  border:
+    1px solid $gold;
+
+  background: $gold;
+
+  color: #17120b;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: -0.015em;
+
+  cursor: pointer;
+}
+
+/* =========================================================
+   CAPSULE
+========================================================= */
+
+.capsuleScene {
+  height:
+    calc(
+      100svh -
+      56px -
+      58px
+    );
+
+  min-height: 0;
+
+  border: 0;
+
+  display: grid;
+
+  grid-template-rows:
+    auto
+    auto
+    auto;
+
   align-content: center;
-  gap: clamp(24px, 3.6vh, 46px);
+  justify-items: center;
+
+  gap: 18px;
+
+  padding:
+    20px
+    18px
+    7px;
+
   color: #fff;
-  font: inherit;
-  padding: 80px 28px;
+
+  text-align: center;
+
   cursor: pointer;
 }
 
 .capsuleScene h2 {
   margin: 0;
-  color: #fff;
-  font-size: clamp(44px, 6.5vh, 82px);
-  font-weight: 900;
+
+  font-size:
+    clamp(
+      31px,
+      9vw,
+      46px
+    );
+
+  font-weight: 800;
+
+  letter-spacing: -0.05em;
 }
 
 .closedCapsule {
-  width: min(46vh, 50vw, 560px);
-  filter: drop-shadow(0 0 44px rgba(222, 180, 103, 0.34));
+  width:
+    min(
+      40vh,
+      80vw,
+      320px
+    );
+
+  filter:
+    drop-shadow(
+      0 0 32px
+      rgba(222, 180, 103, 0.34)
+    );
+
+  animation:
+    capsuleFloat
+    1.8s ease-in-out
+    infinite alternate;
 }
 
 .touchGuide {
   display: grid;
   justify-items: center;
-  gap: 14px;
-  transform: translateY(-0.8vh);
+
+  gap: 5px;
 }
 
 .touchGuide img {
-  width: clamp(72px, 9vh, 108px);
-  opacity: 0.76;
+  width: 55px;
+
+  opacity: 0.74;
 }
 
 .touchGuide p {
   margin: 0;
-  color: $cream;
-  font-size: clamp(17px, 2vh, 25px);
-  line-height: 1.7;
+
+  color:
+    rgba(248, 241, 230, 0.72);
+
+  font-size: 11px;
+  font-weight: 400;
+
+  line-height: 1.5;
+
+  letter-spacing: -0.02em;
 }
+
+@keyframes capsuleFloat {
+  from {
+    transform: translateY(2px);
+  }
+
+  to {
+    transform: translateY(-7px);
+  }
+}
+
+/* =========================================================
+   OPEN
+========================================================= */
 
 .openScene {
-  border: 0;
+  height:
+    calc(
+      100svh -
+      56px -
+      58px
+    );
+
+  min-height: 0;
+
   display: grid;
   place-items: center;
-  justify-content: center;
-  background: #000;
-  cursor: pointer;
 }
 
-.openScene img:not(.background) {
-  width: min(86vh, 78vw, 960px);
+.openScene::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(255, 207, 93, 0.28),
+      transparent 43%
+    ),
+    rgba(0, 0, 0, 0.22);
+}
+
+.openCapsule {
+  width:
+    min(
+      70vh,
+      90vw,
+      470px
+    );
+
   position: relative;
   z-index: 2;
-  filter: drop-shadow(0 0 52px rgba(255, 205, 80, 0.64));
+
+  filter:
+    drop-shadow(
+      0 0 40px
+      rgba(255, 205, 80, 0.66)
+    );
+
+  animation:
+    openCapsule
+    0.8s
+    cubic-bezier(
+      0.22,
+      1,
+      0.36,
+      1
+    )
+    both;
+}
+
+@keyframes openCapsule {
+  from {
+    opacity: 0;
+
+    transform: scale(0.7);
+
+    filter:
+      brightness(2)
+      drop-shadow(
+        0 0 80px
+        rgba(255, 218, 124, 1)
+      );
+  }
+
+  to {
+    opacity: 1;
+
+    transform: scale(1);
+  }
 }
 
 /* =========================================================
@@ -392,18 +1500,50 @@ $cream: #f8f1e6;
 ========================================================= */
 
 .result {
+  height:
+    calc(
+      100svh -
+      56px -
+      58px
+    );
+
+  min-height: 0;
+
   display: grid;
-  grid-template-rows: auto auto auto minmax(0, 1fr) auto auto;
+
+  align-content: center;
   justify-items: center;
-  justify-content: center;
-  padding: 88px 0 36px;
+
+  padding:
+    14px
+    14px
+    7px;
+
   text-align: center;
 }
 
 .result::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  z-index: 1;
+
+  pointer-events: none;
+
   background:
-    radial-gradient(circle at 50% 48%, rgba(205, 150, 50, 0.18), transparent 38%),
-    linear-gradient(180deg, rgba(0, 0, 0, 0.76) 0%, rgba(0, 0, 0, 0.14) 48%, #000 91%);
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(205, 150, 50, 0.18),
+      transparent 40%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.12) 48%,
+      #000 96%
+    );
 }
 
 .ribbonWrap,
@@ -417,92 +1557,181 @@ $cream: #f8f1e6;
 }
 
 .ribbonWrap {
-  width: min(42vh, 54vw, 560px);
+  width:
+    min(
+      65vw,
+      250px
+    );
+
   position: relative;
-  margin-bottom: 8px;
 }
 
 .ribbon {
   width: 100%;
+
+  display: block;
 }
 
 .ribbonWrap span {
   position: absolute;
+
   top: 30%;
   left: 50%;
+
   color: #1a1207;
-  font-size: clamp(17px, 2.3vh, 26px);
-  font-weight: 800;
-  line-height: 1;
-  letter-spacing: 0.18em;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+
   white-space: nowrap;
-  transform: translate(-50%, -50%);
+
+  transform:
+    translate(-50%, -50%);
 }
 
 .result h2 {
   margin: 0;
+
   color: $cream;
-  font-size: clamp(64px, 9vh, 112px);
+
+  font-size:
+    clamp(
+      39px,
+      11vw,
+      54px
+    );
+
   font-weight: 500;
+
   line-height: 1;
+
+  letter-spacing: -0.05em;
 }
 
 .resultText {
-  margin: 18px 0 0;
+  margin: 7px 0 4px;
+
   color: $cream;
-  font-size: clamp(19px, 2vh, 28px);
+
+  font-size: 11px;
+  font-weight: 500;
+
+  letter-spacing: -0.02em;
 }
 
 .resultPrize {
-  width: min(74vh, 74vw, 860px);
-  align-self: center;
+  width:
+    min(
+      43vh,
+      88vw,
+      360px
+    );
+
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
-  align-items: center;
-  gap: clamp(4px, 1.2vw, 18px);
-}
 
-.resultSingle {
-  width: min(48vh, 56vw, 560px);
   grid-template-columns: 1fr;
-}
 
-.resultSingle .resultCoupon {
-  transform: none;
+  justify-items: center;
 }
 
 .resultCoupon {
-  width: 100%;
-  transform: translateX(6%);
-  filter: drop-shadow(0 0 48px rgba(219, 158, 54, 0.48));
+  width: 82%;
+
+  filter:
+    drop-shadow(
+      0 0 28px
+      rgba(219, 158, 54, 0.44)
+    );
 }
 
 .resultKit {
-  width: 94%;
-  transform: translateX(-9%);
-  filter: drop-shadow(0 0 38px rgba(219, 158, 54, 0.34));
+  width: 54%;
+
+  margin-top: -18%;
+
+  transform:
+    translateX(16%);
+
+  filter:
+    drop-shadow(
+      0 0 24px
+      rgba(219, 158, 54, 0.33)
+    );
 }
 
-.resultNote {
-  margin: 0 0 24px;
-  color: rgba(255, 255, 255, 0.56);
-  font-size: clamp(14px, 1.4vw, 19px);
+.resultSingle {
+  width:
+    min(
+      37vh,
+      79vw,
+      300px
+    );
 }
 
-.resultActions {
-  width: min(100%, 760px);
-  display: grid;
-  gap: 14px;
-}
-
-.resultActions .primaryButton,
-.secondaryButton {
+.resultSingle
+.resultCoupon {
   width: 100%;
 }
 
+.resultNote {
+  margin: 3px 0 8px;
+
+  color:
+    rgba(255, 255, 255, 0.5);
+
+  font-size: 9px;
+
+  letter-spacing: -0.02em;
+}
+
+.resultActions {
+  width:
+    min(
+      100%,
+      330px
+    );
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 5px;
+}
+
+.primaryButton,
 .secondaryButton {
-  border: 1px solid rgba(255, 255, 255, 0.34);
-  background: transparent;
+  min-height: 40px;
+
+  border: 0;
+
+  padding: 0 8px;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  letter-spacing: -0.01em;
+
+  cursor: pointer;
+}
+
+.primaryButton {
+  background: $cream;
+
+  color: #17120c;
+}
+
+.secondaryButton {
+  border:
+    1px solid
+    rgba(248, 241, 230, 0.3);
+
+  background:
+    rgba(0, 0, 0, 0.3);
+
   color: $cream;
 }
 
@@ -510,147 +1739,854 @@ $cream: #f8f1e6;
    TABLET
 ========================================================= */
 
-@include tablet {
-  .scene {
-    width: 100%;
-    margin: 0;
+@media (min-width: 601px) {
+  .intro {
+    height:
+      calc(
+        100svh -
+        56px
+      );
+
+    padding:
+      50px
+      24px
+      10px;
   }
 
-  .intro {
-    padding: 76px 18px 24px;
+  .kicker {
+    width: 460px;
+
+    min-height: 28px;
+
+    font-size: 11px;
   }
 
   .intro h1 {
-    font-size: clamp(46px, 7vh, 70px);
+    font-size:
+      clamp(
+        32px,
+        5vw,
+        44px
+      );
   }
 
-  .introGacha {
-    width: min(58vh, 96vw, 580px);
+  .heroButton {
+    width:
+      min(
+        60vw,
+        455px
+      );
   }
 
-  .draw {
-    padding: 76px 18px 24px;
+  .prizeArea {
+    width:
+      min(
+        100%,
+        800px
+      );
   }
 
-  .scene.draw {
-    min-height: calc(100vh - 56px);
+  .prizeCard {
+    height:
+      clamp(
+        125px,
+        16vh,
+        145px
+      );
+  }
+
+  .prizeImageWrap img {
+    width:
+      min(
+        100%,
+        190px
+      );
+
+    height:
+      min(
+        10vh,
+        90px
+      );
+
+    transform: scale(1.12);
+  }
+
+  .prizeText strong {
+    font-size: 12px;
+  }
+
+  .prizeText small {
+    font-size: 9px;
+  }
+
+  .machineFloat {
+    width:
+      min(
+        80vw,
+        500px
+      );
   }
 
   .drawMachine {
-    width: min(68vh, 92vw, 680px);
+    width:
+      min(
+        54vh,
+        61vw,
+        460px
+      );
   }
 
-  .drawGift {
-    right: 12px;
-    bottom: 78px;
-    width: min(18vh, 150px);
-    opacity: 0.48;
-  }
-
+  .capsuleScene,
+  .openScene,
   .result {
-    padding: 72px 18px 24px;
+    height:
+      calc(
+        100svh -
+        56px
+      );
   }
 }
 
 /* =========================================================
-   MOBILE
+   DESKTOP
 ========================================================= */
 
-@include mobile {
+@media (min-width: 901px) {
   .intro {
-    padding-inline: 16px;
+    height: 100svh;
+
+    padding:
+      clamp(
+        58px,
+        6.2vh,
+        68px
+      )
+      48px
+      12px;
+  }
+
+  .introInner {
+    width:
+      min(
+        100%,
+        1260px
+      );
+
+    margin-inline: auto;
   }
 
   .kicker {
-    min-height: 36px;
-    margin-bottom: 16px;
+    width:
+      min(
+        100%,
+        620px
+      );
+
+    min-height:
+      clamp(
+        28px,
+        3.2vh,
+        34px
+      );
+
+    margin-bottom: 5px;
+
+    font-size:
+      clamp(
+        11px,
+        0.9vw,
+        14px
+      );
   }
 
   .intro h1 {
-    width: fit-content;
-    max-width: 100%;
-    margin-inline: auto;
-    font-size: clamp(34px, 5.2vh, 46px);
-    transform: translateX(10px);
-    text-wrap: balance;
+    font-size:
+      clamp(
+        40px,
+        4vw,
+        58px
+      );
+
+    letter-spacing: -0.045em;
   }
 
-  .description {
-    margin-top: 18px;
-    font-size: 16px;
+  .heroButton {
+    width:
+      min(
+        48vw,
+        53vh,
+        620px
+      );
   }
 
-  .introGacha {
-    width: min(54vh, 90vw);
-    margin-top: 1.5vh;
+  .heroButton:hover
+  .introMainPrize {
+    transform:
+      translateY(-4px)
+      scale(1.015);
+
+    filter:
+      brightness(1.04)
+      drop-shadow(
+        0 26px 34px
+        rgba(0, 0, 0, 0.68)
+      );
   }
 
-  .prizeList article {
-    grid-template-columns: minmax(0, 1fr) 104px;
-    gap: 14px;
-    min-height: 72px;
+  .heroHint {
+    font-size: 11px;
   }
 
-  .prizeList strong {
+  /* =========================
+     PRIZE PC
+  ========================= */
+
+  .prizeArea {
+    width:
+      min(
+        100%,
+        1220px
+      );
+  }
+
+  .sectionTitle {
+    gap: 16px;
+
+    margin-bottom: 10px;
+  }
+
+  .sectionTitle h2 {
     font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: -0.025em;
   }
 
-  .prizeList img {
-    max-height: 58px;
+  .prizeList {
+    grid-template-columns:
+      repeat(
+        4,
+        minmax(0, 1fr)
+      );
+
+    gap: 9px;
   }
 
-  .drawGuide {
-    font-size: 16px;
+  .prizeCard {
+    height:
+      clamp(
+        145px,
+        17vh,
+        172px
+      );
+
+    padding:
+      11px
+      14px
+      13px;
+
+    transition:
+      transform 0.22s ease,
+      border-color 0.22s ease,
+      background 0.22s ease;
+  }
+
+  .prizeCard:hover {
+    transform:
+      translateY(-3px);
+
+    border-color:
+      rgba(217, 170, 84, 0.4);
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(39, 33, 25, 0.81),
+        rgba(5, 5, 5, 0.88)
+      );
+  }
+
+  .prizeRank {
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  /*
+     핵심 수정.
+     PC 경품 이미지를 다시 크게.
+  */
+  .prizeImageWrap {
+    padding-top: 0;
+  }
+
+  .prizeImageWrap img {
+    width:
+      min(
+        94%,
+        235px
+      );
+
+    height:
+      clamp(
+        88px,
+        10.7vh,
+        112px
+      );
+
+    max-height: none;
+
+    transform:
+      scale(1.13);
+
+    transform-origin: center;
+  }
+
+  .prizeText {
+    gap: 3px;
+  }
+
+  .prizeText strong {
+    font-size:
+      clamp(
+        13px,
+        1vw,
+        16px
+      );
+
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.035em;
+  }
+
+  .prizeText small {
+    font-size:
+      clamp(
+        9px,
+        0.72vw,
+        11px
+      );
+
+    font-weight: 400;
+
+    line-height: 1.3;
+
+    letter-spacing: -0.015em;
+  }
+
+  /* =========================
+     MACHINE FLOAT PC
+  ========================= */
+
+  .machineOverlay {
+    padding:
+      40px
+      40px;
+  }
+
+  .machineFloat {
+    width:
+      min(
+        62vw,
+        620px
+      );
+  }
+
+  .machineGuide {
+    font-size:
+      clamp(
+        17px,
+        1.5vw,
+        22px
+      );
+
+    font-weight: 700;
   }
 
   .drawMachine {
-    width: min(62vh, 90vw);
-  }
-
-  .drawGift {
-    display: none;
+    width:
+      min(
+        61vh,
+        52vw,
+        620px
+      );
   }
 
   .gachaButton {
-    margin-top: -3vh;
+    width:
+      clamp(
+        112px,
+        13vh,
+        145px
+      );
+
+    margin-top:
+      clamp(
+        -43px,
+        -4.7vh,
+        -28px
+      );
+
+    font-size:
+      clamp(
+        18px,
+        2.1vh,
+        23px
+      );
+  }
+
+  .machineClose {
+    top: 6px;
+    right: 8px;
+
+    font-size: 32px;
+  }
+
+  /* =========================
+     NOTICE PC
+  ========================= */
+
+  .noticeButton {
+    right:
+      clamp(
+        16px,
+        1.7vw,
+        26px
+      );
+
+    bottom:
+      clamp(
+        16px,
+        2vh,
+        24px
+      );
+
+    min-width: 92px;
+
+    padding:
+      8px
+      12px
+      7px;
+  }
+
+  .noticeButton span {
+    font-size: 8px;
+  }
+
+  .noticeButton b {
+    font-size: 11px;
+  }
+
+  .noticeButton:hover {
+    border-color: $gold;
+
+    background:
+      rgba(18, 13, 8, 0.93);
+
+    transform:
+      translateY(-2px);
+  }
+
+  .noticeOverlay {
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+
+  .noticePanel {
+    width:
+      min(
+        580px,
+        94vw
+      );
+
+    height: 100%;
+    max-height: none;
+
+    padding:
+      30px
+      32px
+      25px;
+
+    border-top: 0;
+
+    border-left:
+      1px solid
+      rgba(217, 170, 84, 0.34);
+
+    box-shadow:
+      -28px 0 70px
+      rgba(0, 0, 0, 0.4);
+
+    transform:
+      translateX(105%);
+
+    text-align: left;
+  }
+
+  .noticeOverlayOpen
+  .noticePanel {
+    transform:
+      translateX(0);
+  }
+
+  .noticePanel header {
+    padding-bottom: 18px;
+  }
+
+  .noticePanel small {
+    font-size: 8px;
+  }
+
+  .noticePanel h2 {
+    font-size: 27px;
+  }
+
+  .noticeList {
+    /*
+      패널 안의 글씨가
+      오른쪽에 몰려 보이지 않도록
+      1열로 정리.
+    */
+
+    grid-template-columns: 1fr;
+
+    gap: 9px;
+
+    padding-top: 19px;
+
+    align-content: start;
+
+    overflow-y: auto;
+  }
+
+  .noticeList li {
+    width: 100%;
+
+    padding-right: 8px;
+
+    box-sizing: border-box;
+
+    font-size: 11px;
+
+    line-height: 1.55;
+
+    text-align: left;
+  }
+
+  .noticeConfirm {
+    min-height: 46px;
+
+    margin-top: 18px;
+
+    font-size: 12px;
+  }
+
+  /* =========================
+     RESULT PC
+  ========================= */
+
+  .capsuleScene,
+  .openScene,
+  .result {
+    height: 100svh;
+  }
+
+  .capsuleScene {
+    gap:
+      clamp(
+        20px,
+        3vh,
+        34px
+      );
+
+    padding: 40px;
+  }
+
+  .capsuleScene h2 {
+    font-size:
+      clamp(
+        48px,
+        5.7vw,
+        78px
+      );
   }
 
   .closedCapsule {
-    width: min(42vh, 86vw);
+    width:
+      min(
+        42vh,
+        44vw,
+        520px
+      );
   }
 
-  .openScene img:not(.background) {
-    width: min(78vh, 90vw);
+  .touchGuide img {
+    width: 80px;
+  }
+
+  .touchGuide p {
+    font-size: 16px;
+  }
+
+  .openCapsule {
+    width:
+      min(
+        75vh,
+        72vw,
+        850px
+      );
+  }
+
+  .result {
+    padding:
+      55px
+      36px
+      18px;
   }
 
   .ribbonWrap {
-    width: min(34vh, 82vw);
+    width:
+      min(
+        35vh,
+        470px
+      );
+  }
+
+  .ribbonWrap span {
+    font-size: 18px;
   }
 
   .result h2 {
-    font-size: clamp(46px, 7vh, 76px);
+    font-size:
+      clamp(
+        61px,
+        7vw,
+        96px
+      );
+  }
+
+  .resultText {
+    font-size:
+      clamp(
+        16px,
+        1.5vw,
+        22px
+      );
   }
 
   .resultPrize {
-    width: min(48vh, 94vw);
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
+    width:
+      min(
+        60vh,
+        64vw,
+        730px
+      );
 
-  .resultSingle {
-    width: min(40vh, 82vw);
+    grid-template-columns:
+      1.05fr
+      0.95fr;
+
+    align-items: center;
   }
 
   .resultCoupon {
-    width: 86%;
-    transform: translate(0, 4%);
-    justify-self: center;
+    width: 100%;
+
+    transform:
+      translateX(5%);
   }
 
   .resultKit {
-    width: 56%;
-    margin-top: -18%;
-    transform: translateX(18%);
-    justify-self: center;
+    width: 90%;
+
+    margin-top: 0;
+
+    transform:
+      translateX(-8%);
+  }
+
+  .resultSingle {
+    width:
+      min(
+        43vh,
+        50vw,
+        500px
+      );
+
+    grid-template-columns: 1fr;
+  }
+
+  .resultSingle
+  .resultCoupon {
+    transform: none;
+  }
+
+  .resultNote {
+    font-size: 12px;
+  }
+
+  .resultActions {
+    width:
+      min(
+        100%,
+        680px
+      );
+  }
+
+  .primaryButton,
+  .secondaryButton {
+    min-height: 50px;
+
+    font-size: 12px;
+  }
+}
+
+/* =========================================================
+   LARGE DESKTOP
+
+   화면이 넓을수록 경품 비주얼을 더 살림
+========================================================= */
+
+@media (min-width: 1400px) {
+  .prizeCard {
+    height:
+      clamp(
+        155px,
+        17.5vh,
+        180px
+      );
+  }
+
+  .prizeImageWrap img {
+    width:
+      min(
+        94%,
+        255px
+      );
+
+    height:
+      clamp(
+        96px,
+        11vh,
+        120px
+      );
+  }
+
+  .prizeText strong {
+    font-size:
+      clamp(
+        14px,
+        0.95vw,
+        17px
+      );
+  }
+
+  .prizeText small {
+    font-size:
+      clamp(
+        10px,
+        0.68vw,
+        12px
+      );
+  }
+}
+
+/* =========================================================
+   SHORT MOBILE
+
+   2 x 2 구조는 절대 버리지 않음
+========================================================= */
+
+@media
+  (max-width: 600px)
+  and (max-height: 700px) {
+
+  .intro {
+    padding-top: 41px;
+  }
+
+  .kicker {
+    min-height: 21px;
+
+    margin-bottom: 3px;
+  }
+
+  .intro h1 {
+    font-size:
+      clamp(
+        20px,
+        6vw,
+        25px
+      );
+  }
+
+  .heroButton {
+    width:
+      min(
+        66vw,
+        225px
+      );
+  }
+
+  .prizeCard {
+    height:
+      clamp(
+        94px,
+        14vh,
+        105px
+      );
+  }
+
+  .prizeImageWrap img {
+    width:
+      min(
+        100%,
+        140px
+      );
+
+    height:
+      min(
+        8vh,
+        58px
+      );
+
+    transform: scale(1.12);
+  }
+
+  .prizeText strong {
+    font-size: 9px;
+  }
+
+  .prizeText small {
+    font-size: 7px;
+  }
+
+  .heroHint {
+    font-size: 8px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .machineOverlay,
+  .machineFloat,
+  .drawMachine,
+  .spinBalls,
+  .closedCapsule,
+  .openCapsule,
+  .noticePanel,
+  .introMainPrize {
+    animation-duration:
+      0.01ms !important;
+
+    animation-iteration-count:
+      1 !important;
+
+    transition-duration:
+      0.01ms !important;
   }
 }
