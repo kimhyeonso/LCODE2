@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import Plan from "./pages/Plan";
+import ExpenseSettings from "./pages/ExpenseSettings";
 import TravelPlanner from "./pages/TravelPlanner";
 import Plans from "./pages/Plans";
 import Event from "./pages/Event";
@@ -101,6 +102,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
+          <Route path="/plan/expense" element={<ExpenseSettings />} />
           <Route path="/search" element={<Search />} />
           <Route path="/destination" element={<ExchangeRate />} />
           <Route path="/desrination" element={<DesrinationAll />} />
@@ -178,7 +180,7 @@ export default function App() {
         </Routes>
       </div>
       {!isImmersivePage && <Footer />}
-      <BottomNav />
+      {!isImmersivePage && <BottomNav />}
     </div>
   );
 }

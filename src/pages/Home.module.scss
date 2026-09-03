@@ -17,8 +17,8 @@ $space-4: 32px;
 $space-5: 48px;
 $space-6: 64px;
 
-$type-caption: 11px;
-$type-small: 12px;
+$type-caption: 13px;
+$type-small: 13px;
 $type-body: 14px;
 $type-section: 32px;
 $type-display: 36px;
@@ -219,7 +219,7 @@ $type-display: 36px;
 
 .upcomingEmpty > span {
   color: $home-muted;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -308,12 +308,13 @@ $type-display: 36px;
 
 .tripMeta dt {
   color: $home-muted;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 1.2px;
 }
 
 .tripMeta dd {
   margin: 6px 0 0;
+  font-family: "DM Serif Display", serif;
   font-size: $type-caption;
   line-height: 1.55;
 }
@@ -357,7 +358,7 @@ $type-display: 36px;
 
 .exchangeCard > div span {
   color: $home-muted;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 1.2px;
 }
 
@@ -371,7 +372,7 @@ $type-display: 36px;
   padding-top: 9px;
   border-top: 1px solid rgba($home-ink, 0.12);
   color: $home-muted;
-  font-size: 10px;
+  font-size: 13px;
 }
 
 /* ========================================
@@ -527,7 +528,7 @@ $type-display: 36px;
 }
 
 .destinationList span {
-  font-size: 10px;
+  font-size: 13px;
   color: $home-sage;
   letter-spacing: 1.5px;
 }
@@ -632,7 +633,7 @@ $type-display: 36px;
   background: rgba(65, 65, 62, 0.76);
   color: #fff;
 
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1;
 }
@@ -847,7 +848,7 @@ $type-display: 36px;
     min-height: 27px;
     padding: 0 11px;
 
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .productWish {
@@ -881,7 +882,7 @@ $type-display: 36px;
   */
   .productCategory {
     margin-bottom: 11px;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   /*
@@ -941,7 +942,7 @@ $type-display: 36px;
 
   color: $home-muted;
 
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 
@@ -1086,7 +1087,7 @@ $type-display: 36px;
   }
 
   .sectionLabel {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .section > h1 {
@@ -1103,7 +1104,7 @@ $type-display: 36px;
 
   .rowTitle div > p,
   .textLink {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .upcomingMain strong {
@@ -1124,7 +1125,7 @@ $type-display: 36px;
   }
 
   .tripMeta dt {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .pickGrid h3 {
@@ -1132,7 +1133,7 @@ $type-display: 36px;
   }
 
   .pickGrid p {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .featurePick h3 {
@@ -1148,7 +1149,7 @@ $type-display: 36px;
   }
 
   .destinationList span {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .destinationList h3 {
@@ -1160,7 +1161,7 @@ $type-display: 36px;
   }
 
   .journalMeta {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .journal article > h3 {
@@ -1172,7 +1173,7 @@ $type-display: 36px;
   }
 
   .journal article > footer {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .section > h1.matchTitle,

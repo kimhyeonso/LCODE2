@@ -8,7 +8,7 @@
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 100px; align-items: end; }
 .heading { position: relative; }
 .heading::after { position: absolute; top: 60px; right: -45px; width: 220px; height: 112px; background: url("/Mypage-img/u.png") center/contain no-repeat; content: ""; opacity: .38; }
-.eyebrow { margin: 0; color: #9b958d; font: 400 12px $korean; letter-spacing: .13em; }
+.eyebrow { margin: 0; color: #9b958d; font: 400 13px $korean; letter-spacing: .13em; }
 .heading h1 { position: relative; z-index: 1; margin: 17px 0 0; font: 400 clamp(56px, 5vw, 78px)/1 $display; letter-spacing: -.035em; }
 .description { margin: 20px 0 0; color: #918b83; font: 400 14px $korean; }
 .divider { position: relative; width: 82%; height: 1px; margin-top: 34px; background: #d5d0c8; }
@@ -16,7 +16,7 @@
 .postcard { position: relative; border: 1px solid #cfc8bf; padding: 10px 10px 28px; background: #f8f5ef; transform: rotate(.5deg); }
 .postcard::before { position: absolute; z-index: 1; top: -24px; left: 100px; width: 86px; height: 32px; background: rgb(222 215 201 / 72%); content: ""; transform: rotate(-7deg); }
 .postcard img { display: block; width: 100%; height: 200px; object-fit: cover; }
-.postcard span { position: absolute; right: 10px; bottom: 8px; color: #8d867d; font: 400 11px $korean; }
+.postcard span { position: absolute; right: 10px; bottom: 8px; color: #8d867d; font: 400 13px $korean; }
 .panels { display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(390px, 1fr); gap: 38px; margin-top: 30px; }
 .checklist, .tips { min-height: 510px; border: 1px solid #d2ccc3; padding: 28px 30px; background: rgb(248 245 239 / 45%); }
 .checklist > h2 { display: flex; align-items: center; gap: 14px; margin: 0 0 30px; font: 600 25px $korean; }
