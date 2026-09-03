@@ -170,6 +170,9 @@ export default function Home() {
   const dDay = startDate
     ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
     : null;
+  const remixPreviewPath = upcomingPlan?.id
+    ? `/ai-remix?plan=${encodeURIComponent(upcomingPlan.id)}`
+    : "/ai-remix?city=SEOUL";
 
   return (
     <main ref={page} className={styles.home}>
@@ -270,7 +273,7 @@ export default function Home() {
         <SectionLabel number="03">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
-          <TextLink to="/ai-remix">VIEW ALL</TextLink>
+          <TextLink to={remixPreviewPath}>VIEW ALL</TextLink>
         </div>
         <div className={styles.pickGrid}>
           <Link to="/plan?city=SHANGHAI" className={styles.featurePick}>

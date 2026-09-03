@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import tripRoad from "../../data/trip_road.json";
+import { useAuth } from "../../hooks/useAuth";
+import { getPlan, getPlans } from "../../services/firestoreService";
+import { resolveImageUrl } from "../../utils/imageUtils";
 import styles from "./AIRemix.module.scss";
 
 const reasons = [
-  { id: "rain", no: "01", icon: "☂", title: "RAIN", desc: "비가 와요" },
+  { id: "rain", no: "01", icon: "⠿", title: "RAIN", desc: "비가 와요" },
   { id: "delay", no: "02", icon: "◷", title: "DELAY", desc: "일정이 늦어졌어요" },
   { id: "traffic", no: "03", icon: "→", title: "TRAFFIC", desc: "교통이 지연됐어요" },
   { id: "closed", no: "04", icon: "×", title: "CLOSED", desc: "방문 장소가 문을 닫았어요" },
@@ -15,71 +19,186 @@ const reasons = [
 const analyzeSteps = ["현재 위치 확인", "날씨 정보 수집", "실내 장소 탐색", "이동 경로 계산", "일정 재구성"];
 
 const resultCopy = {
-  rain: {
-    tag: "RAIN",
-    title: "야외 일정을\n실내로 바꿔드렸어요.",
-    desc: "현재 젖은 상황을 고려해 이동 부담을 줄이는 실내 코스로 변경했어요.",
-    type: "compare",
-  },
-  delay: {
-    tag: "DELAY",
-    title: "오늘 일정이\n조금 더 가벼워졌어요.",
-    desc: "늦어진 시간을 반영해 이동 거리가 긴 장소를 내일로 옮겼어요.",
-    type: "timeline",
-  },
-  traffic: {
-    tag: "TRAFFIC",
-    title: "막히는 길을 피해\n동선을 다시 잡았어요.",
-    desc: "현재 교통 상황을 기준으로 가까운 장소부터 방문하도록 정리했어요.",
-    type: "timeline",
-  },
-  closed: {
-    tag: "CLOSED",
-    title: "문이 닫힌 곳을\n대신할 장소를 찾았어요.",
-    desc: "방문 예정 장소의 운영 정보를 확인하고 가까운 대체 장소를 찾았어요.",
-    type: "closed",
-  },
-  tired: {
-    tag: "TIRED",
-    title: "여유로운 일정으로\n조정했어요.",
-    desc: "휴식 시간을 확보하고 필수 일정만 남겨 부담을 줄였어요.",
-    type: "timeline",
-  },
-  cost: {
-    tag: "CUT COSTS",
-    title: "이동 비용을 줄이는\n일정으로 바꿨어요.",
-    desc: "도보 이동과 가까운 장소를 우선해 전체 경비를 낮췄어요.",
-    type: "timeline",
-  },
-  auto: {
-    tag: "AUTO",
-    title: "오늘 일정에 맞게\n자동으로 최적화했어요.",
-    desc: "날씨, 거리, 운영 시간을 함께 계산해 가장 무리 없는 순서로 정리했어요.",
-    type: "timeline",
-  },
+  rain: { title: "야외 일정을\n실내로 바꿔드렸어요.", desc: "현재 상황을 고려해 이동 부담을 줄이고, 방문하기 좋은 대체 장소를 골랐어요.", type: "compare" },
+  delay: { title: "오늘 일정이\n조금 더 가벼워졌어요.", desc: "늦어진 시간을 반영해 핵심 장소 위주로 다시 정리했어요.", type: "timeline" },
+  traffic: { title: "막히는 길을 피해\n동선을 다시 잡았어요.", desc: "현재 이동 부담을 줄일 수 있도록 가까운 장소 순서로 재배치했어요.", type: "timeline" },
+  closed: { title: "문이 닫힌 곳을\n대신할 장소를 찾았어요.", desc: "방문 예정 장소 대신 같은 지역에서 이어가기 좋은 장소를 추천했어요.", type: "closed" },
+  tired: { title: "여유로운 일정으로\n조정했어요.", desc: "휴식 시간을 확보하고 무리한 이동을 줄이는 방향으로 다시 구성했어요.", type: "timeline" },
+  cost: { title: "이동 비용을 줄이는\n일정으로 바꿨어요.", desc: "도보 이동과 가까운 장소를 우선해 전체 경비 부담을 낮췄어요.", type: "timeline" },
+  auto: { title: "오늘 일정에 맞게\n자동으로 최적화했어요.", desc: "날씨, 거리, 운영 시간을 함께 계산해 무리 없는 순서로 정리했어요.", type: "timeline" },
 };
 
-const beforeSpots = [
-  ["13:00", "CANAL CITY", ""],
-  ["15:00", "OHORI PARK", "MOVED → DAY 02"],
-  ["18:30", "TENJIN", ""],
-];
+const cityAliases = {
+  SEOUL: "서울",
+  TOKYO: "도쿄",
+  FUKUOKA: "후쿠오카",
+  OSAKA: "오사카",
+  SHANGHAI: "상하이",
+};
 
-const afterSpots = [
-  ["13:30", "CANAL CITY", "SAME"],
-  ["16:20", "TENJIN", "1° EARLIER"],
-  ["18:30", "NAKASU", "ADDED"],
-];
+const createdTime = (plan) =>
+  plan?.updatedAt?.toMillis?.()
+  || (plan?.updatedAt?.seconds || 0) * 1000
+  || plan?.createdAt?.toMillis?.()
+  || (plan?.createdAt?.seconds || 0) * 1000
+  || 0;
 
-const editDays = ["DAY 01", "DAY 02", "DAY 03", "DAY 04", "DAY 05"];
+const formatDayTitle = (index) => `DAY ${String(index + 1).padStart(2, "0")}`;
+
+const addMinutes = (time, amount) => {
+  if (!/^\d{2}:\d{2}$/.test(time || "")) return time || "--:--";
+  const [hour, minute] = time.split(":").map(Number);
+  const date = new Date(2026, 0, 1, hour, minute + amount);
+  return `${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+};
+
+const placeItems = (trip) =>
+  (trip?.days || [])
+    .flatMap((day, dayIndex) =>
+      (day.items || [])
+        .filter((item) => item.type === "place")
+        .map((item) => ({ ...item, dayIndex })),
+    );
+
+const placesForDay = (trip, dayIndex) =>
+  (trip?.days?.[dayIndex]?.items || []).filter((item) => item.type === "place");
+
+const placeRowsForDay = (trip, dayIndex) =>
+  (trip?.days?.[dayIndex]?.items || []).reduce((rows, item, index, items) => {
+    if (item.type !== "place") return rows;
+    const nextTransport = items[index + 1]?.type === "transport" ? items[index + 1] : null;
+    rows.push({ ...item, transport: nextTransport?.transport || "" });
+    return rows;
+  }, []);
+
+const minutesFromTransport = (transport) => {
+  const text = String(transport || "");
+  const hour = text.match(/(\d+)\s*시간/);
+  const minute = text.match(/(\d+)\s*분/);
+  if (hour || minute) {
+    return (Number(hour?.[1] || 0) * 60) + Number(minute?.[1] || 0);
+  }
+  const fallback = text.match(/(\d+)/);
+  return fallback ? Number(fallback[1]) : 12;
+};
+
+const routeLabel = (transport, minutes) => {
+  const mode = String(transport || "")
+    .replace(/·/g, " ")
+    .replace(/약/g, "")
+    .replace(/\d+\s*시간/g, "")
+    .replace(/\d+\s*분/g, "")
+    .replace(/\s+/g, " ")
+    .trim() || "도보";
+
+  return `${mode} ${Math.max(1, minutes)}분`;
+};
+
+const pickDayIndex = (trip) => {
+  const found = (trip?.days || []).findIndex((day) => (day.items || []).filter((item) => item.type === "place").length >= 2);
+  if (found >= 0) return found;
+  return 0;
+};
+
+const findReplacement = (trip, target) => {
+  const places = placeItems(trip);
+  return places.find((place) => place.place !== target?.place && ["restaurant", "hotel", "station"].includes(place.category))
+    || places.find((place) => place.place !== target?.place)
+    || target;
+};
+
+const normalizeTitle = (trip) => trip?.title || `${trip?.city || "여행지"} 여행`;
+
+const editorPath = ({ planId, trip }) =>
+  planId ? `/travel-planner?plan=${encodeURIComponent(planId)}` : `/travel-planner?trip=${encodeURIComponent(trip?.id || "")}`;
+
+function createRemix(trip, reason) {
+  const dayIndex = pickDayIndex(trip);
+  const beforePlaces = placeRowsForDay(trip, dayIndex);
+  const target = beforePlaces.find((place) => place.category === "attraction") || beforePlaces[0] || placeItems(trip)[0];
+  const replacement = findReplacement(trip, target);
+  const targetRoute = target?.transport || beforePlaces.find((place) => place.transport)?.transport || "";
+  const routeBeforeMinutes = minutesFromTransport(targetRoute);
+  const routeReduction = reason.id === "traffic" ? 6 : reason.id === "cost" ? 5 : reason.id === "tired" ? 4 : 7;
+  const routeAfterMinutes = Math.max(1, routeBeforeMinutes - routeReduction);
+  const beforeRows = beforePlaces.slice(0, 4).map((place) => [place.time || "--:--", place.place, ""]);
+  const adjustedRows = beforePlaces.slice(0, 4).map((place, index) => {
+    const minutes = reason.id === "delay" ? -20 : reason.id === "traffic" ? index * 10 : 0;
+    const tag = index === 0 ? "SAME" : reason.id === "tired" && index === beforePlaces.length - 1 ? "REMOVED" : "";
+    return [addMinutes(place.time, minutes), place.place, tag];
+  });
+  const replacedRows = beforePlaces.slice(0, 4).map((place, index) => {
+    if (place.place !== target?.place) return [place.time || "--:--", place.place, index === 0 ? "SAME" : ""];
+    return [place.time || "--:--", replacement?.place || place.place, reason.id === "closed" ? "ADDED" : "INDOOR"];
+  });
+
+  return {
+    dayIndex,
+    target,
+    replacement,
+    beforeRows,
+    afterRows: ["rain", "closed"].includes(reason.id) ? replacedRows : adjustedRows,
+    savedKm: reason.id === "cost" ? "3.4" : ((routeBeforeMinutes - routeAfterMinutes) * 0.18).toFixed(1),
+    routeBefore: routeLabel(targetRoute, routeBeforeMinutes),
+    routeAfter: routeLabel(targetRoute, routeAfterMinutes),
+    beforeTime: beforeRows.at(-1)?.[0] || "21:10",
+    afterTime: addMinutes(beforeRows.at(-1)?.[0], reason.id === "delay" ? -30 : -20),
+  };
+}
 
 export default function AIRemix() {
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  const { user, loading: authLoading } = useAuth();
   const [stage, setStage] = useState("select");
   const [reason, setReason] = useState(reasons[0]);
   const [progress, setProgress] = useState(0);
+  const [loadedPlan, setLoadedPlan] = useState(null);
+  const [loadDone, setLoadDone] = useState(false);
 
-  const result = useMemo(() => resultCopy[reason.id] ?? resultCopy.auto, [reason]);
+  const requestedPlanId = params.get("plan") || params.get("saved") || "";
+  const requestedTripId = params.get("trip") || "";
+  const requestedCity = cityAliases[params.get("city")?.toUpperCase()] || params.get("city") || "";
+
+  useEffect(() => {
+    let active = true;
+
+    const loadPlan = async () => {
+      setLoadDone(false);
+      try {
+        if (requestedPlanId) {
+          const plan = await getPlan(requestedPlanId);
+          if (active) setLoadedPlan(plan);
+          return;
+        }
+        if (!authLoading && user) {
+          const plans = await getPlans(user.uid);
+          const latest = [...plans].sort((a, b) => createdTime(b) - createdTime(a))[0] || null;
+          if (active) setLoadedPlan(latest);
+          return;
+        }
+        if (active) setLoadedPlan(null);
+      } finally {
+        if (active) setLoadDone(true);
+      }
+    };
+
+    loadPlan();
+    return () => { active = false; };
+  }, [authLoading, requestedPlanId, user]);
+
+  const selectedTrip = useMemo(() => {
+    if (loadedPlan) return loadedPlan;
+    const defaultTrip = tripRoad.trips.find((trip) => trip.city === cityAliases.SEOUL) || tripRoad.trips[0];
+    return tripRoad.trips.find((trip) => trip.id === requestedTripId)
+      || tripRoad.trips.find((trip) => trip.city === requestedCity)
+      || defaultTrip;
+  }, [loadedPlan, requestedCity, requestedTripId]);
+
+  const result = useMemo(() => ({ ...resultCopy[reason.id], tag: reason.title, reasonId: reason.id }), [reason]);
+  const remix = useMemo(() => createRemix(selectedTrip, reason), [reason, selectedTrip]);
+  const planId = loadedPlan?.id || requestedPlanId;
+  const editUrl = editorPath({ planId, trip: selectedTrip });
 
   useEffect(() => {
     if (stage !== "analyzing") return undefined;
@@ -98,6 +217,17 @@ export default function AIRemix() {
     return () => window.clearInterval(timer);
   }, [stage]);
 
+  useEffect(() => {
+    if (stage !== "complete") return undefined;
+
+    const timer = window.setTimeout(() => setStage("edit"), 1000);
+    return () => window.clearTimeout(timer);
+  }, [stage]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [stage]);
+
   const selectReason = (item) => {
     setReason(item);
     setProgress(0);
@@ -109,8 +239,19 @@ export default function AIRemix() {
     setProgress(0);
   };
 
+  if (!loadDone) {
+    return (
+      <main className={`${styles.page} aiRemixPageRoot`}>
+        <section className={styles.analyzing}>
+          <p className={styles.meta}>L:CODE AI REMIX</p>
+          <h1>일정을 불러오고 있어요.</h1>
+        </section>
+      </main>
+    );
+  }
+
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} aiRemixPageRoot`}>
       {stage === "select" && (
         <section className={styles.selectPanel}>
           <header className={styles.selectHeader}>
@@ -119,14 +260,14 @@ export default function AIRemix() {
           </header>
           <div className={styles.intro}>
             <h1>오늘 일정,<br />다시 맞춰볼까요?</h1>
-            <p>현재 상황을 선택하면<br />남은 일정을 다시 구성해드려요.</p>
+            <p>{selectedTrip.city} 일정에서 생긴 돌발상황을 선택하면<br />남은 일정을 다시 구성해드려요.</p>
           </div>
           <ul className={styles.reasonList}>
             {reasons.map((item) => (
               <li key={item.id}>
                 <button type="button" onClick={() => selectReason(item)}>
                   <span>{item.no}</span>
-                  <i>{item.icon}</i>
+                  <i className={item.id === "rain" ? styles.rainMark : ""}>{item.id === "rain" ? "" : item.icon}</i>
                   <strong>{item.title}</strong>
                   <em>{item.desc}</em>
                 </button>
@@ -161,36 +302,36 @@ export default function AIRemix() {
       )}
 
       {stage === "result" && (
-        <ResultView result={result} onBack={reset} onApply={() => setStage("complete")} />
+        <ResultView result={result} remix={remix} onBack={reset} onApply={() => setStage("complete")} />
       )}
 
       {stage === "complete" && (
-        <button className={styles.complete} type="button" onClick={() => setStage("edit")}>
+        <section className={styles.complete}>
           <span>REMIX COMPLETE</span>
           <h1>새 일정이<br />적용되었습니다.</h1>
           <i />
-        </button>
+        </section>
       )}
 
-      {stage === "edit" && <EditView onBack={reset} />}
+      {stage === "edit" && <EditView trip={selectedTrip} remix={remix} editUrl={editUrl} onBack={reset} />}
     </main>
   );
 }
 
-function ResultView({ result, onBack, onApply }) {
+function ResultView({ result, remix, onBack, onApply }) {
+  const resultClass = `${styles.result} ${styles[`${result.reasonId}Result`] || ""}`;
+
   return (
-    <section className={styles.result}>
+    <section className={resultClass}>
       <header className={styles.resultHeader}>
         <span>REMIX RESULT</span>
         <em>{result.tag}</em>
       </header>
       <h1>{result.title}</h1>
       <p>{result.desc}</p>
-
-      {result.type === "compare" && <RainCompare />}
-      {result.type === "closed" && <ClosedChange />}
-      {result.type === "timeline" && <TimelineChange />}
-
+      {result.type === "compare" && <RainCompare remix={remix} />}
+      {result.type === "closed" && <ClosedChange remix={remix} />}
+      {result.type === "timeline" && <TimelineChange remix={remix} variant={result.reasonId} />}
       <div className={styles.actions}>
         <button type="button" onClick={onBack}>기존 일정 유지</button>
         <button type="button" onClick={onApply}>변경 일정 적용</button>
@@ -199,72 +340,113 @@ function ResultView({ result, onBack, onApply }) {
   );
 }
 
-function RainCompare() {
+function RainCompare({ remix }) {
+  const beforeStyle = {
+    "--compare-image": remix.target?.image ? `url(${resolveImageUrl(remix.target.image)})` : "linear-gradient(#aaa, #aaa)",
+  };
+  const afterStyle = {
+    "--compare-image": remix.replacement?.image ? `url(${resolveImageUrl(remix.replacement.image)})` : "linear-gradient(#aaa, #aaa)",
+  };
+
   return (
     <>
       <div className={styles.compare}>
-        <article>
+        <article style={beforeStyle}>
           <span>BEFORE</span>
           <div />
-          <h2>OHORI PARK</h2>
-          <p>오호리 공원</p>
+          <h2>{remix.target?.place || "기존 장소"}</h2>
+          <p>OUTDOOR</p>
         </article>
-        <article>
+        <article style={afterStyle}>
           <span>AFTER</span>
           <div />
-          <h2>FUKUOKA ART MUSEUM</h2>
-          <p>후쿠오카 시립미술관</p>
+          <h2>{remix.replacement?.place || "대체 장소"}</h2>
+          <p>INDOOR / NEARBY</p>
         </article>
       </div>
-      <aside className={styles.summaryNote}>현재 강수 상황을 고려하여 야외 일정을 가까운 실내 장소로 변경했어요.</aside>
-      <ChangeDetails />
+      <aside className={styles.summaryNote}>현재 상황을 고려해 {remix.target?.place || "기존 장소"} 대신 {remix.replacement?.place || "대체 장소"}로 변경했어요.</aside>
+      <ChangeDetails remix={remix} />
     </>
   );
 }
 
-function ClosedChange() {
+function ClosedChange({ remix }) {
   return (
     <>
       <section className={styles.placeChange}>
         <article>
           <span>ORIGINAL</span>
-          <h2>FUKUOKA TOWER</h2>
-          <p>운영중지</p>
+          <h2>{remix.target?.place || "기존 장소"}</h2>
+          <p>CLOSED</p>
         </article>
         <b>↓</b>
         <article className={styles.darkPlace}>
           <span>REPLACEMENT</span>
-          <h2>FUKUOKA ART MUSEUM</h2>
-          <p>5 MIN AWAY · OPEN UNTIL 20:00</p>
+          <h2>{remix.replacement?.place || "대체 장소"}</h2>
+          <p>NEARBY · AVAILABLE TODAY</p>
         </article>
       </section>
-      <p className={styles.softText}>방문 예정 장소와 운영이 종료되었고, 짧은 거리의 후쿠오카 시립미술관을 추천해드려요.</p>
-      <ChangeDetails closed />
+      <p className={styles.softText}>방문 예정 장소 대신 같은 일정 안에서 이어가기 좋은 장소를 추천했어요.</p>
+      <ChangeDetails remix={remix} closed />
     </>
   );
 }
 
-function TimelineChange() {
+const timelineTheme = {
+  traffic: {
+    eyebrow: "ROUTE CONTROL",
+    title: "막히는 구간을 피해 가까운 순서로 정리했어요.",
+    left: "BYPASS",
+    right: "LESS WAIT",
+  },
+  tired: {
+    eyebrow: "REST MODE",
+    title: "무리한 이동을 줄이고 쉴 시간을 확보했어요.",
+    left: "REST ADDED",
+    right: "LIGHT PLAN",
+  },
+  cost: {
+    eyebrow: "BUDGET SAVE",
+    title: "택시/장거리 이동을 줄여 비용 부담을 낮췄어요.",
+    left: "LOW COST",
+    right: "SHORT ROUTE",
+  },
+};
+
+function TimelineChange({ remix, variant }) {
+  const theme = timelineTheme[variant];
+
   return (
     <>
+      {theme && (
+        <section className={styles.themePanel}>
+          <span>{theme.eyebrow}</span>
+          <h2>{theme.title}</h2>
+          <div>
+            <b>{theme.left}</b>
+            <i />
+            <b>{theme.right}</b>
+          </div>
+        </section>
+      )}
       <section className={styles.summaryGrid}>
         <article>
           <span>DISTANCE SAVED</span>
-          <strong>2.1</strong>
+          <strong>{remix.savedKm}</strong>
           <p>KM LESS</p>
         </article>
         <article>
           <span>TIME ADJUSTED</span>
-          <del>21:10</del>
-          <strong>20:20</strong>
+          <del>{remix.beforeTime}</del>
+          <strong>{remix.afterTime}</strong>
         </article>
       </section>
       <section className={styles.timeline}>
         <h2>BEFORE / AFTER</h2>
-        <Timeline title="BEFORE" count="3 SPOTS" rows={beforeSpots} />
-        <Timeline title="AFTER" count="3 SPOTS" rows={afterSpots} dark />
+        <Timeline title="BEFORE" count={`${remix.beforeRows.length} SPOTS`} rows={remix.beforeRows} />
+        <Timeline title="AFTER" count={`${remix.afterRows.length} SPOTS`} rows={remix.afterRows} dark />
       </section>
-      <aside className={styles.summaryNote}>우천과 피로를 고려해 이동 시간을 줄였어요.</aside>
+      <aside className={styles.summaryNote}>선택한 돌발상황에 맞춰 남은 일정의 순서와 시간을 다시 정리했어요.</aside>
     </>
   );
 }
@@ -284,53 +466,79 @@ function Timeline({ title, count, rows, dark = false }) {
   );
 }
 
-function ChangeDetails({ closed = false }) {
+function ChangeDetails({ remix, closed = false }) {
   return (
     <section className={styles.details}>
       <h2>CHANGES DETAIL</h2>
       <article>
         <span>01 / PLACE</span>
-        <em>{closed ? "5 MIN AWAY" : "OUTDOOR → INDOOR"}</em>
-        <div><del>{closed ? "FUKUOKA TOWER" : "OHORI PARK"}</del><b>→</b><strong>FUKUOKA ART MUSEUM</strong></div>
+        <em>{closed ? "REPLACED" : "OUTDOOR → INDOOR"}</em>
+        <div><del>{remix.target?.place || "기존 장소"}</del><b>→</b><strong>{remix.replacement?.place || "대체 장소"}</strong></div>
       </article>
       <article>
         <span>02 / ROUTE</span>
-        <em>{closed ? "CLOSER" : "SHORTER WALK"}</em>
-        <div><del>{closed ? "WALK 25 MIN" : "도보 15분"}</del><b>→</b><strong>{closed ? "WALK 8 MIN" : "도보 8분"}</strong></div>
+        <em>SHORTER WALK</em>
+        <div><del>{remix.routeBefore}</del><b>→</b><strong>{remix.routeAfter}</strong></div>
       </article>
       <article>
         <span>03 / TIME</span>
         <em>{closed ? "UNCHANGED" : "20 MIN EARLIER"}</em>
-        <div><del>{closed ? "15:00" : "21:10"}</del><b>→</b><strong>{closed ? "15:00" : "20:50"}</strong></div>
+        <div><del>{remix.beforeTime}</del><b>→</b><strong>{closed ? remix.beforeTime : remix.afterTime}</strong></div>
       </article>
     </section>
   );
 }
 
-function EditView({ onBack }) {
+function EditView({ trip, remix, editUrl, onBack }) {
+  const initialDayIndex = remix.dayIndex || 0;
+  const days = trip.days || [];
+  const [selectedDayIndex, setSelectedDayIndex] = useState(initialDayIndex);
+  const dayIndex = days[selectedDayIndex] ? selectedDayIndex : 0;
+  const activeDay = days[dayIndex] || days[0] || { items: [] };
+  const heroImage = placeItems(trip).find((place) => place.image)?.image;
+  const heroStyle = heroImage
+    ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.55)), url(${resolveImageUrl(heroImage)})` }
+    : undefined;
+
+  useEffect(() => {
+    setSelectedDayIndex(initialDayIndex);
+  }, [initialDayIndex, trip?.id]);
+
   return (
     <section className={styles.edit}>
-      <div className={styles.editHero}>
+      <div className={styles.editHero} style={heroStyle}>
         <span>PERSONAL TRAVEL PLAN</span>
-        <h1>FUKUOKA</h1>
-        <p>후쿠오카, 3박 4일 일정</p>
+        <h1>{trip.city || "TRIP"}</h1>
+        <p>{normalizeTitle(trip)}</p>
         <button type="button" onClick={onBack}>EDIT</button>
       </div>
       <nav className={styles.dayTabs}>
-        {editDays.map((day, index) => <button className={index === 0 ? styles.activeDay : ""} type="button" key={day}>{day}</button>)}
+        {days.map((day, index) => (
+          <button
+            className={index === dayIndex ? styles.activeDay : ""}
+            type="button"
+            key={day.label || index}
+            onClick={() => setSelectedDayIndex(index)}
+          >
+            {day.label || formatDayTitle(index)}
+          </button>
+        ))}
       </nav>
       <section className={styles.dayPlan}>
-        <header><strong>DAY 04</strong><span>2026. 11. 04</span></header>
-        {["후쿠오카 공항", "캐널시티 하카타", "나카스", "후쿠오카 시립미술관", "호텔 체크인"].map((place, index) => (
-          <article key={place}>
-            <label><input type="checkbox" /> <span>{place}</span></label>
-            <em>{`${12 + index}:30`} - {`${13 + index}:10`}</em>
-            <button type="button">×</button>
-          </article>
-        ))}
-        <button className={styles.addSpot} type="button">+ 장소 추가</button>
+        <header><strong>{activeDay.label || formatDayTitle(dayIndex)}</strong><span>{activeDay.date || normalizeTitle(trip)}</span></header>
+        {placesForDay(trip, dayIndex).map((place, index) => {
+          const changedName = place.place === remix.target?.place ? remix.replacement?.place : place.place;
+          return (
+            <article key={`${place.place}-${index}`}>
+              <label><input type="checkbox" /> <span>{changedName}</span></label>
+              <em>{place.time || "--:--"} - {addMinutes(place.time, 40)}</em>
+              <button type="button" onClick={() => window.location.assign(editUrl)}>×</button>
+            </article>
+          );
+        })}
+        <button className={styles.addSpot} type="button" onClick={() => window.location.assign(editUrl)}>+ 장소 추가</button>
       </section>
-      <button className={styles.saveEdit} type="button">일정 수정</button>
+      <button className={styles.saveEdit} type="button" onClick={() => window.location.assign(editUrl)}>일정 수정</button>
     </section>
   );
 }
