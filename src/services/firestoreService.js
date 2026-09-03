@@ -5,6 +5,7 @@ import {
   doc,
   getDoc,
   getDocs,
+  onSnapshot,
   query,
   serverTimestamp,
   setDoc,
@@ -152,6 +153,124 @@ export async function saveFavoritePlace(userId, place) {
 export async function deleteFavoritePlace(userId, placeId) {
   if (!userId || !placeId) throw new Error("삭제할 찜 장소 정보가 올바르지 않습니다.");
   return deleteDoc(doc(requireDb(), "users", userId, "favoritePlaces", placeId));
+}
+
+const adminCollections = {
+  products: "adminProducts",
+  packages: "adminPackages",
+  notices: "adminNotices",
+  coupons: "adminCoupons",
+  members: "users",
+};
+
+const getAdminCollectionName = (type) => {
+  const name = adminCollections[type];
+  if (!name) throw new Error("지원하지 않는 관리 항목입니다.");
+  return name;
+};
+
+export async function getAdminManagementData() {
+  const database = requireDb();
+  const entries = await Promise.all(
+    Object.entries(adminCollections).map(async ([type, collectionName]) => {
+      const snapshot = await getDocs(collection(database, collectionName));
+      return [type, snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))];
+    }),
+  );
+  return Object.fromEntries(entries);
+}
+
+export async function getAdminManagementItems(type) {
+  const snapshot = await getDocs(collection(requireDb(), getAdminCollectionName(type)));
+  return snapshot.docs.map((item) => ({ id: item.id, ...item.data() }));
+}
+
+export function subscribeAdminManagementItems(type, onItems, onError) {
+  if (!db) {
+    queueMicrotask(() => onError?.(new Error("Firebase is not configured")));
+    return () => {};
+  }
+  const target = collection(db, getAdminCollectionName(type));
+  return onSnapshot(
+    target,
+    (snapshot) => onItems(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))),
+    onError,
+  );
+}
+
+export async function saveAdminManagementItem(type, item) {
+  const collectionName = getAdminCollectionName(type);
+  const id = String(item.id || `${type}-${Date.now()}`);
+  const data = JSON.parse(JSON.stringify({ ...item, id, _deleted: false }));
+  await setDoc(
+    doc(requireDb(), collectionName, id),
+    { ...data, updatedAt: serverTimestamp() },
+    { merge: true },
+  );
+  return { ...data, id };
+}
+
+export async function deleteAdminManagementItem(type, id) {
+  if (!id) throw new Error("삭제할 항목 ID가 없습니다.");
+  const reference = doc(requireDb(), getAdminCollectionName(type), String(id));
+  if (type === "members") return deleteDoc(reference);
+  return setDoc(reference, { id: String(id), _deleted: true, updatedAt: serverTimestamp() }, { merge: true });
+}
+
+export async function getCartItems(userId) {
+  if (!db || !userId) return [];
+  const snapshot = await getDoc(doc(db, "users", userId, "shop", "cart"));
+  const items = snapshot.data()?.items;
+  return Array.isArray(items) ? items : [];
+}
+
+export async function saveCartItems(userId, items) {
+  if (!userId) throw new Error("장바구니를 저장할 사용자 정보가 없습니다.");
+  const safeItems = JSON.parse(JSON.stringify(Array.isArray(items) ? items : []));
+  return setDoc(
+    doc(requireDb(), "users", userId, "shop", "cart"),
+    { items: safeItems, updatedAt: serverTimestamp() },
+    { merge: true },
+  );
+}
+
+export async function getSavedProductIds(userId) {
+  if (!db || !userId) return [];
+  const snapshot = await getDoc(doc(db, "users", userId, "shop", "savedProducts"));
+  const productIds = snapshot.data()?.productIds;
+  return Array.isArray(productIds) ? productIds.filter(Boolean) : [];
+}
+
+export async function saveSavedProductIds(userId, productIds) {
+  if (!userId) throw new Error("찜한 상품을 저장할 사용자 정보가 없습니다.");
+  return setDoc(
+    doc(requireDb(), "users", userId, "shop", "savedProducts"),
+    {
+      productIds: Array.from(new Set(Array.isArray(productIds) ? productIds.filter(Boolean) : [])),
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true },
+  );
+}
+
+export async function getFavoriteTrips(userId) {
+  if (!db || !userId) return [];
+  const snapshot = await getDocs(collection(db, "users", userId, "favoriteTrips"));
+  return snapshot.docs.map((item) => item.id);
+}
+
+export async function saveFavoriteTrip(userId, tripId) {
+  if (!userId || !tripId) throw new Error("찜할 일정 정보가 올바르지 않습니다.");
+  return setDoc(
+    doc(requireDb(), "users", userId, "favoriteTrips", tripId),
+    { tripId, updatedAt: serverTimestamp() },
+    { merge: true },
+  );
+}
+
+export async function deleteFavoriteTrip(userId, tripId) {
+  if (!userId || !tripId) throw new Error("삭제할 일정 정보가 올바르지 않습니다.");
+  return deleteDoc(doc(requireDb(), "users", userId, "favoriteTrips", tripId));
 }
 
 export async function getUserCoupons(userId) {

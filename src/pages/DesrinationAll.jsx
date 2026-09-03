@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import styles from "./DesrinationAll.module.scss";
 
 const thumbnailModules = import.meta.glob("../assets/images/Thumbnail/Thumbnail-image/**/*.{jpg,jpeg,png,webp}", {
@@ -77,12 +78,13 @@ const getTripImage = (trip, index) => {
 };
 
 const DesrinationAll = () => {
+  const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const requestedCountry = params.get("country")?.toLowerCase();
   const selectedCountry = countries.some(([value]) => value === requestedCountry)
     ? requestedCountry
     : "all";
-  const filteredTrips = tripRoad.trips.filter(
+  const filteredTrips = managedTrips.filter(
     (trip) => selectedCountry === "all" || trip.country === selectedCountry,
   );
 

@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { deletePlan, getPlan, getPlanDateConflict, getPlans, savePlan } from "../services/firestoreService";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
@@ -60,6 +61,7 @@ const addDays = (date, amount) => {
 };
 
 export default function Plan() {
+  const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -111,12 +113,12 @@ export default function Plan() {
 
     return savedDetailState.plan
       || (!hasRequestedTrip ? savedPlan : null)
-      || tripRoad.trips.find((trip) => trip.id === tripId)
-      || tripRoad.trips.find((trip) => trip.city === city)
-      || tripRoad.trips.find((trip) => trip.country.toLowerCase() === countryParam)
-      || tripRoad.trips.find((trip) => trip.city === "후쿠오카")
-      || tripRoad.trips[0];
-  }, [hasRequestedTrip, params, savedDetailState.plan, savedPlan]);
+      || managedTrips.find((trip) => trip.id === tripId)
+      || managedTrips.find((trip) => trip.city === city)
+      || managedTrips.find((trip) => trip.country.toLowerCase() === countryParam)
+      || managedTrips.find((trip) => trip.city === "후쿠오카")
+      || managedTrips[0];
+  }, [hasRequestedTrip, managedTrips, params, savedDetailState.plan, savedPlan]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
   const [savedDocumentId, setSavedDocumentId] = useState("");
@@ -419,13 +421,20 @@ export default function Plan() {
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
           {viewingSavedPlan ? (
-            <div className={styles.savedActions}>
-              <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>수정</button>
-              <button type="button" onClick={() => {
-                setDeleteState({ deleting: false, error: "" });
-                setIsDeleteOpen(true);
-              }}>삭제</button>
-            </div>
+            <section className={styles.savedControls} aria-label="저장 일정 관리">
+              <div>
+                <small>PLAN OPTIONS</small>
+                <p>현재 일정이 마음에 들지 않으면 AI로 다시 조정할 수 있어요.</p>
+              </div>
+              <div className={styles.savedActions}>
+                <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>일정 수정</button>
+                <Link to={`/ai-remix?planId=${encodeURIComponent(savedPlanId)}`}><span>AI REMIX</span>AI로 일정 다시 짜기</Link>
+                <button type="button" onClick={() => {
+                  setDeleteState({ deleting: false, error: "" });
+                  setIsDeleteOpen(true);
+                }}>일정 삭제</button>
+              </div>
+            </section>
           ) : (
             <button type="button" onClick={openDateStep} disabled={saveState.saving}>내 일정에 담기</button>
           )}

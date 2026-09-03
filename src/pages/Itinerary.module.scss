@@ -185,7 +185,7 @@ $serif-display: $display;
 
 /* D-Day count 부분 */
 .countCard {
-  background-image:url(/public/Mypage-img/8.png);
+  background-image: url("/Mypage-img/8.png");
   background-position: center;
   background-size: cover;
   color: #f8f8f8;
@@ -264,7 +264,7 @@ $serif-display: $display;
   position: relative;
   height: 300px;
   aspect-ratio: auto;
-  background-image: url(/public/Mypage-img/3.png);
+  background-image: url("/Mypage-img/3.png");
   background-size: cover;
   background-position: bottom;
 

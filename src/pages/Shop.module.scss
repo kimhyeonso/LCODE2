@@ -600,6 +600,15 @@
   line-height: 1;
 }
 
+.heart svg {
+  width: 18px;
+  height: 18px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  transition: fill 0.16s ease, stroke 0.16s ease;
+}
+
 
 .heart:hover {
   transform:
@@ -624,7 +633,7 @@
 
 
 .liked {
-  color: #11110f;
+  color: #d43636;
 
   background:
     rgba(
@@ -633,6 +642,11 @@
       255,
       0.98
     );
+}
+
+.liked svg {
+  fill: currentColor;
+  stroke: currentColor;
 }
 
 

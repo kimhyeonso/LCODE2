@@ -146,6 +146,50 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+.favoriteButton {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  padding: 0;
+  background: rgba(250, 248, 243, 0.78);
+  color: #3f433f;
+  box-shadow: 0 3px 12px rgba(20, 24, 21, 0.12);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+.favoriteButton svg {
+  width: 17px;
+  height: 17px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+.favoriteButton:hover {
+  transform: translateY(-1px);
+}
+.favoriteButton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.favoriteButton.favoriteActive {
+  border-color: rgba(201, 52, 52, 0.28);
+  background: rgba(255, 255, 255, 0.92);
+  color: #d43636;
+  box-shadow: 0 4px 14px rgba(201, 52, 52, 0.18);
+}
+.favoriteButton.favoriteActive svg {
+  fill: currentColor;
+  stroke: currentColor;
+}
 .cardImage::after {
   content: "";
   position: absolute;

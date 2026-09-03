@@ -275,6 +275,7 @@ function buildCheckoutItems(
 export default function Checkout() {
   const {
     cart,
+    removePurchasedItems,
   } = useShop();
 
   const navigate =
@@ -900,6 +901,10 @@ export default function Checkout() {
 
             sessionStorage.removeItem(
               "checkoutSelection"
+            );
+
+            removePurchasedItems(
+              checkoutItems
             );
 
             navigate(

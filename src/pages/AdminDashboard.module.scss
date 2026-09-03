@@ -175,9 +175,231 @@ tbody tr:hover {
   font-size: 13px;
 }
 
+.manager {
+  overflow: hidden;
+  border: 1px solid #e0e4e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.tabs {
+  display: flex;
+  overflow-x: auto;
+  border-bottom: 1px solid #e8ebe9;
+}
+
+.tabs button {
+  min-width: max-content;
+  padding: 16px 22px;
+  border: 0;
+  border-right: 1px solid #eef0ef;
+  background: #fff;
+  color: #7a817c;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.tabs button.activeTab {
+  background: #28332d;
+  color: #fff;
+}
+
+.managerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+}
+
+.managerHead > div {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.managerHead h2 {
+  margin: 0;
+  font-size: 19px;
+}
+
+.managerHead span {
+  color: #858c87;
+  font-size: 12px;
+}
+
+.managerHead button,
+.actions button {
+  min-height: 38px;
+  border: 1px solid #28332d;
+  border-radius: 5px;
+  padding: 0 16px;
+  background: #28332d;
+  color: #fff;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.message {
+  margin: 0 24px 18px;
+  padding: 10px 12px;
+  border-radius: 5px;
+  background: #f0f4f1;
+  color: #486052;
+  font-size: 12px;
+}
+
+.itemList {
+  display: grid;
+  gap: 10px;
+  max-height: 720px;
+  overflow-y: auto;
+  padding: 0 24px 24px;
+}
+
+.manageCard {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto auto;
+  gap: 18px;
+  align-items: center;
+  padding: 18px;
+  border: 1px solid #e6e9e7;
+  border-radius: 7px;
+  background: #fcfdfc;
+}
+
+.manageCard.wideCard {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.preview {
+  width: 92px;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: #eef0ee;
+  color: #9aa09c;
+  font-size: 9px;
+}
+
+.preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.fields {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+}
+
+.fields label,
+.stock > span {
+  display: grid;
+  gap: 5px;
+  color: #737b75;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.fields input,
+.fields textarea,
+.fields select {
+  width: 100%;
+  border: 1px solid #dfe3e0;
+  border-radius: 4px;
+  padding: 9px 10px;
+  background: #fff;
+  color: #262c28;
+  font: 12px/1.5 inherit;
+  outline: none;
+}
+
+.fields input:focus,
+.fields textarea:focus,
+.fields select:focus {
+  border-color: #59675e;
+}
+
+.fields textarea {
+  resize: vertical;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fields .checkField {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.checkField input {
+  width: 15px;
+}
+
+.stock {
+  display: grid;
+  gap: 7px;
+  justify-items: center;
+}
+
+.stock > div {
+  display: grid;
+  grid-template-columns: 30px 42px 30px;
+  align-items: center;
+}
+
+.stock button {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #d7dcd8;
+  background: #fff;
+  cursor: pointer;
+}
+
+.stock strong {
+  text-align: center;
+  font-size: 15px;
+}
+
+.actions {
+  display: grid;
+  gap: 7px;
+}
+
+.actions button:last-child {
+  border-color: #d8ddda;
+  background: #fff;
+  color: #747c76;
+}
+
+.actions button:disabled {
+  cursor: wait;
+  opacity: 0.5;
+}
+
 @media (max-width: 1100px) and (min-width: 901px) {
   .metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .manageCard {
+    grid-template-columns: 76px minmax(0, 1fr) auto;
+  }
+
+  .preview {
+    width: 76px;
+  }
+
+  .actions {
+    grid-column: 2 / -1;
+    grid-template-columns: repeat(2, auto);
+    justify-content: end;
   }
 }
 
@@ -191,6 +413,24 @@ tbody tr:hover {
 
   .metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .manageCard {
+    grid-template-columns: 72px minmax(0, 1fr);
+  }
+
+  .preview {
+    width: 72px;
+  }
+
+  .stock,
+  .actions {
+    grid-column: 2;
+    justify-items: start;
+  }
+
+  .actions {
+    display: flex;
   }
 }
 
@@ -228,5 +468,34 @@ tbody tr:hover {
   th,
   td {
     padding-inline: 16px;
+  }
+
+  .managerHead {
+    padding: 18px 16px;
+  }
+
+  .itemList {
+    padding: 0 12px 16px;
+  }
+
+  .manageCard {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .manageCard.wideCard {
+    grid-template-columns: 1fr;
+  }
+
+  .preview {
+    width: 100%;
+    max-height: 180px;
+    aspect-ratio: 16 / 9;
+  }
+
+  .stock,
+  .actions {
+    grid-column: 1;
   }
 }
