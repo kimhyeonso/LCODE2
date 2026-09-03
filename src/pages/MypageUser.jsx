@@ -7,7 +7,7 @@ import styles from "./MypageUser.module.scss";
 const menuItems = [
   ["여행 주문 내역", "/itinerary"], ["상품 주문 내역", "/buy"],
   ["내 일정", "/mypagemain"], ["나의 리뷰", "/mystories"],
-  ["찜한 상품", "/wishlist"], ["찜한 장소", "/favorite-places"],
+  ["찜한 상품", "/wishlist"], 
   ["쿠폰함", "/coupon"], ["알림 설정", "/alarm"], ["고객센터", "/notice"],
 ];
 const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];

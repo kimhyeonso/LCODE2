@@ -42,6 +42,7 @@
 .tips li:last-child { border-bottom: 0; }
 .tips li > span { display: grid; width: 44px; height: 44px; border-radius: 50%; background: #ebe4d8; font: 400 22px $display; place-items: center; }
 .tips li p { margin: 0; font: 400 14px/1.65 $korean; }
+.stampModal { display: none; }
 
 @media (min-width: 901px) { .pakingPage { width: calc(100% - 220px); margin-left: 220px; } }
 
@@ -70,6 +71,71 @@
   .tips li { grid-template-columns: 38px 1fr; gap: 12px; }
   .tips li > span { width: 36px; height: 36px; font-size: 18px; }
   .tips li p { font-size: 12px; }
+
+  .stampModal {
+    position: fixed;
+    z-index: 49;
+    top: 56px;
+    right: 0;
+    bottom: calc(58px + env(safe-area-inset-bottom));
+    left: 0;
+    display: flex;
+    background: rgb(23 23 20 / 52%);
+    padding: 24px 20px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stampBoard {
+    position: relative;
+    width: min(100%, 416px);
+    animation: stampBoardIn 240ms ease-out both;
+  }
+
+  .stampBoardImage {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .completedStamp {
+    position: absolute;
+    top: 30.4%;
+    left: 9%;
+    width: 17.5%;
+    height: auto;
+    transform: rotate(-8deg);
+    animation: stampIn 360ms 140ms cubic-bezier(.2, .9, .3, 1.25) both;
+  }
+
+  .stampBoard button {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    color: #827864;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+}
+
+@keyframes stampBoardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes stampIn {
+  from { opacity: 0; transform: scale(1.7) rotate(-14deg); }
+  to { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stampBoard,
+  .completedStamp { animation: none; }
 }
 
 @media (max-width: 600px) {

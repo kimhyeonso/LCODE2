@@ -320,8 +320,54 @@ h1 {
   .content { width: calc(100% - 40px); margin-inline: auto; transform: none; }
   .storyInfo footer a { align-self: stretch; height: 47px; margin-top: 0; }
   .stories > :first-child,
-  .stories > .eyebrow {
+  .stories > .eyebrow,
+  .stories > h1 {
+    margin-right: 25px;
     margin-left: 25px;
     transform: none;
   }
+  .stories > .eyebrow { font-size: 9px; letter-spacing: .22em !important; }
+  .stories > h1 { margin-top: 10px; font-size: 40px; line-height: 1.08; }
+}
+
+// PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
+@media (min-width: 901px) {
+  .mystories { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .stories > a { margin-bottom: 8px; }
+  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  .stories > h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
+  .description { font-size: .66rem; }
+  .divider { width: 492px; max-width: 100%; margin-top: 14px; }
+
+  .mystories::before {
+    position: absolute;
+    top: 78px;
+    left: 30px;
+    width: 112px;
+    height: 700px;
+    border-right: 1px solid #d2ccc3;
+    color: #766e65;
+    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
+    font: 400 10px/1.7 $display;
+    letter-spacing: .14em !important;
+    white-space: pre-wrap;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
+  .mystories::after {
+    position: absolute;
+    bottom: 32px;
+    left: 20px;
+    width: 180px;
+    height: 220px;
+    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
+    content: "";
+    opacity: .35;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1450px) {
+  .mystories::before,
+  .mystories::after { display: none; }
 }

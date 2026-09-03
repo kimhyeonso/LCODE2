@@ -1,3 +1,5 @@
+@use "../styles/variables" as *;
+
 .main {
   position: relative;
   width: calc(100% - 220px);
@@ -164,6 +166,10 @@
 .gameHeader strong {
   color: #858585;
   font-weight: 400;
+}
+
+.questionProgress {
+  display: none;
 }
 
 .question {
@@ -427,6 +433,7 @@
   font-weight: 400;
   line-height: 0.78;
   letter-spacing: -2px;
+  margin-left: 0.8rem;
 }
 
 .resultVisual h1 em {
@@ -556,7 +563,8 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
   grid-template-areas:
     "heading more"
-    "primary more";
+    "primary more"
+    "exchange more";
   width: calc(100% - 220px);
   min-height: 100vh;
   margin-left: 220px;
@@ -770,6 +778,89 @@
 .matchRow button {
   margin-top: 18px;
 }
+
+.expensePanel,
+.retryButton,
+.moreExpense {
+  display: none;
+}
+
+.desktopExchange {
+  grid-area: exchange;
+  margin-top: 28px;
+}
+
+.exchangeHeading {
+  display: flex;
+  margin-bottom: 12px;
+  color: #99948d;
+  font-size: 10px;
+  letter-spacing: 2px;
+  justify-content: space-between;
+}
+
+.exchangeHeading small {
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
+.exchangeLabel {
+  margin: 0 0 14px;
+  color: #8c877f;
+  font-size: 12px;
+}
+
+.exchangeCard {
+  position: relative;
+  min-height: 106px;
+  background: #e4e1da;
+  padding: 22px 180px 18px 22px;
+}
+
+.exchangeCard > span {
+  display: block;
+  color: #8c877f;
+  font-size: 10px;
+}
+
+.exchangeCard > strong {
+  display: block;
+  margin-top: 8px;
+  font-family: "DM Serif Display", Georgia, serif;
+  font-size: 29px;
+  font-weight: 400;
+}
+
+.exchangeCard > p {
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  margin: 0;
+  color: #99948d;
+  font-size: 10px;
+  text-align: right;
+}
+
+.exchangeCard small {
+  display: block;
+  margin-top: 6px;
+  font-size: 10px;
+}
+
+.exchangeMore {
+  display: flex;
+  min-height: 45px;
+  border-bottom: 1px solid #d2ccc2;
+  color: #77716a;
+  font-size: 11px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.exchangeMore span {
+  margin-left: 8px;
+}
+
 @media (max-width: 1100px) {
   .content {
     margin-left: 80px;
@@ -849,6 +940,7 @@
     grid-template-areas:
       "heading"
       "primary"
+      "exchange"
       "more";
     padding: 64px 48px 90px;
   }
@@ -890,7 +982,7 @@
 @media (max-width: 640px) {
   .main,
   .content {
-    min-height: calc(100dvh - 114px);
+    min-height: calc(100dvh - 114px - env(safe-area-inset-bottom));
   }
 
   .background {
@@ -898,19 +990,23 @@
   }
 
   .content {
-    width: calc(100% - 40px);
-    margin: 0 20px;
-    padding: 34px 0 86px;
+    display: flex;
+    width: calc(100% - 56px);
+    margin: 0 28px;
+    padding: 24px 0 34px;
+    flex-direction: column;
   }
 
   .content h1 {
-    margin-top: 44px;
-    font-size: clamp(54px, 17vw, 76px);
+    width: min-content;
+    margin-top: clamp(44px, 8dvh, 56px);
+    font-size: clamp(51px, 14.2vw, 55px);
+    line-height: 0.94;
     letter-spacing: -2px;
   }
 
   .intro {
-    margin-top: 52px;
+    margin-top: 24px;
   }
 
   .lead {
@@ -918,24 +1014,31 @@
   }
 
   .description {
+    margin-top: 14px !important;
     font-size: 12px;
   }
 
   .startButton {
-    right: 0;
-    bottom: 30px;
-    left: auto;
-    width: 132px;
-    height: 46px;
+    position: static;
+    width: 148px;
+    height: 50px;
+    margin-top: auto;
+    align-self: flex-start;
   }
 
   .game {
-    padding: 28px 0 80px;
+    min-height: calc(100dvh - 114px - env(safe-area-inset-bottom));
+    height: calc(100dvh - 114px - env(safe-area-inset-bottom));
+    padding: 10px 0 0;
   }
 
   .analysis {
-    padding: 48px 20px 80px;
-    row-gap: 48px;
+    display: flex;
+    height: calc(100dvh - 114px - env(safe-area-inset-bottom));
+    min-height: calc(100dvh - 114px - env(safe-area-inset-bottom));
+    padding: 28px 32px 20px;
+    flex-direction: column;
+    row-gap: 0;
   }
 
   .result {
@@ -1008,61 +1111,433 @@
   }
 
   .analysisEyebrow {
-    font-size: 11px;
+    font-size: 8px;
   }
 
   .analysisIntro h1 {
-    margin-top: 36px;
-    font-size: clamp(48px, 15vw, 64px);
+    margin-top: 28px;
+    font-size: clamp(43px, 13vw, 50px);
+    line-height: 0.92;
   }
 
   .analysisDescription {
-    margin-top: 34px;
-    font-size: 14px;
+    margin-top: 22px;
+    margin-left: 0;
+    font-size: 12px;
+  }
+
+  .analysisBars {
+    margin-top: auto;
+  }
+
+  .analysisItem {
+    padding-bottom: 10px;
+  }
+
+  .analysisItem + .analysisItem {
+    margin-top: 12px;
+  }
+
+  .analysisLabel {
+    margin-bottom: 8px;
+  }
+
+  .analysisLabel span {
+    font-size: 8px;
+  }
+
+  .analysisLabel strong {
+    font-size: 10px;
+  }
+
+  .analysisTrack {
+    height: 2px;
   }
 
   .gameHeader,
   .question {
-    margin-left: 20px;
+    margin-left: 28px;
+  }
+
+  .gameHeader {
+    margin-right: 28px;
+  }
+
+  .gameHeader button {
+    font-size: 10px;
+  }
+
+  .gameHeader p {
+    position: relative;
+    margin: 12px 0 0 8px;
+    padding-bottom: 0;
+    color: #666;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
+
+  .questionProgress {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 3px;
+    width: 100%;
+    height: 2px;
+    margin-top: 8px;
+  }
+
+  .questionProgress span {
+    background: #555;
+    transition: background 180ms ease;
+  }
+
+  .questionProgress .questionProgressDone {
+    background: #f3f1ed;
+  }
+
+  .gameHeader strong {
+    color: inherit;
+    font-weight: 400;
   }
 
   .question {
-    margin-top: 42px;
-    margin-right: 20px;
-    font-size: 19px;
+    width: auto;
+    margin-top: 12px;
+    margin-right: 28px;
+    margin-bottom: 6px;
+    border-bottom: 0;
+    padding: 0;
+    font-size: 16px;
+    line-height: 1.4;
   }
 
   .choices {
+    height: calc(100% - 103px);
     grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
   }
 
   .choice {
-    height: 300px;
+    height: auto;
+    min-height: 0;
     border-right: 0;
     border-bottom: 1px solid #2c2c2c;
   }
 
   .choiceCopy,
   .choiceCopyRight {
-    min-height: 96px;
-    padding: 20px;
+    min-height: 0;
+    background: transparent;
+    padding: 0 24px 38px;
     text-align: left;
   }
 
+  .choiceCopyRight {
+    padding-right: 24px;
+    text-align: right;
+  }
+
   .choiceCopy strong {
-    font-size: 19px;
+    font-size: 22px;
+  }
+
+  .choiceCopy small {
+    margin-top: 5px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 11px;
   }
 
   .choiceImage {
-    inset: 0 0 96px;
-    height: calc(100% - 96px);
+    inset: 0;
+    height: 100%;
   }
 
   .choice::after {
-    inset: 0 0 96px;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .choiceLetter {
+    top: 20px;
+    left: 20px;
+    width: 22px;
+    height: 16px;
+    font-size: 9px;
+  }
+
+  .choice:last-of-type .choiceLetter {
+    right: 20px;
+    left: auto;
   }
 
   .versus {
-    top: calc(50% - 32px);
+    top: calc(50% - 18px);
+    width: 36px;
+    height: 36px;
+    font-size: 14px;
   }
+
+  .matches {
+    display: block;
+    background: $paper;
+    padding: 22px 24px 88px;
+  }
+
+  .matchNav {
+    display: none;
+  }
+
+  .matchesHeader p {
+    font-size: 10px;
+  }
+
+  .matchesHeader h1 {
+    margin-top: 12px;
+    font-size: 22px;
+    letter-spacing: -1px;
+    white-space: nowrap;
+  }
+
+  .primaryMatch {
+    width: calc(100% + 48px);
+    height: 340px;
+    max-height: none;
+    aspect-ratio: auto;
+    margin-top: 22px;
+    margin-right: -24px;
+    margin-left: -24px;
+  }
+
+  .primaryCopy {
+    right: 24px;
+    bottom: 24px;
+    left: 24px;
+  }
+
+  .primaryCopy h2 {
+    font-size: 38px;
+  }
+
+  .primaryCopy button {
+    margin-top: 14px;
+  }
+
+  .expensePanel {
+    display: block;
+    margin: 0 -24px;
+    padding: 22px 24px 42px;
+    background: $paper;
+    color: #222;
+  }
+
+  .desktopExchange {
+    display: none;
+  }
+
+  .expensePanel .exchangeSummary {
+    margin: 30px 0 34px;
+  }
+
+  .exchangeHeading {
+    margin-bottom: 10px;
+    font-size: 8px;
+  }
+
+  .exchangeLabel {
+    margin-bottom: 12px;
+    font-size: 11px;
+  }
+
+  .exchangeCard {
+    min-height: 90px;
+    padding: 16px 116px 14px 16px;
+  }
+
+  .exchangeCard > span {
+    font-size: 9px;
+  }
+
+  .exchangeCard > strong {
+    margin-top: 8px;
+    font-size: 24px;
+  }
+
+  .exchangeCard > p {
+    right: 16px;
+    bottom: 15px;
+    font-size: 9px;
+  }
+
+  .exchangeCard small {
+    font-size: 9px;
+  }
+
+  .expenseEyebrow {
+    margin: 0;
+    color: #aaa;
+    font-size: 8px;
+    letter-spacing: 1.5px;
+  }
+
+  .expenseLabel {
+    margin: 18px 0 0;
+    color: #777;
+    font-size: 12px;
+  }
+
+  .expenseTotal {
+    display: block;
+    margin-top: 14px;
+    font-size: 27px;
+    font-weight: 400;
+  }
+
+  .expenseNotice {
+    margin: 14px 0 0;
+    color: #999;
+    font-size: 9px;
+  }
+
+  .expenseRange {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+    margin: 16px 0 34px;
+    background: #e4e1da;
+    padding: 14px 16px;
+  }
+
+  .expenseRange span {
+    color: #aaa;
+    font-size: 9px;
+  }
+
+  .expenseRange strong {
+    font-family: "DM Serif Display", Georgia, serif;
+    font-size: 20px;
+    font-weight: 400;
+  }
+
+  .expenseBreakdown {
+    margin: 16px 0 36px;
+  }
+
+  .expenseBreakdown > div {
+    display: flex;
+    min-height: 56px;
+    border-bottom: 1px solid #dedede;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .expenseBreakdown > div > span {
+    color: #888;
+    font-size: 12px;
+  }
+
+  .expenseBreakdown p {
+    margin: 0;
+    text-align: right;
+  }
+
+  .expenseBreakdown strong,
+  .expenseBreakdown small {
+    display: block;
+  }
+
+  .expenseBreakdown strong {
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  .expenseBreakdown small {
+    margin-top: 4px;
+    color: #aaa;
+    font-size: 9px;
+  }
+
+  .quickExpense > div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .quickExpense span {
+    display: grid;
+    min-height: 58px;
+    background: #e4e1da;
+    color: #777;
+    font-size: 9px;
+    place-content: center;
+    text-align: center;
+  }
+
+  .quickExpense b {
+    display: block;
+    margin-bottom: 7px;
+    color: #222;
+    font-size: 10px;
+    font-weight: 500;
+  }
+
+  .moreMatches {
+    margin: 0 -24px;
+    border-top: 0;
+    padding: 24px 24px 0;
+  }
+
+  .matchRow {
+    grid-template-columns: 80px minmax(0, 1fr);
+    gap: 14px;
+    padding-bottom: 18px;
+  }
+
+  .matchRow + .matchRow {
+    padding-top: 18px;
+  }
+
+  .matchRow > img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .matchRow h2 {
+    margin-top: 5px;
+    font-size: 24px;
+  }
+
+  .matchRow div > p:not(.matchPercent) {
+    margin-top: 5px;
+    font-size: 10px;
+  }
+
+  .matchRow button {
+    display: none;
+  }
+
+  .matchRow div > p.moreExpense {
+    display: flex;
+    margin-top: 14px;
+    color: #555;
+    justify-content: space-between;
+  }
+
+  .moreExpense strong {
+    color: #222;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .retryButton {
+    display: block;
+    width: 100%;
+    height: 54px;
+    margin-top: 28px;
+    border: 0;
+    background: #111;
+    color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
 }

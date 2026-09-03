@@ -12,7 +12,24 @@ const filters = ["ALL", "POUCH", "FLIGHT", "TECH", "KIT"];
 const categories = filters.slice(1);
 const reviewStorageKey = "lcode-saved-reviews";
 const fallbackNames = ["여행용 키트", "멀티 어댑터", "트래블 파우치", "캐리어 커버"];
-const categorizedProducts = products.map((product, index) => ({ ...product, displayCategory: categories[index % categories.length], displayName: fallbackNames[index % fallbackNames.length] }));
+
+// Products.jsx와 동일하게 products.json의 배열 순서에 맞는 대표 이미지를 연결합니다.
+// products[0] -> 1_1.png, products[1] -> 2_1.png ...
+const productImageModules = import.meta.glob("../assets/images/detail/*_1.png", {
+  eager: true,
+  import: "default",
+});
+
+const categorizedProducts = products.map((product, index) => {
+  const imagePath = `../assets/images/detail/${index + 1}_1.png`;
+
+  return {
+    ...product,
+    displayCategory: categories[index % categories.length],
+    displayName: fallbackNames[index % fallbackNames.length],
+    displayImage: productImageModules[imagePath] || product.image || "",
+  };
+});
 
 function StoryCard({ title, review }) {
   return <article className={styles.storyCard}>
@@ -54,7 +71,13 @@ export default function Mystories() {
     <section className={styles.shopping} aria-label="리뷰 가능한 상품">
       <div className={styles.filters}>{filters.map((filter) => <button className={selectedFilter === filter ? styles.selected : ""} type="button" aria-pressed={selectedFilter === filter} onClick={() => setSelectedFilter(filter)} key={filter}>{filter}</button>)}</div>
       <div className={styles.productGrid}>{visibleProducts.map((product) => <article className={styles.productCard} key={product.id}>
-        <div className={styles.productImage} aria-hidden="true" /><h2>{product.displayName}</h2><small>{Number(product.price).toLocaleString("ko-KR")}원</small><p>평점 <span>★ ★ ★ ★ ★</span></p>
+        <div
+          className={styles.productImage}
+          role={product.displayImage ? "img" : undefined}
+          aria-label={product.displayImage ? `${product.displayName} 상품 이미지` : undefined}
+          aria-hidden={product.displayImage ? undefined : "true"}
+          style={product.displayImage ? { backgroundImage: `url("${product.displayImage}")`, backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover" } : undefined}
+        /><h2>{product.displayName}</h2><small>{Number(product.price).toLocaleString("ko-KR")}원</small><p>평점 <span>★ ★ ★ ★ ★</span></p>
         <footer><Link to={`/shop/${product.id}`}>상품 보기</Link><Link to="/review" state={{ productName: product.displayName }}>리뷰 쓰기</Link></footer>
       </article>)}</div>
       <Link className={styles.pagination} to="/shop">SHOP 더 보기 <span aria-hidden="true">→</span></Link>

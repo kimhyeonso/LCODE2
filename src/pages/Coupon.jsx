@@ -9,6 +9,7 @@ import styles from "./Coupon.module.scss";
 const coupons = [
   { type: "SPECIAL EVENT", title: "PACK & WIN", description: "여행 짐싸고 쿠폰받자!", code: "TC-0056", expiry: "VALID UNTIL 2026.08.31", used: true },
   { type: "L:CODE", title: "5%", suffix: "OFF", description: "FLIGHT KIT", detail: "여행 키트", code: "TC-0034", expiry: "VALID UNTIL 2026.10.15" },
+  { type: "L:CODE", title: "10%", suffix: "OFF", description: "TRAVEL GOODS", detail: "여행 상품", code: "TC-0041", expiry: "VALID UNTIL 2026.12.31" },
 ];
 
 const COUPONS_PER_PAGE = 3;

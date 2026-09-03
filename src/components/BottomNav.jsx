@@ -1,4 +1,5 @@
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
 import { usePlanDestination } from "../hooks/usePlanDestination";
 import styles from "./BottomNav.module.scss";
 import homeIcon from "../assets/icons/menu_bar/01home.svg";
@@ -17,10 +18,69 @@ const items = [
 
 export default function BottomNav() {
   const planDestination = usePlanDestination();
+  const navigate = useNavigate();
+  const [isBalancePromptOpen, setIsBalancePromptOpen] = useState(false);
+
+  const openBalance = () => {
+    setIsBalancePromptOpen(false);
+    navigate("/balance");
+  };
+
+  const openSearch = () => {
+    setIsBalancePromptOpen(false);
+    navigate("/search");
+  };
+
   return (
+    <>
+      {isBalancePromptOpen && (
+        <button
+          type="button"
+          className={styles.scrim}
+          aria-label="밸런스 게임 안내 닫기"
+          onClick={() => setIsBalancePromptOpen(false)}
+        />
+      )}
     <nav className={styles.nav} aria-label="모바일 주요 메뉴">
       {items.map(({ to: target, icon, label, add, end }, index) => {
         const to = target === "PLAN" ? planDestination : target;
+
+        if (add) {
+          return (
+            <div className={styles.addItem} key={`add-${index}`}>
+              {isBalancePromptOpen && (
+                <>
+                  <button
+                    type="button"
+                    className={`${styles.balancePrompt} ${styles.searchPrompt}`}
+                    onClick={openSearch}
+                  >
+                    <span>검색<br />바로가기 <b>click!</b></span>
+                  </button>
+                  <button
+                    type="button"
+                    className={`${styles.balancePrompt} ${styles.gamePrompt}`}
+                    onClick={openBalance}
+                  >
+                    <span>밸런스 게임<br />하러가기 <b>click!</b></span>
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                className={styles.addButton}
+                aria-label="밸런스 게임 열기"
+                aria-expanded={isBalancePromptOpen}
+                onClick={() => setIsBalancePromptOpen((current) => !current)}
+              >
+                <span className={styles.add}>
+                  <img src={icon} alt="" aria-hidden="true" />
+                </span>
+              </button>
+            </div>
+          );
+        }
+
         return (
         <NavLink
           key={`${to}-${index}`}
@@ -36,5 +96,6 @@ export default function BottomNav() {
         );
       })}
     </nav>
+    </>
   );
 }

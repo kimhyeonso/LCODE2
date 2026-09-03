@@ -330,7 +330,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .content { display: block; width: calc(100% - 40px); margin-inline: auto; }
   .settings > :first-child { display: inline-flex; margin-bottom: 8px; }
   .eyebrow { margin: 0; font-size: 9px; letter-spacing: .22em !important; }
-  h1 { margin: 18px 0 0; font-size: 40px; line-height: 1; }
+  h1 { margin: 10px 0 0; font-size: 40px; line-height: 1.08; }
   .description { margin-top: 6px; font-size: 11px; }
   .divider { margin-top: 12px; }
   .settingList { margin-top: 29px; border-top-color: #e2e2e2; }
@@ -351,4 +351,15 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     margin-right: 25px;
     margin-left: 25px;
   }
+}
+
+// PC 공통 헤더는 Itinerary의 크기와 간격을 기준으로 맞춥니다.
+@media (min-width: 901px) {
+  .alarm { margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .settings { padding-top: 0; }
+  .settings > a:first-child { margin-bottom: 8px; }
+  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
+  .description { font-size: .66rem; }
+  .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 }

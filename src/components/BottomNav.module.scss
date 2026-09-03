@@ -15,7 +15,9 @@
   padding-bottom: env(safe-area-inset-bottom);
   transform: translateZ(0);
 }
-.nav a {
+.nav a,
+.addItem,
+.addButton {
   width: 20%;
   display: flex;
   flex-direction: column;
@@ -23,6 +25,18 @@
   justify-content: center;
   gap: 2px;
   color: #111;
+}
+.addItem {
+  position: relative;
+  height: 100%;
+}
+.addButton {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
 }
 .nav a > span {
   height: 25px;
@@ -52,8 +66,63 @@
 .active small {
   font-weight: 700;
 }
+.scrim {
+  position: fixed;
+  z-index: 49;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.34);
+  padding: 0;
+}
+.balancePrompt {
+  position: fixed;
+  z-index: 52;
+  display: grid;
+  width: 110px;
+  height: 70px;
+  transform: translateX(-50%);
+  border: 0;
+  background: url("/BalanceGame/pong.svg") center / 100% 100% no-repeat;
+  padding: 9px 8px 16px;
+  color: #fff;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 11px;
+  line-height: 1.7;
+  place-items: center;
+  cursor: pointer;
+   text-align: left;
+}
+.balancePrompt span{
+  margin-bottom: 0.5rem;
+}
+.gamePrompt {
+  right: auto;
+  bottom: calc(49px + env(safe-area-inset-bottom));
+  left: 62%;
+  top: -150%;
+  line-height: 1.7;
+  text-align: left;
+}
+.balancePrompt b {
+  display: inline-grid;
+  min-width: 31px;
+  height: 17px;
+  border-radius: 9px;
+  background: #f4f1eb;
+  color: #111;
+  font-size: 9px;
+  font-weight: 500;
+  place-items: center;
+}
+.searchPrompt {
+  right: auto;
+  bottom: calc(113px + env(safe-area-inset-bottom));
+  left: 62%;
+  top: -280%;
+}
 @media (min-width: 641px) {
-  .nav {
+  .nav,
+  .scrim {
     display: none;
   }
 }

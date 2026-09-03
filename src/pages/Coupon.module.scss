@@ -430,6 +430,7 @@ h1 {
     font-size: 10px;
   }
 
+  // 쿠폰 아래쪽 코드(TC-0056)와 사용기한(VALID UNTIL ...)의 안쪽 여백
   .ticket footer {
     padding: 8px 22px;
     font-size: 9px;
@@ -443,8 +444,9 @@ h1 {
     font-size: 38px;
   }
 
+  // 모바일 사용 완료 쿠폰 오른쪽 위의 "USED" 표시 위치
   .usedLabel {
-    top: 18px;
+    top: 25px;
     right: 12px;
     font-size: 9px;
   }
@@ -461,9 +463,17 @@ h1 {
 
   .ticket:not(.used) { height: 175px; aspect-ratio: auto; }
   .ticket:not(.used) .ticketBody { overflow: hidden; transform: none; }
+  // 모바일 사용 완료 쿠폰의 전체 높이
   .used { height: 205px; aspect-ratio: auto; }
-  .used .ticketBody { padding-top: 24px; }
+
+  // 사용 완료 쿠폰 안의 SPECIAL EVENT / 제목 / 설명 묶음 위치
+  // padding-top 값을 키우면 글자 묶음이 아래로, 줄이면 위로 이동합니다.
+  .used .ticketBody { padding-top: 34px; }
+
+  // 사용 완료 쿠폰의 큰 제목(PACK & WIN)
   .used h2 { color: #f8f8f8; font-size: 29px; }
+
+  // 사용 완료 쿠폰의 상단 작은 글자(SPECIAL EVENT)
   .ticketType { font-size: 9px; }
 }
 
@@ -477,19 +487,19 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .coupon { margin-top: 0; padding: 34px 0 90px; }
+  .coupon { margin-top: 0; padding: 19px 0 90px; }
   .content { width: calc(100% - 40px); margin: 0 auto; }
   .archive > a:first-child {
     display: inline-flex;
     order: 0;
-    margin: 0 0 12px;
+    margin: 0 25px 8px;
   }
   .archiveHeading,
   .description,
-  .divider { margin-right: 0; margin-left: 0; }
+  .divider { margin-right: 25px; margin-left: 0px; }
   .archiveHeading { align-items: flex-start;  }
-  .eyebrow { margin-top: 0; margin-left: 1rem;}
-  h1 { max-width: 230px; margin-top: 14px; font-size: 38px; line-height: 1.08; }
+  .eyebrow { margin-top: 0; margin-left:25px ; font-size: 9px; letter-spacing: .22em !important; }
+  h1 { max-width: 230px; margin-top: 10px; font-size: 40px; line-height: 1.08; }
   .archiveHeading h1 { transform: none; }
   .available { padding-top: 28px; }
   .description { display: none; }
@@ -539,6 +549,7 @@ h1 {
   .ticket:not(.used) h2 { margin-top: 8px; font-size: 32px; line-height: .9; }
   .ticket:not(.used) .ticketDescription { margin-top: 7px; }
   .ticket:not(.used) .cut { top: 42px; right: 24px; }
+  // 미사용 쿠폰의 코드와 사용기한 영역을 카드 바닥에 고정
   .ticket:not(.used) footer {
     position: absolute;
     right: 0;
@@ -560,4 +571,46 @@ h1 {
     font-size: 14px;
   }
   .pagination { display: none; }
+}
+
+// PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
+@media (min-width: 901px) {
+  .coupon { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .archive > a:first-child { margin-bottom: 8px; }
+  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
+  .description { margin-top: 0; font-size: .66rem; }
+  .divider { width: 492px; max-width: 100%; margin-top: 14px; }
+
+  .coupon::before {
+    position: absolute;
+    top: 78px;
+    left: 30px;
+    width: 112px;
+    height: 700px;
+    border-right: 1px solid #d2ccc3;
+    color: #766e65;
+    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
+    font: 400 10px/1.7 $display;
+    letter-spacing: .14em !important;
+    white-space: pre-wrap;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
+  .coupon::after {
+    position: absolute;
+    bottom: 32px;
+    left: 20px;
+    width: 180px;
+    height: 220px;
+    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
+    content: "";
+    opacity: .35;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1450px) {
+  .coupon::before,
+  .coupon::after { display: none; }
 }
