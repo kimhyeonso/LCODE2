@@ -49,7 +49,7 @@ $black: #000;
 
 .listHeader span {
   color: #8f887e;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 3px;
 }
 
@@ -82,7 +82,7 @@ $black: #000;
   grid-column: 1 / -1;
   margin: 0;
   color: #9d958b;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -138,7 +138,7 @@ $black: #000;
   justify-content: space-between;
   gap: 14px;
   color: #a39b91;
-  font-size: clamp(11px, 0.9vw, 13px);
+  font-size: clamp(13px, 0.9vw, 13px);
 }
 
 .cardText b {
@@ -185,7 +185,7 @@ $black: #000;
   padding: 5px 16px 4px;
   border: 1px solid $gold;
   color: #f7c867;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 700;
   letter-spacing: 5px;
 }

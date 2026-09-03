@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import styles from "./MyPageMain.module.scss";
-import { useAuth } from "../hooks/useAuth";
 
 // image 경로를 카드마다 따로 넣습니다. 빈 문자열이면 회색 박스로 표시됩니다.
 const completedTrips = [

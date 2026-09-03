@@ -1,15 +1,8 @@
 import { Link } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
+import { useManagedCollection } from "../hooks/useManagedCollection";
+import { defaultNotices } from "../data/defaultNotices";
 import styles from "./Notice.module.scss";
-
-const notices = [
-  "[안내] L:CODE 오픈 기념 저렴이 세트 첫 예약 안내",
-  "[필독] 출국 전 반드시 확인해야 할 여권 유효기간",
-  "[이벤트] 짐 싸기 멘탈 붕괴 방지! 못난 챙겨와 패키지",
-  "[점검] L:CODE 서비스 안정화를 위한 시스템 정기 점검",
-  "[이벤트] L:CODE 오픈 기념 전 상품 10% 할인",
-  "[이벤트] L:CODE 오픈 기념 전 상품 10% 할인",
-];
 
 const journalCards = [
   { image: "3.png", location: "KYOTO · JAPAN", caption: "L:CODE JOURNAL" },
@@ -17,6 +10,7 @@ const journalCards = [
 ];
 
 export default function Notice() {
+  const managedNotices = useManagedCollection("notices", defaultNotices);
   return (
     <main className={styles.notice}>
       <aside className={styles.issueRail} aria-label="Issue information">
@@ -30,9 +24,9 @@ export default function Notice() {
           <h1 id="notice-title" className={styles.title}>NOTICE</h1>
           <p className={styles.description}>공지사항</p><div className={styles.divider} />
           <div className={styles.items}>
-            {notices.map((title, index) => {
-              const content = <><span>{title}</span><b aria-hidden="true">→</b></>;
-              return index === 0 ? <Link className={styles.noticeLink} to="/open-guide" key={title}>{content}</Link> : <div className={styles.noticeRow} key={`${title}-${index}`}>{content}</div>;
+            {managedNotices.map((notice) => {
+              const content = <><span>{notice.title}</span><b aria-hidden="true">→</b></>;
+              return <Link className={styles.noticeLink} to={`/notice/${encodeURIComponent(notice.id)}`} key={notice.id}>{content}</Link>;
             })}
           </div>
           <p className={styles.contact}><span aria-hidden="true">ⓘ</span>고객센터 전화번호: 070 - 548 - 8679</p>

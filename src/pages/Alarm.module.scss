@@ -197,7 +197,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     flex-direction: column;
     width: 52px;
     color: #77736c;
-    font: 400 12px $korean;
+    font: 400 13px $korean;
     letter-spacing: .12em;
     
   }
@@ -216,7 +216,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   }
 
   .issueRail em {
-    font: 400 11px/1.5 $korean;
+    font: 400 13px/1.5 $korean;
     font-style: normal;
     letter-spacing: .15em;
     writing-mode: vertical-rl;
@@ -238,7 +238,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     bottom: 142px;
     margin: 0;
     color: #77736c;
-    font: 400 11px/1.4 $korean;
+    font: 400 13px/1.4 $korean;
     letter-spacing: .1em;
     writing-mode: vertical-rl;
   }
@@ -250,7 +250,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 }
 
 @media (min-width: 901px) {
-  .eyebrow { font-size: 12px; }
+  .eyebrow { font-size: 13px; }
   h1 { margin: 22px 0 19px; font-size: 92px; }
   .description { font-size: 16px; line-height: 1.55; }
 
@@ -278,7 +278,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     left: 0;
     color: #77736c;
     content: "VOL. 02                         ───────────────                         JOURNEY IN STYLE";
-    font: 400 10px/1 $korean;
+    font: 400 13px/1 $korean;
     letter-spacing: .08em;
     white-space: pre;
   }

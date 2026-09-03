@@ -11,7 +11,7 @@
 .back {
   display: inline-block;
   color: $muted;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: .18em;
 }
 
@@ -21,7 +21,7 @@
 
   > p, > span, .question {
     color: #aaa6a0;
-    font-size: 12px;
+    font-size: 13px;
     letter-spacing: .16em;
   }
 
@@ -44,7 +44,7 @@
 .question {
   margin: 0 24px 17px;
   color: #aaa6a0;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .tabs {
@@ -54,7 +54,7 @@
 
   a {
     color: #aaa6a0;
-    font-size: 11px;
+    font-size: 13px;
     letter-spacing: .13em;
   }
 
@@ -68,68 +68,6 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 16px 12px;
-}
-
-.tripCard {
-  min-width: 0;
-}
-
-.tripImage {
-  display: grid;
-  aspect-ratio: 1 / 1;
-  place-items: center;
-  overflow: hidden;
-  background-position: center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  color: #aaa6a0;
-  font-size: 10px;
-  letter-spacing: .16em;
-}
-
-.tripCopy {
-  min-height: 150px;
-  padding: 15px 11px 13px;
-
-  > small {
-    color: #8c897f;
-    font-size: 9px;
-    letter-spacing: -.02em;
-  }
-
-  h2 {
-    margin: 13px 0 7px;
-    font-family: $serif;
-    font-size: 20px;
-    font-weight: 400;
-    line-height: 1.05;
-  }
-
-  p {
-    display: -webkit-box;
-    margin: 0;
-    overflow: hidden;
-    color: #77736c;
-    font-size: 12px;
-    line-height: 1.45;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
-
-  strong {
-    display: block;
-    margin-top: 11px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-
-  em {
-    display: block;
-    margin-top: 10px;
-    color: #77736c;
-    font-size: 9px;
-    font-style: normal;
-  }
 }
 
 @media (min-width: 641px) {

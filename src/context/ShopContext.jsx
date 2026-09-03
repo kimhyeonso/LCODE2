@@ -6,6 +6,13 @@ import {
 } from "react";
 
 import { ShopContext } from "./shop-context";
+import { useAuth } from "../hooks/useAuth";
+import {
+  getCartItems,
+  getSavedProductIds,
+  saveCartItems,
+  saveSavedProductIds,
+} from "../services/firestoreService";
 
 
 /* =========================================================
@@ -421,6 +428,11 @@ function sortElements(elements) {
 export function ShopProvider({
   children,
 }) {
+  const {
+    user,
+    loading: authLoading,
+  } = useAuth();
+
   /* =======================================================
      SHOP STATE
   ======================================================= */
@@ -467,6 +479,22 @@ export function ShopProvider({
   const pathRef =
     useRef("");
 
+  const cartSyncTimerRef =
+    useRef(null);
+
+  const savedSyncTimerRef =
+    useRef(null);
+
+  const [
+    cartSyncUserId,
+    setCartSyncUserId,
+  ] = useState("");
+
+  const [
+    savedSyncUserId,
+    setSavedSyncUserId,
+  ] = useState("");
+
 
   /* =======================================================
      STORAGE
@@ -478,6 +506,114 @@ export function ShopProvider({
       JSON.stringify(shop)
     );
   }, [shop]);
+
+
+  /* =======================================================
+     FIREBASE CART
+  ======================================================= */
+
+  useEffect(() => {
+    if (authLoading) {
+      return undefined;
+    }
+
+    if (!user?.uid) {
+      return undefined;
+    }
+
+    let active = true;
+
+    getCartItems(user.uid)
+      .then((items) => {
+        if (!active) return;
+
+        if (items.length) {
+          setShop((state) => ({
+            ...state,
+            cart: normalizeShop({ cart: items }).cart,
+          }));
+        }
+
+        setCartSyncUserId(user.uid);
+      })
+      .catch((error) => {
+        console.error("Firebase 장바구니를 불러오지 못했습니다.", error);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [authLoading, user?.uid]);
+
+  useEffect(() => {
+    if (!user?.uid || cartSyncUserId !== user.uid) {
+      return undefined;
+    }
+
+    if (cartSyncTimerRef.current) {
+      window.clearTimeout(cartSyncTimerRef.current);
+    }
+
+    cartSyncTimerRef.current = window.setTimeout(() => {
+      saveCartItems(user.uid, shop.cart)
+        .catch((error) => {
+          console.error("Firebase 장바구니를 저장하지 못했습니다.", error);
+        });
+    }, 300);
+
+    return () => {
+      if (cartSyncTimerRef.current) {
+        window.clearTimeout(cartSyncTimerRef.current);
+      }
+    };
+  }, [cartSyncUserId, shop.cart, user?.uid]);
+
+  useEffect(() => {
+    if (authLoading || !user?.uid) {
+      return undefined;
+    }
+
+    let active = true;
+
+    getSavedProductIds(user.uid)
+      .then((productIds) => {
+        if (!active) return;
+
+        setShop((state) => ({ ...state, saved: productIds }));
+
+        setSavedSyncUserId(user.uid);
+      })
+      .catch((error) => {
+        console.error("Firebase 찜 상품을 불러오지 못했습니다.", error);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [authLoading, user?.uid]);
+
+  useEffect(() => {
+    if (!user?.uid || savedSyncUserId !== user.uid) {
+      return undefined;
+    }
+
+    if (savedSyncTimerRef.current) {
+      window.clearTimeout(savedSyncTimerRef.current);
+    }
+
+    savedSyncTimerRef.current = window.setTimeout(() => {
+      saveSavedProductIds(user.uid, shop.saved)
+        .catch((error) => {
+          console.error("Firebase 찜 상품을 저장하지 못했습니다.", error);
+        });
+    }, 300);
+
+    return () => {
+      if (savedSyncTimerRef.current) {
+        window.clearTimeout(savedSyncTimerRef.current);
+      }
+    };
+  }, [savedSyncUserId, shop.saved, user?.uid]);
 
 
   /* =======================================================
@@ -656,6 +792,30 @@ export function ShopProvider({
       lineId,
       0
     );
+  };
+
+  const removePurchasedItems = (
+    purchasedItems = []
+  ) => {
+    const purchasedLineIds = new Set(
+      purchasedItems
+        .map((item) => item.lineId)
+        .filter((lineId) => lineId && !lineId.startsWith("direct-"))
+    );
+    const directProductIds = new Set(
+      purchasedItems
+        .filter((item) => item.lineId?.startsWith("direct-"))
+        .map((item) => item.id)
+        .filter(Boolean)
+    );
+
+    setShop((state) => ({
+      ...state,
+      cart: state.cart.filter((item) => (
+        !purchasedLineIds.has(item.lineId)
+        && !directProductIds.has(item.id)
+      )),
+    }));
   };
 
 
@@ -1271,6 +1431,7 @@ export function ShopProvider({
         addToCart,
         updateQuantity,
         removeFromCart,
+        removePurchasedItems,
       }}
     >
       {children}

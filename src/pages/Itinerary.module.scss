@@ -170,7 +170,7 @@ $serif-display: $display;
     border-right: 1px solid #d2ccc3;
     color: #766e65;
     content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 10px/1.7 $serif-display;
+    font: 400 13px/1.7 $serif-display;
     letter-spacing: .14em !important;
     white-space: pre-wrap;
     writing-mode: vertical-rl;
@@ -185,7 +185,7 @@ $serif-display: $display;
 
 /* D-Day count 부분 */
 .countCard {
-  background-image:url(/public/Mypage-img/8.png);
+  background-image: url("/Mypage-img/8.png");
   background-position: center;
   background-size: cover;
   color: #f8f8f8;
@@ -238,7 +238,7 @@ $serif-display: $display;
   bottom: -30px;
   color: #766e65;
   content: "JOURNEY IN STYLE";
-  font: 400 9px $serif-display;
+  font: 400 13px $serif-display;
   letter-spacing: .16em !important;
 }
 
@@ -264,7 +264,7 @@ $serif-display: $display;
   position: relative;
   height: 300px;
   aspect-ratio: auto;
-  background-image: url(/public/Mypage-img/3.png);
+  background-image: url("/Mypage-img/3.png");
   background-size: cover;
   background-position: bottom;
 

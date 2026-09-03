@@ -18,7 +18,7 @@ $plan-muted: #8b8780;
   place-items: center;
   padding: 40px 20px;
   color: #999;
-  font-size: 12px;
+  font-size: 13px;
 }
 .planEmpty {
   min-height: 70vh;
@@ -31,7 +31,7 @@ $plan-muted: #8b8780;
 }
 .planEmpty > span {
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .planEmpty h1 {
@@ -41,7 +41,7 @@ $plan-muted: #8b8780;
 .planEmpty p {
   margin: 0;
   color: #999;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.7;
 }
 .planEmpty a {
@@ -54,7 +54,7 @@ $plan-muted: #8b8780;
   padding: 0 16px;
   background: $ink;
   color: #fff;
-  font-size: 11px;
+  font-size: 13px;
 }
 .planEmpty a b {
   font-weight: 400;
@@ -77,14 +77,14 @@ $plan-muted: #8b8780;
   padding: 0;
   background: transparent;
   color: #fff;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: .16em;
   cursor: pointer;
 }
 .heroTop {
   display: flex;
   justify-content: space-between;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .heroTags,
@@ -93,11 +93,25 @@ $plan-muted: #8b8780;
   left: 20px;
   margin: 0;
   color: #bbb;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .heroTags {
-  bottom: 128px;
+  bottom: 186px;
+}
+.heroTitle {
+  position: absolute;
+  right: 20px;
+  bottom: 66px;
+  left: 20px;
+  margin: 0;
+  color: #fff;
+  font-family: "DM Serif Display", serif;
+  font-size: clamp(64px, 20vw, 88px);
+  font-weight: 400;
+  line-height: .82;
+  letter-spacing: -.06em;
+  white-space: nowrap;
 }
 .heroWeather {
   bottom: 30px;
@@ -142,7 +156,7 @@ $plan-muted: #8b8780;
 .stats dd {
   margin: 8px 0 0;
   color: $plan-muted;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .points h2 {
@@ -162,7 +176,7 @@ $plan-muted: #8b8780;
   gap: 8px;
   margin: 0;
   padding: 16px 4px;
-  font-size: 11px;
+  font-size: 13px;
 }
 .points img {
   width: 22px;
@@ -183,7 +197,7 @@ $plan-muted: #8b8780;
   padding-bottom: 10px;
   border-bottom: 1px solid $plan-line;
   color: $plan-muted;
-  font-size: 7px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .expenseSummary {
@@ -193,7 +207,7 @@ $plan-muted: #8b8780;
 .expenseSummary small {
   display: block;
   color: $plan-muted;
-  font-size: 9px;
+  font-size: 13px;
 }
 .expenseSummary h2 {
   margin: 6px 0;
@@ -212,7 +226,7 @@ $plan-muted: #8b8780;
   padding: 0;
   background: transparent;
   color: $plan-muted;
-  font-size: 9px;
+  font-size: 13px;
   cursor: pointer;
 }
 .exchangeRate {
@@ -224,7 +238,7 @@ $plan-muted: #8b8780;
   align-items: center;
   justify-content: space-between;
   color: $plan-muted;
-  font-size: 7px;
+  font-size: 13px;
   letter-spacing: 1.6px;
 }
 .exchangeRate header p {
@@ -234,7 +248,7 @@ $plan-muted: #8b8780;
   display: block;
   margin: 16px 0 8px;
   color: $plan-muted;
-  font-size: 9px;
+  font-size: 13px;
 }
 .exchangeBox {
   display: flex;
@@ -246,7 +260,7 @@ $plan-muted: #8b8780;
 .exchangeBox span,
 .exchangeBox p {
   color: $plan-muted;
-  font-size: 8px;
+  font-size: 13px;
 }
 .exchangeBox span {
   display: block;
@@ -278,14 +292,14 @@ $plan-muted: #8b8780;
 }
 .expenseList dt {
   color: $plan-muted;
-  font-size: 10px;
+  font-size: 13px;
 }
 .expenseList dd {
   margin: 0;
-  font-size: 10px;
+  font-size: 13px;
 }
 .itinerary {
-  padding-top: 28px;
+  padding-top: clamp(40px, 4vw, 52px);
 }
 .dayAccordion {
   border-bottom: 1px solid $plan-line;
@@ -310,12 +324,12 @@ $plan-muted: #8b8780;
 }
 .dayHeader span {
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .dayHeader b {
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
 }
 .dayHeader i {
@@ -343,7 +357,7 @@ $plan-muted: #8b8780;
   place-items: center;
   border: 1px solid #ddd;
   color: #999;
-  font-size: 9px;
+  font-size: 13px;
 }
 .timeline li:first-child .number {
   border-color: #111;
@@ -353,7 +367,7 @@ $plan-muted: #8b8780;
 .timeline time {
   padding-top: 7px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
 }
 .placeImage {
   width: 54px;
@@ -372,14 +386,14 @@ $plan-muted: #8b8780;
 .placeCopy small {
   display: block;
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1.5px;
 }
 .placeCopy strong {
   display: block;
   margin-top: 5px;
   overflow: hidden;
-  font-size: 12px;
+  font-size: 13px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -387,7 +401,7 @@ $plan-muted: #8b8780;
   margin: 4px 0 0;
   overflow: hidden;
   color: #999;
-  font-size: 9px;
+  font-size: 13px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
@@ -404,7 +418,7 @@ $plan-muted: #8b8780;
   padding-left: 8px;
   border-left: 1px solid #ddd;
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
@@ -416,7 +430,7 @@ $plan-muted: #8b8780;
   padding: 16px;
   border-bottom: 1px solid $plan-line;
   color: $plan-muted;
-  font-size: 7px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .otherDays button {
@@ -437,26 +451,32 @@ $plan-muted: #8b8780;
 .otherDays span,
 .otherDays b {
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .otherDays b {
   font-weight: 400;
 }
 .saveArea {
-  padding: 16px;
+  width: min(100%, 760px);
+  margin: 0 auto;
+  padding: 40px 20px 64px;
 }
-.saveArea button {
+.saveArea button,
+.saveArea a {
   width: 100%;
-  height: 48px;
-  border: 0;
+  min-height: 50px;
+  border: 1px solid $ink;
   display: grid;
   place-items: center;
   background: $ink;
   color: #fff;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 1px;
   cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease, border-color .2s ease;
 }
 .saveArea button:disabled {
   cursor: wait;
@@ -464,13 +484,77 @@ $plan-muted: #8b8780;
 }
 .savedActions {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1.4fr 1fr;
   gap: 10px;
 }
-.savedActions button:first-child {
-  border: 1px solid #ddd;
+
+.savedControls > div:first-child {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.savedControls small {
+  color: #777;
+  font-size: 9px;
+  letter-spacing: 1.8px;
+}
+
+.savedControls p {
+  margin: 0;
+  color: #888;
+  font-size: 10px;
+}
+
+.savedActions button {
+  border-color: #d7d7d2;
   background: #fff;
-  color: #aaa;
+  color: #595954;
+}
+
+.savedActions a {
+  grid-auto-flow: column;
+  justify-content: center;
+  gap: 9px;
+  border-color: #59675e;
+  background: #59675e;
+}
+
+.savedActions a span {
+  padding-right: 9px;
+  border-right: 1px solid rgba(255, 255, 255, .35);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+}
+
+.savedActions button:last-child {
+  color: #9a6262;
+}
+
+.savedActions button:hover {
+  border-color: #999;
+  background: #f4f3ef;
+}
+
+.savedActions a:hover {
+  background: #435148;
+}
+
+@media (max-width: 560px) {
+  .savedActions {
+    grid-template-columns: 1fr;
+  }
+
+  .savedControls > div:first-child {
+    display: block;
+  }
+
+  .savedControls p {
+    margin-top: 7px;
+    line-height: 1.6;
+  }
 }
 .deleteBackdrop {
   position: fixed;
@@ -491,7 +575,7 @@ $plan-muted: #8b8780;
 .deleteModal > p {
   margin: 0 0 18px;
   color: #999;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .deleteModal h2 {
@@ -504,7 +588,7 @@ $plan-muted: #8b8780;
   display: block;
   margin-top: 14px;
   color: #888;
-  font-size: 11px;
+  font-size: 13px;
 }
 .deleteModal > small {
   color: #a33b32;
@@ -529,7 +613,7 @@ $plan-muted: #8b8780;
 .saveError {
   margin: 10px 2px 0;
   color: #a33b32;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.5;
   text-align: center;
 }
@@ -567,7 +651,7 @@ $plan-muted: #8b8780;
 .dateEyebrow {
   margin: 0 0 18px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 3px;
 }
 .dateModal h2 {
@@ -601,7 +685,7 @@ $plan-muted: #8b8780;
   font-size: 13px;
 }
 .dateForm label b {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 0.5px;
 }
@@ -626,7 +710,7 @@ $plan-muted: #8b8780;
   padding: 14px 12px;
   background: #dedede;
   color: $ink;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.45;
   text-align: center;
 }
@@ -634,7 +718,7 @@ $plan-muted: #8b8780;
 .dateDuration {
   margin: -6px 0 14px;
   color: #777;
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.45;
   text-align: center;
 }
@@ -644,7 +728,7 @@ $plan-muted: #8b8780;
   border: 0;
   background: $ink;
   color: #fff;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 1px;
   cursor: pointer;
 }
@@ -657,7 +741,7 @@ $plan-muted: #8b8780;
   border: 1px solid #aaa;
   background: #fff;
   color: $ink;
-  font-size: 10px;
+  font-size: 13px;
 }
 .dateSubmit:disabled {
   cursor: wait;
@@ -694,7 +778,7 @@ $plan-muted: #8b8780;
 .modalBrand {
   margin: 0 0 22px 20px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 .savedModal h2 {
@@ -724,7 +808,7 @@ $plan-muted: #8b8780;
   border: 1px solid #ddd;
   background: #fff;
   color: #777;
-  font-size: 11px;
+  font-size: 13px;
   cursor: pointer;
 }
 .modalActions a {
@@ -747,8 +831,14 @@ $plan-muted: #8b8780;
     margin-left: calc((100% - 100vw) / 2);
   }
   .heroTags,
-  .heroWeather {
+  .heroWeather,
+  .heroTitle {
     left: 64px;
+  }
+  .heroTitle {
+    right: 64px;
+    bottom: 72px;
+    font-size: 112px;
   }
   .backButton {
     left: 64px;
@@ -829,11 +919,11 @@ $plan-muted: #8b8780;
   }
 
   .heroTop {
-    font-size: 11px;
+    font-size: 13px;
   }
   .heroTags,
   .heroWeather {
-    font-size: 12px;
+    font-size: 13px;
   }
   .intro h1 {
     font-size: 52px;
@@ -845,7 +935,7 @@ $plan-muted: #8b8780;
     font-size: 32px;
   }
   .stats dd {
-    font-size: 10px;
+    font-size: 13px;
   }
   .points h2 {
     font-size: 22px;
@@ -854,49 +944,49 @@ $plan-muted: #8b8780;
     font-size: 13px;
   }
   .expense > p {
-    font-size: 9px;
+    font-size: 13px;
   }
   .expenseSummary span,
   .expenseSummary small {
-    font-size: 11px;
+    font-size: 13px;
   }
   .expenseSummary h2 {
     font-size: 34px;
   }
   .expenseList dt,
   .expenseList dd {
-    font-size: 12px;
+    font-size: 13px;
   }
   .dayHeader h2 {
     font-size: 24px;
   }
   .dayHeader span,
   .dayHeader b {
-    font-size: 10px;
+    font-size: 13px;
   }
   .number,
   .timeline time {
-    font-size: 10px;
+    font-size: 13px;
   }
   .placeCopy small {
-    font-size: 9px;
+    font-size: 13px;
   }
   .placeCopy strong {
     font-size: 16px;
   }
   .placeCopy p,
   .transport {
-    font-size: 10px;
+    font-size: 13px;
   }
   .otherDays > p {
-    font-size: 9px;
+    font-size: 13px;
   }
   .otherDays strong {
     font-size: 22px;
   }
   .otherDays span,
   .otherDays b {
-    font-size: 10px;
+    font-size: 13px;
   }
   .saveArea button {
     font-size: 13px;

@@ -10,6 +10,7 @@ import {
 } from "react";
 
 import products from "../data/products.json";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { useShop } from "../hooks/useShop";
 import styles from "./Shop.module.scss";
 import customStyles from "./ProductCustom.module.scss";
@@ -542,6 +543,7 @@ const getRelatedProducts = (
 ========================================================= */
 
 export default function ProductDetailPage() {
+  const managedProducts = useManagedCollection("products", products);
   const {
     productId,
   } = useParams();
@@ -550,11 +552,15 @@ export default function ProductDetailPage() {
     useNavigate();
 
   const product =
-    products.find(
+    managedProducts.find(
       (item) =>
         item.id ===
         productId
     );
+  const hasStock = product?.stock != null && Number.isFinite(Number(product.stock));
+  const stock = hasStock ? Number(product.stock) : null;
+  const soldOut = stock === 0;
+  const lowStock = stock !== null && stock > 0 && stock <= 5;
 
   const {
     addToCart,
@@ -637,14 +643,15 @@ export default function ProductDetailPage() {
      IMAGE SET
   ======================================================= */
 
-  const imageSet =
-    productImageMap[
-      productId
-    ] || {
+  const defaultImageSet = productImageMap[productId] || {
       gallery: [],
       detail: [],
       thumbnail: "",
     };
+
+  const imageSet = product?.image
+    ? { ...defaultImageSet, gallery: [product.image], thumbnail: product.image }
+    : defaultImageSet;
 
   const galleryImages =
     imageSet.gallery;
@@ -1236,6 +1243,16 @@ export default function ProductDetailPage() {
 
   const handleAddToCart =
     () => {
+      if (soldOut) {
+        window.alert("품절된 상품입니다.");
+        return;
+      }
+
+      if (stock !== null && quantity > stock) {
+        window.alert(`남은 재고는 ${stock}개입니다.`);
+        return;
+      }
+
       if (
         !checkOption()
       ) {
@@ -1325,6 +1342,16 @@ export default function ProductDetailPage() {
 
   const handleBuyNow =
     () => {
+      if (soldOut) {
+        window.alert("품절된 상품입니다.");
+        return;
+      }
+
+      if (stock !== null && quantity > stock) {
+        window.alert(`남은 재고는 ${stock}개입니다.`);
+        return;
+      }
+
       if (
         !checkOption()
       ) {
@@ -1408,6 +1435,8 @@ export default function ProductDetailPage() {
               0
             ] ||
             "",
+
+          stock,
         })
       );
 
@@ -1856,10 +1885,12 @@ export default function ProductDetailPage() {
                   (
                     previous
                   ) =>
-                    previous +
-                    1
+                    stock === null
+                      ? previous + 1
+                      : Math.min(stock, previous + 1)
                 )
               }
+              disabled={soldOut || (stock !== null && quantity >= stock)}
               aria-label="수량 늘리기"
             >
               +
@@ -1867,6 +1898,12 @@ export default function ProductDetailPage() {
           </div>
 
           <hr />
+
+          {(soldOut || lowStock) && (
+            <p className={soldOut ? styles.soldOut : styles.lowStock}>
+              {soldOut ? "품절" : `재고 부족 · ${stock}개 남음`}
+            </p>
+          )}
 
           <label>
             TOTAL
@@ -1890,6 +1927,7 @@ export default function ProductDetailPage() {
               onClick={
                 handleAddToCart
               }
+              disabled={soldOut}
             >
               장바구니 담기
             </button>
@@ -1899,6 +1937,7 @@ export default function ProductDetailPage() {
               onClick={
                 handleBuyNow
               }
+              disabled={soldOut}
             >
               바로 구매
             </button>
@@ -2190,9 +2229,9 @@ export default function ProductDetailPage() {
                           : `${relatedProduct.name} 찜하기`
                       }
                     >
-                      {liked
-                        ? "♥"
-                        : "♡"}
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M12 20.7 10.55 19.38C5.4 14.7 2 11.62 2 7.85 2 4.77 4.42 2.35 7.5 2.35c1.74 0 3.41.81 4.5 2.09a6.03 6.03 0 0 1 4.5-2.09c3.08 0 5.5 2.42 5.5 5.5 0 3.77-3.4 6.85-8.55 11.54Z" />
+                      </svg>
                     </button>
 
                     <button

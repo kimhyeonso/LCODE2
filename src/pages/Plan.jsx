@@ -3,6 +3,7 @@ import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { deletePlan, getPlan, getPlanDateConflict, getPlans, savePlan } from "../services/firestoreService";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
@@ -35,6 +36,31 @@ const cityAliases = {
   TOKYO: "도쿄",
 };
 
+const cityDisplayNames = {
+  "강릉": "GANGNEUNG",
+  "거제": "GEOJE",
+  "광저우": "GUANGZHOU",
+  "다롄": "DALIAN",
+  "도쿄": "TOKYO",
+  "베이징": "BEIJING",
+  "부산": "BUSAN",
+  "상하이": "SHANGHAI",
+  "서울": "SEOUL",
+  "시안": "XI'AN",
+  "여수": "YEOSU",
+  "오사카": "OSAKA",
+  "오사카·도쿄": "OSAKA · TOKYO",
+  "장가계": "ZHANGJIAJIE",
+  "제주도": "JEJU",
+  "청두": "CHENGDU",
+  "충칭": "CHONGQING",
+  "칭다오": "QINGDAO",
+  "하얼빈": "HARBIN",
+  "항저우": "HANGZHOU",
+  "홋카이도": "HOKKAIDO",
+  "후쿠오카": "FUKUOKA",
+};
+
 const formatDate = (date, fallback) => {
   if (!date) return fallback;
   const value = new Date(date);
@@ -60,6 +86,7 @@ const addDays = (date, amount) => {
 };
 
 export default function Plan() {
+  const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -111,12 +138,12 @@ export default function Plan() {
 
     return savedDetailState.plan
       || (!hasRequestedTrip ? savedPlan : null)
-      || tripRoad.trips.find((trip) => trip.id === tripId)
-      || tripRoad.trips.find((trip) => trip.city === city)
-      || tripRoad.trips.find((trip) => trip.country.toLowerCase() === countryParam)
-      || tripRoad.trips.find((trip) => trip.city === "후쿠오카")
-      || tripRoad.trips[0];
-  }, [hasRequestedTrip, params, savedDetailState.plan, savedPlan]);
+      || managedTrips.find((trip) => trip.id === tripId)
+      || managedTrips.find((trip) => trip.city === city)
+      || managedTrips.find((trip) => trip.country.toLowerCase() === countryParam)
+      || managedTrips.find((trip) => trip.city === "후쿠오카")
+      || managedTrips[0];
+  }, [hasRequestedTrip, managedTrips, params, savedDetailState.plan, savedPlan]);
   const [activeDay, setActiveDay] = useState(0);
   const [isSavedOpen, setIsSavedOpen] = useState(false);
   const [savedDocumentId, setSavedDocumentId] = useState("");
@@ -146,9 +173,10 @@ export default function Plan() {
   const thumbnailImage = thumbnailPath ? getImageUrl(thumbnailPath) : "";
   const heroImage = thumbnailImage || allPlaces.find((place) => place.imageUrl)?.imageUrl;
   const nights = Math.max(selectedTrip.days.length - 1, 1);
+  const heroCityName = cityDisplayNames[selectedTrip.city] || selectedTrip.city.toUpperCase();
   const startDate = selectedTrip.dateRange?.start;
   const endDate = selectedTrip.dateRange?.end;
-  const budgetRows = [
+  const defaultBudgetRows = [
     ["교통", 40000 + selectedTrip.days.length * 5000],
     ["식비", selectedTrip.days.length * 30000],
     ["카페", selectedTrip.days.length * 10000],
@@ -156,7 +184,25 @@ export default function Plan() {
     ["쇼핑", 50000],
     ["기타", 15000],
   ];
-  const estimatedExpense = budgetRows.reduce((total, [, amount]) => total + amount, 0);
+  const defaultEstimatedExpense = defaultBudgetRows.reduce((total, [, amount]) => total + amount, 0);
+  const requestedBudget = Number(params.get("budget"));
+  const hasCustomBudget = params.get("budgetMode") === "custom"
+    && Number.isFinite(requestedBudget)
+    && requestedBudget > 0;
+  const budgetRows = hasCustomBudget
+    ? defaultBudgetRows.map(([label, amount], index) => {
+      const isLastRow = index === defaultBudgetRows.length - 1;
+      const allocated = defaultBudgetRows
+        .slice(0, index)
+        .reduce((total, [, rowAmount]) => total + Math.round((rowAmount / defaultEstimatedExpense) * requestedBudget), 0);
+      const scaledAmount = isLastRow
+        ? Math.max(0, requestedBudget - allocated)
+        : Math.round((amount / defaultEstimatedExpense) * requestedBudget);
+      return [label, scaledAmount];
+    })
+    : defaultBudgetRows;
+  const estimatedExpense = hasCustomBudget ? requestedBudget : defaultEstimatedExpense;
+  const expenseSettingsLink = `/plan/expense?trip=${encodeURIComponent(selectedTrip.id)}${hasCustomBudget ? `&budget=${requestedBudget}&budgetMode=custom` : ""}`;
   const currency = currencyByCountry[normalizedCountry] || currencyByCountry.korea;
   const exchangeAmount = Math.round(estimatedExpense / currency.rate);
   const representativeImage = selectedTrip.days
@@ -285,12 +331,15 @@ export default function Plan() {
   }
 
   if (!hasRequestedTrip && !savedPlan) {
+    const isGuest = !user;
     return (
       <main className={`${styles.plan} ${styles.planEmpty}`}>
-        <span>NO SAVED PLAN</span>
-        <h1>저장된 일정이 없어요.</h1>
-        <p>{user ? "가고 싶은 도시를 찾아 첫 일정을 담아보세요." : "로그인하면 저장한 일정을 여기서 확인할 수 있어요."}</p>
-        <Link to={user ? "/search" : "/login"}>{user ? "여행지 둘러보기" : "로그인하기"} <b>→</b></Link>
+        <span>{isGuest ? "NO TRIP YET" : "NO SAVED PLAN"}</span>
+        <h1>{isGuest ? "아직 정해진 여행이 없어요." : "저장된 일정이 없어요."}</h1>
+        <p>
+          {isGuest ? <>마음에 드는 여행지를 찾아<br />나만의 첫 일정을 만들어 보세요.</> : "가고 싶은 도시를 찾아 첫 일정을 담아보세요."}
+        </p>
+        <Link to={isGuest ? "/login" : "/search"}>{isGuest ? "로그인하고 시작하기" : "여행지 둘러보기"} <b>→</b></Link>
       </main>
     );
   }
@@ -306,7 +355,8 @@ export default function Plan() {
           ← BACK
         </button>
         <div className={styles.heroTop}><span>TRAVEL PLAN</span><span>{selectedTrip.country.toUpperCase()} / ISSUE 01</span></div>
-        <p className={styles.heroTags}>{selectedTrip.duration} · 맛집 · 카페</p>
+        <p className={styles.heroTags}>{nights} NIGHTS · FOOD · CAFÉS</p>
+        <h1 className={styles.heroTitle}>{heroCityName}</h1>
         <p className={styles.heroWeather}>
           <b>{weather.loading ? "--" : weather.temperature ?? "--"}°C</b><span>·</span>
           <span>{weather.error ? "WEATHER" : weather.label}</span><span>·</span>
@@ -340,11 +390,11 @@ export default function Plan() {
       <section className={styles.expense} aria-labelledby="estimated-expense-title">
         <p>ESTIMATED EXPENSE</p>
         <div className={styles.expenseSummary}>
-          <span>예상 여행 경비</span>
+          <span>{hasCustomBudget ? "설정한 여행 경비" : "예상 여행 경비"}</span>
           <h2 id="estimated-expense-title">약 ₩{estimatedExpense.toLocaleString("ko-KR")}</h2>
           <div className={styles.expenseMeta}>
             <small>항공권 · 숙박비 제외<br />{currency.note}</small>
-            <button type="button" className={styles.expenseSetting}>경비 설정하기 →</button>
+            <Link className={styles.expenseSetting} to={expenseSettingsLink}>경비 설정하기 →</Link>
           </div>
         </div>
         {normalizedCountry !== "korea" && (
@@ -419,13 +469,20 @@ export default function Plan() {
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
           {viewingSavedPlan ? (
-            <div className={styles.savedActions}>
-              <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>수정</button>
-              <button type="button" onClick={() => {
-                setDeleteState({ deleting: false, error: "" });
-                setIsDeleteOpen(true);
-              }}>삭제</button>
-            </div>
+            <section className={styles.savedControls} aria-label="저장 일정 관리">
+              <div>
+                <small>PLAN OPTIONS</small>
+                <p>현재 일정이 마음에 들지 않으면 AI로 다시 조정할 수 있어요.</p>
+              </div>
+              <div className={styles.savedActions}>
+                <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>일정 수정</button>
+                <Link to={`/ai-remix?planId=${encodeURIComponent(savedPlanId)}`}><span>AI REMIX</span>AI로 일정 다시 짜기</Link>
+                <button type="button" onClick={() => {
+                  setDeleteState({ deleting: false, error: "" });
+                  setIsDeleteOpen(true);
+                }}>일정 삭제</button>
+              </div>
+            </section>
           ) : (
             <button type="button" onClick={openDateStep} disabled={saveState.saving}>내 일정에 담기</button>
           )}
