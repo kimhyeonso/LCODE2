@@ -2,6 +2,7 @@ import MypageBackLink from "../components/MypageBackLink";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { getUserCoupons } from "../services/firestoreService";
 import { getCouponStorageKey } from "../data/eventCoupons";
 import styles from "./Coupon.module.scss";
@@ -31,6 +32,10 @@ function CouponTicket({ coupon, featured = false }) {
 }
 
 export default function Coupon() {
+  const managedCoupons = useManagedCollection("coupons", [
+    { id: "coupon-welcome", type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" },
+    ...coupons,
+  ]);
   const { user } = useAuth();
   const { state } = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
@@ -64,12 +69,12 @@ export default function Coupon() {
       });
     return () => { active = false; };
   }, [user]);
-  const welcomeCoupon = { type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" };
+  const welcomeCoupon = managedCoupons.find((coupon) => coupon.code === "TC-0012");
   const ownedCoupons = useMemo(
-    () => [...coupons, ...registeredCoupons],
-    [registeredCoupons],
+    () => [...managedCoupons.filter((coupon) => coupon.code !== "TC-0012"), ...registeredCoupons],
+    [managedCoupons, registeredCoupons],
   );
-  const availableCount = [welcomeCoupon, ...ownedCoupons]
+  const availableCount = [...(welcomeCoupon ? [welcomeCoupon] : []), ...ownedCoupons]
     .filter((coupon) => !coupon.used).length;
   const pageCount = Math.max(1, Math.ceil(ownedCoupons.length / COUPONS_PER_PAGE));
   const pageCoupons = ownedCoupons.slice(
@@ -105,7 +110,7 @@ export default function Coupon() {
           </div>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
           <div className={styles.divider} />
-          <CouponTicket coupon={welcomeCoupon} featured />
+          {welcomeCoupon && <CouponTicket coupon={welcomeCoupon} featured />}
           <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>
         </section>
         <section className={styles.couponList} aria-label="보유 쿠폰">

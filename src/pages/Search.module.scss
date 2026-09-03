@@ -24,12 +24,12 @@
   border: 0;
   outline: 0;
   background: transparent;
-  font: 12px $sans;
+  font: 13px $sans;
 }
 .searchIntro > p {
   margin: 18px 0 10px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 0.5px;
 }
 .keywords {
@@ -40,7 +40,7 @@
 }
 .keywords span {
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .keywords button {
@@ -48,7 +48,7 @@
   border: 0;
   background: transparent;
   color: #999;
-  font-size: 10px;
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
 }
@@ -62,7 +62,7 @@
 }
 .products h1 {
   margin: 0 0 14px 14px;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 3px;
 }
 .products > div {
@@ -86,7 +86,7 @@
 .products span {
   display: block;
   margin-top: 8px;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1.5px;
 }
 .products span {
@@ -109,13 +109,13 @@
   padding: 0 12px;
   background: #fff;
   color: #999;
-  font: 8px $sans;
+  font: 13px $sans;
   letter-spacing: 1px;
 }
 .archive > h2 {
   margin: 30px 0 14px 14px;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1.8px;
 }
@@ -143,7 +143,52 @@
   height: 260px;
   background: linear-gradient(#ddd 35%, #777);
   background-position: center;
+  background-repeat: no-repeat;
   background-size: cover;
+}
+.favoriteButton {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  padding: 0;
+  background: rgba(250, 248, 243, 0.78);
+  color: #3f433f;
+  box-shadow: 0 3px 12px rgba(20, 24, 21, 0.12);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+.favoriteButton svg {
+  width: 17px;
+  height: 17px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  transition: fill 160ms ease, stroke 160ms ease;
+}
+.favoriteButton:hover {
+  transform: translateY(-1px);
+}
+.favoriteButton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.favoriteButton.favoriteActive {
+  border-color: rgba(201, 52, 52, 0.28);
+  background: rgba(255, 255, 255, 0.92);
+  color: #d43636;
+  box-shadow: 0 4px 14px rgba(201, 52, 52, 0.18);
+}
+.favoriteButton.favoriteActive svg {
+  fill: currentColor;
+  stroke: currentColor;
 }
 .cardImage::after {
   content: "";
@@ -161,7 +206,7 @@
   top: 12px;
   left: 12px;
   opacity: 0.65;
-  font-size: 8px;
+  font-size: 13px;
 }
 .cardImage strong {
   bottom: 12px;
@@ -176,7 +221,7 @@
 .cardCopy p {
   margin: 0 0 8px;
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .cardCopy h3 {
@@ -188,7 +233,7 @@
   display: block;
   margin-top: 8px;
   color: #bbb;
-  font-size: 8px;
+  font-size: 13px;
 }
 .empty {
   padding: 60px 20px;
@@ -201,7 +246,7 @@
 .empty p {
   margin: 8px 0 0;
   color: #999;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .filterBackdrop {
@@ -233,7 +278,7 @@
 }
 .filterPanel > header h2 {
   margin: 0;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: 2px;
 }
@@ -252,7 +297,7 @@
 .filterGroup h3 {
   margin: 0 0 14px;
   color: #aaa;
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1px;
 }
@@ -268,7 +313,7 @@
   padding: 0 16px;
   background: #fff;
   color: #888;
-  font-size: 10px;
+  font-size: 13px;
 }
 .filterGroup button.selected {
   border-color: #111;
@@ -289,7 +334,7 @@
 }
 .paceOptions b {
   color: #222;
-  font-size: 9px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: 1.5px;
 }
@@ -316,7 +361,7 @@
   border: 1px solid #ddd;
   background: #fff;
   color: #888;
-  font-size: 11px;
+  font-size: 13px;
 }
 .filterPanel > footer button:last-child {
   border-color: #111;
@@ -341,5 +386,124 @@
   }
   .filterPanel {
     max-height: calc(100dvh - 80px);
+  }
+}
+
+@media (min-width: 1024px) {
+  .searchPage {
+    width: min(calc(100% - 80px), 1200px);
+    margin-block: 56px 120px;
+    padding: 64px 64px 96px;
+  }
+
+  .searchIntro form {
+    grid-template-columns: 22px 1fr;
+    gap: 14px;
+  }
+  .searchIntro form img {
+    width: 18px;
+    height: 18px;
+  }
+  .searchIntro input {
+    height: 56px;
+    font-size: 15px;
+  }
+  .searchIntro > p {
+    margin: 28px 0 14px;
+    font-size: 11px;
+  }
+  .keywords {
+    grid-template-columns: 58px repeat(3, minmax(0, 1fr));
+  }
+  .keywords span {
+    font-size: 10px;
+  }
+  .keywords button {
+    min-height: 46px;
+    font-size: 12px;
+  }
+
+  .products {
+    margin-top: 56px;
+  }
+  .products h1 {
+    margin: 0 0 20px;
+    font-size: 13px;
+  }
+  .products > div {
+    gap: 18px;
+    overflow: visible;
+  }
+  .products strong {
+    margin-top: 12px;
+    font-size: 11px;
+  }
+  .products span {
+    margin-top: 5px;
+    font-size: 9px;
+  }
+
+  .archive {
+    margin-top: 72px;
+  }
+  .controls button,
+  .controls select {
+    min-height: 40px;
+    padding-inline: 18px;
+    font-size: 10px;
+  }
+  .archive > h2 {
+    margin: 38px 0 20px;
+    font-size: 11px;
+  }
+  .archive > h2 b {
+    font-size: 18px;
+  }
+  .results {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .cardImage {
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .cardImage small {
+    top: 16px;
+    left: 16px;
+    font-size: 10px;
+  }
+  .cardImage strong {
+    bottom: 18px;
+    left: 18px;
+    font-size: 34px;
+  }
+  .cardCopy {
+    min-height: 112px;
+    padding: 18px 20px 20px;
+  }
+  .cardCopy p,
+  .cardCopy small {
+    font-size: 9px;
+  }
+  .cardCopy h3 {
+    font-size: 15px;
+  }
+
+  .filterPanel {
+    position: relative;
+    width: min(calc(100% - 80px), 720px);
+    padding: 54px 0 0;
+  }
+  .filterPanel > header {
+    top: 0;
+  }
+  .filterGroup {
+    margin-inline: 32px;
+  }
+  .filterPanel > footer {
+    position: sticky;
+    width: auto;
+    grid-template-columns: 120px 1fr;
+    padding-inline: 32px;
   }
 }
