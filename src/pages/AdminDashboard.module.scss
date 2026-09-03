@@ -367,6 +367,16 @@ tbody tr:hover {
   font-size: 15px;
 }
 
+.stock em {
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.inStock { color: #47715a; }
+.lowStock { color: #b56b16; }
+.soldOut { color: #c83b3b; }
+
 .actions {
   display: grid;
   gap: 7px;

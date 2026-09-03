@@ -725,6 +725,14 @@
     scale(1.08);
 }
 
+.cardCart:disabled,
+.detailActions button:disabled,
+.quantity button:disabled {
+  cursor: not-allowed;
+  opacity: 0.48;
+  transform: none;
+}
+
 
 .cardCart:active {
   transform:
@@ -854,6 +862,18 @@
 
   font-size: 11px;
 }
+
+.lowStock,
+.soldOut {
+  display: inline-flex;
+  margin-top: 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.lowStock { color: #b56b16; }
+.soldOut { color: #c83b3b; }
 
 
 /* =========================================================

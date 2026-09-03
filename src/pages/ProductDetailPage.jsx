@@ -557,6 +557,10 @@ export default function ProductDetailPage() {
         item.id ===
         productId
     );
+  const hasStock = product?.stock != null && Number.isFinite(Number(product.stock));
+  const stock = hasStock ? Number(product.stock) : null;
+  const soldOut = stock === 0;
+  const lowStock = stock !== null && stock > 0 && stock <= 5;
 
   const {
     addToCart,
@@ -1239,6 +1243,16 @@ export default function ProductDetailPage() {
 
   const handleAddToCart =
     () => {
+      if (soldOut) {
+        window.alert("품절된 상품입니다.");
+        return;
+      }
+
+      if (stock !== null && quantity > stock) {
+        window.alert(`남은 재고는 ${stock}개입니다.`);
+        return;
+      }
+
       if (
         !checkOption()
       ) {
@@ -1328,6 +1342,16 @@ export default function ProductDetailPage() {
 
   const handleBuyNow =
     () => {
+      if (soldOut) {
+        window.alert("품절된 상품입니다.");
+        return;
+      }
+
+      if (stock !== null && quantity > stock) {
+        window.alert(`남은 재고는 ${stock}개입니다.`);
+        return;
+      }
+
       if (
         !checkOption()
       ) {
@@ -1411,6 +1435,8 @@ export default function ProductDetailPage() {
               0
             ] ||
             "",
+
+          stock,
         })
       );
 
@@ -1859,10 +1885,12 @@ export default function ProductDetailPage() {
                   (
                     previous
                   ) =>
-                    previous +
-                    1
+                    stock === null
+                      ? previous + 1
+                      : Math.min(stock, previous + 1)
                 )
               }
+              disabled={soldOut || (stock !== null && quantity >= stock)}
               aria-label="수량 늘리기"
             >
               +
@@ -1870,6 +1898,12 @@ export default function ProductDetailPage() {
           </div>
 
           <hr />
+
+          {(soldOut || lowStock) && (
+            <p className={soldOut ? styles.soldOut : styles.lowStock}>
+              {soldOut ? "품절" : `재고 부족 · ${stock}개 남음`}
+            </p>
+          )}
 
           <label>
             TOTAL
@@ -1893,6 +1927,7 @@ export default function ProductDetailPage() {
               onClick={
                 handleAddToCart
               }
+              disabled={soldOut}
             >
               장바구니 담기
             </button>
@@ -1902,6 +1937,7 @@ export default function ProductDetailPage() {
               onClick={
                 handleBuyNow
               }
+              disabled={soldOut}
             >
               바로 구매
             </button>

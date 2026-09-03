@@ -7,6 +7,7 @@ import {
   getDocs,
   onSnapshot,
   query,
+  runTransaction,
   serverTimestamp,
   setDoc,
   updateDoc,
@@ -215,6 +216,51 @@ export async function deleteAdminManagementItem(type, id) {
   const reference = doc(requireDb(), getAdminCollectionName(type), String(id));
   if (type === "members") return deleteDoc(reference);
   return setDoc(reference, { id: String(id), _deleted: true, updatedAt: serverTimestamp() }, { merge: true });
+}
+
+export async function decreaseProductStocks(items = []) {
+  const quantities = new Map();
+  items.forEach((item) => {
+    const id = String(item.id || item.productId || "");
+    const quantity = Math.max(0, Number(item.quantity || 0));
+    if (id && quantity) quantities.set(id, (quantities.get(id) || 0) + quantity);
+  });
+  if (!quantities.size) throw new Error("구매할 상품 정보가 없습니다.");
+
+  const database = requireDb();
+  return runTransaction(database, async (transaction) => {
+    const entries = [...quantities.entries()].map(([id, quantity]) => ({
+      id, quantity, reference: doc(database, "adminProducts", id),
+    }));
+    const snapshots = await Promise.all(
+      entries.map((entry) => transaction.get(entry.reference)),
+    );
+
+    entries.forEach((entry, index) => {
+      const snapshot = snapshots[index];
+      // Firebase에 재고가 설정된 상품부터 재고 관리를 적용한다.
+      if (!snapshot.exists() || snapshot.data().stock == null) return;
+      const stock = Number(snapshot.data().stock);
+      if (!Number.isFinite(stock) || stock < entry.quantity) {
+        const error = new Error(
+          stock <= 0
+            ? `${snapshot.data().name || "상품"}은(는) 품절되었습니다.`
+            : `${snapshot.data().name || "상품"}의 재고가 부족합니다. (남은 수량 ${Math.max(0, stock)}개)`,
+        );
+        error.code = "insufficient-stock";
+        throw error;
+      }
+    });
+
+    entries.forEach((entry, index) => {
+      const snapshot = snapshots[index];
+      if (!snapshot.exists() || snapshot.data().stock == null) return;
+      transaction.update(entry.reference, {
+        stock: Number(snapshot.data().stock) - entry.quantity,
+        updatedAt: serverTimestamp(),
+      });
+    });
+  });
 }
 
 export async function getCartItems(userId) {

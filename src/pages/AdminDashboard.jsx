@@ -223,7 +223,13 @@ export default function AdminDashboard() {
                       <label>카테고리<input value={item.category || ""} onChange={(event) => updateItem(item.id, "category", event.target.value)} /></label>
                     </div>
                   </div>
-                  <div className={styles.stock}><span>재고</span><div><button type="button" onClick={() => adjustStock(item, -1)}>−</button><strong>{Number(item.stock || 0)}</strong><button type="button" onClick={() => adjustStock(item, 1)}>+</button></div></div>
+                  <div className={styles.stock}>
+                    <span>재고</span>
+                    <div><button type="button" onClick={() => adjustStock(item, -1)}>−</button><strong>{Number(item.stock || 0)}</strong><button type="button" onClick={() => adjustStock(item, 1)}>+</button></div>
+                    <em className={Number(item.stock || 0) === 0 ? styles.soldOut : Number(item.stock || 0) <= 5 ? styles.lowStock : styles.inStock}>
+                      {Number(item.stock || 0) === 0 ? "품절" : Number(item.stock || 0) <= 5 ? "재고 부족" : "판매 가능"}
+                    </em>
+                  </div>
                 </>
               )}
 

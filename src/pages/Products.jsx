@@ -151,6 +151,11 @@ export default function Products() {
   const handleQuickAdd = (
     product
   ) => {
+    if (Number(product.stock) === 0) {
+      window.alert("품절된 상품입니다.");
+      return;
+    }
+
     clearQuickTimers();
 
     addToCart(
@@ -461,6 +466,10 @@ export default function Products() {
                 saved.includes(
                   product.id
                 );
+              const hasStock = product.stock != null && Number.isFinite(Number(product.stock));
+              const stock = hasStock ? Number(product.stock) : null;
+              const soldOut = stock === 0;
+              const lowStock = stock !== null && stock > 0 && stock <= 5;
 
               return (
                 <article
@@ -560,6 +569,7 @@ export default function Products() {
                       className={
                         styles.cardCart
                       }
+                      disabled={soldOut}
                       onClick={() =>
                         handleQuickAdd(
                           product
@@ -570,7 +580,7 @@ export default function Products() {
                         " 장바구니 담기"
                       }
                     >
-                      +
+                      {soldOut ? "×" : "+"}
                     </button>
                   </div>
 
@@ -602,6 +612,12 @@ export default function Products() {
                       {product.price.toLocaleString()}{" "}
                       KRW
                     </p>
+
+                    {(soldOut || lowStock) && (
+                      <span className={soldOut ? styles.soldOut : styles.lowStock}>
+                        {soldOut ? "품절" : `재고 부족 · ${stock}개 남음`}
+                      </span>
+                    )}
                   </div>
                 </article>
               );
