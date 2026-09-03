@@ -89,7 +89,11 @@ function normalizeShop(savedShop) {
 
           lineId:
             item.lineId ||
-            `${item.id}__${option.id}`,
+            `${item.id}__${
+              item.variantKey ||
+              item.selectedVariant?.id ||
+              "default"
+            }__${option.id}`,
         };
       })
     : [];
@@ -519,8 +523,14 @@ export function ShopProvider({
       );
 
 
+    const variantKey =
+      product.variantKey ||
+      product.selectedVariant?.id ||
+      "default";
+
+
     const lineId =
-      `${product.id}__${normalizedOption.id}`;
+      `${product.id}__${variantKey}__${normalizedOption.id}`;
 
 
     setShop(
