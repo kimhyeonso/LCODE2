@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { deletePlan, getPlans } from "../services/firestoreService";
 import tripRoad from "../data/trip_road.json";
+import DesrinationThumnail from "../components/DesrinationThumnail";
 import styles from "./SavedPlan.module.scss";
 import { resolveImageUrl as imageUrl } from "../utils/imageUtils";
 
@@ -345,6 +346,21 @@ export default function SavedPlan() {
 
           {others.map((plan) => (
             <article key={plan.id}>
+              <button
+                type="button"
+                className={styles.heroDelete}
+                onClick={() => setDeleteTarget(plan)}
+                aria-label="Delete plan"
+                title="Delete plan"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M3 6h18" />
+                  <path d="M8 6V4h8v2" />
+                  <path d="M19 6l-1 14H6L5 6" />
+                  <path d="M10 11v5" />
+                  <path d="M14 11v5" />
+                </svg>
+              </button>
               <span
                 style={{
                   backgroundImage: `url(${planImage(
@@ -389,16 +405,6 @@ export default function SavedPlan() {
                         이어서 작성
                       </Link>
 
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setDeleteTarget(
-                            plan
-                          )
-                        }
-                      >
-                        삭제
-                      </button>
                     </>
                   ) : (
                     <>
@@ -422,19 +428,6 @@ export default function SavedPlan() {
                     </>
                   )}
 
-                  {plan.status !==
-                    "draft" && (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setDeleteTarget(
-                          plan
-                        )
-                      }
-                    >
-                      삭제
-                    </button>
-                  )}
                 </nav>
               </div>
             </article>
@@ -480,28 +473,14 @@ export default function SavedPlan() {
               const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
 
               return (
-                <Link
-                  to={`/plan?trip=${encodeURIComponent(
-                    trip.id
-                  )}`}
+                <DesrinationThumnail
                   key={trip.id}
-                  className={styles.trendingCard}
-                >
-                  <div
-                    className={styles.trendingImage}
-                    style={{
-                      backgroundImage: `url(${getTrendingImage(trip)})`,
-                    }}
-                  />
-
-                  <div className={styles.trendingCopy}>
-                    <small>CITY {String(index + 1).padStart(2, "0")} · {category}</small>
-                    <h3>{trip.city}</h3>
-                    <p>{trip.title}</p>
-                    <strong>{trip.duration} · {trip.country.toUpperCase()}</strong>
-                    <em>일정에 추가 &gt;</em>
-                  </div>
-                </Link>
+                  trip={trip}
+                  index={index}
+                  image={getTrendingImage(trip)}
+                  category={category}
+                  to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+                />
               );
             })}
           </div>

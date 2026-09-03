@@ -1001,7 +1001,7 @@ export default function Checkout() {
 
       color: #77736c;
 
-      font-size: 11px;
+      font-size: 13px;
 
       letter-spacing: 0.23em;
     }
@@ -1056,7 +1056,7 @@ export default function Checkout() {
 
       color: #8b867e;
 
-      font-size: 10px;
+      font-size: 13px;
 
       letter-spacing:
         0.16em;
@@ -1126,7 +1126,7 @@ export default function Checkout() {
 
       color: #69655f;
 
-      font-size: 11px;
+      font-size: 13px;
 
       font-weight: 400;
 
@@ -1138,7 +1138,7 @@ export default function Checkout() {
     .lcode-blockTitle small {
       color: #98938b;
 
-      font-size: 10px;
+      font-size: 13px;
 
       letter-spacing:
         0.07em;
@@ -1253,7 +1253,7 @@ export default function Checkout() {
 
 
     .lcode-orderProductHead small {
-      font-size: 12px;
+      font-size: 13px;
     }
 
 
@@ -1282,7 +1282,7 @@ export default function Checkout() {
 
       color: #8e8981;
 
-      font-size: 10px;
+      font-size: 13px;
 
       letter-spacing:
         0.13em;
@@ -1320,7 +1320,7 @@ export default function Checkout() {
 
       cursor: pointer;
 
-      font-size: 11px;
+      font-size: 13px;
 
       text-align: left;
     }
@@ -1446,7 +1446,7 @@ export default function Checkout() {
 
   font: inherit;
 
-  font-size: 12px;
+  font-size: 13px;
 
   box-sizing:
     border-box;
@@ -1490,7 +1490,7 @@ export default function Checkout() {
 
   font: inherit;
 
-  font-size: 12px;
+  font-size: 13px;
 
   cursor: pointer;
 }
@@ -1527,7 +1527,7 @@ export default function Checkout() {
 
       cursor: pointer;
 
-      font-size: 12px;
+      font-size: 13px;
     }
 
 
@@ -1578,7 +1578,7 @@ export default function Checkout() {
 
 
     .lcode-paymentDetailHead b {
-      font-size: 11px;
+      font-size: 13px;
 
       letter-spacing:
         0.14em;
@@ -1588,7 +1588,7 @@ export default function Checkout() {
     .lcode-paymentDetailHead span {
       color: #8f8a82;
 
-      font-size: 10px;
+      font-size: 13px;
     }
 
 
@@ -1615,7 +1615,7 @@ export default function Checkout() {
 
 
     .lcode-paymentSetting > span {
-      font-size: 12px;
+      font-size: 13px;
     }
 
 
@@ -1644,7 +1644,7 @@ export default function Checkout() {
 
 
 .lcode-paymentSetting > span {
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
@@ -1684,7 +1684,7 @@ export default function Checkout() {
 
   font: inherit;
 
-  font-size: 12px;
+  font-size: 13px;
 
   cursor: pointer;
 }
@@ -1714,7 +1714,7 @@ export default function Checkout() {
 
   font: inherit;
 
-  font-size: 12px;
+  font-size: 13px;
 
   box-sizing:
     border-box;
@@ -1737,7 +1737,7 @@ export default function Checkout() {
 
       margin-bottom: 10px;
 
-      font-size: 12px;
+      font-size: 13px;
 
       letter-spacing:
         0.12em;
@@ -1749,7 +1749,7 @@ export default function Checkout() {
 
       color: #77736c;
 
-      font-size: 12px;
+      font-size: 13px;
 
       line-height: 1.8;
     }
@@ -1789,7 +1789,7 @@ export default function Checkout() {
     .lcode-couponText small {
       color: #77736c;
 
-      font-size: 11px;
+      font-size: 13px;
     }
 
 
@@ -1917,7 +1917,7 @@ export default function Checkout() {
 
       color: #858078;
 
-      font-size: 11px;
+      font-size: 13px;
 
       line-height: 1.8;
     }
@@ -2023,7 +2023,7 @@ export default function Checkout() {
 
       color: #69655f;
 
-      font-size: 12px;
+      font-size: 13px;
     }
 
 
@@ -2091,7 +2091,7 @@ export default function Checkout() {
         Arial,
         sans-serif;
 
-      font-size: 10px;
+      font-size: 13px;
 
       font-weight: 400;
     }
@@ -2124,14 +2124,14 @@ export default function Checkout() {
 
       color: #77736c;
 
-      font-size: 11px;
+      font-size: 13px;
     }
 
 
     .lcode-summaryBenefit p b {
       color: #11110f;
 
-      font-size: 12px;
+      font-size: 13px;
 
       font-weight: 400;
     }
@@ -2160,7 +2160,7 @@ export default function Checkout() {
 
       color: #88837b;
 
-      font-size: 10px;
+      font-size: 13px;
 
       letter-spacing:
         0.13em;
@@ -2190,7 +2190,7 @@ export default function Checkout() {
 
       cursor: pointer;
 
-      font-size: 12px;
+      font-size: 13px;
 
       font-weight: 700;
     }
@@ -2219,7 +2219,7 @@ export default function Checkout() {
 
       text-align: center;
 
-      font-size: 10px;
+      font-size: 13px;
 
       line-height: 1.7;
     }
@@ -2304,7 +2304,7 @@ export default function Checkout() {
           0.48
         );
 
-      font-size: 10px;
+      font-size: 13px;
 
       letter-spacing:
         0.26em;
@@ -2339,7 +2339,7 @@ export default function Checkout() {
           0.52
         );
 
-      font-size: 11px;
+      font-size: 13px;
     }
 
 
@@ -2475,7 +2475,7 @@ export default function Checkout() {
 
         overflow-x: auto;
 
-        font-size: 9px;
+        font-size: 13px;
       }
 
 

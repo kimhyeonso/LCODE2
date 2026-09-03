@@ -186,12 +186,12 @@ export default function TravelPlanner() {
           loading={editState.saving}
           draftLoading={draftState.saving}
           editMode={Boolean(planId)}
+          hasUnsavedChanges={hasUnsavedChanges}
         />
         {editState.saved && <p className={styles.editSuccess} role="status">변경한 일정이 저장되었습니다.</p>}
         {editState.error && <p className={styles.editError} role="alert">{editState.error}</p>}
         {conflictingPlan && <Link className={styles.conflictPlanLink} to={`/travel-planner?plan=${encodeURIComponent(conflictingPlan.id)}`}>겹치는 일정 확인·수정하기 →</Link>}
         {draftState.saved && <p className={styles.editSuccess} role="status">{draftState.savedAt?.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })} 임시저장 완료</p>}
-        {hasUnsavedChanges && !draftState.saving && <p className={styles.unsavedNotice} role="status">저장되지 않은 변경 사항이 있습니다.</p>}
         {draftState.error && <p className={styles.editError} role="alert">{draftState.error}</p>}
       </div>
     </main>

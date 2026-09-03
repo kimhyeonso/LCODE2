@@ -17,6 +17,15 @@ const links = [
   ["/contact", "CONTACT"],
 ];
 
+const desktopLinks = [
+  ["/", "HOME"],
+  ["/search", "SEARCH"],
+  ["PLAN", "PLAN"],
+  ["/shop", "SHOP"],
+  ["/event", "EVENT"],
+  ["/contact", "CONTACT"],
+];
+
 export default function Header() {
   const header = useRef(null);
   const searchInput = useRef(null);
@@ -118,8 +127,8 @@ export default function Header() {
         className={styles.navigation}
         aria-label="주요 메뉴"
       >
-        {links.map(([link, label]) => {
-          const to = link === "PLAN" ? planDestination : link;
+        {desktopLinks.map(([link, label]) => {
+          const to = link === "PLAN" ? (user ? planDestination : "/plan") : link;
           return (
           <NavLink
             key={to}

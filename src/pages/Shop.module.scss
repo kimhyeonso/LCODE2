@@ -87,7 +87,7 @@
 .heroLocation,
 .heroEyebrow,
 .heroNumber {
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 0.25em;
 }
 
@@ -103,7 +103,7 @@
   align-items: center;
   gap: 28px;
 
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 0.18em;
 }
 
@@ -143,7 +143,7 @@
 
   border-radius: 50px;
 
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 400;
 }
 
@@ -203,7 +203,7 @@
       0.8
     );
 
-  font-size: 10px;
+  font-size: 13px;
   line-height: 1.8;
 }
 
@@ -233,7 +233,7 @@
 
   backdrop-filter: blur(4px);
 
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 0.12em;
 
   transition:
@@ -310,7 +310,7 @@
 
   background: transparent;
 
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 
@@ -334,7 +334,7 @@
 
   color: $muted;
 
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -369,7 +369,7 @@
 
   background: transparent;
 
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
@@ -474,7 +474,7 @@
   backdrop-filter:
     blur(5px);
 
-  font-size: 10px;
+  font-size: 13px;
 
   font-weight: 600;
 
@@ -824,7 +824,7 @@
 .pageEyebrow {
   color: $muted;
 
-  font-size: 9px;
+  font-size: 13px;
 
   letter-spacing: 2px;
 }
@@ -837,7 +837,7 @@
 .productMeta small {
   color: #68635c;
 
-  font-size: 10px;
+  font-size: 13px;
 
   font-weight: 500;
 
@@ -860,7 +860,7 @@
 .productMeta p {
   margin: 0;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 .lowStock,
@@ -1055,7 +1055,7 @@
 
   color: #77726b;
 
-  font-size: 9px;
+  font-size: 13px;
 
   font-weight: 500;
 
@@ -1168,7 +1168,7 @@
 
   background: $ink;
 
-  font-size: 10px;
+  font-size: 13px;
 
   transition:
     opacity
@@ -1257,7 +1257,7 @@
   top: 18px;
   left: 18px;
   z-index: 2;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -1306,7 +1306,7 @@
   padding: 7px 10px;
   background: rgba(251, 249, 244, 0.9);
   color: $ink;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 0.12em;
 }
 .galleryCount span { color: $muted; }
@@ -1348,7 +1348,7 @@
 .detailInfo small,
 .detailInfo label {
   color: $muted;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -1361,13 +1361,13 @@
 .detailInfo > strong { font: 25px $serif; }
 .detailInfo em,
 .totalBox em,
-.summary em { font: 11px $sans; }
+.summary em { font: 13px $sans; }
 
 .detailInfo > p {
   max-width: 540px;
   margin: 34px 0;
   color: $muted;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.9;
 }
 
@@ -1392,7 +1392,7 @@
   border: 1px solid $line;
   background: transparent;
   text-align: left;
-  font-size: 10px;
+  font-size: 13px;
   cursor: pointer;
 }
 
@@ -1416,7 +1416,7 @@
   place-items: center;
   border: 0;
   background: transparent;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .quantity button { cursor: pointer; }
@@ -1440,7 +1440,7 @@
   color: #fff;
   background: $ink;
   text-align: center;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 /* PRODUCT ACCORDION */
@@ -1468,13 +1468,13 @@
   display: flex;
   align-items: center;
   gap: 26px;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.17em;
 }
 
 .productAccordion summary b {
   color: $muted;
-  font: 400 9px $sans;
+  font: 400 13px $sans;
   letter-spacing: 0.12em;
 }
 
@@ -1514,7 +1514,7 @@
   max-width: 680px;
   margin: 0;
   color: $muted;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.9;
   word-break: keep-all;
 }
@@ -1534,7 +1534,7 @@
 
 .detailContentsHeader small {
   color: $muted;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 0.2em;
 }
 
@@ -1687,7 +1687,7 @@
 
   border-bottom: 1px solid $line;
 
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
@@ -1698,7 +1698,7 @@
 
   color: $muted;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
@@ -1738,7 +1738,7 @@
 
   color: $muted;
 
-  font-size: 10px;
+  font-size: 13px;
 }
 
 
@@ -1790,7 +1790,7 @@
 
   color: $muted;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
@@ -1873,7 +1873,7 @@
 
   color: $muted;
 
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -1907,7 +1907,7 @@
 
   margin: 5px 0;
 
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
@@ -1920,7 +1920,7 @@
 
   border-bottom: 1px solid $line;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
@@ -1948,7 +1948,7 @@
 
   border-bottom: 1px solid $line;
 
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
@@ -2034,7 +2034,7 @@
 .completeMessage p {
   color: $muted;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
@@ -2052,14 +2052,14 @@
 
   border-top: 1px solid $line;
 
-  font-size: 12px;
+  font-size: 13px;
 }
 
 
 .completePage dt {
   color: $muted;
 
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 2px;
 }
 
@@ -2087,7 +2087,7 @@
 
   text-align: center;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
@@ -2140,7 +2140,7 @@
 .addedModal p {
   color: $muted;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
@@ -2183,7 +2183,7 @@
 
   margin-top: 5px;
 
-  font-size: 9px;
+  font-size: 13px;
 }
 
 
@@ -2209,7 +2209,7 @@
 
   text-align: center;
 
-  font-size: 10px;
+  font-size: 13px;
 }
 
 
@@ -2239,7 +2239,7 @@
 
   border-bottom: 1px solid;
 
-  font-size: 11px;
+  font-size: 13px;
 }
 
 
