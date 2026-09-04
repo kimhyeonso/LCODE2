@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Buy.module.scss";
 
 const filters = ["전체", "배송 준비", "배송 중", "배송 완료"];
@@ -35,7 +36,7 @@ export default function Buy() {
     <main className={styles.buyPage}>
       <div className={styles.content}>
         <section className={styles.main}>
-          <Link className={styles.back} to="/my"><span aria-hidden="true">←</span></Link>
+          <MypageBackLink />
           <p className={styles.eyebrow}>MY L:CODE</p>
           <header className={styles.titleRow}><h1>SHOPPING ORDERS</h1><p>주문한 여행 상품을 한눈에 확인해보세요.</p></header>
           <div className={styles.filters} aria-label="배송 상태 필터">

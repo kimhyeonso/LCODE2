@@ -88,6 +88,6 @@
     margin: 36px 0 70px max(276px, calc(50% - 550px));
   }
 
-  .intro h1 { font-size: 54px; }
+  .intro h1 { font-size: 54px; padding-top: 18px; }
   .cardList { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }

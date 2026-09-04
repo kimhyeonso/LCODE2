@@ -3,6 +3,7 @@ import tripRoad from "../data/trip_road.json";
 import { useManagedCollection } from "../hooks/useManagedCollection";
 import DesrinationThumnail from "../components/DesrinationThumnail";
 import styles from "./DesrinationAll.module.scss";
+import { resolveImageUrl } from "../utils/imageUtils";
 
 const thumbnailModules = import.meta.glob("../assets/images/Thumbnail/Thumbnail-image/**/*.{jpg,jpeg,png,webp}", {
   eager: true,
@@ -17,11 +18,8 @@ const thumbnails = Object.entries(thumbnailModules).reduce((list, [path, image])
   return list;
 }, {});
 
-const getThumbnailImage = (imagePath) => {
-  if (!imagePath) return "";
-  const assetPath = imagePath.replace(/^img\//, "../assets/images/");
-  return thumbnailModules[assetPath] || "";
-};
+// Plan.jsx의 대표 썸네일과 동일하게 assets/images 전체에서 찾는다 (Thumbnail-image 폴더 밖의 경로도 포함).
+const getThumbnailImage = (imagePath) => resolveImageUrl(imagePath, "");
 
 const cityThumbnail = {
   "거제": "geoje",

@@ -14,8 +14,8 @@ export default function Contact() {
       <div className={styles.content}>
         <section className={styles.mainContent}>
           <header className={styles.intro}>
-            <p className={styles.eyebrow}>CONTACT / HELP DESK</p>
-            <h1>여행에 필요한<br />도움을 드릴게요.</h1>
+            <p className={styles.eyebrow}>HELP DESK</p>
+            <h1>CONTACT</h1>
             <p className={styles.description}>궁금한 점이 있다면 자주 묻는 질문과 고객센터 안내를 확인해보세요.</p>
           </header>
 

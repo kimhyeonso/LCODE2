@@ -6,6 +6,7 @@ import { useShop } from "../hooks/useShop";
 import { useManagedCollection } from "../hooks/useManagedCollection";
 import { getPlans } from "../services/firestoreService";
 import products from "../data/products.json";
+import tripRoad from "../data/trip_road.json";
 import productImage01 from "../assets/images/detail/1_1.png";
 import productImage02 from "../assets/images/detail/2_1.png";
 import productImage03 from "../assets/images/detail/3_1.png";
@@ -181,7 +182,10 @@ export default function Home() {
     ? `${formatCardDate(startDate)}${endDate ? ` — ${formatCardDate(endDate, startDate.slice(0, 4) !== endDate.slice(0, 4))}` : ""}`
     : "일정 미정";
   const dayCount = upcomingPlan?.days?.length ?? 0;
-  const upcomingImage = getImageUrl(upcomingPlan?.image);
+  // Plan.jsx의 대표 썸네일(heroImage)과 동일하게 trip_road.json 썸네일을 최우선으로 사용한다.
+  const upcomingImage = getImageUrl(
+    tripRoad.thumbnailMap?.[upcomingPlan?.country]?.[upcomingPlan?.city] || upcomingPlan?.image
+  );
   const dDay = startDate
     ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
     : null;
@@ -230,7 +234,7 @@ export default function Home() {
 
       <section className={styles.section}>
         <SectionLabel number="01">UPCOMING</SectionLabel>
-        <h1 className={styles.matchTitle}>UPCOMING TRIP</h1>
+        <h1 className={`${styles.matchTitle} whereToNextTitle`}>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
           <TextLink to="/itinerary">VIEW ALL</TextLink>
@@ -288,11 +292,14 @@ export default function Home() {
         <SectionLabel number="03">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
-          <TextLink to={remixPreviewPath}>VIEW ALL</TextLink>
+          <TextLink to="/desrinationAll">VIEW ALL</TextLink>
         </div>
         <div className={styles.pickGrid}>
           <Link to="/plan?city=SHANGHAI" className={styles.featurePick}>
-            <div className={`${styles.placeholder} ${styles.shanghaiImage}`} />
+            <div
+              className={`${styles.placeholder} ${styles.shanghaiImage}`}
+              style={{ backgroundImage: `url(${getImageUrl(tripRoad.thumbnailMap?.china?.["상하이"])})` }}
+            />
             <h3>
               상하이에서 만나는
               <br />
@@ -300,12 +307,18 @@ export default function Home() {
             </h3>
           </Link>
           <Link to="/plan?city=TOKYO" className={styles.smallPick}>
-            <div className={`${styles.placeholder} ${styles.tokyoImage}`} />
+            <div
+              className={`${styles.placeholder} ${styles.tokyoImage}`}
+              style={{ backgroundImage: `url(${getImageUrl(tripRoad.thumbnailMap?.japan?.["도쿄"])})` }}
+            />
             <h3>TOKYO</h3>
             <p>조용한 골목과 작은 카페를 찾아서</p>
           </Link>
           <Link to="/plan?city=SEOUL" className={styles.smallPick}>
-            <div className={`${styles.placeholder} ${styles.seoulImage}`} />
+            <div
+              className={`${styles.placeholder} ${styles.seoulImage}`}
+              style={{ backgroundImage: `url(${getImageUrl(tripRoad.thumbnailMap?.korea?.["서울"])})` }}
+            />
             <h3>SEOUL</h3>
             <p>도시 속 오래된 풍경을 천천히</p>
           </Link>
@@ -314,7 +327,7 @@ export default function Home() {
 
       <section className={`${styles.section} ${styles.destinationSection}`}>
         <SectionLabel number="04">DESTINATIONS</SectionLabel>
-        <h2 className={styles.scriptTitle}>Where to Next?</h2>
+        <h2 className={`${styles.scriptTitle} whereToNextTitle`}>Where to Next?</h2>
         <div className={styles.destinationHero} />
         <div className={styles.destinationList}>
           {[

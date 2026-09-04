@@ -83,12 +83,6 @@ export default function ProfileEdit() {
   return (
     <main className={styles.profileEdit}>
       <div className={styles.layout}>
-        <aside className={styles.issueRail} aria-hidden="true">
-          <p>ISSUE NO.<br />002</p>
-          <span>TRAVEL L:CODE MEMBER<br />CURATED FOR YOU</span>
-          <div className={styles.seal}>L:CODE<br />TRAVEL</div>
-        </aside>
-
         <section className={styles.formSection} aria-labelledby="profile-title">
           <MypageBackLink />
           <span className={styles.eyebrow}>MY JOURNEY</span>

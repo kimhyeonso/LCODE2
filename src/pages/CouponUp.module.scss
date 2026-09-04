@@ -1,12 +1,13 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 
-.couponUp { min-height: 100vh; padding: 70px 48px; background: $paper; color: $ink; font-family: $korean; }
+.couponUp { min-height: 100vh; padding: 36px 48px 90px; background: $paper; color: $ink; font-family: $korean; }
 .couponUp * { box-sizing: border-box; }
 .layout { display: grid; grid-template-columns: 490px 650px; gap: 130px; width: 1270px; margin: 0 auto; transform: translateX(34px); }
 .formArea > a { margin-bottom: 34px; }
-.eyebrow { margin: 0; color: #aaa49c; font-size: 13px; letter-spacing: .08em; }
+.eyebrow { margin: 0; color: #aaa49c; font-size: 13px; letter-spacing: .16em; }
 .formArea h1 { margin: 22px 0 12px; font-family: $display; font-size: 62px; font-weight: 400; line-height: .96; letter-spacing: -.035em; }
 .description { margin: 0 0 25px; padding-bottom: 22px; border-bottom: 1px solid rgba($ink, .14); color: #99948c; font-size: 13px; }
 .formArea form { display: grid; }
@@ -57,8 +58,10 @@
   }
 }
 
+@include title.saved-plan-title(".eyebrow", ".formArea h1");
+
 @media (max-width: 600px) {
-  .couponUp { padding: 19px 20px 90px; }
+  .couponUp { padding: 19px 16px 90px; }
   .layout { width: 100%; margin-inline: auto; transform: none; }
   .formArea > :first-child { margin-bottom: 8px; }
   .eyebrow { margin-top: 0; }
@@ -75,7 +78,7 @@
 
 @media (max-width: 1400px) { .layout { grid-template-columns: minmax(400px, 480px) minmax(500px, 600px); gap: 70px; width: min(calc(100% - 80px), 1150px); transform: none; } }
 @include tablet { .couponUp { padding: 48px 32px; } .layout { grid-template-columns: 1fr; width: min(100%, 620px); transform: none; } .previewArea { padding-top: 0; } .previewArea::before { display: none; } }
-@include mobile { .couponUp { padding: 28px 18px 42px; } .formArea h1 { font-size: 46px; } .couponPreview { height: 235px; padding: 24px; } .couponPreview h2 { font-size: 36px; } .couponPreview footer { padding: 12px 24px; } .benefits { padding: 18px; } }
+@include mobile { .couponUp { padding: 22px 16px 92px; } .formArea h1 { font-size: 38px; } .couponPreview { height: 235px; padding: 24px; } .couponPreview h2 { font-size: 36px; } .couponPreview footer { padding: 12px 24px; } .benefits { padding: 18px; } }
 
 @media (min-width: 901px) {
   /* 여기가 위쪽 마진 ----------------------- */

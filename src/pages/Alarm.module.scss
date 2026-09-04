@@ -2,6 +2,7 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 // 페이지에서 사용하는 글꼴을 불러옵니다.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
@@ -173,6 +174,8 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   }
 
 }
+
+@include title.saved-plan-title(".eyebrow", ".settings h1");
 .tape{
   position: absolute;
   width: 6rem;
@@ -187,49 +190,6 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 @media (min-width: 901px) {
   .alarm {
     position: relative;
-  }
-
-  .issueRail {
-    position: absolute;
-    top: 137px;
-    left: 30px;
-    display: flex;
-    flex-direction: column;
-    width: 52px;
-    color: #77736c;
-    font: 400 13px $korean;
-    letter-spacing: .12em;
-    
-  }
-
-  .issueRail strong {
-    margin-top: .22rem;
-    font: inherit;
-    
-  }
-
-  .issueRail i {
-    width: 1px;
-    height: 210px;
-    margin: 14px 0 22px 5px;
-    background: #bdb7ad;
-  }
-
-  .issueRail em {
-    font: 400 13px/1.5 $korean;
-    font-style: normal;
-    letter-spacing: .15em;
-    writing-mode: vertical-rl;
-    transform: rotate(180deg);
-    
-  }
-
-  .issueRail b {
-    width: 78px;
-    height: 78px;
-    margin-top: 220px;
-    background: url("/Mypage-img/u.png") center / contain no-repeat;
-    opacity: .25;
   }
 
   .sideCaption {
@@ -286,11 +246,11 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 
 @include mobile {
   // 모바일은 6개 설정과 안내문이 한 화면에 들어오도록 세로 밀도를 높입니다.
-  .alarm { padding: 0.8rem 0 1.25rem; }
-  .content { grid-template-columns: 1fr; width: min(calc(100% - 2.5rem), 31rem); }
+  .alarm { padding: 22px 0 92px; }
+  .content { grid-template-columns: 1fr; width: min(calc(100% - 2rem), 31rem); }
 
-  .eyebrow { font-size: 0.625rem; }
-  h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
+  .eyebrow { font-size: 13px; letter-spacing: .16em; }
+  h1 { margin: 0.75rem 0 0.7rem; font-size: 38px; }
   .description { font-size: 0.625rem; }
   .divider { margin-top: 0.55rem; }
 
@@ -326,11 +286,11 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 }
 
 @media (max-width: 600px) {
-  .alarm { min-height: calc(100dvh - 129px); margin-top: 0; padding: 19px 0 90px; background: $paper; }
-  .content { display: block; width: calc(100% - 40px); margin-inline: auto; }
+  .alarm { min-height: calc(100dvh - 129px); margin-top: 0; padding: 22px 0 92px; background: $paper; }
+  .content { display: block; width: calc(100% - 32px); margin-inline: auto; }
   .settings > :first-child { display: inline-flex; margin-bottom: 8px; }
-  .eyebrow { margin: 0; font-size: 10px; letter-spacing: .22em !important; }
-  h1 { margin: 10px 0 0; font-size: 40px; line-height: 1.08; }
+  .eyebrow { margin: 0; font-size: 13px; letter-spacing: .16em !important; }
+  h1 { margin: 10px 0 0; font-size: 38px; line-height: 1.08; }
   .description { margin-top: 6px; font-size: 11px; }
   .divider { margin-top: 12px; }
   .settingList { margin-top: 29px; border-top-color: #e2e2e2; }
@@ -341,7 +301,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .setting button.enabled i { transform: translateX(17px); }
   .notice { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 67px; margin: 18px 0 0; padding: 12px 20px; background: #e6e3df; color: #666; font-size: 10px; line-height: 1.5; }
   .notice span { margin-right: 28px; font-size: 12px; }
-  .imagePlaceholder, .tape, .issueRail, .sideCaption { display: none; }
+  .imagePlaceholder, .tape, .sideCaption { display: none; }
 
   .settings > :first-child,
   .eyebrow,
@@ -355,7 +315,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 
 // PC 공통 헤더는 Itinerary의 크기와 간격을 기준으로 맞춥니다.
 @media (min-width: 901px) {
-  .alarm { margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .alarm { margin-top: 0; padding-top: 36px; padding-bottom: 90px; align-items: flex-start; }
   .settings { padding-top: 0; }
   .settings > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }

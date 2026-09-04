@@ -2,13 +2,16 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 
 // 위시리스트 페이지에서 사용하는 글꼴을 불러옵니다.
 
 // 영문 제목에 사용하는 세리프 글꼴입니다.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
-.wishlist, .wishlist * { letter-spacing: -0.01em !important; }
+.wishlist,
+.content > :not(.placeGrid),
+.content > :not(.placeGrid) * { letter-spacing: -0.01em !important; }
 
 // 공통 헤더 아래의 위시리스트 전체 영역입니다.
 .wishlist {
@@ -59,10 +62,9 @@ h1 {
 
 // 데스크톱에서 4열로 보이는 저장 장소 카드 목록입니다.
 .placeGrid {
-  
   display: grid; // Lay cards out in a regular grid.
-  grid-template-columns: repeat(4, minmax(0, 1fr)); // Create four equal-width columns.
-  gap: 1.8rem; // Separate adjacent cards.
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px 12px;
   margin-top: 1.85rem; // Separate cards from the divider.
 }
 
@@ -204,6 +206,15 @@ h1 {
   }
 }
 
+@include title.saved-plan-title(".eyebrow", ".content h1");
+
+@media (min-width: 641px) {
+  .placeGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px 16px;
+  }
+}
+
 // 태블릿과 좁은 데스크톱 화면의 여백입니다.
 @include tablet {
   .content {
@@ -222,7 +233,7 @@ h1 {
   }
 
   .content {
-    width: min(calc(100% - 2.5rem), 31rem); // Use mobile side gutters.
+    width: min(calc(100% - 2rem), 31rem); // Use mobile side gutters.
   }
 
   .divider {
@@ -231,12 +242,13 @@ h1 {
   }
 
   .eyebrow {
-    font-size: 0.625rem;
+    font-size: 13px;
+    letter-spacing: .16em;
   }
 
   h1 {
     margin: 0.85rem 0;
-    font-size: 1.7rem;
+    font-size: 38px;
   }
 
   .description {
@@ -245,10 +257,10 @@ h1 {
 
   .placeGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr)); // Show two cards per row on phones.
-    width: calc(100% + 1rem);
-    margin-left: -0.5rem;
-    gap: 1.55rem 0.125rem; // Preserve the card-to-card spacing.
-    margin-top: 1.35rem;
+    width: 100%;
+    margin-left: 0;
+    gap: 16px 12px;
+    margin-top: 16px;
   }
 
   .location {
@@ -297,8 +309,8 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .wishlist { margin-top: 0; padding: 19px 0 90px; }
-  .content { width: calc(100% - 40px); margin: 0 auto; transform: none; }
+  .wishlist { margin-top: 0; padding: 22px 0 92px; }
+  .content { width: calc(100% - 32px); margin: 0 auto; transform: none; }
   .content > :first-child { margin-bottom: 8px; }
   .content > :first-child,
   .eyebrow,
@@ -306,50 +318,20 @@ h1 {
   .description,
   .divider { margin-right: 25px; margin-left: 25px; }
   .eyebrow { margin-top: 0; }
-  .eyebrow { font-size: 10px; letter-spacing: .22em !important; }
-  h1 { margin-top: 10px; font-size: 40px; line-height: 1.08; }
+  .eyebrow { font-size: 13px; letter-spacing: .16em !important; }
+  h1 { margin-top: 10px; font-size: 38px; line-height: 1.08; }
   .description { font-size: 11px; }
   .placeGrid { width: 100%; margin-left: 0; }
 }
 
 // PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
 @media (min-width: 901px) {
-  .wishlist { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .wishlist { position: relative; margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
   .content > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
+  .placeGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
-  .wishlist::before {
-    position: absolute;
-    top: 78px;
-    left: 30px;
-    width: 112px;
-    height: 700px;
-    border-right: 1px solid #d2ccc3;
-    color: #766e65;
-    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 10px/1.7 $display;
-    letter-spacing: .14em !important;
-    white-space: pre-wrap;
-    writing-mode: vertical-rl;
-    pointer-events: none;
-  }
-  .wishlist::after {
-    position: absolute;
-    bottom: 32px;
-    left: 20px;
-    width: 180px;
-    height: 220px;
-    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
-    content: "";
-    opacity: .35;
-    pointer-events: none;
-  }
-}
-
-@media (min-width: 901px) and (max-width: 1450px) {
-  .wishlist::before,
-  .wishlist::after { display: none; }
 }

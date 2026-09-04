@@ -1,8 +1,9 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/representative-title" as title;
 
 .contactPage, .contactPage * { box-sizing: border-box; }
-.contactPage { min-height: 100vh; padding: 68px 0 54px; background: $paper; color: $ink; font-family: "Noto Sans KR", sans-serif; }
+.contactPage { min-height: 100vh; padding: 36px 0 90px; background: $paper; color: $ink; font-family: "Noto Sans KR", sans-serif; }
 .content { display: grid; grid-template-columns: minmax(0, 820px) minmax(300px, 370px); grid-template-rows: auto auto; gap: 54px clamp(68px, 6.5vw, 130px); width: min(1320px, calc(100% - 112px)); margin: 0 auto; }
 .mainContent { min-width: 0; }
 .eyebrow { margin: 0; color: #7f6547; font: 400 13px "DM Serif Display", serif; letter-spacing: .14em; }
@@ -41,7 +42,7 @@
 .helpCopy { border-left: 1px solid #d9d2c9; padding-left: 28px; }
 .helpCopy h2 { margin: 0; font-family: "Noto Sans KR", sans-serif; font-size: 22px; font-weight: 500; }
 .helpCopy p { margin: 10px 0 0; color: #66615b; font-family: "Noto Sans KR", sans-serif; font-size: 14px; }
-.helpBox > a { display: flex; height: 64px; align-items: center; justify-content: center; gap: 52px; background: #111; color: #fff; font-family: "Noto Sans KR", sans-serif; font-size: 16px; text-decoration: none; }
+.helpBox > a { display: flex; height: 50px; align-items: center; justify-content: center; gap: 8px; background: #171714; color: #fff; font-family: $sans; font-size: 14px; font-weight: 500; line-height: 1; letter-spacing: 0; text-decoration: none; }
 
 @media (min-width: 901px) {
   .contactPage { width: calc(100% - 220px); margin-left: 220px; }
@@ -58,9 +59,9 @@
 
 @include mobile {
   .contactPage { min-height: auto; padding: 28px 0 42px; }
-  .content { display: flex; width: calc(100% - 36px); flex-direction: column; gap: 30px; }
-  .eyebrow { font-size: 11px; }
-  .intro h1 { margin-top: 16px; font-size: 42px; }
+  .content { display: flex; width: calc(100% - 32px); flex-direction: column; gap: 30px; }
+  .eyebrow { font-size: 13px; letter-spacing: .16em; }
+  .intro h1 { margin-top: 16px; font-size: 38px; }
   .description { margin-top: 16px; font-size: 14px; }
   .faq { margin-top: 30px; }
   .faqList summary { min-height: 50px; padding: 0 8px; font-size: 14px; }
@@ -73,17 +74,19 @@
   .helpCopy { padding-left: 14px; }
   .helpCopy h2 { font-size: 17px; }
   .helpCopy p { font-size: 11px; }
-  .helpBox > a { grid-column: 1 / -1; height: 52px; gap: 36px; font-size: 14px; }
+  .helpBox > a { grid-column: 1 / -1; height: 50px; gap: 8px; font-size: 14px; }
 }
 
 @media (max-width: 600px) {
-  .contactPage { padding: 19px 0 90px; }
-  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .contactPage { padding: 22px 0 92px; }
+  .content { width: calc(100% - 32px); margin-inline: auto; }
   .intro h1 { font-size: 0; line-height: 1; }
   .intro h1::after {
     display: block;
     content: "CONTACT";
-    font: 400 48px/1 "DM Serif Display", serif;
+    font: 400 38px/1 "DM Serif Display", serif;
     letter-spacing: -.03em;
   }
 }
+
+@include title.saved-plan-title(".eyebrow", ".intro h1");

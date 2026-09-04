@@ -2,6 +2,7 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 // 쿠폰 페이지에서 사용하는 글꼴을 불러옵니다.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
@@ -305,6 +306,8 @@ h1 {
   }
 }
 
+@include title.saved-plan-title(".eyebrow", ".archiveHeading h1");
+
 @include tablet {
   .content {
     gap: 3.5rem;
@@ -321,7 +324,7 @@ h1 {
     display: flex;
     flex-direction: column;
     gap: 0; // 데스크톱 2단 레이아웃의 큰 gap이 모바일 세로 흐름에 남지 않게 합니다.
-    width: calc(100% - 40px);
+    width: calc(100% - 32px);
     margin: 0 auto;
   }
   .archive,
@@ -343,7 +346,8 @@ h1 {
   .available strong { margin-top: 10px; color: #111; font: 400 30px/1 $display; }
 
   .eyebrow {
-    font-size: 10px;
+    font-size: 13px;
+    letter-spacing: .16em !important;
   }
 
   h1 {
@@ -487,8 +491,8 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .coupon { margin-top: 0; padding: 19px 0 90px; }
-  .content { width: calc(100% - 40px); margin: 0 auto; }
+  .coupon { margin-top: 0; padding: 22px 0 92px; }
+  .content { width: calc(100% - 32px); margin: 0 auto; }
   .archive > a:first-child {
     display: inline-flex;
     order: 0;
@@ -498,8 +502,8 @@ h1 {
   .description,
   .divider { margin-right: 25px; margin-left: 0px; }
   .archiveHeading { align-items: flex-start;  }
-  .eyebrow { margin-top: 0; margin-left:25px ; font-size: 10px; letter-spacing: .22em !important; }
-  h1 { max-width: 230px; margin-top: 10px; font-size: 40px; line-height: 1.08; }
+  .eyebrow { margin-top: 0; margin-left:25px ; font-size: 13px; letter-spacing: .16em !important; }
+  h1 { max-width: 230px; margin-top: 10px; font-size: 38px; line-height: 1.08; }
   .archiveHeading h1 { transform: none; }
   .available { padding-top: 28px; }
   .description { display: none; }
@@ -575,42 +579,11 @@ h1 {
 
 // PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
 @media (min-width: 901px) {
-  .coupon { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .coupon { position: relative; margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
   .archive > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { margin-top: 0; font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 
-  .coupon::before {
-    position: absolute;
-    top: 78px;
-    left: 30px;
-    width: 112px;
-    height: 700px;
-    border-right: 1px solid #d2ccc3;
-    color: #766e65;
-    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 10px/1.7 $display;
-    letter-spacing: .14em !important;
-    white-space: pre-wrap;
-    writing-mode: vertical-rl;
-    pointer-events: none;
-  }
-  .coupon::after {
-    position: absolute;
-    bottom: 32px;
-    left: 20px;
-    width: 180px;
-    height: 220px;
-    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
-    content: "";
-    opacity: .35;
-    pointer-events: none;
-  }
-}
-
-@media (min-width: 901px) and (max-width: 1450px) {
-  .coupon::before,
-  .coupon::after { display: none; }
 }

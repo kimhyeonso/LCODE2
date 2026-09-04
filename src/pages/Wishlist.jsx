@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
+import DesrinationThumnail from "../components/DesrinationThumnail";
 import tripRoad from "../data/trip_road.json";
 import { useManagedCollection } from "../hooks/useManagedCollection";
 import styles from "./Wishlist.module.scss";
 import { useAuth } from "../hooks/useAuth";
 import { deleteFavoriteTrip, getFavoriteTrips } from "../services/firestoreService";
 
-const countryLabels = { korea: "KOREA", japan: "JAPAN", china: "CHINA" };
+const themeNames = {
+  attraction: "ART & WALK",
+  restaurant: "SEA & FOOD",
+  hotel: "STAY & REST",
+  airport: "START A JOURNEY",
+};
 const getFavoriteStorageKey = (userId) => `lcode-favorite-trips:${userId}`;
 
 const getStoredFavorites = (userId) => {
@@ -49,6 +55,10 @@ const getRepresentativeImage = (trip) => {
     .find((entry) => entry.type === "place" && entry.image);
   return getImageUrl(item?.image);
 };
+
+const getFirstPlace = (trip) => trip.days
+  .flatMap((day) => day.items)
+  .find((entry) => entry.type === "place");
 
 export default function Wishlist() {
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
@@ -104,33 +114,20 @@ export default function Wishlist() {
 
         {favoriteTrips.length ? (
           <div className={styles.placeGrid}>
-            {favoriteTrips.map((trip) => {
+            {favoriteTrips.map((trip, index) => {
               const image = getRepresentativeImage(trip);
+              const firstPlace = getFirstPlace(trip);
               return (
-                <article className={styles.placeCard} key={trip.id}>
-                  <Link
-                    className={styles.imagePlaceholder}
-                    to={`/plan?trip=${encodeURIComponent(trip.id)}`}
-                    style={image ? { backgroundImage: `url("${image}")` } : undefined}
-                    aria-label={`${trip.title} 상세 보기`}
-                  />
-                  <button
-                    className={styles.heartButton}
-                    type="button"
-                    aria-label={`${trip.title} 위시리스트에서 삭제`}
-                    onClick={() => removeFavorite(trip.id)}
-                  >
-                    <span aria-hidden="true">♥</span>
-                  </button>
-                  <p className={styles.location}>
-                    {trip.city.toUpperCase()} / {countryLabels[trip.country] || trip.country.toUpperCase()}
-                  </p>
-                  <h2>{trip.title}</h2>
-                  <footer>
-                    <span>{trip.duration}</span>
-                    <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`}>+ 일정에 추가</Link>
-                  </footer>
-                </article>
+                <DesrinationThumnail
+                  key={trip.id}
+                  trip={trip}
+                  index={index}
+                  image={image}
+                  category={themeNames[firstPlace?.category] || "TRAVEL PACKAGE"}
+                  to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+                  isFavorite
+                  onToggleFavorite={() => removeFavorite(trip.id)}
+                />
               );
             })}
           </div>

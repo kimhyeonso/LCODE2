@@ -4,7 +4,7 @@
   width: calc(100% - 32px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 42px 0 96px;
+  padding: 22px 0 92px;
   background: transparent;
   color: $ink;
 }
@@ -29,7 +29,6 @@
   border-bottom: 1px solid #ccc9c3;
 }
 
-.pageHeader > span,
 .package > p,
 .expenseCard > p,
 .optionSection > p,
@@ -43,11 +42,21 @@
   letter-spacing: 0.2em;
 }
 
-.pageHeader h1 {
-  margin: 16px 0 0;
-  font-size: 28px;
+.pageHeader > span {
+  display: block;
+  margin: 0;
+  color: #aaa49c;
+  font-size: 13px;
   font-weight: 400;
-  letter-spacing: -0.07em;
+  letter-spacing: .16em;
+}
+
+.pageHeader h1 {
+  margin: 20px 0 18px;
+  font-family: $serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: -.05em;
   line-height: 1.08;
 }
 
@@ -379,7 +388,7 @@
   .expenseSettings {
     width: min(1100px, calc(100% - 64px));
     margin: 36px auto 70px;
-    padding: 58px 0 90px;
+    padding: 36px 0 90px;
     font-family: $sans;
   }
 
@@ -392,7 +401,6 @@
     padding: 0 0 28px;
   }
 
-  .pageHeader > span,
   .package > p,
   .expenseCard > p,
   .optionSection > p,
@@ -403,13 +411,19 @@
     letter-spacing: 0.18em;
   }
 
+  .pageHeader > span {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: .16em;
+  }
+
   .pageHeader h1 {
-    margin: 25px 0 24px;
+    margin: 20px 0 18px;
     font-family: $serif;
-    font-size: 66px;
+    font-size: 54px;
     font-weight: 400;
-    line-height: 0.95;
-    letter-spacing: -0.05em;
+    line-height: 1.08;
+    letter-spacing: -.05em;
   }
 
   .package {

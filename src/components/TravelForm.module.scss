@@ -76,7 +76,7 @@
 
 .heroCopy h1 {
   margin: 0;
-  color: #fff;
+  color: #fff !important;
   font: 400 clamp(64px, 20vw, 88px)/.82 $serif;
   letter-spacing: -.06em;
   white-space: nowrap;
@@ -314,17 +314,14 @@
 }
 
 .mapPlaceholder {
+  position: relative;
+  overflow: hidden;
   height: 150px;
-  display: grid;
-  place-items: center;
   background: #ddd;
-  color: #bbb;
-  font-size: 14px;
-  letter-spacing: 2px;
-}
 
-.mapPlaceholder span {
-  opacity: 0;
+  :global(.leaflet-container) {
+    height: 100%;
+  }
 }
 
 .schedule {
@@ -1795,6 +1792,7 @@
   .heroCopy h1 {
     font-size: 112px;
   }
+
 }
 
 @media (min-width: 901px) {
@@ -1826,10 +1824,6 @@
     right: 48px;
     bottom: 38px;
     left: 48px;
-  }
-
-  .heroCopy h1 {
-    font-size: 112px;
   }
 
   .weather {

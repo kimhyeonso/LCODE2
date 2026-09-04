@@ -3,7 +3,7 @@
 .page {
   width: min(100%, 760px);
   margin: 0 auto;
-  padding: 22px 17px 100px;
+  padding: 22px 17px 92px;
   background: #fff;
   color: $ink;
 }
@@ -16,18 +16,24 @@
   margin: 24px 0 18px 23px;
   color: #777;
   font-size: 13px;
-  letter-spacing: 3px;
+  letter-spacing: .16em;
 }
 .page > h1 {
-  margin: 0 0 18px 23px;
-  font: 40px/1.08 $serif;
-  letter-spacing: -1.5px;
+  margin: 20px 0 18px 23px;
+  font-family: $serif;
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -.05em;
 }
 .description,
 .prompt {
   margin-left: 23px;
   color: #aaa;
   font-size: 13px;
+}
+.description {
+  letter-spacing: .16em;
 }
 .rule {
   height: 1px;
@@ -138,10 +144,10 @@
 
 @media (min-width: 800px) {
   .page {
-    padding: 48px 48px 110px;
+    padding: 36px 48px 90px;
   }
   .page > h1 {
-    font-size: 56px;
+    font-size: 54px;
   }
   .grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
