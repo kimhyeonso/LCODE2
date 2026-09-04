@@ -1,11 +1,12 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 
 .profileEdit {
   position: relative;
   min-height: 100vh;
-  padding: 84px 48px 64px;
+  padding: 36px 48px 90px;
   background: $paper;
   color: $ink;
   font-family: $korean;
@@ -30,44 +31,15 @@
 
 .layout {
   display: grid;
-  grid-template-columns: 122px 525px 555px;
+  grid-template-columns: 525px 555px;
   column-gap: 61px;
-  width: 1324px;
+  width: 1141px;
   margin: 0 auto;
   align-items: start;
 }
 
-.issueRail {
-  position: relative;
-  min-height: 754px;
-  border-right: 1px solid rgba($ink, .24);
-  color: rgba($ink, .78);
-  font-size: 13px;
-  letter-spacing: .18em;
-
-  p { margin: 4px 0; line-height: 1.5; }
-  &::before { content: ""; position: absolute; top: 52px; left: 2px; width: 1px; height: 196px; background: rgba($ink, .45); }
-  > span { position: absolute; top: 274px; left: -3px; writing-mode: vertical-rl; transform: rotate(180deg); line-height: 1.8; }
-}
-
-.seal {
-  position: absolute;
-  bottom: 38px;
-  left: -7px;
-  display: grid;
-  place-items: center;
-  width: 70px;
-  aspect-ratio: 1;
-  border: 1px solid rgba($ink, .3);
-  border-radius: 50%;
-  text-align: center;
-  font-family: $display;
-  font-size: 13px;
-  line-height: 1.25;
-}
-
 .formSection { padding-top: 8px; }
-.eyebrow { font-size: 13px; letter-spacing: .27em; }
+.eyebrow { font-size: 13px; letter-spacing: .16em; }
 .hero { margin: 12px 0 9px; font-family: $display; font-size: 63px; font-weight: 400; line-height: 1; letter-spacing: -.02em; }
 .subtitle { margin: 0; padding-bottom: 16px; border-bottom: 1px solid rgba($ink, .5); font-size: 14px; }
 
@@ -112,15 +84,18 @@
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  height: 62px;
+  height: 50px;
   margin-top: 24px;
   padding: 0 24px;
   border: 0;
-  background: #111;
+  background: #171714;
   color: #fff;
   cursor: pointer;
-  font: inherit;
-  font-size: 16px;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
 
   span:first-child { margin-left: auto; }
   span:last-child { margin-left: auto; font-size: 25px; font-weight: 200; }
@@ -142,7 +117,6 @@
 
 @media (max-width: 1450px) {
   .layout { grid-template-columns: minmax(470px, 525px) minmax(450px, 1fr); width: 100%; }
-  .issueRail { display: none; }
 }
 
 @include tablet {
@@ -152,8 +126,8 @@
 }
 
 @include mobile {
-  .profileEdit { padding: 3.5rem 1.25rem; }
-  .hero { font-size: 3rem; }
+  .profileEdit { padding: 3.5rem 1rem; }
+  .hero { font-size: 38px; }
   .fieldRow { grid-template-columns: 7.2rem minmax(0, 1fr) 2rem; }
   .withdrawNotice { grid-template-columns: 1.4rem 1fr; padding: .7rem; }
   .withdrawNotice span:last-child { grid-column: 2; }
@@ -171,9 +145,11 @@
 }
 
 @media (max-width: 600px) {
-  .profileEdit { padding: 19px 0 90px; }
-  .layout { width: calc(100% - 40px); margin-inline: auto; }
+  .profileEdit { padding: 22px 0 92px; }
+  .layout { width: calc(100% - 32px); margin-inline: auto; }
   .formSection > :first-child { margin-bottom: 8px; }
   .eyebrow { margin-top: 0; }
   .hero { margin-top: 10px; }
 }
+
+@include title.saved-plan-title(".eyebrow", ".hero");

@@ -4,7 +4,7 @@
   width: calc(100% - 32px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 42px 0 96px;
+  padding: 22px 0 92px;
   background: transparent;
   color: $ink;
 }
@@ -13,13 +13,16 @@
   margin: 0 0 25px;
   color: #aaa;
   font-size: 13px;
-  letter-spacing: 0.18em;
+  letter-spacing: .16em;
 }
 
 .page > h1 {
-  margin: 0 0 34px;
-  font: 54px / 0.95 $serif;
-  letter-spacing: -0.05em;
+  margin: 20px 0 18px;
+  font-family: $serif;
+  font-size: 38px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -.05em;
 }
 
 /* =========================
@@ -260,7 +263,11 @@
 
   color: #171714;
 
-  font-size: 13px;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
 
   cursor: pointer;
 }
@@ -282,19 +289,22 @@
 ========================= */
 
 .newPlan {
-  height: 52px;
+  height: 50px;
 
   display: grid;
   place-items: center;
 
   margin: 50px 0 8px;
 
-  background: #111;
+  background: #171714;
 
   color: #fff;
 
-  font-size: 13px;
-  letter-spacing: 1px;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .notice {
@@ -393,17 +403,20 @@
 .status a {
   display: inline-grid;
 
-  min-height: 44px;
+  min-height: 50px;
 
   place-items: center;
 
   padding: 0 20px;
 
-  background: #111;
+  background: #171714;
 
   color: #fff;
 
-  font-size: 13px;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 /* =========================
@@ -476,19 +489,23 @@
 }
 
 .deleteModal button {
-  height: 46px;
+  height: 50px;
 
   border: 1px solid #ddd;
 
   background: #fff;
 
   cursor: pointer;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
 }
 
 .deleteModal button:last-child {
-  border-color: #111;
+  border-color: #171714;
 
-  background: #111;
+  background: #171714;
 
   color: #fff;
 }
@@ -593,7 +610,11 @@
         calc(50% - 550px)
       );
 
-    padding: 58px 0 90px;
+    padding: 36px 0 90px;
+  }
+
+  .page > h1 {
+    font-size: 54px;
   }
 
   .status {

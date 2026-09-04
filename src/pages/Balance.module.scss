@@ -991,8 +991,8 @@
 
   .content {
     display: flex;
-    width: calc(100% - 56px);
-    margin: 0 28px;
+    width: calc(100% - 32px);
+    margin: 0 16px;
     padding: 24px 0 34px;
     flex-direction: column;
   }
@@ -1036,18 +1036,18 @@
     display: flex;
     height: calc(100dvh - 114px - env(safe-area-inset-bottom));
     min-height: calc(100dvh - 114px - env(safe-area-inset-bottom));
-    padding: 28px 32px 20px;
+    padding: 28px 16px 20px;
     flex-direction: column;
     row-gap: 0;
   }
 
   .result {
-    padding: 42px 20px 80px;
+    padding: 42px 16px 80px;
     row-gap: 48px;
   }
 
   .matches {
-    padding: 48px 20px 80px;
+    padding: 48px 16px 80px;
   }
 
   .matchNav {
@@ -1156,11 +1156,11 @@
 
   .gameHeader,
   .question {
-    margin-left: 28px;
+    margin-left: 16px;
   }
 
   .gameHeader {
-    margin-right: 28px;
+    margin-right: 16px;
   }
 
   .gameHeader button {
@@ -1279,7 +1279,7 @@
   .matches {
     display: block;
     background: $paper;
-    padding: 22px 24px 88px;
+    padding: 22px 16px 88px;
   }
 
   .matchNav {

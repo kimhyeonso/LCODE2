@@ -1,6 +1,7 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 
 $english: $display;
 
@@ -199,13 +200,13 @@ $english: $display;
 }
 
 @media (max-width: 600px) {
-  .myPageMain { min-height: calc(100dvh - 129px); padding: 19px 0 90px; }
-  .layout { display: block; width: calc(100% - 40px); margin-inline: auto; }
+  .myPageMain { min-height: calc(100dvh - 129px); padding: 22px 0 92px; }
+  .layout { display: block; width: calc(100% - 32px); margin-inline: auto; }
   .upcoming > :first-child { margin: 0 25px 8px; }
   .eyebrow,
   .upcoming h1 { margin-right: 25px; margin-left: 25px; }
-  .eyebrow { margin-bottom: 0; font-size: 10px; letter-spacing: .22em !important; }
-  .upcoming h1 { margin-top: 10px; margin-bottom: 24px; font-size: 40px; line-height: 1.08; }
+  .eyebrow { margin-bottom: 0; font-size: 13px; letter-spacing: .16em !important; }
+  .upcoming h1 { margin-top: 10px; margin-bottom: 24px; font-size: 38px; line-height: 1.08; }
   .completed { margin-top: 24px; }
 }
 
@@ -217,7 +218,7 @@ $english: $display;
     width: calc(100% - 220px);
     min-height: 100vh;
     margin-left: 220px;
-    padding: 60px 0;
+    padding: 36px 0 90px;
     align-items: flex-start;
   }
   .layout {
@@ -235,32 +236,6 @@ $english: $display;
   .featuredTrip { width: 550px; min-height: 330px; }
   .completed { margin-top: 110px; }
 
-  .myPageMain::before {
-    position: absolute;
-    top: 78px;
-    left: 30px;
-    width: 112px;
-    height: 700px;
-    border-right: 1px solid #d2ccc3;
-    color: #766e65;
-    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 10px/1.7 $english;
-    letter-spacing: .14em !important;
-    white-space: pre-wrap;
-    writing-mode: vertical-rl;
-    pointer-events: none;
-  }
-  .myPageMain::after {
-    position: absolute;
-    bottom: 32px;
-    left: 20px;
-    width: 180px;
-    height: 220px;
-    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
-    content: "";
-    opacity: .35;
-    pointer-events: none;
-  }
 }
 
 // Itinerary와 동일하게 1450px 이하 PC에서는 두 열을 유동 폭으로 줄입니다.
@@ -282,7 +257,4 @@ $english: $display;
   .completed { margin-top: 64px; }
 }
 
-@media (min-width: 901px) and (max-width: 1450px) {
-  .myPageMain::before,
-  .myPageMain::after { display: none; }
-}
+@include title.saved-plan-title(".eyebrow", ".upcoming h1");

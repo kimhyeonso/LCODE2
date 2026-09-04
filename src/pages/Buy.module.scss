@@ -1,5 +1,6 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/representative-title" as title;
 
 .buyPage, .buyPage * { box-sizing: border-box; }
 .buyPage { min-height: 100vh; padding: 52px 0 58px; background: $paper; color: $ink; font-family: "Noto Sans KR", sans-serif; }
@@ -69,8 +70,8 @@
 @include mobile {
   .buyPage { min-height: auto; padding: 26px 0 40px; }
   .content { width: calc(100% - 32px); }
-  .eyebrow { margin-top: 24px; }
-  .titleRow h1 { font-size: 42px; }
+  .eyebrow { margin-top: 24px; letter-spacing: .16em; }
+  .titleRow h1 { font-size: 38px; }
   .filters {  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; overflow: visible; }
   .filters button { min-width: 0; height: 38px; padding: 0 2px; font-size: 10px; white-space: nowrap; }
   .orderCard { grid-template-columns: 88px 1fr; gap: 14px; padding: 14px; }
@@ -89,61 +90,31 @@
 }
 
 @media (max-width: 600px) {
-  .buyPage { padding: 19px 0 90px; }
-  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .buyPage { padding: 22px 0 92px; }
+  .content { width: calc(100% - 32px); margin-inline: auto; }
   .back { margin: 0 25px 8px; font-size: 0; }
   .back span { font-size: 21px; }
   .snapshot{
     margin-top: -2rem;
     // border: 1px solid red;
   }
-  .eyebrow { margin-top: 0; font-size: 10px; letter-spacing: .22em; }
+  .eyebrow { margin-top: 0; font-size: 13px; letter-spacing: .16em; }
   .eyebrow, .titleRow { margin-right: 25px; margin-left: 25px; }
   .titleRow { margin-top: 10px; }
-  .titleRow h1 { font-size: 40px; line-height: 1.08; }
+  .titleRow h1 { font-size: 38px; line-height: 1.08; }
   .titleRow p { font-size: 11px; }
   .heroFrame, .heroFrame img { display: none; }
 }
 
 // PC: Itinerary와 동일한 페이지 여백, 헤더 비례와 편집 지면 장식을 사용합니다.
 @media (min-width: 901px) {
-  .buyPage { position: relative; padding: 60px 0; }
+  .buyPage { position: relative; padding-top: 36px; padding-bottom: 90px; }
   .back { height: 24px; margin-bottom: 8px; }
   .eyebrow { margin-top: 0; font-size: 0.625rem; letter-spacing: .24em; }
   .titleRow { width: 492px; max-width: 100%; margin-top: 18px; padding-bottom: 24px; }
   .titleRow h1 { font-size: 3rem; line-height: 1.05; }
   .titleRow p { margin-top: 25px; font-size: .66rem; }
 
-  .buyPage::before {
-    position: absolute;
-    top: 78px;
-    left: 30px;
-    width: 112px;
-    height: 700px;
-    border-right: 1px solid #d2ccc3;
-    color: #766e65;
-    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 10px/1.7 "DM Serif Display", serif;
-    letter-spacing: .14em;
-    white-space: pre-wrap;
-    writing-mode: vertical-rl;
-    pointer-events: none;
-  }
-
-  .buyPage::after {
-    position: absolute;
-    bottom: 32px;
-    left: 20px;
-    width: 180px;
-    height: 220px;
-    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
-    content: "";
-    opacity: .35;
-    pointer-events: none;
-  }
 }
 
-@media (min-width: 901px) and (max-width: 1450px) {
-  .buyPage::before,
-  .buyPage::after { display: none; }
-}
+@include title.saved-plan-title(".eyebrow", ".titleRow h1");

@@ -11,7 +11,6 @@ export default function Alarm() {
 
   return <main className={styles.alarm}>
     <img className={styles.tape} src="/Mypage-img/tape.png" alt="" />
-    <aside className={styles.issueRail} aria-label="Issue information"><span>ISSUE NO.</span><strong>002</strong><i aria-hidden="true" /><em>COLLECT MOMENTS<br />DESIGN JOURNEYS</em><b aria-hidden="true" /></aside>
     <div className={styles.content}>
       <section className={styles.settings} aria-labelledby="alarm-title">
         <MypageBackLink />

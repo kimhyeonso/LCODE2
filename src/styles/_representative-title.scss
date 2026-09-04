@@ -1,0 +1,21 @@
+@use "./variables" as *;
+
+// Shared desktop treatment based on the Saved Plan page title.
+// Small-screen title scales remain page-specific for readable mobile layouts.
+@mixin saved-plan-title($eyebrow, $title) {
+  @media (min-width: 641px) {
+    #{$eyebrow} {
+      margin: 0 0 25px !important;
+      color: #aaa !important;
+      font: 400 13px/1 $sans !important;
+      letter-spacing: 0.16em !important;
+    }
+
+    #{$title} {
+      margin: 20px 0 18px !important;
+      color: $ink !important;
+      font: 400 54px / 1.08 $serif !important;
+      letter-spacing: -0.05em !important;
+    }
+  }
+}

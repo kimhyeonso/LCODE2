@@ -1,9 +1,10 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 
 .pakingPage, .pakingPage * { box-sizing: border-box; }
-.pakingPage { min-height: 100vh; padding: 44px 0 52px; background: $paper; color: $ink; font-family: $korean; }
+.pakingPage { min-height: 100vh; padding: 36px 0 90px; background: $paper; color: $ink; font-family: $korean; }
 .content { width: min(1310px, calc(100% - 112px)); margin: 0 auto; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 100px; align-items: end; }
 .heading { position: relative; }
@@ -59,7 +60,7 @@
   .content { width: calc(100% - 32px); }
   .hero { display: block; }
   .heading::after, .postcard { display: none; }
-  .heading h1 { font-size: 42px; }
+  .heading h1 { font-size: 38px; }
   .description { font-size: 12px; line-height: 1.6; }
   .divider { width: calc(100% - 35px); }
   .panels { gap: 20px; margin-top: 24px; }
@@ -139,8 +140,10 @@
 }
 
 @media (max-width: 600px) {
-  .pakingPage { padding-top: 19px; padding-bottom: 90px; }
-  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .pakingPage { padding-top: 22px; padding-bottom: 92px; }
+  .content { width: calc(100% - 32px); margin-inline: auto; }
   .heading > :first-child { margin-bottom: 8px; }
   .eyebrow { margin-top: 0; }
 }
+
+@include title.saved-plan-title(".eyebrow", ".heading h1");

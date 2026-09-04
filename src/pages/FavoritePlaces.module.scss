@@ -1,8 +1,10 @@
+@use "../styles/representative-title" as title;
+
 .page {
   width: min(100%, 720px);
   min-height: 70vh;
   margin: 0 auto;
-  padding: 80px 20px 120px;
+  padding: 80px 16px 120px;
   color: #222;
 }
 .eyebrow,
@@ -13,7 +15,7 @@
 }
 .page h1 {
   margin: 12px 0 28px;
-  font-size: 34px;
+  font-size: 38px;
 }
 .grid {
   display: grid;
@@ -80,3 +82,5 @@
     justify-self: start;
   }
 }
+
+@include title.saved-plan-title(".eyebrow", ".page > h1");

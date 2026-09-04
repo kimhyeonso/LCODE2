@@ -14,7 +14,7 @@ $english: $display;
   @include korean-font;
   min-height: calc(100vh - 10rem);
   background: $paper-light;
-  padding: 1.125rem 0 4rem;
+  padding: 36px 0 90px;
   background: $paper;
 }
 
@@ -164,14 +164,15 @@ $english: $display;
   }
 
   button {
-    height: 5rem;
+    height: 50px;
     margin-top: -1.875rem;
     border: 0;
-    background: #131313;
+    background: #171714;
     color: #fff;
     cursor: pointer;
     font: inherit;
-    font-size: 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
 
     &:disabled {
       cursor: wait;
@@ -323,19 +324,30 @@ $english: $display;
 
 @include mobile {
   .myPage {
-    padding: 2.5rem 0 4rem;
+    padding: 22px 0 92px;
   }
 
   .layout {
     grid-template-columns: 1fr;
     gap: 2.75rem;
-    width: min(calc(100% - 2.5rem), 31rem);
+    width: min(calc(100% - 2rem), 31rem);
   }
 
   .loginPanel {
     width: min(100%, 19.375rem);
     margin: 0 auto;
   }
+}
+
+.loginPanel form > button {
+  height: 50px;
+  background: #171714;
+  color: #fff;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
 }
 .greeting h1 {
   margin: 0 0 0.8rem;

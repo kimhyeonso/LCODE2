@@ -13,10 +13,6 @@ export default function Notice() {
   const managedNotices = useManagedCollection("notices", defaultNotices);
   return (
     <main className={styles.notice}>
-      <aside className={styles.issueRail} aria-label="Issue information">
-        <span>ISSUE NO.</span><strong>002</strong><i aria-hidden="true" />
-        <em>COLLECT JOURNEYS<br />DESIGN MOMENTS</em><b aria-hidden="true" />
-      </aside>
       <div className={styles.content}>
         <section className={styles.noticeList} aria-labelledby="notice-title">
           <MypageBackLink />

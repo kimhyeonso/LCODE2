@@ -4,7 +4,7 @@
   width: calc(100% - 32px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 42px 0 96px;
+  padding: 22px 0 92px;
   background: transparent;
   color: $ink;
 }
@@ -28,15 +28,15 @@
     color: #aaa6a0;
     font-size: 13px;
     font-weight: 500;
-    letter-spacing: .18em;
+    letter-spacing: .16em;
   }
 
   h1 {
-    margin: 25px 0 24px;
+    margin: 20px 0 18px;
     font-family: $serif;
-    font-size: 54px;
+    font-size: 38px;
     font-weight: 400;
-    line-height: .95;
+    line-height: 1.08;
     letter-spacing: -.05em;
   }
 
@@ -472,16 +472,16 @@
     margin: 36px auto 70px;
     padding: 58px 0 90px;
   }
-
-  .intro h1 { font-size: 66px; }
 }
 
 @media (min-width: 901px) {
   .page {
     width: min(1320px, calc(100% - 332px));
     margin: 36px 0 70px max(276px, calc(50% - 550px));
-    padding: 58px 0 90px;
+    padding: 36px 0 90px;
   }
+
+  .intro h1 { font-size: 54px; }
 }
 
 @media (min-width: 641px) {

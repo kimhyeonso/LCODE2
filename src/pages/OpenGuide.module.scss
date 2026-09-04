@@ -4,7 +4,7 @@
 
 .openGuide {
   min-height: 100vh;
-  padding: 31px 0 58px;
+  padding: 36px 0 90px;
   background: $paper;
   color: $ink;
   font-family: $korean;
@@ -44,20 +44,20 @@
   margin-bottom: 43px;
   color: #9a7a52;
   font-family: $display;
-  font-size: 15px;
-  letter-spacing: .04em;
+  font-size: 13px;
+  letter-spacing: .16em;
 }
 
 .category::after { display: block; width: 22px; height: 1px; margin-top: 15px; background: #b99a70; content: ""; }
 
 .articleHeader h1 {
-  margin: 0;
+  margin: 20px 0 18px;
   color: #111;
-  font-family: $korean;
-  font-size: 39px;
-  font-weight: 500;
-  line-height: 1.45;
-  letter-spacing: -.045em;
+  font-family: $serif;
+  font-size: 54px;
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -.05em;
 }
 
 .articleHeader > p { margin: 22px 0 0; color: #88847d; font-size: 16px; }
@@ -192,9 +192,9 @@
 }
 
 @include mobile {
-  .openGuide { padding: 26px 18px 40px; }
+  .openGuide { padding: 26px 16px 40px; }
   .articleHeader > a { margin-bottom: 22px; }
-  .articleHeader h1 { font-size: 23px; }
+  .articleHeader h1 { font-size: 38px; }
   .articleHeader > p { font-size: 12px; }
   .guideContent { padding-top: 22px; }
   .introduction { font-size: 14px; }
@@ -223,7 +223,7 @@
 }
 
 @media (max-width: 600px) {
-  .openGuide { padding-top: 19px; padding-bottom: 90px; }
+  .openGuide { padding-top: 22px; padding-bottom: 92px; }
   .content { width: calc(100% - 40px); margin-inline: auto; }
   .articleHeader > :first-child { margin-bottom: 8px; }
   .category { margin-top: 0; }

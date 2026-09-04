@@ -17,6 +17,13 @@
   background: $paper-light;
 }
 
+.detailPage {
+  --detail-action-height: 50px;
+  --detail-action-font-size: 14px;
+  --detail-action-color: #171714;
+  --detail-action-border: #d9d6d0;
+}
+
 
 /* =========================================================
    SHOP HERO
@@ -173,7 +180,7 @@
 
   letter-spacing: -0.055em;
 
-  color: #fff;
+  color: #fff !important;
 
   text-shadow:
     0 3px
@@ -1203,10 +1210,7 @@
 ========================================================= */
 
 .detailPage {
-  padding:
-    clamp(58px, 6vw, 94px)
-    clamp(54px, 5vw, 88px)
-    72px;
+  padding: 36px clamp(54px, 5vw, 88px) 90px;
 }
 
 .detailSpread {
@@ -1388,17 +1392,21 @@
 }
 
 .options button {
-  padding: 13px 16px;
+  min-height: var(--detail-action-height);
+  padding: 0 16px;
   border: 1px solid $line;
   background: transparent;
   text-align: left;
-  font-size: 13px;
+  font-family: $sans;
+  font-size: var(--detail-action-font-size);
+  font-weight: 500;
   cursor: pointer;
 }
 
 .options .selected {
   color: #fff;
   background: $ink !important;
+  border-color: $ink;
 }
 
 .quantity {
@@ -1430,9 +1438,7 @@
 
 .detailActions > * { flex: 1; }
 
-.primaryButton,
-.detailActions button,
-.detailActions a {
+.primaryButton {
   display: block;
   width: 100%;
   padding: 17px;
@@ -1443,8 +1449,24 @@
   font-size: 13px;
 }
 
+.detailActions button,
+.detailActions a {
+  display: block;
+  width: 100%;
+  min-height: var(--detail-action-height);
+  padding: 0 16px;
+  border: 1px solid var(--detail-action-color);
+  color: #fff;
+  background: var(--detail-action-color);
+  text-align: center;
+  font-family: $sans;
+  font-size: var(--detail-action-font-size);
+  font-weight: 500;
+  line-height: 1;
+}
+
 .detailActions button:first-child {
-  border: 1px solid #ddd;
+  border-color: var(--detail-action-border);
   background: #fff;
   color: $ink;
 }
@@ -1986,10 +2008,7 @@
 .completePage {
   min-height: 100vh;
 
-  padding:
-    clamp(64px, 6vw, 96px)
-    clamp(54px, 5vw, 88px)
-    110px;
+  padding: 36px clamp(54px, 5vw, 88px) 90px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2207,21 +2226,32 @@
 .modalActions > * {
   flex: 1;
 
-  padding: 13px;
+  min-height: var(--detail-action-height);
 
-  border: 1px solid $line;
+  padding: 0 16px;
+
+  border: 1px solid var(--detail-action-border);
 
   background: transparent;
 
+  color: var(--detail-action-color);
+
   text-align: center;
 
-  font-size: 13px;
+  font-family: $sans;
+  font-size: var(--detail-action-font-size);
+
+  font-weight: 500;
+
+  line-height: 1;
 }
 
 
+.modalActions .selected,
 .modalActions a {
   color: #fff;
-  background: $ink;
+  background: var(--detail-action-color);
+  border-color: var(--detail-action-color);
 }
 
 
@@ -2470,10 +2500,7 @@
 
 
   .detailPage {
-    padding:
-      28px
-      16px
-      90px;
+    padding: 22px 16px 92px;
   }
 
 
@@ -2516,12 +2543,15 @@
 
 
   .cartPage,
-  .checkoutPage,
-  .completePage {
+  .checkoutPage {
     padding:
       46px
       16px
       90px;
+  }
+
+  .completePage {
+    padding: 22px 16px 92px;
   }
 
 

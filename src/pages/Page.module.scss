@@ -3,7 +3,8 @@
 .page {
   min-height: 65vh;
   @include page;
-  padding-top: 70px;
+  padding-top: 22px;
+  padding-bottom: 92px;
 }
 
 @media (min-width: 901px) {
@@ -11,6 +12,12 @@
     width: min(1320px, calc(100% - 220px - 112px));
     margin-left: calc(220px + max(56px, (100% - 1540px) / 2));
     margin-right: 0;
+    padding-top: 36px;
+    padding-bottom: 90px;
+  }
+
+  .title h1 {
+    font-size: 54px;
   }
 }
 .title {
@@ -18,12 +25,15 @@
   margin-bottom: 65px;
   span {
     font-size: 13px;
-    letter-spacing: 2px;
+    letter-spacing: .16em;
   }
   h1 {
-    font: clamp(50px, 7vw, 95px) / 0.93 $serif;
-    letter-spacing: -4px;
-    margin: 30px 0;
+    margin: 20px 0 18px;
+    font-family: $serif;
+    font-size: 38px;
+    font-weight: 400;
+    line-height: 1.08;
+    letter-spacing: -.05em;
     i {
       color: $sand;
       font-weight: 400;
@@ -216,7 +226,7 @@
   .planner {
     width: min(1320px, calc(100% - 332px));
     margin: 0 0 70px max(276px, calc(50% - 550px));
-    padding: 0 0 90px;
+    padding: 36px 0 90px;
   }
 }
 .planner > header {
@@ -386,7 +396,7 @@
 @include mobile {
   .planner {
     width: 100%;
-    padding: 0 0 96px;
+    padding: 22px 0 92px;
   }
   .productGrid {
     grid-template-columns: 1fr;

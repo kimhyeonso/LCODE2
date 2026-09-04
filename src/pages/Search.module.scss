@@ -3,7 +3,7 @@
 .searchPage {
   width: calc(100% - 32px);
   margin: 0 auto;
-  padding: 22px 0 84px;
+  padding: 22px 0 92px;
   color: $ink;
 }
 .searchIntro form {
@@ -55,8 +55,8 @@
 }
 .products h1 {
   margin: 0 0 14px 14px;
-  font-size: 30px;
-  letter-spacing: 3px;
+  font: 600 30px/1.1 $serif;
+  letter-spacing: normal;
 }
 .products > div {
   display: grid;
@@ -87,15 +87,13 @@
 .archive > h2 {
   margin: 30px 0 14px 14px;
   color: #aaa;
-  font-size: 30px;
-  font-weight: 400;
-  letter-spacing: 1.8px;
+  font: 600 30px/1.1 $serif;
+  letter-spacing: normal;
 }
 .archive > h2 b {
   margin-left: 5px;
   color: $ink;
-  font-family: $serif;
-  font-size: inherit;
+  font: inherit;
 }
 .results {
   display: grid;
@@ -267,7 +265,7 @@
 @media (min-width: 1024px) {
   .searchPage {
     margin-block: 56px 120px;
-    padding: 64px 0 96px;
+    padding: 36px 0 90px;
   }
 
   .searchIntro form {

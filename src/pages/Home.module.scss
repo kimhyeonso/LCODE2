@@ -485,6 +485,18 @@ $type-display: 36px;
   margin: $space-4 0;
 }
 
+:global(.whereToNextTitle) {
+  margin: $space-4 0 !important;
+  padding: 0 !important;
+  font: 600 30px/1.1 $serif !important;
+  letter-spacing: normal !important;
+}
+
+.section > h1.scriptTitle {
+  font: 600 30px/1.1 $serif;
+  letter-spacing: normal;
+}
+
 .destinationHero {
   height: 316px;
   background: $home-sage;
@@ -1113,7 +1125,7 @@ $type-display: 36px;
   }
 
   .sectionLabel {
-    font-size: 13px;
+    font-size: 14px;
   }
 
   .section > h1 {
@@ -1171,8 +1183,13 @@ $type-display: 36px;
     font-size: 16px;
   }
 
-  .scriptTitle {
+  .scriptTitle,
+  .section > h1.scriptTitle {
     font-size: 38px;
+  }
+
+  :global(.whereToNextTitle) {
+    font-size: 38px !important;
   }
 
   .destinationList a {

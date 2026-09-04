@@ -5,14 +5,18 @@ import MypageBackLink from "../components/MypageBackLink";
 import { useAuth } from "../hooks/useAuth";
 import { deletePlan, getPlans } from "../services/firestoreService";
 import { resolveImageUrl } from "../utils/imageUtils";
+import tripRoad from "../data/trip_road.json";
 
 const getImageUrl = (imagePath) => resolveImageUrl(imagePath, "/Mypage-img/trv.png");
 
+// Plan.jsx의 대표 썸네일(heroImage)과 동일하게 trip_road.json 썸네일을 최우선으로 사용한다.
 const getRepresentativeImage = (plan) => {
-  const imagePath = plan.image || plan.days
-    ?.flatMap((day) => day.items || [])
-    .find((item) => item.type === "place" && item.image)
-    ?.image;
+  const imagePath = tripRoad.thumbnailMap?.[plan.country]?.[plan.city]
+    || plan.image
+    || plan.days
+      ?.flatMap((day) => day.items || [])
+      .find((item) => item.type === "place" && item.image)
+      ?.image;
   return getImageUrl(imagePath);
 };
 

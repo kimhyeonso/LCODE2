@@ -6,9 +6,9 @@
   min-height: 100vh;
   margin-left: 220px;
   padding:
-  100px
+  36px
   56px
-  118px
+  90px
   56px;
   display: grid;
   grid-template-columns: 520px 599px;
@@ -205,14 +205,16 @@
 
 .submit {
   width: 100%;
-  height: 86px;
+  height: 50px;
   margin-top: 49px;
   border: 0;
-  background: #131313;
-  color: #f8f5ef;
-  font-family: "Batang", "Noto Serif KR", serif;
-  font-size: 21px;
-  letter-spacing: 1px;
+  background: #171714;
+  color: #fff;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .submit:disabled { opacity: 0.55; }
@@ -284,7 +286,7 @@
 }
 
 @include mobile {
-  .auth { padding: 48px 18px 70px; gap: 42px; }
+  .auth { padding: 48px 16px 70px; gap: 42px; }
   .kicker { width: 210px; }
   .titleRow { margin-top: 38px; }
   .titleRow h1 { font-size: clamp(47px, 15vw, 62px); }
@@ -293,10 +295,10 @@
   .signature { margin-top: 52px; gap: 12px; font-size: 10px; }
   .formFrame { min-height: 620px; padding: 61px 30px 50px; }
   .formFrame input { font-size: 21px; }
-  .submit { height: 70px; }
+  .submit { height: 50px; }
 }
 
 @media (max-width: 600px) {
-  .auth { padding: 19px 20px 90px; }
+  .auth { padding: 22px 16px 92px; }
   .intro, .formFrame { margin-inline: auto; }
 }

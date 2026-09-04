@@ -212,10 +212,9 @@ export default function Search() {
     }
   };
 
-  const hasActiveDestinationSearch = initialQuery.trim().length > 0 || country !== "all";
   const travelEssentialsSection = (
     <section className={styles.products} aria-labelledby="search-products-title">
-      <h1 id="search-products-title">TRAVEL ESSENTIALS</h1>
+      <h1 id="search-products-title" className="whereToNextTitle">TRAVEL ESSENTIALS</h1>
       <div>
         {managedProducts.slice(0, 3).map((product) => (
           <ProductCard key={product.id} product={product} />
@@ -252,10 +251,8 @@ export default function Search() {
         </div>
       </section>
 
-      {!hasActiveDestinationSearch && travelEssentialsSection}
-
       <section className={styles.archive} aria-labelledby="package-archive-title">
-        <h2 id="package-archive-title">PACKAGE ARCHIVE <b>{trips.length}</b></h2>
+        <h2 id="package-archive-title" className="whereToNextTitle">PACKAGE ARCHIVE <b>{trips.length}</b></h2>
         <div className={styles.results}>
           {trips.map((trip, index) => {
             const image = representativeImages.get(trip.id);
@@ -282,7 +279,7 @@ export default function Search() {
           )}
         </div>
       </section>
-      {hasActiveDestinationSearch && travelEssentialsSection}
+      {travelEssentialsSection}
       {filterOpen && (
         <div className={styles.filterBackdrop} role="presentation" onMouseDown={() => setFilterOpen(false)}>
           <section className={styles.filterPanel} role="dialog" aria-modal="true" aria-labelledby="filter-title" onMouseDown={(event) => event.stopPropagation()}>

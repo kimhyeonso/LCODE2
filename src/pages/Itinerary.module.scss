@@ -2,6 +2,7 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 
 
 $serif-display: $display;
@@ -31,7 +32,7 @@ $serif-display: $display;
   .itinerary {
     width: calc(100% - 220px);
     margin-left: 220px;
-    padding: 60px 0;
+    padding: 36px 0 90px;
     display: flex;
     // 콘텐츠 높이에 따라 헤더가 움직이지 않도록 PC는 상단을 기준으로 정렬합니다.
     align-items: flex-start;
@@ -55,21 +56,6 @@ $serif-display: $display;
 .intro > a {
   margin-bottom: 8px;
   color: $ink;
-}
-
-// Subtle world map below the quick cards; it is decorative and stays behind all text.
-.intro::after {
-  position: absolute;
-  z-index: -1;
-  top: 545px;
-  left: -176px;
-  width: 480px;
-  height: 300px;
-  background: url("/Mypage-img/g.png") left center / contain no-repeat;
-  content: "";
-  opacity: .5;
-  pointer-events: none;
-  // border: 1px solid red;
 }
 
 .eyebrow {
@@ -162,21 +148,6 @@ $serif-display: $display;
 }
 
 @media (min-width: 901px) {
-  .intro::before {
-    position: absolute;
-    top: -18px;
-    left: -190px;
-    width: 112px;
-    height: 700px;
-    border-right: 1px solid #d2ccc3;
-    color: #766e65;
-    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 13px/1.7 $serif-display;
-    letter-spacing: .14em !important;
-    white-space: pre-wrap;
-    writing-mode: vertical-rl;
-  }
-
   // Keep the desktop spread in its original columns. Explicit placement prevents
   // the mobile quick-card ordering from pushing the heading into the right column.
   .intro { grid-column: 1; grid-row: 1; }
@@ -256,10 +227,12 @@ $serif-display: $display;
   display: flex;
   justify-content: space-between;
   padding: 0 22px;
-  font-family: $korean;
+  font-family: $sans;
   text-decoration: none;
 }
-.emptyInfo .detailButton b { font: 400 1rem/1 $korean; }
+
+@include title.saved-plan-title(".eyebrow", ".titleRow h1");
+.emptyInfo .detailButton b { font: 500 14px/1 $sans; }
 
 .photo {
   position: relative;
@@ -303,10 +276,14 @@ $serif-display: $display;
 /* 일정 상세 보기 버튼 부분 */
 .detailButton {
   width: 100%;
-  height: 54px;
-  background: #050505;
-  color: #f8f8f8;
-  font: 600 0.73rem $korean;
+  height: 50px;
+  background: #171714;
+  color: #fff;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0 !important;
   cursor: pointer;
   display: grid;
   place-items: center;
@@ -357,11 +334,8 @@ $serif-display: $display;
   .itinerary { padding: 34px 16px 42px; }
   .content { grid-template-columns: 1fr; gap: 0; width: 100%; }
   .intro { width: 100%; padding: 0 24px; }
-  .intro::before,
-  .intro::after { display: none; }
-
   .intro > a { margin-bottom: 12px; }
-  .eyebrow { font-size: 10px; }
+  .eyebrow { font-size: 13px; }
 
   .titleRow {
     flex-direction: column;
@@ -369,7 +343,7 @@ $serif-display: $display;
     gap: 0.7rem;
     margin-top: 18px;
 
-    h1 { font-size: 40px; line-height: 1.08; }
+    h1 { font-size: 38px; line-height: 1.08; }
     p { margin: 0; font-size: 0.625rem; }
   }
 
@@ -451,8 +425,8 @@ $serif-display: $display;
   .mobileTripList .detailButton {
     width: calc(100% + 24px);
 margin-left: -12px;
-    height: 44px;
-    font-size: 12px;
+    height: 50px;
+    font-size: 14px;
   }
 
   // 모바일은 카드가 한 장씩 세로로 보여 이동 화살표를 사용하지 않습니다.
@@ -464,8 +438,8 @@ margin-left: -12px;
 }
 
 @media (max-width: 600px) {
-  .itinerary { padding: 19px 0 90px; }
-  .content { width: calc(100% - 40px); margin-inline: auto; }
+  .itinerary { padding: 22px 0 92px; }
+  .content { width: calc(100% - 32px); margin-inline: auto; }
   .intro > :first-child { margin-bottom: 8px; }
   .eyebrow { margin-top: 0; }
   .titleRow { margin-top: 10px; }

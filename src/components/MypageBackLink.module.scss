@@ -1,22 +1,29 @@
 .backLink {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-start;
-  width: 32px;
-  height: 24px;
+  gap: 8px;
+  min-height: 24px;
   margin: 0 0 22px;
-  color: currentColor;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #a79f95;
+  cursor: pointer;
+  font: 500 12px/1 Arial, sans-serif;
+  letter-spacing: 0.15em;
   text-decoration: none;
-  font-family: Arial, sans-serif;
-  font-size: 21px;
-  font-weight: 300;
-  line-height: 1;
-  transition: transform .2s ease, opacity .2s ease;
+  transition: color .2s ease, transform .2s ease;
+}
+
+.backLink span {
+  font-size: 16px;
+  font-weight: 400;
+  letter-spacing: 0;
 }
 
 .backLink:hover {
+  color: #6e675f;
   transform: translateX(-3px);
-  opacity: .62;
 }
 
 .backLink:focus-visible {

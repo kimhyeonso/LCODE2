@@ -12,9 +12,14 @@ const thumbnailModules = import.meta.glob(
   { eager: true, import: "default" }
 );
 
+const planThumbnail = (plan) =>
+  tripRoad.thumbnailMap?.[plan?.country]?.[plan?.city];
+
+// Plan.jsx의 대표 썸네일(heroImage)과 동일하게 trip_road.json 썸네일을 최우선으로 사용한다.
 const planImage = (plan) =>
   imageUrl(
-    plan?.image ||
+    planThumbnail(plan) ||
+      plan?.image ||
       plan?.days
         ?.flatMap((day) => day.items || [])
         .find((item) => item.image)?.image

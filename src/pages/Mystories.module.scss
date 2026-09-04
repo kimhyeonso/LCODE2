@@ -2,6 +2,7 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
+@use "../styles/representative-title" as title;
 // 페이지에서 사용하는 글꼴을 불러옵니다.
 
 // 페이지 안의 모든 글자 간격을 요청한 기준으로 맞춥니다.
@@ -108,12 +109,12 @@ h1 {
   margin-top: .95rem;
 }
 // 동작 없이 표시하는 카드 버튼 스타일입니다.
-.storyInfo button, .reviewLink, .productCard footer button { margin-top: 0.5rem; display: grid;  padding: 0.1rem 0.5rem; border: 1px solid #ddd9d2; background: $paper; color: #77736c; font: 400 .55rem $korean; place-items: center; text-decoration: none; }
+.storyInfo button, .reviewLink, .productCard footer button { margin-top: 0.5rem; display: grid; padding: 0 16px; border: 1px solid #ddd9d2; background: $paper; color: #77736c; font-family: $sans; font-size: 14px; font-weight: 500; line-height: 1; letter-spacing: 0 !important; place-items: center; text-decoration: none; }
 .storyInfo button, .reviewLink {
   width: 100%;
   min-width: 0;
-  height: 2.15rem;
-  padding: .45rem .6rem;
+  height: 50px;
+  padding: 0 16px;
   box-sizing: border-box;
   white-space: nowrap;
 }
@@ -136,7 +137,7 @@ h1 {
 .productCard p { margin: .22rem 0 0; color: #777; font: 400 .53rem $korean; }
 .productCard p span { margin-left: .2rem; letter-spacing: .06em; }
 .productCard footer { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; margin-top: 1.65rem; }
-.productCard footer button { height: 1.35rem; font-size: 0.625rem; }
+.productCard footer button { height: 50px; font-size: 14px; }
 .pagination { display: block; margin-top: .6rem; color: #bbb; font-size: 0.625rem; letter-spacing: .25rem; text-align: center; text-decoration: none; }
 // 태블릿 화면 여백입니다.
 @include tablet { .content { gap: 3.5rem; width: min(calc(100% - 6rem), 48rem); } }
@@ -221,9 +222,9 @@ h1 {
 
 @media (max-width: 600px) {
   .mystories { min-height: auto; padding: 44px 0 80px; }
-  .content { display: block; width: calc(100% - 40px); margin: 0 auto; transform: none; }
-  .eyebrow { margin-top: 22px; font-size: 10px; letter-spacing: .22em !important; }
-  h1 { margin: 17px 0 0; font-size: 40px; line-height: 1.03; letter-spacing: -.045em !important; }
+  .content { display: block; width: calc(100% - 32px); margin: 0 auto; transform: none; }
+  .eyebrow { margin-top: 22px; font-size: 13px; letter-spacing: .16em !important; }
+  h1 { margin: 17px 0 0; font-size: 38px; line-height: 1.03; letter-spacing: -.045em !important; }
   .mobileBreak { display: inline; }
   .description { display: none; }
   .divider { margin-top: 12px; }
@@ -267,8 +268,8 @@ h1 {
     transform: translateX(-0.4rem);
   }
  
-  .eyebrow { font-size: 0.625rem; }
-  h1 { margin: 0.75rem 0 0.7rem; font-size: 1.5rem; }
+  .eyebrow { font-size: 13px; letter-spacing: .16em !important; }
+  h1 { margin: 0.75rem 0 0.7rem; font-size: 38px; }
   // 모바일 시안에는 보조 문구가 없어 제목 아래의 구분선으로 바로 이어집니다.
   .description { display: none; }
   .divider { margin-top: 0.55rem; }
@@ -308,7 +309,7 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .content { width: calc(100% - 40px); margin-inline: auto; transform: none; }
+  .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
   .stories > :first-child { margin-bottom: 7px; }
   .eyebrow { margin-top: 0; }
   h1 { margin-top: 10px; }
@@ -316,8 +317,8 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .mystories { padding-top: 19px; padding-bottom: 90px; }
-  .content { width: calc(100% - 40px); margin-inline: auto; transform: none; }
+  .mystories { padding-top: 22px; padding-bottom: 92px; }
+  .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
   .storyInfo footer a { align-self: stretch; height: 47px; margin-top: 0; }
   .stories > :first-child,
   .stories > .eyebrow,
@@ -326,48 +327,35 @@ h1 {
     margin-left: 25px;
     transform: none;
   }
-  .stories > .eyebrow { font-size: 10px; letter-spacing: .22em !important; }
-  .stories > h1 { margin-top: 10px; font-size: 40px; line-height: 1.08; }
+  .stories > .eyebrow { font-size: 13px; letter-spacing: .16em !important; }
+  .stories > h1 { margin-top: 10px; font-size: 38px; line-height: 1.08; }
 }
 
 // PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
 @media (min-width: 901px) {
-  .mystories { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .mystories { position: relative; margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
   .stories > a { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   .stories > h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 
-  .mystories::before {
-    position: absolute;
-    top: 78px;
-    left: 30px;
-    width: 112px;
-    height: 700px;
-    border-right: 1px solid #d2ccc3;
-    color: #766e65;
-    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
-    font: 400 10px/1.7 $display;
-    letter-spacing: .14em !important;
-    white-space: pre-wrap;
-    writing-mode: vertical-rl;
-    pointer-events: none;
-  }
-  .mystories::after {
-    position: absolute;
-    bottom: 32px;
-    left: 20px;
-    width: 180px;
-    height: 220px;
-    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
-    content: "";
-    opacity: .35;
-    pointer-events: none;
-  }
 }
 
-@media (min-width: 901px) and (max-width: 1450px) {
-  .mystories::before,
-  .mystories::after { display: none; }
+@include title.saved-plan-title(".eyebrow", ".stories > h1");
+
+.storyInfo .reviewLink,
+.productCard footer button:last-child,
+.productCard footer a:last-child {
+  min-height: 50px;
+  height: 50px;
+  padding: 0 16px;
+  border-color: #171714;
+  background: #171714;
+  color: #fff;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0 !important;
 }

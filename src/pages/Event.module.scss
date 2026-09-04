@@ -1,5 +1,6 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
+@use "../styles/representative-title" as title;
 
 $gold: #d9aa54;
 $black: #000;
@@ -49,17 +50,18 @@ $black: #000;
 
 .listHeader span {
   color: #8f887e;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 3px;
 }
 
 .listHeader h1 {
-  margin: 8px 0 12px;
+  margin: 0 0 34px;
   padding-bottom: 18px;
+  padding-top: 18px;
   border-bottom: 1px solid #cec7bb;
   color: #141414;
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(58px, 6vw, 86px);
+  font-size: 55px / 0.95 $serif;
+  letter-spacing: -0.05em;
   font-weight: 700;
   line-height: 1;
 }
@@ -67,7 +69,7 @@ $black: #000;
 .listHeader p {
   margin: 0;
   color: #8c857b;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.7;
 }
 
@@ -338,3 +340,5 @@ $black: #000;
     letter-spacing: 3px;
   }
 }
+
+@include title.saved-plan-title(".listHeader span", ".listHeader h1");

@@ -4,7 +4,7 @@
 
 .page {
   min-height: calc(100vh - 10rem);
-  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  padding: clamp(4rem, 8vw, 7rem) 1rem;
   background: $paper;
   color: $ink;
   @include korean-font;

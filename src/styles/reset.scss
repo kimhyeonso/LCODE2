@@ -75,12 +75,12 @@ i {
 }
 
 /* 나란히 배치되는 소형 액션 버튼: Shop 상세 버튼 기준 */
-:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"]) {
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"]):not([class*="_mobileActions_"]) {
   display: flex;
   gap: 8px;
 }
 
-:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"])
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"]):not([class*="_mobileActions_"])
   > :where(button, a) {
   flex: 1;
   width: 100% !important;
@@ -91,14 +91,14 @@ i {
   text-align: center;
 }
 
-:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"])
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"]):not([class*="_mobileActions_"])
   > :where(button, a):first-child {
   border: 1px solid #ddd !important;
   background: #fff !important;
   color: #171714 !important;
 }
 
-:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"])
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"]):not([class*="_mobileActions_"])
   > :where(button, a):last-child {
   border: 1px solid #171714 !important;
   background: #171714 !important;
