@@ -3037,7 +3037,7 @@ header > button {
     */
     --draw-button-x: 0px;
     --draw-button-y: 12px;
-    --draw-text-y: -5px;
+    --draw-text-y: -3px;
 
     position: fixed;
     inset: 0;
@@ -3183,6 +3183,8 @@ header > button {
     letter-spacing: -0.055em;
 
     white-space: nowrap;
+
+    transform: translateX(-20px);
   }
 
   .introHero {
@@ -4117,5 +4119,597 @@ header > button {
 
     transition-duration:
       0.01ms !important;
+  }
+}
+
+/* =========================================================
+   EVENT ALERT / CUSTOM POPUP
+
+   기존 가차 / DRAW / 모바일 위치값은 건드리지 않고
+   팝업 UI만 변경.
+========================================================= */
+
+.eventAlertOverlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 2147483600;
+
+  display: grid;
+  place-items: center;
+
+  padding: 24px;
+  box-sizing: border-box;
+
+  visibility: hidden;
+  opacity: 0;
+
+  pointer-events: none;
+
+  background: rgba(5, 3, 2, 0);
+  backdrop-filter: blur(0);
+
+  transition:
+    opacity 0.24s ease,
+    background 0.24s ease,
+    backdrop-filter 0.24s ease,
+    visibility 0s linear 0.26s;
+}
+
+.eventAlertOverlayOpen {
+  visibility: visible;
+  opacity: 1;
+
+  pointer-events: auto;
+
+  background:
+    radial-gradient(
+      circle at 50% 48%,
+      rgba(83, 53, 26, 0.18),
+      transparent 42%
+    ),
+    rgba(5, 3, 2, 0.79);
+
+  backdrop-filter: blur(9px);
+
+  transition:
+    opacity 0.24s ease,
+    background 0.24s ease,
+    backdrop-filter 0.24s ease,
+    visibility 0s;
+}
+
+.eventAlertCard {
+  width: min(468px, calc(100vw - 48px));
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+
+  padding: 9px;
+  box-sizing: border-box;
+
+  border: 1px solid rgba(255, 220, 144, 0.78);
+  border-radius: 4px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #f0c66f 0%,
+      #9b6427 8%,
+      #3a2415 15%,
+      #17100c 23%,
+      #26180f 78%,
+      #6f451f 89%,
+      #e8bd69 100%
+    );
+
+  box-shadow:
+    0 34px 94px rgba(0, 0, 0, 0.76),
+    0 0 0 1px rgba(70, 40, 16, 0.95),
+    0 0 34px rgba(208, 151, 67, 0.13);
+
+  color: $cream;
+  text-align: center;
+
+  opacity: 0;
+
+  transform:
+    translateY(16px)
+    scale(0.965);
+
+  transition:
+    opacity 0.28s ease,
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/*
+  금속 바깥 테두리 안쪽의 블랙·브라운 본체.
+  decoration02의 샴페인 골드 + 검은 금속 + 브론즈 조합을 참고.
+*/
+.eventAlertCard::before {
+  content: "";
+
+  position: absolute;
+  inset: 5px;
+
+  z-index: -2;
+
+  border:
+    1px solid
+    rgba(255, 223, 154, 0.42);
+
+  border-radius: 2px;
+
+  background:
+    radial-gradient(
+      ellipse at 50% -8%,
+      rgba(255, 213, 125, 0.075),
+      transparent 37%
+    ),
+    radial-gradient(
+      ellipse at 16% 86%,
+      rgba(125, 76, 30, 0.075),
+      transparent 38%
+    ),
+    radial-gradient(
+      ellipse at 88% 18%,
+      rgba(172, 112, 44, 0.045),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      #0d0b09 0%,
+      #080706 46%,
+      #0b0907 76%,
+      #050403 100%
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 237, 193, 0.1),
+    inset 0 0 32px rgba(0, 0, 0, 0.62);
+}
+
+/*
+  특정 브랜드 로고가 아닌,
+  다이아몬드와 사선으로 만든 아주 옅은 모노그램풍 패턴.
+*/
+.eventAlertCard::after {
+  content: "";
+
+  position: absolute;
+  inset: 9px;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  opacity: 0.48;
+
+  background-image:
+    linear-gradient(
+      45deg,
+      transparent 46%,
+      rgba(231, 185, 102, 0.055) 47%,
+      rgba(231, 185, 102, 0.055) 49%,
+      transparent 50%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 46%,
+      rgba(231, 185, 102, 0.045) 47%,
+      rgba(231, 185, 102, 0.045) 49%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle,
+      rgba(247, 211, 139, 0.055) 0 1px,
+      transparent 1.4px
+    );
+
+  background-size:
+    34px 34px,
+    34px 34px,
+    34px 34px;
+
+  background-position:
+    0 0,
+    0 0,
+    17px 17px;
+
+  -webkit-mask-image:
+    radial-gradient(
+      ellipse at center,
+      #000 0%,
+      rgba(0, 0, 0, 0.88) 54%,
+      transparent 92%
+    );
+
+  mask-image:
+    radial-gradient(
+      ellipse at center,
+      #000 0%,
+      rgba(0, 0, 0, 0.88) 54%,
+      transparent 92%
+    );
+}
+
+.eventAlertOverlayOpen
+.eventAlertCard {
+  opacity: 1;
+
+  transform:
+    translateY(0)
+    scale(1);
+}
+
+/*
+  버튼 이미지의 금속 표면처럼
+  한 번씩 아주 얇은 하이라이트가 지나감.
+*/
+.eventAlertSheen {
+  width: 42%;
+  height: 190%;
+
+  position: absolute;
+
+  top: -46%;
+  left: -62%;
+
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 233, 178, 0.015) 25%,
+      rgba(255, 236, 183, 0.11) 49%,
+      rgba(255, 233, 178, 0.018) 72%,
+      transparent 100%
+    );
+
+  transform:
+    rotate(18deg);
+
+  animation:
+    eventAlertSheenMove
+    5.8s
+    ease-in-out
+    infinite;
+}
+
+@keyframes eventAlertSheenMove {
+  0%,
+  25% {
+    left: -62%;
+  }
+
+  62%,
+  100% {
+    left: 128%;
+  }
+}
+
+.eventAlertContent {
+  min-height: 246px;
+
+  position: relative;
+  z-index: 2;
+
+  padding:
+    37px
+    34px
+    28px;
+
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+}
+
+.eventAlertRule {
+  width: min(74%, 280px);
+  height: 1px;
+
+  flex: 0 0 auto;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(177, 111, 42, 0.28) 12%,
+      rgba(238, 191, 104, 0.84) 50%,
+      rgba(177, 111, 42, 0.28) 88%,
+      transparent
+    );
+
+  box-shadow:
+    0 0 9px rgba(230, 179, 88, 0.12);
+}
+
+.eventAlertMessage {
+  width: 100%;
+
+  margin:
+    29px
+    0
+    28px;
+
+  color: #f5e8cf;
+
+  font-size:
+    clamp(
+      19px,
+      1.45vw,
+      23px
+    );
+
+  font-weight: 720;
+
+  line-height: 1.48;
+  letter-spacing: -0.04em;
+
+  text-align: center;
+
+  word-break: keep-all;
+
+  text-shadow:
+    0 2px 7px rgba(0, 0, 0, 0.78);
+}
+
+.eventAlertRuleBottom {
+  opacity: 0.76;
+}
+
+.eventAlertConfirm {
+  width: min(100%, 310px);
+  min-height: 52px;
+
+  position: relative;
+  overflow: hidden;
+
+  margin-top: 27px;
+
+  border:
+    1px solid
+    rgba(237, 190, 101, 0.72);
+
+  border-radius: 2px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0 20px;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(220, 163, 72, 0.15),
+      transparent 54%
+    ),
+    linear-gradient(
+      180deg,
+      #24160e 0%,
+      #120c08 58%,
+      #1b110b 100%
+    );
+
+  color: #eac06c;
+
+  font-family: $event-font;
+
+  font-size: 12px;
+  font-weight: 760;
+
+  letter-spacing: 0.08em;
+
+  cursor: pointer;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 235, 185, 0.1),
+    inset 0 -1px 0 rgba(99, 57, 22, 0.52),
+    0 10px 24px rgba(0, 0, 0, 0.28);
+
+  transition:
+    color 0.22s ease,
+    background 0.22s ease,
+    border-color 0.22s ease,
+    box-shadow 0.22s ease,
+    transform 0.22s ease;
+}
+
+.eventAlertConfirm::before {
+  content: "";
+
+  width: 42%;
+  height: 100%;
+
+  position: absolute;
+
+  top: 0;
+  left: -58%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 229, 163, 0.11),
+      transparent
+    );
+
+  transform:
+    skewX(-18deg);
+
+  transition:
+    left 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.eventAlertConfirm:hover {
+  color: #ffe2a0;
+
+  border-color:
+    rgba(255, 215, 133, 0.95);
+
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(237, 184, 92, 0.21),
+      transparent 56%
+    ),
+    linear-gradient(
+      180deg,
+      #322014 0%,
+      #18100b 58%,
+      #21150d 100%
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 241, 205, 0.16),
+    0 0 22px rgba(217, 160, 69, 0.1),
+    0 11px 26px rgba(0, 0, 0, 0.34);
+}
+
+.eventAlertConfirm:hover::before {
+  left: 122%;
+}
+
+.eventAlertConfirm:active {
+  transform:
+    translateY(1px)
+    scale(0.992);
+}
+
+.eventAlertConfirm:focus-visible {
+  outline:
+    1px solid
+    rgba(255, 225, 153, 0.95);
+
+  outline-offset: 3px;
+}
+
+/* =========================================================
+   MOBILE EVENT ALERT
+========================================================= */
+
+@media (max-width: 600px) {
+  .eventAlertOverlay {
+    padding:
+      calc(20px + env(safe-area-inset-top))
+      14px
+      calc(20px + env(safe-area-inset-bottom));
+  }
+
+  .eventAlertCard {
+    width: min(100%, 370px);
+
+    padding: 7px;
+
+    border-color:
+      rgba(248, 206, 118, 0.8);
+  }
+
+  .eventAlertCard::before {
+    inset: 4px;
+  }
+
+  .eventAlertCard::after {
+    inset: 7px;
+
+    opacity: 0.42;
+
+    background-size:
+      30px 30px,
+      30px 30px,
+      30px 30px;
+
+    background-position:
+      0 0,
+      0 0,
+      15px 15px;
+  }
+
+  .eventAlertContent {
+    min-height: 212px;
+
+    padding:
+      29px
+      20px
+      22px;
+  }
+
+  .eventAlertRule {
+    width: min(76%, 230px);
+  }
+
+  .eventAlertMessage {
+    margin:
+      24px
+      0
+      23px;
+
+    font-size:
+      clamp(
+        17px,
+        4.8vw,
+        20px
+      );
+
+    line-height: 1.45;
+  }
+
+  .eventAlertConfirm {
+    width: min(100%, 278px);
+    min-height: 48px;
+
+    margin-top: 22px;
+
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 600px) and (max-height: 700px) {
+  .eventAlertContent {
+    min-height: 192px;
+
+    padding:
+      24px
+      18px
+      18px;
+  }
+
+  .eventAlertMessage {
+    margin:
+      20px
+      0
+      19px;
+
+    font-size: 16px;
+  }
+
+  .eventAlertConfirm {
+    min-height: 44px;
+
+    margin-top: 18px;
+
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eventAlertOverlay,
+  .eventAlertCard,
+  .eventAlertConfirm {
+    transition-duration: 0.01ms !important;
+  }
+
+  .eventAlertSheen {
+    animation: none !important;
   }
 }

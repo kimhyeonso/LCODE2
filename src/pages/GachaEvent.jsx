@@ -359,10 +359,10 @@ export default function GachaEvent({ onExit }) {
   const [selectedPrize, setSelectedPrize] = useState(prizes[0]);
 
   const [drawing, setDrawing] = useState(false);
-  const [drawError, setDrawError] = useState("");
 
   const [noticeOpen, setNoticeOpen] = useState(false);
   const [prizeOpen, setPrizeOpen] = useState(false);
+  const [eventAlert, setEventAlert] = useState(null);
 
   useEffect(() => {
     window.scrollTo({
@@ -385,12 +385,17 @@ export default function GachaEvent({ onExit }) {
   }, [step]);
 
   useEffect(() => {
-    if (!noticeOpen && !prizeOpen && !machineOpen) {
+    if (!noticeOpen && !prizeOpen && !machineOpen && !eventAlert) {
       return undefined;
     }
 
     const handleEscape = (event) => {
       if (event.key !== "Escape") return;
+
+      if (eventAlert) {
+        setEventAlert(null);
+        return;
+      }
 
       if (noticeOpen) {
         setNoticeOpen(false);
@@ -412,9 +417,14 @@ export default function GachaEvent({ onExit }) {
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [noticeOpen, prizeOpen, machineOpen, drawing]);
+  }, [noticeOpen, prizeOpen, machineOpen, drawing, eventAlert]);
 
   const handleBack = () => {
+    if (eventAlert) {
+      setEventAlert(null);
+      return;
+    }
+
     if (noticeOpen) {
       setNoticeOpen(false);
       return;
@@ -443,7 +453,6 @@ export default function GachaEvent({ onExit }) {
   const handleOpenMachine = () => {
     if (drawing) return;
 
-    setDrawError("");
     setMachineOpen(true);
   };
 
@@ -451,7 +460,6 @@ export default function GachaEvent({ onExit }) {
     if (drawing) return;
 
     setMachineOpen(false);
-    setDrawError("");
   };
 
   const handleDraw = async () => {
@@ -467,7 +475,6 @@ export default function GachaEvent({ onExit }) {
     if (drawing) return;
 
     setDrawing(true);
-    setDrawError("");
 
     try {
       const [result] = await Promise.all([
@@ -484,9 +491,9 @@ export default function GachaEvent({ onExit }) {
       }
 
       if (result.alreadyClaimed) {
-        window.alert(
-          "이미 참여한 이벤트입니다. 발급된 쿠폰은 마이페이지 쿠폰함에서 확인해 주세요."
-        );
+        setEventAlert({
+          message: "이미 참여한 이벤트입니다.",
+        });
         return;
       }
 
@@ -499,7 +506,7 @@ export default function GachaEvent({ onExit }) {
           ? "쿠폰 저장 권한이 없습니다. Firestore 규칙을 확인해 주세요."
           : "쿠폰을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.";
 
-      setDrawError(message);
+      setEventAlert({ message });
     } finally {
       setDrawing(false);
     }
@@ -715,14 +722,6 @@ export default function GachaEvent({ onExit }) {
                 </svg>
               </button>
 
-              {drawError && (
-                <p
-                  className={styles.drawError}
-                  role="alert"
-                >
-                  {drawError}
-                </p>
-              )}
             </div>
           </div>
         </section>
@@ -911,6 +910,12 @@ export default function GachaEvent({ onExit }) {
           </div>
         </>
       )}
+
+      <EventAlert
+        open={Boolean(eventAlert)}
+        message={eventAlert?.message ?? ""}
+        onClose={() => setEventAlert(null)}
+      />
     </div>
   );
 }
@@ -1065,6 +1070,62 @@ function PrizePreview() {
         ))}
       </div>
     </section>
+  );
+}
+
+function EventAlert({
+  open,
+  message,
+  onClose,
+}) {
+  return (
+    <div
+      className={`${styles.eventAlertOverlay} ${
+        open ? styles.eventAlertOverlayOpen : ""
+      }`}
+      aria-hidden={!open}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className={styles.eventAlertCard}
+        role="alertdialog"
+        aria-modal="true"
+        aria-label="이벤트 안내"
+      >
+        <span
+          className={styles.eventAlertSheen}
+          aria-hidden="true"
+        />
+
+        <div className={styles.eventAlertContent}>
+          <span
+            className={styles.eventAlertRule}
+            aria-hidden="true"
+          />
+
+          <p className={styles.eventAlertMessage}>
+            {message}
+          </p>
+
+          <span
+            className={`${styles.eventAlertRule} ${styles.eventAlertRuleBottom}`}
+            aria-hidden="true"
+          />
+
+          <button
+            className={styles.eventAlertConfirm}
+            type="button"
+            onClick={onClose}
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
