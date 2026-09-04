@@ -189,6 +189,9 @@ export default function Home() {
   const dDay = startDate
     ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
     : null;
+  const remixPreviewPath = upcomingPlan?.id
+    ? `/ai-remix?plan=${encodeURIComponent(upcomingPlan.id)}`
+    : "/ai-remix?city=SEOUL";
 
   return (
     <main ref={page} className={styles.home}>

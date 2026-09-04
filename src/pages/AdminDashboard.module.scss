@@ -68,6 +68,113 @@
   font-size: 12px;
 }
 
+.exchangePanel {
+  margin: 0 0 24px;
+  padding: 24px;
+  border: 1px solid #e0e4e1;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.exchangeHeader,
+.exchangeSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.exchangeHeader p {
+  margin: 0 0 5px;
+  color: #8a918c;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+}
+
+.exchangeHeader h2 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.03em;
+}
+
+.exchangeControls,
+.exchangeControls > div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.exchangeControls button,
+.exchangeControls select {
+  min-height: 34px;
+  padding: 0 11px;
+  border: 1px solid #dfe3e0;
+  border-radius: 5px;
+  background: #fff;
+  color: #68706a;
+  font: 11px inherit;
+  cursor: pointer;
+}
+
+.exchangeControls button.activeExchange {
+  border-color: #28332d;
+  background: #28332d;
+  color: #fff;
+}
+
+.exchangeSummary {
+  justify-content: flex-start;
+  margin: 26px 0 12px;
+}
+
+.exchangeSummary > div {
+  display: grid;
+  gap: 5px;
+  margin-right: auto;
+}
+
+.exchangeSummary span,
+.exchangeSummary small {
+  color: #7b837d;
+  font-size: 11px;
+}
+
+.exchangeSummary strong {
+  font-size: clamp(21px, 2vw, 28px);
+  letter-spacing: -0.035em;
+}
+
+.exchangeSummary .exchangeUp {
+  color: #b14b43;
+  font-weight: 700;
+}
+
+.exchangeSummary .exchangeDown {
+  color: #3e6f9d;
+  font-weight: 700;
+}
+
+.exchangeChart {
+  width: 100%;
+  height: 300px;
+}
+
+.exchangeEmpty {
+  height: 100%;
+  display: grid;
+  place-content: center;
+  gap: 6px;
+  color: #8a918c;
+  font-size: 12px;
+  text-align: center;
+}
+
+.exchangeEmpty strong {
+  color: #59615b;
+  font-size: 13px;
+}
+
 .panel {
   overflow: hidden;
   border: 1px solid #e0e4e1;
@@ -383,6 +490,10 @@ tbody tr:hover {
 }
 
 .actions button:last-child {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   border-color: #d8ddda;
   background: #fff;
   color: #747c76;
@@ -423,6 +534,20 @@ tbody tr:hover {
 
   .metrics {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .exchangeHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .exchangeControls {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .exchangeChart {
+    height: 260px;
   }
 
   .manageCard {
@@ -468,6 +593,33 @@ tbody tr:hover {
 
   .metrics strong {
     font-size: 29px;
+  }
+
+  .exchangePanel {
+    margin-bottom: 16px;
+    padding: 18px 14px;
+  }
+
+  .exchangeControls > div {
+    width: 100%;
+  }
+
+  .exchangeControls > div button {
+    flex: 1;
+  }
+
+  .exchangeSummary {
+    align-items: flex-start;
+    flex-wrap: wrap;
+    margin-top: 20px;
+  }
+
+  .exchangeSummary > div {
+    width: 100%;
+  }
+
+  .exchangeChart {
+    height: 230px;
   }
 
   .panelTitle {

@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { useAuth } from "../hooks/useAuth";
 import products from "../data/products.json";
 import tripRoad from "../data/trip_road.json";
+import { getExchangeRates } from "../services/exchangeRateApi";
 import {
   deleteAdminManagementItem,
+  ensureUsersDataStructures,
   getAdminDashboardData,
   getAdminManagementData,
+  getFirebaseAuthUsers,
   saveAdminManagementItem,
 } from "../services/firestoreService";
 import styles from "./AdminDashboard.module.scss";
@@ -30,6 +34,12 @@ const tabs = [
   ["coupons", "쿠폰 관리"],
   ["members", "회원 관리"],
 ];
+
+const exchangeCurrencies = [["USD", "미국 달러"], ["JPY", "일본 엔"], ["EUR", "유로"], ["CNY", "중국 위안"]];
+const formatExchangeDate = (value) => {
+  const text = String(value || "");
+  return text.length === 8 ? `${text.slice(4, 6)}.${text.slice(6, 8)}` : text;
+};
 
 const uniqueTrips = Array.from(
   tripRoad.trips.reduce((map, trip) => map.has(trip.id) ? map : map.set(trip.id, trip), new Map()).values(),
@@ -83,21 +93,49 @@ export default function AdminDashboard() {
   const [status, setStatus] = useState("loading");
   const [message, setMessage] = useState("");
   const [busyId, setBusyId] = useState("");
+  const [exchangeRates, setExchangeRates] = useState([]);
+  const [exchangeCode, setExchangeCode] = useState("USD");
+  const [exchangePeriod, setExchangePeriod] = useState(30);
+  const [exchangeStatus, setExchangeStatus] = useState("loading");
+  const [exchangeUpdatedAt, setExchangeUpdatedAt] = useState(null);
+  const [exchangeRefreshKey, setExchangeRefreshKey] = useState(0);
 
   useEffect(() => {
     let active = true;
-    Promise.all([getAdminDashboardData(), getAdminManagementData()])
-      .then(([dashboardData, managementData]) => {
+    Promise.all([
+      getAdminDashboardData(),
+      getAdminManagementData(),
+      getFirebaseAuthUsers().catch((error) => {
+        console.error("Authentication 회원 목록 조회 실패", error);
+        return [];
+      }),
+    ])
+      .then(([dashboardData, managementData, authUsers]) => {
         if (!active) return;
+        const profileById = new Map(
+          dashboardData.users.map((member) => [String(member.id), member]),
+        );
+        const authIds = new Set(authUsers.map((member) => String(member.id)));
+        const allUsers = [
+          ...authUsers.map((member) => ({
+            ...member,
+            ...(profileById.get(String(member.id)) || {}),
+          })),
+          ...dashboardData.users.filter((member) => !authIds.has(String(member.id))),
+        ];
+
+        ensureUsersDataStructures(allUsers).catch((error) => {
+          console.error("사용자 기본 데이터 초기화 실패", error);
+        });
         setMetrics({
-          users: dashboardData.users.length,
+          users: allUsers.length,
           plans: dashboardData.plans.length,
           reviews: dashboardData.reviews.length,
-          admins: dashboardData.users.filter((user) => user.role === "admin").length,
+          admins: allUsers.filter((member) => member.role === "admin").length,
         });
         setManagement(Object.fromEntries(
           Object.keys(fallbackData).map((type) => {
-            const defaults = type === "members" ? dashboardData.users : fallbackData[type];
+            const defaults = type === "members" ? allUsers : fallbackData[type];
             const loadedItems = mergeManagementItems(defaults, managementData[type]);
             return [
               type,
@@ -112,6 +150,29 @@ export default function AdminDashboard() {
       .catch(() => active && setStatus("error"));
     return () => { active = false; };
   }, []);
+
+  useEffect(() => {
+    let active = true;
+    const load = async () => {
+      setExchangeStatus("loading");
+      try {
+        const rates = await getExchangeRates();
+        if (!active) return;
+        setExchangeRates(rates);
+        setExchangeUpdatedAt(new Date());
+        setExchangeStatus("ready");
+      } catch (error) {
+        console.error("환율 정보 조회 실패", error);
+        if (active) setExchangeStatus("error");
+      }
+    };
+    load();
+    const timer = window.setInterval(load, 10 * 60 * 1000);
+    return () => { active = false; window.clearInterval(timer); };
+  }, [exchangeRefreshKey]);
+
+  const selectedExchange = useMemo(() => exchangeRates.find((item) => item.code === exchangeCode), [exchangeCode, exchangeRates]);
+  const exchangeHistory = useMemo(() => (selectedExchange?.history || []).slice(-exchangePeriod), [exchangePeriod, selectedExchange]);
 
   const items = management[activeTab] || [];
   const updateItem = (id, field, value) => {
@@ -194,6 +255,24 @@ export default function AdminDashboard() {
         <article><span>저장된 여행</span><strong>{status === "loading" ? "—" : metrics.plans}</strong><small>개</small></article>
         <article><span>작성된 리뷰</span><strong>{status === "loading" ? "—" : metrics.reviews}</strong><small>개</small></article>
         <article><span>관리자</span><strong>{status === "loading" ? "—" : management.members.filter((member) => member.role === "admin").length}</strong><small>명</small></article>
+      </section>
+
+      <section className={styles.exchangePanel} aria-label="실시간 환율 추이">
+        <div className={styles.exchangeHeader}>
+          <div><p>LIVE EXCHANGE</p><h2>환율 추이</h2></div>
+          <div className={styles.exchangeControls}>
+            <div>{exchangeCurrencies.map(([code]) => <button className={exchangeCode === code ? styles.activeExchange : ""} type="button" key={code} onClick={() => setExchangeCode(code)}>{code}</button>)}</div>
+            <select aria-label="조회 기간" value={exchangePeriod} onChange={(event) => setExchangePeriod(Number(event.target.value))}><option value={7}>최근 7일</option><option value={30}>최근 30일</option></select>
+            <button type="button" onClick={() => setExchangeRefreshKey((key) => key + 1)}>새로고침</button>
+          </div>
+        </div>
+        {exchangeStatus === "ready" && selectedExchange ? <>
+          <div className={styles.exchangeSummary}>
+            <div><span>{exchangeCurrencies.find(([code]) => code === exchangeCode)?.[1]}</span><strong>{selectedExchange.rate.toLocaleString("ko-KR", { maximumFractionDigits: 2 })}원</strong><small>{selectedExchange.baseUnit === 100 ? "100 단위 기준" : "1 단위 기준"}</small></div>
+            <div><span>전일 대비</span><strong className={selectedExchange.change?.startsWith("-") ? styles.exchangeDown : styles.exchangeUp}>{selectedExchange.change}</strong><small>{exchangeUpdatedAt?.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })} 갱신</small></div>
+          </div>
+          <div className={styles.exchangeChart}><ResponsiveContainer width="100%" height="100%"><LineChart data={exchangeHistory} margin={{ top: 12, right: 14, bottom: 0, left: 0 }}><CartesianGrid stroke="#e8ecef" strokeDasharray="3 3" vertical={false} /><XAxis dataKey="date" tickFormatter={formatExchangeDate} tickLine={false} axisLine={false} /><YAxis domain={["auto", "auto"]} tickLine={false} axisLine={false} width={62} /><Tooltip labelFormatter={formatExchangeDate} formatter={(value) => [`${Number(value).toLocaleString("ko-KR")}원`, exchangeCode]} /><Line type="monotone" dataKey="rate" stroke="#182d24" strokeWidth={3} dot={false} activeDot={{ r: 5 }} /></LineChart></ResponsiveContainer></div>
+        </> : <div className={styles.exchangeEmpty} role={exchangeStatus === "error" ? "alert" : "status"}><strong>{exchangeStatus === "error" ? "환율 정보를 불러오지 못했습니다." : "환율 정보를 불러오는 중입니다."}</strong><span>{exchangeStatus === "error" ? "ECOS API 연결 상태를 확인해 주세요." : "잠시만 기다려 주세요."}</span></div>}
       </section>
 
       <section className={styles.manager} aria-label="콘텐츠 관리">

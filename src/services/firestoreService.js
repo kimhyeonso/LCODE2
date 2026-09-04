@@ -14,6 +14,8 @@ import {
   where,
 } from "firebase/firestore";
 import { db } from "../firebase/firestore";
+import { firebaseApp } from "../firebase/config";
+import { getFunctions, httpsCallable } from "firebase/functions";
 const requireDb = () => {
   if (!db) throw new Error("Firebase is not configured");
   return db;
@@ -170,6 +172,22 @@ const getAdminCollectionName = (type) => {
   return name;
 };
 
+const removeUndefinedValues = (value) => {
+  if (Array.isArray(value)) {
+    return value
+      .filter((item) => item !== undefined)
+      .map(removeUndefinedValues);
+  }
+  if (value && typeof value === "object" && Object.getPrototypeOf(value) === Object.prototype) {
+    return Object.fromEntries(
+      Object.entries(value)
+        .filter(([, item]) => item !== undefined)
+        .map(([key, item]) => [key, removeUndefinedValues(item)]),
+    );
+  }
+  return value;
+};
+
 export async function getAdminManagementData() {
   const database = requireDb();
   const entries = await Promise.all(
@@ -202,7 +220,8 @@ export function subscribeAdminManagementItems(type, onItems, onError) {
 export async function saveAdminManagementItem(type, item) {
   const collectionName = getAdminCollectionName(type);
   const id = String(item.id || `${type}-${Date.now()}`);
-  const data = JSON.parse(JSON.stringify({ ...item, id, _deleted: false }));
+  const data = removeUndefinedValues({ ...item, id, _deleted: false });
+  delete data.updatedAt;
   await setDoc(
     doc(requireDb(), collectionName, id),
     { ...data, updatedAt: serverTimestamp() },
@@ -216,6 +235,55 @@ export async function deleteAdminManagementItem(type, id) {
   const reference = doc(requireDb(), getAdminCollectionName(type), String(id));
   if (type === "members") return deleteDoc(reference);
   return setDoc(reference, { id: String(id), _deleted: true, updatedAt: serverTimestamp() }, { merge: true });
+}
+
+export async function getFirebaseAuthUsers() {
+  if (!firebaseApp) return [];
+  const functions = getFunctions(firebaseApp, "asia-northeast3");
+  const result = await httpsCallable(functions, "listDashboardUsers")();
+  return Array.isArray(result.data?.users) ? result.data.users : [];
+}
+
+export async function ensureUserDataStructure(userId) {
+  if (!userId) throw new Error("사용자 ID가 없습니다.");
+  const database = requireDb();
+  const references = {
+    cart: doc(database, "users", userId, "shop", "cart"),
+    savedProducts: doc(database, "users", userId, "shop", "savedProducts"),
+    couponsMeta: doc(database, "users", userId, "coupons", "_meta"),
+  };
+
+  return runTransaction(database, async (transaction) => {
+    const [cart, savedProducts, couponsMeta] = await Promise.all([
+      transaction.get(references.cart),
+      transaction.get(references.savedProducts),
+      transaction.get(references.couponsMeta),
+    ]);
+
+    if (!cart.exists()) {
+      transaction.set(references.cart, { items: [], createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+    }
+    if (!savedProducts.exists()) {
+      transaction.set(references.savedProducts, { productIds: [], createdAt: serverTimestamp(), updatedAt: serverTimestamp() });
+    }
+    if (!couponsMeta.exists()) {
+      transaction.set(references.couponsMeta, {
+        _system: true,
+        initialized: true,
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+    }
+  });
+}
+
+export async function ensureUsersDataStructures(users = []) {
+  return Promise.all(
+    users
+      .map((user) => String(user?.id || user?.uid || ""))
+      .filter(Boolean)
+      .map((userId) => ensureUserDataStructure(userId)),
+  );
 }
 
 export async function decreaseProductStocks(items = []) {
@@ -331,5 +399,6 @@ export async function getUserCoupons(userId) {
       id: couponDocument.id,
       ...couponDocument.data(),
     }))
+    .filter((coupon) => !coupon._system)
     .sort((a, b) => (b.issuedAt?.seconds || 0) - (a.issuedAt?.seconds || 0));
 }
