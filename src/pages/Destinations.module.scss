@@ -9,13 +9,13 @@
 }
 .back {
   color: #777;
-  font-size: 8px;
+  font-size: 13px;
   letter-spacing: 1px;
 }
 .eyebrow {
   margin: 24px 0 18px 23px;
   color: #777;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 3px;
 }
 .page > h1 {
@@ -27,7 +27,7 @@
 .prompt {
   margin-left: 23px;
   color: #aaa;
-  font-size: 11px;
+  font-size: 13px;
 }
 .rule {
   height: 1px;
@@ -47,7 +47,7 @@
   padding: 0;
   background: transparent;
   color: #aaa;
-  font-size: 9px;
+  font-size: 13px;
   letter-spacing: 1.5px;
 }
 .tabs button.active {
@@ -80,7 +80,7 @@
 }
 .card small {
   color: #8a775f;
-  font: 8px $serif;
+  font: 13px $serif;
 }
 .card h2 {
   margin: 10px 0 7px;
@@ -93,14 +93,14 @@
   margin: 0;
   overflow: hidden;
   color: #777;
-  font-size: 10px;
+  font-size: 13px;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 .card strong {
   display: block;
   margin-top: 12px;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 400;
 }
 .card .add {
@@ -109,7 +109,7 @@
   left: 10px;
   border-bottom: 1px solid;
   color: #222;
-  font-size: 8px;
+  font-size: 13px;
 }
 .feature {
   grid-column: 1 / -1;
@@ -124,7 +124,7 @@
 .feature small,
 .feature p,
 .feature b {
-  font-size: 8px;
+  font-size: 13px;
   font-weight: 400;
 }
 .feature strong {

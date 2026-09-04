@@ -155,6 +155,8 @@ export default function AIRemix() {
   const [progress, setProgress] = useState(0);
   const [loadedPlan, setLoadedPlan] = useState(null);
   const [loadDone, setLoadDone] = useState(false);
+  const [sourcePlan, setSourcePlan] = useState(null);
+  const [planError, setPlanError] = useState("");
 
   const requestedPlanId = params.get("plan") || params.get("saved") || "";
   const requestedTripId = params.get("trip") || "";
@@ -199,6 +201,23 @@ export default function AIRemix() {
   const remix = useMemo(() => createRemix(selectedTrip, reason), [reason, selectedTrip]);
   const planId = loadedPlan?.id || requestedPlanId;
   const editUrl = editorPath({ planId, trip: selectedTrip });
+
+  useEffect(() => {
+    if (!planId || !user?.uid) return undefined;
+    let active = true;
+    getPlan(planId)
+      .then((plan) => {
+        if (!active) return;
+        if (!plan || plan.userId !== user.uid) {
+          setPlanError("리믹스할 저장 일정을 찾을 수 없습니다.");
+          return;
+        }
+        setSourcePlan(plan);
+        setPlanError("");
+      })
+      .catch(() => active && setPlanError("저장 일정을 불러오지 못했습니다."));
+    return () => { active = false; };
+  }, [planId, user?.uid]);
 
   useEffect(() => {
     if (stage !== "analyzing") return undefined;
@@ -260,7 +279,8 @@ export default function AIRemix() {
           </header>
           <div className={styles.intro}>
             <h1>오늘 일정,<br />다시 맞춰볼까요?</h1>
-            <p>{selectedTrip.city} 일정에서 생긴 돌발상황을 선택하면<br />남은 일정을 다시 구성해드려요.</p>
+            <p>{sourcePlan ? `${sourcePlan.title || sourcePlan.city || "저장된 일정"}을 기준으로` : `${selectedTrip.city} 일정에서 생긴 돌발상황을 선택하면`}<br />남은 일정을 다시 구성해드려요.</p>
+            {planError && <p role="alert">{planError}</p>}
           </div>
           <ul className={styles.reasonList}>
             {reasons.map((item) => (

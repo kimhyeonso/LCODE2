@@ -1,0 +1,449 @@
+/* =========================================================
+   PRODUCT VARIANT / CARRIER CUSTOM
+   ProductDetailPage 전용
+========================================================= */
+
+
+.variantSections {
+  display: grid;
+  gap: 18px;
+}
+
+.variantSection {
+  min-width: 0;
+}
+
+.variantSection + .variantSection {
+  padding-top: 18px;
+  border-top: 1px solid #e4e0d8;
+}
+
+.variantSection > label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.variantGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+
+@media (min-width: 851px) {
+  .customVariantFull {
+    grid-column: 1 / -1;
+  }
+}
+
+.variantButton {
+  min-height: 48px;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid #d8d3ca;
+  background: transparent;
+  color: #171714;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color .2s ease, background .2s ease;
+}
+
+.variantButton:hover {
+  border-color: #8b867e;
+}
+
+.variantSelected {
+  border-color: #171714;
+  background: #171714;
+  color: #fff;
+}
+
+.variantSwatch {
+  width: 22px;
+  height: 22px;
+  display: block;
+  border: 1px solid rgba(17, 17, 15, .16);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .36);
+}
+
+.variantButton b {
+  min-width: 0;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .03em;
+}
+
+.variantButton em {
+  font-size: 10px;
+  font-style: normal;
+  white-space: nowrap;
+  opacity: .7;
+}
+
+.customSwatch {
+  position: relative;
+  overflow: hidden;
+  background:
+    conic-gradient(
+      #d9d2c4,
+      #747d84,
+      #eae4da,
+      #20221f,
+      #d9d2c4
+    );
+}
+
+.customSwatch::after {
+  content: "+";
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 13px;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, .3);
+}
+
+.editCustomButton {
+  margin-top: 8px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid #171714;
+  background: transparent;
+  color: #171714;
+  font-size: 10px;
+  letter-spacing: .12em;
+  cursor: pointer;
+}
+
+/* =========================================================
+   CUSTOM MODAL
+========================================================= */
+
+.customBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  padding: 22px;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, .52);
+  backdrop-filter: blur(5px);
+}
+
+.customModal {
+  width: min(1180px, 100%);
+  height: min(760px, calc(100vh - 44px));
+  min-height: 620px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  overflow: hidden;
+  background: #efefed;
+  box-shadow: 0 28px 80px rgba(0, 0, 0, .24);
+}
+
+.customWorkspace {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: #f1f1ef;
+}
+
+.workspaceTop {
+  height: 58px;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  border-bottom: 1px solid #dddcd8;
+  color: #77736c;
+  font-size: 10px;
+  letter-spacing: .14em;
+}
+
+.workspaceTop b {
+  color: #171714;
+  font-weight: 500;
+}
+
+.suitcaseStage {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 42px;
+  overflow: hidden;
+}
+
+.suitcase {
+  position: relative;
+  width: min(300px, 52%);
+  aspect-ratio: .72 / 1;
+}
+
+.suitcaseHandle {
+  position: absolute;
+  top: -58px;
+  left: 50%;
+  width: 78px;
+  height: 66px;
+  border: 9px solid #1c1c1b;
+  border-bottom: 0;
+  border-radius: 12px 12px 0 0;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+}
+
+.suitcaseBody {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  touch-action: none;
+  cursor: grab;
+  border: 1px solid #d5d3cd;
+  border-radius: 42px 42px 34px 34px;
+  background:
+    linear-gradient(90deg, rgba(255,255,255,.75), rgba(255,255,255,.12)),
+    #f9f8f4;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .08);
+}
+
+.suitcaseBody:active {
+  cursor: grabbing;
+}
+
+.suitcaseBody::after {
+  content: "";
+  position: absolute;
+  z-index: 6;
+  inset: 20px;
+  border: 1px dashed rgba(17, 17, 15, .56);
+  border-radius: 24px;
+  pointer-events: none;
+}
+
+.customArtwork {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  transform-origin: center;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.customEmpty {
+  position: absolute;
+  inset: 20px;
+  display: grid;
+  place-content: center;
+  gap: 8px;
+  text-align: center;
+  color: #aaa69e;
+}
+
+.customEmpty span {
+  font-size: 34px;
+  font-weight: 200;
+}
+
+.customEmpty p {
+  margin: 0;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+.wheel {
+  position: absolute;
+  bottom: -19px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #161615;
+}
+
+.wheelLeft { left: 34px; }
+.wheelRight { right: 34px; }
+
+/* =========================================================
+   CONTROL PANEL
+========================================================= */
+
+.customPanel {
+  position: relative;
+  overflow-y: auto;
+  padding: 28px 26px 24px;
+  background: #fff;
+  border-left: 1px solid #e2e0da;
+}
+
+.customClose {
+  position: absolute;
+  top: 17px;
+  right: 18px;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  background: transparent;
+  color: #171714;
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.customPanel > small {
+  display: block;
+  margin-bottom: 12px;
+  color: #8b867e;
+  font-size: 10px;
+  letter-spacing: .18em;
+}
+
+.customPanel h2 {
+  margin: 0;
+  font-family: "Times New Roman", "Noto Serif KR", serif;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -.025em;
+}
+
+.customPanel > p {
+  margin: 18px 0 24px;
+  color: #77736c;
+  font-size: 10px;
+  line-height: 1.75;
+}
+
+.sideTabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-bottom: 15px;
+}
+
+.sideTabs button {
+  min-height: 42px;
+  border: 1px solid #d8d3ca;
+  background: transparent;
+  color: #77736c;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.sideTabs button + button { border-left: 0; }
+
+.sideTabs .sideActive {
+  color: #fff;
+  background: #171714;
+  border-color: #171714;
+}
+
+.uploadButton {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 15px;
+  border: 1px solid #171714;
+  color: #171714;
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.uploadButton b {
+  font-size: 20px;
+  font-weight: 300;
+}
+
+.uploadButton input { display: none; }
+
+.fileName {
+  padding: 8px 0 0;
+  overflow: hidden;
+  color: #8b867e;
+  font-size: 10px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.rangeGroup {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid #ece9e2;
+}
+
+.rangeGroup label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  color: #77736c;
+  font-size: 10px;
+}
+
+.rangeGroup label b {
+  color: #171714;
+  font-weight: 500;
+}
+
+.rangeGroup input {
+  width: 100%;
+  accent-color: #171714;
+}
+
+.customActions {
+  display: grid;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.customActions button {
+  min-height: 45px;
+  border: 1px solid #d8d3ca;
+  background: transparent;
+  color: #171714;
+  font-size: 10px;
+  cursor: pointer;
+}
+
+.customActions button:first-child {
+  border-color: #171714;
+  background: #171714;
+  color: #fff;
+}
+
+@media (max-width: 850px) {
+  .customBackdrop { padding: 12px; }
+  .customModal {
+    height: min(820px, calc(100vh - 24px));
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(330px, 46%) minmax(0, 54%);
+    overflow-y: auto;
+  }
+  .customPanel { border-left: 0; border-top: 1px solid #e2e0da; }
+  .suitcaseStage { padding: 54px 24px 28px; }
+  .suitcase { width: min(180px, 46%); }
+  .suitcaseHandle { top: -42px; width: 54px; height: 48px; border-width: 7px; }
+  .wheel { width: 20px; height: 20px; bottom: -13px; }
+  .wheelLeft { left: 23px; }
+  .wheelRight { right: 23px; }
+}
+
+@media (max-width: 600px) {
+  .variantGrid { grid-template-columns: 1fr; }
+  .customBackdrop { padding: 0; place-items: stretch; }
+  .customModal {
+    width: 100%;
+    height: 100svh;
+    border-radius: 0;
+  }
+  .workspaceTop { height: 46px; padding: 0 14px; }
+  .customPanel { padding: 22px 16px 26px; }
+  .customPanel h2 { font-size: 25px; }
+}

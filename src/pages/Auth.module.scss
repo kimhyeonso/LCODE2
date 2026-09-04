@@ -30,7 +30,7 @@
   padding-bottom: 20px;
   border-bottom: 1px solid #bdb6aa;
   color: #615b52;
-  font: 400 11px/1.2 Georgia, "Times New Roman", serif;
+  font: 400 13px/1.2 Georgia, "Times New Roman", serif;
   letter-spacing: 3.2px;
 }
 
@@ -88,7 +88,7 @@
   align-items: end;
   gap: 22px;
   color: #615b52;
-  font: 9px/1.7 Georgia, "Times New Roman", serif;
+  font: 13px/1.7 Georgia, "Times New Roman", serif;
   letter-spacing: 1.5px;
 
   i { margin-bottom: 5px; border-top: 1px solid #c7c0b5; }
@@ -148,7 +148,7 @@
   flex-direction: column;
   gap: 9px;
   color: #34312d;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
 }
 
@@ -255,7 +255,7 @@
 .error {
   margin: 16px 0 -27px;
   color: #882e2e;
-  font-size: 11px;
+  font-size: 13px;
 }
 
 @media (max-width: 1200px) {
@@ -290,7 +290,7 @@
   .titleRow h1 { font-size: clamp(47px, 15vw, 62px); }
   .postmark { top: -40px; right: -15px; width: 125px; }
   .copy { width: 100%; font-size: 12px; }
-  .signature { margin-top: 52px; gap: 12px; font-size: 7px; }
+  .signature { margin-top: 52px; gap: 12px; font-size: 10px; }
   .formFrame { min-height: 620px; padding: 61px 30px 50px; }
   .formFrame input { font-size: 21px; }
   .submit { height: 70px; }

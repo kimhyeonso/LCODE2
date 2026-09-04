@@ -2,6 +2,7 @@ import MypageBackLink from "../components/MypageBackLink";
 import { Link, useLocation } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { getUserCoupons } from "../services/firestoreService";
 import { getCouponStorageKey } from "../data/eventCoupons";
 import styles from "./Coupon.module.scss";
@@ -9,6 +10,7 @@ import styles from "./Coupon.module.scss";
 const coupons = [
   { type: "SPECIAL EVENT", title: "PACK & WIN", description: "여행 짐싸고 쿠폰받자!", code: "TC-0056", expiry: "VALID UNTIL 2026.08.31", used: true },
   { type: "L:CODE", title: "5%", suffix: "OFF", description: "FLIGHT KIT", detail: "여행 키트", code: "TC-0034", expiry: "VALID UNTIL 2026.10.15" },
+  { type: "L:CODE", title: "10%", suffix: "OFF", description: "TRAVEL GOODS", detail: "여행 상품", code: "TC-0041", expiry: "VALID UNTIL 2026.12.31" },
 ];
 
 const COUPONS_PER_PAGE = 3;
@@ -30,6 +32,10 @@ function CouponTicket({ coupon, featured = false }) {
 }
 
 export default function Coupon() {
+  const managedCoupons = useManagedCollection("coupons", [
+    { id: "coupon-welcome", type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" },
+    ...coupons,
+  ]);
   const { user } = useAuth();
   const { state } = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,12 +69,12 @@ export default function Coupon() {
       });
     return () => { active = false; };
   }, [user]);
-  const welcomeCoupon = { type: "L:CODE SHOP", title: "3,000", suffix: "KRW OFF", description: "쇼핑몰 전용", code: "TC-0012", expiry: "VALID UNTIL 2026.09.30" };
+  const welcomeCoupon = managedCoupons.find((coupon) => coupon.code === "TC-0012");
   const ownedCoupons = useMemo(
-    () => [...coupons, ...registeredCoupons],
-    [registeredCoupons],
+    () => [...managedCoupons.filter((coupon) => coupon.code !== "TC-0012"), ...registeredCoupons],
+    [managedCoupons, registeredCoupons],
   );
-  const availableCount = [welcomeCoupon, ...ownedCoupons]
+  const availableCount = [...(welcomeCoupon ? [welcomeCoupon] : []), ...ownedCoupons]
     .filter((coupon) => !coupon.used).length;
   const pageCount = Math.max(1, Math.ceil(ownedCoupons.length / COUPONS_PER_PAGE));
   const pageCoupons = ownedCoupons.slice(
@@ -104,7 +110,7 @@ export default function Coupon() {
           </div>
           <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
           <div className={styles.divider} />
-          <CouponTicket coupon={welcomeCoupon} featured />
+          {welcomeCoupon && <CouponTicket coupon={welcomeCoupon} featured />}
           <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>
         </section>
         <section className={styles.couponList} aria-label="보유 쿠폰">

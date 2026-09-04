@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 
 import products from "../data/products.json";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { useShop } from "../hooks/useShop";
 import styles from "./Shop.module.scss";
 
@@ -50,6 +51,7 @@ const STANDARD_OPTION = {
 ========================================================= */
 
 export default function Products() {
+  const managedProducts = useManagedCollection("products", products);
   const [
     category,
     setCategory,
@@ -80,7 +82,7 @@ export default function Products() {
 
   const displayProducts = useMemo(
     () =>
-      products.map(
+      managedProducts.map(
         (product, index) => {
           const imageNumber =
             index + 1;
@@ -91,16 +93,16 @@ export default function Products() {
             imageNumber,
 
             thumbnail:
+              product.image ||
               getDetailImage(
                 imageNumber,
                 "_1"
               ) ||
-              product.image ||
               "",
           };
         }
       ),
-    []
+    [managedProducts]
   );
 
   /* =========================================================
@@ -149,6 +151,11 @@ export default function Products() {
   const handleQuickAdd = (
     product
   ) => {
+    if (Number(product.stock) === 0) {
+      window.alert("품절된 상품입니다.");
+      return;
+    }
+
     clearQuickTimers();
 
     addToCart(
@@ -326,14 +333,13 @@ export default function Products() {
               styles.heroEyebrow
             }
           >
-            L:CODE TRAVEL
-            SELECTION
+            <p>
+              여행을 더 가볍게 만드는
+            </p>
           </span>
 
           <h1>
-            FLIGHT
-            <br />
-            KIT
+            FLIGHT KIT
           </h1>
 
           <div
@@ -341,11 +347,7 @@ export default function Products() {
               styles.heroBottom
             }
           >
-            <p>
-              여행을 더 가볍게 만드는
-              <br />
-              TRAVEL ESSENTIALS
-            </p>
+            
 
             <a
               href="#items"
@@ -366,7 +368,7 @@ export default function Products() {
             styles.heroNumber
           }
         >
-          01 / TAIPEI
+           
         </span>
       </header>
 
@@ -464,6 +466,10 @@ export default function Products() {
                 saved.includes(
                   product.id
                 );
+              const hasStock = product.stock != null && Number.isFinite(Number(product.stock));
+              const stock = hasStock ? Number(product.stock) : null;
+              const soldOut = stock === 0;
+              const lowStock = stock !== null && stock > 0 && stock <= 5;
 
               return (
                 <article
@@ -503,9 +509,9 @@ export default function Products() {
                           : "찜하기"
                       }
                     >
-                      {liked
-                        ? "♥"
-                        : "♡"}
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M12 20.7 10.55 19.38C5.4 14.7 2 11.62 2 7.85 2 4.77 4.42 2.35 7.5 2.35c1.74 0 3.41.81 4.5 2.09a6.03 6.03 0 0 1 4.5-2.09c3.08 0 5.5 2.42 5.5 5.5 0 3.77-3.4 6.85-8.55 11.54Z" />
+                      </svg>
                     </button>
 
                     <Link
@@ -540,6 +546,13 @@ export default function Products() {
                             product.name
                           }
                           loading="lazy"
+                          onError={(event) => {
+                            const fallback = getDetailImage(product.imageNumber, "_1");
+                            if (fallback && event.currentTarget.dataset.fallbackApplied !== "true") {
+                              event.currentTarget.dataset.fallbackApplied = "true";
+                              event.currentTarget.src = fallback;
+                            }
+                          }}
                         />
                       ) : (
                         <b>
@@ -556,6 +569,7 @@ export default function Products() {
                       className={
                         styles.cardCart
                       }
+                      disabled={soldOut}
                       onClick={() =>
                         handleQuickAdd(
                           product
@@ -566,7 +580,7 @@ export default function Products() {
                         " 장바구니 담기"
                       }
                     >
-                      +
+                      {soldOut ? "×" : "+"}
                     </button>
                   </div>
 
@@ -598,6 +612,12 @@ export default function Products() {
                       {product.price.toLocaleString()}{" "}
                       KRW
                     </p>
+
+                    {(soldOut || lowStock) && (
+                      <span className={soldOut ? styles.soldOut : styles.lowStock}>
+                        {soldOut ? "품절" : `재고 부족 · ${stock}개 남음`}
+                      </span>
+                    )}
                   </div>
                 </article>
               );
@@ -650,6 +670,13 @@ export default function Products() {
                   alt={
                     quickProduct.name
                   }
+                  onError={(event) => {
+                    const fallback = getDetailImage(quickProduct.imageNumber, "_1");
+                    if (fallback && event.currentTarget.dataset.fallbackApplied !== "true") {
+                      event.currentTarget.dataset.fallbackApplied = "true";
+                      event.currentTarget.src = fallback;
+                    }
+                  }}
                 />
               ) : (
                 quickProduct.name?.slice(

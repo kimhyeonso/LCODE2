@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Paking.module.scss";
 
@@ -17,6 +17,7 @@ const tips = [
 ];
 
 const storageKey = "lcode-paking-checklist";
+const allItems = groups.flatMap((group) => group.items);
 
 const getSavedChecks = () => {
   try {
@@ -29,6 +30,13 @@ const getSavedChecks = () => {
 
 export default function Paking() {
   const [checkedItems, setCheckedItems] = useState(getSavedChecks);
+  const [showStampModal, setShowStampModal] = useState(false);
+
+  useEffect(() => {
+    if (allItems.every((item) => checkedItems.includes(item))) {
+      setShowStampModal(true);
+    }
+  }, [checkedItems]);
 
   const toggleItem = (item) => {
     setCheckedItems((current) => {
@@ -93,6 +101,26 @@ export default function Paking() {
           </section>
         </div>
       </div>
+
+      {showStampModal && (
+        <div
+          className={styles.stampModal}
+          role="presentation"
+          onClick={() => setShowStampModal(false)}
+        >
+          <div
+            className={styles.stampBoard}
+            role="dialog"
+            aria-modal="true"
+            aria-label="여행 준비 완료 스탬프"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <img className={styles.stampBoardImage} src="/Mypage-img/stamp_2.svg" alt="여행 스탬프 보드" />
+            <img className={styles.completedStamp} src="/Mypage-img/stamp.png" alt="완료 스탬프" />
+            <button type="button" onClick={() => setShowStampModal(false)} aria-label="스탬프 닫기">×</button>
+          </div>
+        </div>
+      )}
     </main>
   );
 }

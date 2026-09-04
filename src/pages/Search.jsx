@@ -1,14 +1,46 @@
-import { useMemo, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
+import products from "../data/products.json";
 import searchIcon from "../assets/icons/search.svg";
-import travelKitImage from "../assets/images/travel_kit.webp";
-import travelPouchImage from "../assets/images/travel_pouch.webp";
-import travelAdapterImage from "../assets/images/travel_adapter.webp";
+import DesrinationThumnail from "../components/DesrinationThumnail";
+import ProductCard from "../components/ProductCard";
 import styles from "./Search.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
+import { useAuth } from "../hooks/useAuth";
+import { useManagedCollection } from "../hooks/useManagedCollection";
+import {
+  deleteFavoriteTrip,
+  getFavoriteTrips,
+  saveFavoriteTrip,
+} from "../services/firestoreService";
 
-const countryLabels = { korea: "KR", japan: "JP", china: "CN" };
+const themeNames = {
+  attraction: "ART & WALK",
+  restaurant: "SEA & FOOD",
+  hotel: "STAY & REST",
+  airport: "START A JOURNEY",
+};
+const getFavoriteStorageKey = (userId) => `lcode-favorite-trips:${userId}`;
+
+const getStoredFavoriteTrips = (userId) => {
+  try {
+    const value = localStorage.getItem(getFavoriteStorageKey(userId));
+    if (value === null) return null;
+    const ids = JSON.parse(value);
+    return Array.isArray(ids) ? ids : null;
+  } catch {
+    return null;
+  }
+};
+
+const storeFavoriteTrips = (userId, ids) => {
+  try {
+    localStorage.setItem(getFavoriteStorageKey(userId), JSON.stringify(ids));
+  } catch {
+    // Firebase 동기화는 계속 시도합니다.
+  }
+};
 const cityAliases = {
   FUKUOKA: "후쿠오카",
   TOKYO: "도쿄",
@@ -18,11 +50,32 @@ const cityAliases = {
   SHANGHAI: "상하이",
 };
 
-const getRepresentativeImage = (trip) => {
-  const item = trip.days
+const getTripImages = (trip) => {
+  const cityThumbnail = getImageUrl(
+    tripRoad.thumbnailMap?.[trip.country]?.[trip.city],
+    "",
+  );
+  const placeImages = trip.days
     .flatMap((day) => day.items)
-    .find((entry) => entry.type === "place" && entry.image);
-  return getImageUrl(item?.image);
+    .filter((entry) => entry.type === "place" && entry.image)
+    .map((entry) => getImageUrl(entry.image, ""))
+    .filter(Boolean);
+
+  return Array.from(new Set([cityThumbnail, ...placeImages].filter(Boolean)));
+};
+
+const assignRepresentativeImages = (trips) => {
+  const usedImages = new Set();
+
+  return new Map(trips.map((trip) => {
+    const candidates = getTripImages(trip);
+    const image = candidates.find((candidate) => !usedImages.has(candidate))
+      || candidates[0]
+      || "";
+
+    if (image) usedImages.add(image);
+    return [trip.id, image];
+  }));
 };
 
 const countPlaces = (trip) => trip.days.reduce(
@@ -30,7 +83,14 @@ const countPlaces = (trip) => trip.days.reduce(
   0,
 );
 
+const getFirstPlace = (trip) => trip.days
+  .flatMap((day) => day.items)
+  .find((item) => item.type === "place");
+
 export default function Search() {
+  const managedTrips = useManagedCollection("packages", tripRoad.trips);
+  const managedProducts = useManagedCollection("products", products);
+  const { user } = useAuth();
   const [params] = useSearchParams();
   const navigate = useNavigate();
   const initialQuery = params.get("city") || "";
@@ -38,11 +98,15 @@ export default function Search() {
   const [country, setCountry] = useState("all");
   const [sort, setSort] = useState("recommended");
   const [filterOpen, setFilterOpen] = useState(false);
+  const [favoriteTripIds, setFavoriteTripIds] = useState(
+    () => user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : [],
+  );
+  const favoriteMutationRef = useRef(0);
   const [filters, setFilters] = useState({ duration: "all", companion: "all", styles: [], pace: "all", season: "all" });
 
   const trips = useMemo(() => {
     const uniqueTrips = Array.from(
-      tripRoad.trips.reduce((map, trip) => {
+      managedTrips.reduce((map, trip) => {
         if (!map.has(trip.city)) map.set(trip.city, trip);
         return map;
       }, new Map()).values(),
@@ -69,7 +133,43 @@ export default function Search() {
     return sort === "name"
       ? [...filtered].sort((a, b) => a.city.localeCompare(b.city, "ko"))
       : filtered;
-  }, [country, filters, initialQuery, sort]);
+  }, [country, filters, initialQuery, managedTrips, sort]);
+
+  const representativeImages = useMemo(
+    () => assignRepresentativeImages(trips),
+    [trips],
+  );
+
+  useEffect(() => {
+    if (!user?.uid) {
+      return undefined;
+    }
+
+    let active = true;
+    const mutationAtStart = favoriteMutationRef.current;
+    const storedIds = getStoredFavoriteTrips(user.uid);
+    getFavoriteTrips(user.uid)
+      .then((firebaseIds) => {
+        if (!active || favoriteMutationRef.current !== mutationAtStart) return;
+        const ids = storedIds ?? firebaseIds;
+        setFavoriteTripIds(ids);
+        storeFavoriteTrips(user.uid, ids);
+
+        if (storedIds !== null) {
+          storedIds.filter((id) => !firebaseIds.includes(id))
+            .forEach((id) => saveFavoriteTrip(user.uid, id).catch(() => {}));
+          firebaseIds.filter((id) => !storedIds.includes(id))
+            .forEach((id) => deleteFavoriteTrip(user.uid, id).catch(() => {}));
+        }
+      })
+      .catch((error) => {
+        if (active && storedIds !== null && favoriteMutationRef.current === mutationAtStart) {
+          setFavoriteTripIds(storedIds);
+        }
+        console.error("찜한 일정을 불러오지 못했습니다.", error);
+      });
+    return () => { active = false; };
+  }, [user?.uid]);
 
   const selectFilter = (key, value) => setFilters((current) => ({ ...current, [key]: value }));
   const toggleStyle = (value) => setFilters((current) => ({
@@ -87,10 +187,42 @@ export default function Search() {
     navigate(value ? `/search?city=${encodeURIComponent(value)}` : "/search");
   };
 
-  const chooseKeyword = (city) => {
-    setQuery(city);
-    navigate(`/search?city=${encodeURIComponent(city)}`);
+  const toggleFavoriteTrip = async (tripId) => {
+    if (!user?.uid) {
+      navigate("/login");
+      return;
+    }
+
+    const wasFavorite = favoriteTripIds.includes(tripId);
+    favoriteMutationRef.current += 1;
+    const nextIds = wasFavorite
+      ? favoriteTripIds.filter((id) => id !== tripId)
+      : [...favoriteTripIds, tripId];
+    setFavoriteTripIds((current) => (
+      wasFavorite ? current.filter((id) => id !== tripId) : [...current, tripId]
+    ));
+    storeFavoriteTrips(user.uid, nextIds);
+
+    try {
+      if (wasFavorite) await deleteFavoriteTrip(user.uid, tripId);
+      else await saveFavoriteTrip(user.uid, tripId);
+      window.dispatchEvent(new Event("favorite-trips-changed"));
+    } catch (error) {
+      console.error("일정 찜 상태를 저장하지 못했습니다.", error);
+    }
   };
+
+  const hasActiveDestinationSearch = initialQuery.trim().length > 0 || country !== "all";
+  const travelEssentialsSection = (
+    <section className={styles.products} aria-labelledby="search-products-title">
+      <h1 id="search-products-title">TRAVEL ESSENTIALS</h1>
+      <div>
+        {managedProducts.slice(0, 3).map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </section>
+  );
 
   return (
     <main className={styles.searchPage}>
@@ -106,40 +238,11 @@ export default function Search() {
           />
         </form>
         <p>어디로 떠나볼까요?</p>
-        <div className={styles.keywords}>
-          <span>KR</span>
-          {['서울', '부산', '제주도'].map((city) => (
-            <button type="button" key={city} onClick={() => chooseKeyword(city)}>{city}</button>
+        <nav className={styles.tabs} aria-label="여행 국가">
+          {[["all", "ALL"], ["korea", "KOREA"], ["japan", "JAPAN"], ["china", "CHINA"]].map(([value, label]) => (
+            <button className={country === value ? styles.active : ""} type="button" key={value} onClick={() => setCountry(value)}>{label}</button>
           ))}
-          <span>JP</span>
-          {['도쿄', '오사카', '후쿠오카'].map((city) => (
-            <button type="button" key={city} onClick={() => chooseKeyword(city)}>{city}</button>
-          ))}
-          <span>CN</span>
-          {['상하이', '베이징'].map((city) => (
-            <button type="button" key={city} onClick={() => chooseKeyword(city)}>{city}</button>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.products} aria-labelledby="search-products-title">
-        <h1 id="search-products-title">TRAVEL ESSENTIALS</h1>
-        <div>
-          {[
-            ["TRAVEL KIT", travelKitImage],
-            ["TRAVEL POUCH", travelPouchImage],
-            ["ADAPTER", travelAdapterImage],
-          ].map(([name, image]) => (
-            <Link to="/shop" key={name}>
-              <img src={image} alt="" />
-              <strong>{name}</strong>
-              <span>SHOP NOW</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.archive} aria-labelledby="package-archive-title">
+        </nav>
         <div className={styles.controls}>
           <button type="button" onClick={() => setFilterOpen((open) => !open)}>FILTER</button>
           <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="정렬 방식">
@@ -147,24 +250,28 @@ export default function Search() {
             <option value="name">이름순</option>
           </select>
         </div>
+      </section>
+
+      {!hasActiveDestinationSearch && travelEssentialsSection}
+
+      <section className={styles.archive} aria-labelledby="package-archive-title">
         <h2 id="package-archive-title">PACKAGE ARCHIVE <b>{trips.length}</b></h2>
         <div className={styles.results}>
           {trips.map((trip, index) => {
-            const image = getRepresentativeImage(trip);
+            const image = representativeImages.get(trip.id);
+            const firstPlace = getFirstPlace(trip);
+            const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
             return (
-              <article className={styles.tripCard} key={trip.id}>
-                <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`} className={styles.cardLink}>
-                  <div className={styles.cardImage} style={image ? { backgroundImage: `url(${image})` } : undefined}>
-                    <small>{String(index + 1).padStart(2, "0")}</small>
-                    <strong>{trip.city.toUpperCase()}</strong>
-                  </div>
-                  <div className={styles.cardCopy}>
-                    <p>{trip.duration}　—　{countryLabels[trip.country] || trip.country.toUpperCase()}</p>
-                    <h3>{trip.title}</h3>
-                    <small>{trip.city} 추천 여행 · {countPlaces(trip)}개 일정</small>
-                  </div>
-                </Link>
-              </article>
+              <DesrinationThumnail
+                key={trip.id}
+                trip={trip}
+                index={index}
+                image={image}
+                category={category}
+                to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+                isFavorite={favoriteTripIds.includes(trip.id)}
+                onToggleFavorite={() => toggleFavoriteTrip(trip.id)}
+              />
             );
           })}
           {!trips.length && (
@@ -175,6 +282,7 @@ export default function Search() {
           )}
         </div>
       </section>
+      {hasActiveDestinationSearch && travelEssentialsSection}
       {filterOpen && (
         <div className={styles.filterBackdrop} role="presentation" onMouseDown={() => setFilterOpen(false)}>
           <section className={styles.filterPanel} role="dialog" aria-modal="true" aria-labelledby="filter-title" onMouseDown={(event) => event.stopPropagation()}>

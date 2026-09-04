@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import Products from "./pages/Products";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import Plan from "./pages/Plan";
+import ExpenseSettings from "./pages/ExpenseSettings";
 import TravelPlanner from "./pages/TravelPlanner";
 import Plans from "./pages/Plans";
 import Event from "./pages/Event";
@@ -25,6 +26,7 @@ import Coupon from "./pages/Coupon";
 import CouponUp from "./pages/CouponUp";
 import Alarm from "./pages/Alarm";
 import Notice from "./pages/Notice";
+import NoticeDetail from "./pages/NoticeDetail";
 import OpenGuide from "./pages/OpenGuide";
 import Review from "./pages/Review";
 import Buy from "./pages/Buy";
@@ -63,15 +65,16 @@ const enlargedPagePaths = new Set([
   "/login",
   "/profile/edit",
   "/itinerary",
+  "/buy",
   "/wishlist",
   "/mystories",
   "/review",
   "/coupon",
   "/coupon/register",
   "/alarm",
+  "/notice",
   "/open-guide",
   "/paking",
-  "/MyPageMain",
 ]);
 
 const immersivePagePaths = new Set([]);
@@ -91,9 +94,10 @@ function PageSize() {
 export default function App() {
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
+  const isBalancePage = pathname === "/balance";
 
   return (
-    <div className={styles.app}>
+    <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
       <ScrollTop />
       <PageSize />
       {!isImmersivePage && <Header />}
@@ -101,6 +105,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/plan" element={<Plan />} />
+          <Route path="/plan/expense" element={<ExpenseSettings />} />
           <Route path="/search" element={<Search />} />
           <Route path="/destination" element={<ExchangeRate />} />
           <Route path="/desrination" element={<DesrinationAll />} />
@@ -122,7 +127,7 @@ export default function App() {
           <Route path="/itinerary" element={<Itinerary />} />
           <Route path="/buy" element={<Buy />} />
           <Route path="/paking" element={<Paking />} />
-          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
           <Route path="/mystories" element={<Mystories />} />
           <Route path="/mypagemain" element={<MyPageMain />} />
           <Route
@@ -137,6 +142,7 @@ export default function App() {
           <Route path="/coupon/register" element={<ProtectedRoute><CouponUp /></ProtectedRoute>} />
           <Route path="/alarm" element={<Alarm />} />
           <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/:noticeId" element={<NoticeDetail />} />
           <Route path="/open-guide" element={<OpenGuide />} />
           <Route
             path="/profile/edit"
@@ -171,14 +177,14 @@ export default function App() {
             }
           />
           <Route path="/event" element={<Event />} />
-          <Route path="/ai-remix" element={<AIRemix />} />
-          <Route path="/remix" element={<AIRemix />} />
+          <Route path="/ai-remix" element={<ProtectedRoute><AIRemix /></ProtectedRoute>} />
+          <Route path="/remix" element={<ProtectedRoute><AIRemix /></ProtectedRoute>} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
       {!isImmersivePage && <Footer />}
-      <BottomNav />
+      {!isImmersivePage && <BottomNav />}
     </div>
   );
 }

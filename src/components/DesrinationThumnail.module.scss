@@ -1,0 +1,112 @@
+@use "../styles/variables" as *;
+
+.tripCard {
+  position: relative;
+  display: block;
+  min-width: 0;
+}
+
+.tripLink {
+  display: block;
+  color: $ink;
+}
+
+.tripImage {
+  display: grid;
+  aspect-ratio: 1 / 1;
+  place-items: center;
+  overflow: hidden;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: #aaa6a0;
+  font-size: 13px;
+  letter-spacing: .16em;
+}
+
+.tripCopy {
+  min-height: 150px;
+  padding: 15px 11px 13px;
+}
+
+.tripCopy > small {
+  color: #8c897f;
+  font-size: 13px;
+  letter-spacing: -.02em;
+}
+
+.tripCopy h2 {
+  margin: 13px 0 7px;
+  font-family: $serif;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.05;
+}
+
+.tripCopy p {
+  display: -webkit-box;
+  margin: 0;
+  overflow: hidden;
+  color: #77736c;
+  font-size: 14px;
+  line-height: 1.45;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.tripCopy strong {
+  display: block;
+  margin-top: 11px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.tripCopy em {
+  display: block;
+  margin-top: 10px;
+  color: #77736c;
+  font-size: 14px;
+  font-style: normal;
+}
+
+.favoriteButton {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, .72);
+  border-radius: 50%;
+  padding: 0;
+  background: rgba(250, 248, 255, .9);
+  color: #d84a50;
+  box-shadow: 0 4px 12px rgba(75, 64, 112, .2);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: transform 160ms ease, background-color 160ms ease;
+}
+
+.favoriteButton svg {
+  width: 17px;
+  height: 17px;
+  fill: transparent;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  transition: fill 160ms ease;
+}
+
+.favoriteButton:hover {
+  transform: translateY(-1px);
+}
+
+.favoriteButton:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.favoriteButton.favoriteActive svg {
+  fill: currentColor;
+}

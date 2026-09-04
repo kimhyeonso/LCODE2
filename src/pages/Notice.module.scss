@@ -264,7 +264,7 @@
   }
 
   .eyebrow {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .title {
@@ -320,7 +320,7 @@
   .cardCaption {
     min-height: 39px;
     padding-top: 10px;
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .stamp {
@@ -333,7 +333,7 @@
     top: 158px;
     left: 30px;
     width: 54px;
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .issueRail i {
@@ -342,7 +342,7 @@
   }
 
   .issueRail em {
-    font-size: 11px;
+    font-size: 13px;
   }
 
   .issueRail b {
@@ -379,7 +379,7 @@
     font-size: 1.45rem;
   }
 
-  .eyebrow { font-size: .52rem; }
+  .eyebrow { font-size: 0.625rem; }
   .title { margin: .8rem 0; font-size: 3.1rem; }
   .description { font-size: .78rem; }
   .divider { margin-top: .8rem; }
@@ -388,11 +388,11 @@
   .noticeRow,
   .noticeLink { min-height: 3.5rem; padding-inline: .45rem; font-size: .72rem; }
   .noticeRow b, .noticeLink b { font-size: 1.4rem; }
-  .contact { margin-top: 1rem; padding: .75rem 1rem; font-size: .62rem; }
+  .contact { margin-top: 1rem; padding: .75rem 1rem; font-size: 0.625rem; }
   .contact span { font-size: 1.2rem; }
   .journal { gap: 1rem; padding: .5rem; }
   .journalCard img { height: 11rem; }
-  .cardCaption { gap: .5rem; padding-top: .45rem; font-size: .43rem; }
+  .cardCaption { gap: .5rem; padding-top: .45rem; font-size: 0.625rem; }
 }
 
 @media (min-width: 901px) {
@@ -402,11 +402,12 @@
 }
 
 @media (max-width: 600px) {
-  .notice { margin-top: 0; padding: 33px 0 90px; }
+  .notice { margin-top: 0; padding: 19px 0 90px; }
   .content { width: calc(100% - 40px); margin: 0 auto; transform: none; }
   .noticeList > :first-child { margin-bottom: 8px; }
-  .eyebrow { margin-top: 0; }
-  .title { margin-top: 10px; }
+  .eyebrow { margin-top: 0; font-size: 10px; letter-spacing: .22em !important; }
+  .title { margin-top: 10px; font-size: 40px; line-height: 1.08; }
+  .description { font-size: 11px; }
   .noticeList > :first-child,
   .eyebrow,
   .title,
@@ -415,4 +416,15 @@
     margin-right: 25px;
     margin-left: 25px;
   }
+}
+
+// PC 공통 헤더는 Itinerary의 크기와 간격을 기준으로 맞춥니다.
+@media (min-width: 901px) {
+  .notice { margin-top: 0; padding: 60px 0; align-items: flex-start; }
+  .noticeList { padding-top: 0; }
+  .noticeList > a:first-child { margin-bottom: 8px; }
+  .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
+  .title { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
+  .description { font-size: .66rem; }
+  .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 }

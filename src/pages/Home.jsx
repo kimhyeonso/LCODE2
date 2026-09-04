@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { useAuth } from "../hooks/useAuth";
+import { useShop } from "../hooks/useShop";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 import { getPlans } from "../services/firestoreService";
 import products from "../data/products.json";
 import productImage01 from "../assets/images/detail/1_1.png";
@@ -46,17 +48,14 @@ const heroSlides = [
   { desktop: bannerPC5, mobile: bannerMO5 },
 ];
 
-const homeProducts = products.slice(0, 6).map((product, index) => ({
-  ...product,
-  image: [
-    productImage01,
-    productImage02,
-    productImage03,
-    productImage04,
-    productImage05,
-    productImage06,
-  ][index],
-}));
+const homeProductImages = [
+  productImage01,
+  productImage02,
+  productImage03,
+  productImage04,
+  productImage05,
+  productImage06,
+];
 
 const formatProductPrice = (price) => {
   if (price === undefined || price === null || price === "") return "";
@@ -74,6 +73,13 @@ const formatProductPrice = (price) => {
   }
 
   return `${numberPrice.toLocaleString("ko-KR")} KRW`;
+};
+
+const formatCardDate = (value, includeYear = true) => {
+  if (!value) return "";
+  const [year, month, day] = value.split("-");
+  if (!year || !month || !day) return value;
+  return includeYear ? `${year}.${month}.${day}` : `${month}.${day}`;
 };
 
 const SectionLabel = ({ number, children }) => (
@@ -94,6 +100,12 @@ export default function Home() {
   const page = useRef(null);
   const heroTouchStart = useRef(null);
   const { user, loading: authLoading } = useAuth();
+  const { saved, toggleSaved } = useShop();
+  const managedProducts = useManagedCollection("products", products);
+  const homeProducts = managedProducts.slice(0, 6).map((product, index) => ({
+    ...product,
+    image: product.image || homeProductImages[index] || "",
+  }));
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
 
@@ -165,6 +177,9 @@ export default function Home() {
   ) ?? 0;
   const startDate = upcomingPlan?.dateRange?.start;
   const endDate = upcomingPlan?.dateRange?.end;
+  const cardDate = startDate
+    ? `${formatCardDate(startDate)}${endDate ? ` — ${formatCardDate(endDate, startDate.slice(0, 4) !== endDate.slice(0, 4))}` : ""}`
+    : "일정 미정";
   const dayCount = upcomingPlan?.days?.length ?? 0;
   const upcomingImage = getImageUrl(upcomingPlan?.image);
   const dDay = startDate
@@ -236,7 +251,7 @@ export default function Home() {
               />
             </div>
             <dl className={styles.tripMeta}>
-              <div><dt>DATE</dt><dd>{startDate || "미정"}<br />{endDate ? `— ${endDate}` : ""}</dd></div>
+              <div><dt>DATE</dt><dd className={styles.dateValue}>{cardDate}</dd></div>
               <div><dt>DAYS</dt><dd>{String(dayCount).padStart(2, "0")} DAYS</dd></div>
               <div><dt>SPOTS</dt><dd>{String(scheduleCount).padStart(2, "0")} SPOTS</dd></div>
             </dl>
@@ -331,7 +346,7 @@ export default function Home() {
         </div>
 
         <div className={styles.essentialGrid}>
-          {homeProducts.map((product) => (
+          {homeProducts.map((product, index) => (
             <article
               className={styles.productCard}
               key={product.id}
@@ -347,6 +362,13 @@ export default function Home() {
                     src={product.image}
                     alt={product.name}
                     loading="lazy"
+                    onError={(event) => {
+                      const fallback = homeProductImages[index];
+                      if (fallback && event.currentTarget.dataset.fallbackApplied !== "true") {
+                        event.currentTarget.dataset.fallbackApplied = "true";
+                        event.currentTarget.src = fallback;
+                      }
+                    }}
                   />
                 </Link>
 
@@ -358,8 +380,10 @@ export default function Home() {
                 {/* 오른쪽 상단 하트 */}
                 <button
                   type="button"
-                  className={styles.productWish}
-                  aria-label={`${product.name} 찜하기`}
+                  className={`${styles.productWish} ${saved.includes(product.id) ? styles.productWishActive : ""}`}
+                  aria-label={`${product.name} ${saved.includes(product.id) ? "찜 해제" : "찜하기"}`}
+                  aria-pressed={saved.includes(product.id)}
+                  onClick={() => toggleSaved(product.id)}
                 >
                   <svg
                     viewBox="0 0 24 24"

@@ -7,7 +7,7 @@
 .main { min-width: 0; }
 .back { display: inline-flex; align-items: center; gap: 12px; color: #292723; font: 400 13px "DM Serif Display", serif; text-decoration: none; }
 .back span { font-family: Arial, sans-serif; font-size: 22px; }
-.eyebrow { margin: 34px 0 0; color: #8b8278; font-size: 12px; letter-spacing: .12em; }
+.eyebrow { margin: 34px 0 0; color: #8b8278; font-size: 13px; letter-spacing: .12em; }
 .titleRow { position: relative; margin-top: 12px; border-bottom: 1px solid #d4cec5; padding-bottom: 22px; }
 .titleRow h1 { margin: 0; font: 400 clamp(48px, 4.2vw, 68px)/1 "DM Serif Display", serif; letter-spacing: -.02em; }
 .titleRow p { margin: 14px 0 0; color: #98938c; font-size: 14px; }
@@ -19,15 +19,15 @@
 .orderList { display: grid; gap: 7px; margin-top: 16px; }
 .orderCard { position: relative; display: grid; grid-template-columns: 122px 164px minmax(180px, 1fr) 240px; min-height: 158px; align-items: center; gap: 24px; border: 1px solid #d8d2ca; padding: 18px 26px; }
 .orderMeta { align-self: stretch; border-right: 1px solid #ddd7cf; padding: 10px 20px 0 0; }
-.orderMeta span { display: block; color: #9c968e; font-size: 11px; }
+.orderMeta span { display: block; color: #9c968e; font-size: 13px; }
 .orderMeta strong { display: block; margin: 4px 0 17px; font: 400 16px "DM Serif Display", serif; letter-spacing: .02em; }
 .orderImage { width: 164px; height: 118px; object-fit: cover; }
 .orderInfo h2 { margin: 0; font-size: 18px; font-weight: 600; }
 .orderInfo p { margin: 8px 0 22px; color: #8c8780; font-size: 13px; }
 .orderInfo strong { font: 400 20px "DM Serif Display", serif; }
 .orderActions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-self: stretch; padding-top: 4px; }
-.status { grid-column: 1 / -1; justify-self: end; margin-bottom: auto; border-radius: 18px; padding: 7px 16px; background: #e8e3dc; color: #292723; font-size: 11px; }
-.orderActions > a { display: grid; align-self: end; height: 38px; border: 1px solid #111; background: #111; color: #fff; font: 500 12px "Noto Sans KR", sans-serif; text-decoration: none; place-items: center; }
+.status { grid-column: 1 / -1; justify-self: end; margin-bottom: auto; border-radius: 18px; padding: 7px 16px; background: #e8e3dc; color: #292723; font-size: 13px; }
+.orderActions > a { display: grid; align-self: end; height: 38px; border: 1px solid #111; background: #111; color: #fff; font: 500 13px "Noto Sans KR", sans-serif; text-decoration: none; place-items: center; }
 .emptyState { display: grid; min-height: 250px; align-content: center; justify-items: center; gap: 18px; border: 1px solid #d8d2ca; background: #f8f5ef; text-align: center; }
 .emptyState p { margin: 0; color: #292723; font: 500 16px "Noto Sans KR", sans-serif; }
 .emptyState a { display: inline-flex; align-items: center; gap: 10px; color: #766e65; font: 400 13px "Noto Sans KR", sans-serif; text-decoration: none; }
@@ -41,18 +41,18 @@
 .stamp { position: absolute; top: 8px; left: -210px; width: 190px; height: 102px; background: url("/Mypage-img/u.png") center / contain no-repeat; opacity: .32; transform: rotate(-9deg); }
 .heroFrame { margin: 0; border: 1px solid #d1cbc2; padding: 12px; }
 .heroFrame img { display: block; width: 100%; height: 430px; object-fit: cover; }
-.sideLabel { position: absolute; top: 275px; right: -42px; margin: 0; color: #766e65; font: 400 11px "DM Serif Display", serif; letter-spacing: .12em; writing-mode: vertical-rl; }
+.sideLabel { position: absolute; top: 275px; right: -42px; margin: 0; color: #766e65; font: 400 13px "DM Serif Display", serif; letter-spacing: .12em; writing-mode: vertical-rl; }
 .snapshot, .contactBox { margin-top: 18px; border: 1px solid #d1cbc2; padding: 22px 26px; }
 .snapshot h2 { margin: 0 0 22px; color: #7b6f62; font: 400 13px "DM Serif Display", serif; letter-spacing: .12em; }
 .snapshotGrid { display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; }
 .snapshotGrid div + div { border-left: 1px solid #d8d1c8; }
-.snapshotGrid span { display: block; font-size: 12px; }
+.snapshotGrid span { display: block; font-size: 13px; }
 .snapshotGrid strong { display: block; margin-top: 8px; font: 400 28px "DM Serif Display", serif; }
 .contactBox { display: grid; grid-template-columns: 58px 1fr; gap: 18px; align-items: center; background: url("/Mypage-img/g.png") right bottom / 40% auto no-repeat; }
 .contactIcon { display: grid; width: 58px; height: 58px; border: 1px solid #8e877e; border-radius: 50%; place-items: center; }
 .contactIcon img { width: 30px; height: 30px; }
-.contactBox p { margin: 0; font-size: 12px; line-height: 1.6; }
-.contactBox a { display: inline-flex; gap: 28px; margin-top: 10px; border-bottom: 1px solid #aaa198; padding-bottom: 5px; color: #6f665d; font-size: 12px; text-decoration: none; }
+.contactBox p { margin: 0; font-size: 13px; line-height: 1.6; }
+.contactBox a { display: inline-flex; gap: 28px; margin-top: 10px; border-bottom: 1px solid #aaa198; padding-bottom: 5px; color: #6f665d; font-size: 13px; text-decoration: none; }
 
 @media (min-width: 901px) { .buyPage { width: calc(100% - 220px); margin-left: 220px; } }
 
@@ -89,7 +89,7 @@
 }
 
 @media (max-width: 600px) {
-  .buyPage { padding: 34px 0 90px; }
+  .buyPage { padding: 19px 0 90px; }
   .content { width: calc(100% - 40px); margin-inline: auto; }
   .back { margin: 0 25px 8px; font-size: 0; }
   .back span { font-size: 21px; }
@@ -97,8 +97,53 @@
     margin-top: -2rem;
     // border: 1px solid red;
   }
-  .eyebrow { margin-top: 0; }
+  .eyebrow { margin-top: 0; font-size: 10px; letter-spacing: .22em; }
   .eyebrow, .titleRow { margin-right: 25px; margin-left: 25px; }
   .titleRow { margin-top: 10px; }
+  .titleRow h1 { font-size: 40px; line-height: 1.08; }
+  .titleRow p { font-size: 11px; }
   .heroFrame, .heroFrame img { display: none; }
+}
+
+// PC: Itinerary와 동일한 페이지 여백, 헤더 비례와 편집 지면 장식을 사용합니다.
+@media (min-width: 901px) {
+  .buyPage { position: relative; padding: 60px 0; }
+  .back { height: 24px; margin-bottom: 8px; }
+  .eyebrow { margin-top: 0; font-size: 0.625rem; letter-spacing: .24em; }
+  .titleRow { width: 492px; max-width: 100%; margin-top: 18px; padding-bottom: 24px; }
+  .titleRow h1 { font-size: 3rem; line-height: 1.05; }
+  .titleRow p { margin-top: 25px; font-size: .66rem; }
+
+  .buyPage::before {
+    position: absolute;
+    top: 78px;
+    left: 30px;
+    width: 112px;
+    height: 700px;
+    border-right: 1px solid #d2ccc3;
+    color: #766e65;
+    content: "ISSUE NO.  001\A\A\A COLLECT JOURNEYS · DESIGN MOMENTS";
+    font: 400 10px/1.7 "DM Serif Display", serif;
+    letter-spacing: .14em;
+    white-space: pre-wrap;
+    writing-mode: vertical-rl;
+    pointer-events: none;
+  }
+
+  .buyPage::after {
+    position: absolute;
+    bottom: 32px;
+    left: 20px;
+    width: 180px;
+    height: 220px;
+    background: url("/Mypage-img/g.png") left bottom / contain no-repeat;
+    content: "";
+    opacity: .35;
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1450px) {
+  .buyPage::before,
+  .buyPage::after { display: none; }
 }

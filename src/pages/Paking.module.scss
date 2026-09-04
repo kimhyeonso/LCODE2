@@ -8,7 +8,7 @@
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 100px; align-items: end; }
 .heading { position: relative; }
 .heading::after { position: absolute; top: 60px; right: -45px; width: 220px; height: 112px; background: url("/Mypage-img/u.png") center/contain no-repeat; content: ""; opacity: .38; }
-.eyebrow { margin: 0; color: #9b958d; font: 400 12px $korean; letter-spacing: .13em; }
+.eyebrow { margin: 0; color: #9b958d; font: 400 13px $korean; letter-spacing: .13em; }
 .heading h1 { position: relative; z-index: 1; margin: 17px 0 0; font: 400 clamp(56px, 5vw, 78px)/1 $display; letter-spacing: -.035em; }
 .description { margin: 20px 0 0; color: #918b83; font: 400 14px $korean; }
 .divider { position: relative; width: 82%; height: 1px; margin-top: 34px; background: #d5d0c8; }
@@ -16,7 +16,7 @@
 .postcard { position: relative; border: 1px solid #cfc8bf; padding: 10px 10px 28px; background: #f8f5ef; transform: rotate(.5deg); }
 .postcard::before { position: absolute; z-index: 1; top: -24px; left: 100px; width: 86px; height: 32px; background: rgb(222 215 201 / 72%); content: ""; transform: rotate(-7deg); }
 .postcard img { display: block; width: 100%; height: 200px; object-fit: cover; }
-.postcard span { position: absolute; right: 10px; bottom: 8px; color: #8d867d; font: 400 11px $korean; }
+.postcard span { position: absolute; right: 10px; bottom: 8px; color: #8d867d; font: 400 13px $korean; }
 .panels { display: grid; grid-template-columns: minmax(0, 1.28fr) minmax(390px, 1fr); gap: 38px; margin-top: 30px; }
 .checklist, .tips { min-height: 510px; border: 1px solid #d2ccc3; padding: 28px 30px; background: rgb(248 245 239 / 45%); }
 .checklist > h2 { display: flex; align-items: center; gap: 14px; margin: 0 0 30px; font: 600 25px $korean; }
@@ -42,6 +42,7 @@
 .tips li:last-child { border-bottom: 0; }
 .tips li > span { display: grid; width: 44px; height: 44px; border-radius: 50%; background: #ebe4d8; font: 400 22px $display; place-items: center; }
 .tips li p { margin: 0; font: 400 14px/1.65 $korean; }
+.stampModal { display: none; }
 
 @media (min-width: 901px) { .pakingPage { width: calc(100% - 220px); margin-left: 220px; } }
 
@@ -70,6 +71,71 @@
   .tips li { grid-template-columns: 38px 1fr; gap: 12px; }
   .tips li > span { width: 36px; height: 36px; font-size: 18px; }
   .tips li p { font-size: 12px; }
+
+  .stampModal {
+    position: fixed;
+    z-index: 49;
+    top: 56px;
+    right: 0;
+    bottom: calc(58px + env(safe-area-inset-bottom));
+    left: 0;
+    display: flex;
+    background: rgb(23 23 20 / 52%);
+    padding: 24px 20px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stampBoard {
+    position: relative;
+    width: min(100%, 416px);
+    animation: stampBoardIn 240ms ease-out both;
+  }
+
+  .stampBoardImage {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .completedStamp {
+    position: absolute;
+    top: 30.4%;
+    left: 9%;
+    width: 17.5%;
+    height: auto;
+    transform: rotate(-8deg);
+    animation: stampIn 360ms 140ms cubic-bezier(.2, .9, .3, 1.25) both;
+  }
+
+  .stampBoard button {
+    position: absolute;
+    top: 7px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: transparent;
+    color: #827864;
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+  }
+}
+
+@keyframes stampBoardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes stampIn {
+  from { opacity: 0; transform: scale(1.7) rotate(-14deg); }
+  to { opacity: 1; transform: scale(1) rotate(-8deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stampBoard,
+  .completedStamp { animation: none; }
 }
 
 @media (max-width: 600px) {

@@ -4,6 +4,7 @@ import {
 
 import styles from "../pages/Shop.module.scss";
 import { useShop } from "../hooks/useShop";
+import { resolveImageUrl } from "../utils/imageUtils";
 
 
 const STANDARD_OPTION = {
@@ -28,6 +29,10 @@ export default function ProductCard({
     saved.includes(
       product.id
     );
+
+  const imageNumber = Number(String(product.id).replace(/\D/g, ""));
+  const thumbnail = resolveImageUrl(product.image, "")
+    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.png`, "") : "");
 
 
   const handleAdd =
@@ -83,9 +88,9 @@ export default function ProductCard({
               : "찜하기"
           }
         >
-          {liked
-            ? "♥"
-            : "♡"}
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M12 20.7 10.55 19.38C5.4 14.7 2 11.62 2 7.85 2 4.77 4.42 2.35 7.5 2.35c1.74 0 3.41.81 4.5 2.09a6.03 6.03 0 0 1 4.5-2.09c3.08 0 5.5 2.42 5.5 5.5 0 3.77-3.4 6.85-8.55 11.54Z" />
+          </svg>
         </button>
 
 
@@ -105,12 +110,20 @@ export default function ProductCard({
             }
           </span>
 
-          <b>
-            {product.name.slice(
-              0,
-              1
-            )}
-          </b>
+          {thumbnail ? (
+            <img
+              className={styles.productThumb}
+              src={thumbnail}
+              alt={product.name}
+            />
+          ) : (
+            <b>
+              {product.name.slice(
+                0,
+                1
+              )}
+            </b>
+          )}
         </Link>
 
 

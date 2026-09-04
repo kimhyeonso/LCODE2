@@ -20,6 +20,10 @@
 }
 
 @media (max-width: 640px) {
+  .balanceApp {
+    background: #111;
+  }
+
   .main {
     padding-top: 56px;
     padding-bottom: calc(58px + env(safe-area-inset-bottom));
@@ -28,6 +32,7 @@
   .immersiveMain {
     padding-top: 0;
   }
+
 }
 
 @media (min-width: 641px) and (max-width: 900px) {

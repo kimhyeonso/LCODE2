@@ -1,0 +1,496 @@
+@use "../styles/variables" as *;
+
+.expenseSettings {
+  width: calc(100% - 32px);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 42px 0 96px;
+  background: transparent;
+  color: $ink;
+}
+
+.pageInner {
+  width: min(100%, 334px);
+  margin: 0 auto;
+}
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  margin-bottom: 28px;
+  color: #aaa6a0;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+}
+
+.pageHeader {
+  padding: 0 18px 20px;
+  border-bottom: 1px solid #ccc9c3;
+}
+
+.pageHeader > span,
+.package > p,
+.expenseCard > p,
+.optionSection > p,
+.customBudget > p,
+.noneBudget > p {
+  display: block;
+  margin: 0;
+  color: #aaa49c;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+}
+
+.pageHeader h1 {
+  margin: 16px 0 0;
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.07em;
+  line-height: 1.08;
+}
+
+.package {
+  padding: 33px 18px 21px;
+}
+
+.package h2 {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin: 15px 0 0;
+}
+
+.package b {
+  font-family: $serif;
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.package h2 span {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.expenseCard {
+  padding: 37px 20px 35px;
+}
+
+.expenseCard h2 {
+  margin: 13px 0 11px;
+  font-size: 31px;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+  line-height: 1;
+}
+
+.exchangeBox {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  min-height: 76px;
+  padding: 14px 17px 15px;
+  background: #f5f5f5;
+}
+
+.exchangeBox small,
+.exchangeBox time {
+  display: block;
+  color: #999;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.exchangeBox strong {
+  display: block;
+  margin-top: 7px;
+  font-family: $serif;
+  font-size: 23px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.exchangeBox time {
+  text-align: right;
+  line-height: 1.65;
+}
+
+.exchangeLink {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 18px 0 3px;
+  border-bottom: 1px solid #d7d7d7;
+  color: #817c76;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+}
+
+.exchangeLink span {
+  font-size: 14px;
+  line-height: 0.65;
+}
+
+.exclude {
+  margin: 17px 0 7px !important;
+  color: #aaa49c !important;
+  font-size: 14px !important;
+  letter-spacing: 0.06em !important;
+}
+
+.categoryList dl {
+  margin: 0;
+  border-top: 1px solid #d7d7d7;
+}
+
+.categoryList dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 51px;
+  border-bottom: 1px solid #ddd;
+}
+
+.categoryList dt {
+  color: #78736d;
+  font-size: 14px;
+  letter-spacing: -0.05em;
+}
+
+.categoryList dd {
+  margin: 0;
+  text-align: right;
+}
+
+.categoryList strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+}
+
+.categoryList small {
+  display: block;
+  margin-top: 2px;
+  color: #aaa49c;
+  font-size: 14px;
+}
+
+.guide {
+  margin: 13px 1px 23px;
+  color: #66615c;
+  font-size: 14px;
+  line-height: 1.5;
+  letter-spacing: -0.05em;
+}
+
+.optionSection > p,
+.customBudget > p {
+  margin: 0 0 12px;
+}
+
+.optionSection :global(label) {
+  display: block;
+  margin-top: 12px;
+  cursor: pointer;
+}
+
+.optionSection :global(input) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.optionSection :global(label > span) {
+  display: flex;
+  min-height: 112px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 17px 20px;
+  border: 1px solid #dcd5cd;
+  background: #fff;
+  transition: 0.15s ease;
+}
+
+.optionSection :global(label > input:checked + span) {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.optionSection :global(small) {
+  color: #aaa49c;
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.optionSection :global(strong) {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.06em;
+}
+
+.optionSection :global(em) {
+  margin-top: 14px;
+  color: #aaa49c;
+  font-size: 14px;
+  font-style: normal;
+  letter-spacing: -0.06em;
+}
+
+.optionSection :global(input:checked + span em) {
+  color: #e3e3e3;
+}
+
+.customBudget {
+  margin-top: 18px;
+}
+
+.recommendations {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 7px;
+}
+
+.recommendations button {
+  height: 57px;
+  border: 1px solid #ddd5cc;
+  background: #fff;
+  color: #272727;
+}
+
+.recommendations button.selected {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.recommendations small,
+.recommendations strong {
+  display: block;
+}
+
+.recommendations small {
+  color: #aaa49c;
+  font-size: 14px;
+}
+
+.recommendations strong {
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+}
+
+.budgetInput {
+  display: block;
+  margin-top: 18px;
+}
+
+.budgetInput > span {
+  display: block;
+  color: #aaa49c;
+  font-size: 14px;
+  letter-spacing: 0.15em;
+}
+
+.budgetInput input {
+  width: 100%;
+  height: 44px;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 2px solid #d9d5d0;
+  outline: 0;
+  background: transparent;
+  color: #383530;
+  font-size: 20px;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.budgetInput input::placeholder {
+  color: #89837b;
+}
+
+.inputNote {
+  margin: 13px 0 0;
+  color: #aaa49c;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+.noneBudget {
+  display: grid;
+  gap: 8px;
+  margin: 18px 0 0;
+}
+
+.noneBudget > p {
+  margin-bottom: 3px;
+}
+
+.noneBudget strong {
+  font-size: 27px;
+  font-weight: 400;
+  letter-spacing: -0.05em;
+}
+
+.noneBudget em {
+  font-family: $serif;
+  font-size: 18px;
+  font-style: normal;
+  letter-spacing: -0.04em;
+}
+
+.noneBudget small {
+  margin-top: 6px;
+  color: #aaa49c;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+}
+
+.submitButton {
+  display: flex;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin-top: 35px;
+  background: #111;
+  color: #fff;
+  font-size: 14px;
+  letter-spacing: -0.04em;
+}
+
+.submitButton span {
+  font-size: 18px;
+  line-height: 0.7;
+}
+
+@media (min-width: 641px) {
+  .expenseSettings {
+    width: min(1100px, calc(100% - 64px));
+    margin: 36px auto 70px;
+    padding: 58px 0 90px;
+    font-family: $sans;
+  }
+
+  .pageInner {
+    width: 100%;
+    margin: 0;
+  }
+
+  .pageHeader {
+    padding: 0 0 28px;
+  }
+
+  .pageHeader > span,
+  .package > p,
+  .expenseCard > p,
+  .optionSection > p,
+  .customBudget > p,
+  .noneBudget > p {
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+  }
+
+  .pageHeader h1 {
+    margin: 25px 0 24px;
+    font-family: $serif;
+    font-size: 66px;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: -0.05em;
+  }
+
+  .package {
+    padding: 42px 0 30px;
+  }
+
+  .package b {
+    font-size: 42px;
+  }
+
+  .package h2 span {
+    font-size: 17px;
+  }
+
+  .expenseCard {
+    padding: 46px 40px;
+  }
+
+  .expenseCard h2 {
+    font-family: $serif;
+    font-size: 54px;
+    line-height: 1;
+  }
+
+  .exchangeBox {
+    min-height: 112px;
+    padding: 22px 28px;
+  }
+
+  .exchangeBox strong {
+    font-size: 37px;
+  }
+
+  .categoryList dt,
+  .categoryList strong {
+    font-size: 16px;
+  }
+
+  .categoryList small {
+    font-size: 14px;
+  }
+
+  .categoryList dl > div {
+    min-height: 62px;
+  }
+
+  .guide {
+    margin: 22px 0 34px;
+    font-size: 14px;
+  }
+
+  .optionSection :global(label > span) {
+    min-height: 126px;
+    padding: 22px 28px;
+  }
+
+  .optionSection :global(strong) {
+    font-size: 18px;
+  }
+
+  .optionSection :global(em) {
+    font-size: 14px;
+  }
+
+  .recommendations button {
+    height: 70px;
+  }
+
+  .recommendations strong {
+    font-size: 14px;
+  }
+
+  .submitButton {
+    height: 62px;
+    margin-top: 48px;
+  }
+}
+
+@media (min-width: 901px) {
+  .expenseSettings {
+    width: min(1320px, calc(100% - 332px));
+    margin: 36px 0 70px max(276px, calc(50% - 550px));
+  }
+}
