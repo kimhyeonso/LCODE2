@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import tripRoad from "../../data/trip_road.json";
-import { useAuth } from "../../hooks/useAuth";
-import { getPlan, getPlans } from "../../services/firestoreService";
-import { resolveImageUrl } from "../../utils/imageUtils";
+import tripRoad from "../data/trip_road.json";
+import { useAuth } from "../hooks/useAuth";
+import { getPlan, getPlans } from "../services/firestoreService";
+import { resolveImageUrl } from "../utils/imageUtils";
 import styles from "./AIRemix.module.scss";
 
 const reasons = [
@@ -19,13 +19,13 @@ const reasons = [
 const analyzeSteps = ["현재 위치 확인", "날씨 정보 수집", "실내 장소 탐색", "이동 경로 계산", "일정 재구성"];
 
 const resultCopy = {
-  rain: { title: "야외 일정을\n실내로 바꿔드렸어요.", desc: "현재 상황을 고려해 이동 부담을 줄이고, 방문하기 좋은 대체 장소를 골랐어요.", type: "compare" },
-  delay: { title: "오늘 일정이\n조금 더 가벼워졌어요.", desc: "늦어진 시간을 반영해 핵심 장소 위주로 다시 정리했어요.", type: "timeline" },
+  rain: { title: "야외 일정을\n실내로 바꿨어요.", desc: "현재 상황을 고려해 이동 부담을 줄이고, 방문하기 좋은 대체 장소를 골랐어요.", type: "compare" },
+  delay: { title: "늦어진 일정을\n가볍게 정리했어요.", desc: "늦어진 시간을 반영해 핵심 장소 위주로 다시 정리했어요.", type: "timeline" },
   traffic: { title: "막히는 길을 피해\n동선을 다시 잡았어요.", desc: "현재 이동 부담을 줄일 수 있도록 가까운 장소 순서로 재배치했어요.", type: "timeline" },
-  closed: { title: "문이 닫힌 곳을\n대신할 장소를 찾았어요.", desc: "방문 예정 장소 대신 같은 지역에서 이어가기 좋은 장소를 추천했어요.", type: "closed" },
-  tired: { title: "여유로운 일정으로\n조정했어요.", desc: "휴식 시간을 확보하고 무리한 이동을 줄이는 방향으로 다시 구성했어요.", type: "timeline" },
-  cost: { title: "이동 비용을 줄이는\n일정으로 바꿨어요.", desc: "도보 이동과 가까운 장소를 우선해 전체 경비 부담을 낮췄어요.", type: "timeline" },
-  auto: { title: "오늘 일정에 맞게\n자동으로 최적화했어요.", desc: "날씨, 거리, 운영 시간을 함께 계산해 무리 없는 순서로 정리했어요.", type: "timeline" },
+  closed: { title: "닫힌 장소 대신\n새 장소를 찾았어요.", desc: "방문 예정 장소 대신 같은 지역에서 이어가기 좋은 장소를 추천했어요.", type: "closed" },
+  tired: { title: "무리한 일정을\n여유롭게 바꿨어요.", desc: "휴식 시간을 확보하고 무리한 이동을 줄이는 방향으로 다시 구성했어요.", type: "timeline" },
+  cost: { title: "이동 비용을 줄여\n다시 짰어요.", desc: "도보 이동과 가까운 장소를 우선해 전체 경비 부담을 낮췄어요.", type: "timeline" },
+  auto: { title: "오늘 상황에 맞게\n최적화했어요.", desc: "날씨, 거리, 운영 시간을 함께 계산해 무리 없는 순서로 정리했어요.", type: "timeline" },
 };
 
 const cityAliases = {
@@ -112,6 +112,74 @@ const normalizeTitle = (trip) => trip?.title || `${trip?.city || "여행지"} �
 const editorPath = ({ planId, trip }) =>
   planId ? `/travel-planner?plan=${encodeURIComponent(planId)}` : `/travel-planner?trip=${encodeURIComponent(trip?.id || "")}`;
 
+const buildRemixedPlace = (original, replacement) => ({
+  ...original,
+  ...replacement,
+  type: "place",
+  time: original.time,
+  place: replacement?.place || original.place,
+  category: replacement?.category || original.category,
+  recommendation: replacement?.recommendation || original.recommendation || "",
+  image: replacement?.image || original.image || null,
+});
+
+const updateTransportMinutes = (item, minutes) => {
+  if (item.type !== "transport") return item;
+  return { ...item, transport: routeLabel(item.transport, minutes) };
+};
+
+function createRemixedPlan(trip, reason, remix) {
+  const targetName = remix.target?.place;
+  const replacement = remix.replacement;
+
+  const days = (trip?.days || []).map((day, dayIndex) => {
+    if (dayIndex !== remix.dayIndex) return day;
+
+    let removedOne = false;
+    const items = (day.items || [])
+      .map((item) => {
+        if (item.type === "place") {
+          if (["rain", "closed"].includes(reason.id) && item.place === targetName) {
+            return buildRemixedPlace(item, replacement);
+          }
+          if (reason.id === "delay") {
+            return { ...item, time: addMinutes(item.time, -20) };
+          }
+        }
+
+        if (["traffic", "cost"].includes(reason.id)) {
+          return updateTransportMinutes(item, remix.routeAfterMinutes);
+        }
+
+        return item;
+      })
+      .filter((item) => {
+        if (reason.id !== "tired" || removedOne || item.type !== "place") return true;
+        if (item.category === "airport" || item.category === "hotel") return true;
+        if (item.place !== targetName) return true;
+        removedOne = true;
+        return false;
+      });
+
+    return { ...day, items };
+  });
+
+  return {
+    ...trip,
+    title: trip?.title || normalizeTitle(trip),
+    days,
+    aiRemix: {
+      status: "preview",
+      reason: reason.id,
+      reasonTitle: reason.title,
+      targetPlace: targetName || "",
+      replacementPlace: replacement?.place || "",
+      dayIndex: remix.dayIndex,
+      createdAt: new Date().toISOString(),
+    },
+  };
+}
+
 function createRemix(trip, reason) {
   const dayIndex = pickDayIndex(trip);
   const beforePlaces = placeRowsForDay(trip, dayIndex);
@@ -132,10 +200,11 @@ function createRemix(trip, reason) {
     return [place.time || "--:--", replacement?.place || place.place, reason.id === "closed" ? "ADDED" : "INDOOR"];
   });
 
-  return {
+  const remix = {
     dayIndex,
     target,
     replacement,
+    routeAfterMinutes,
     beforeRows,
     afterRows: ["rain", "closed"].includes(reason.id) ? replacedRows : adjustedRows,
     savedKm: reason.id === "cost" ? "3.4" : ((routeBeforeMinutes - routeAfterMinutes) * 0.18).toFixed(1),
@@ -143,6 +212,11 @@ function createRemix(trip, reason) {
     routeAfter: routeLabel(targetRoute, routeAfterMinutes),
     beforeTime: beforeRows.at(-1)?.[0] || "21:10",
     afterTime: addMinutes(beforeRows.at(-1)?.[0], reason.id === "delay" ? -30 : -20),
+  };
+
+  return {
+    ...remix,
+    plan: createRemixedPlan(trip, reason, remix),
   };
 }
 
@@ -511,25 +585,26 @@ function ChangeDetails({ remix, closed = false }) {
 
 function EditView({ trip, remix, editUrl, onBack }) {
   const initialDayIndex = remix.dayIndex || 0;
-  const days = trip.days || [];
+  const previewPlan = remix.plan || trip;
+  const days = previewPlan.days || [];
   const [selectedDayIndex, setSelectedDayIndex] = useState(initialDayIndex);
   const dayIndex = days[selectedDayIndex] ? selectedDayIndex : 0;
   const activeDay = days[dayIndex] || days[0] || { items: [] };
-  const heroImage = placeItems(trip).find((place) => place.image)?.image;
+  const heroImage = placeItems(previewPlan).find((place) => place.image)?.image;
   const heroStyle = heroImage
     ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.08), rgba(0,0,0,.55)), url(${resolveImageUrl(heroImage)})` }
     : undefined;
 
   useEffect(() => {
     setSelectedDayIndex(initialDayIndex);
-  }, [initialDayIndex, trip?.id]);
+  }, [initialDayIndex, previewPlan?.id]);
 
   return (
     <section className={styles.edit}>
       <div className={styles.editHero} style={heroStyle}>
         <span>PERSONAL TRAVEL PLAN</span>
-        <h1>{trip.city || "TRIP"}</h1>
-        <p>{normalizeTitle(trip)}</p>
+        <h1>{previewPlan.city || "TRIP"}</h1>
+        <p>{normalizeTitle(previewPlan)}</p>
         <button type="button" onClick={onBack}>EDIT</button>
       </div>
       <nav className={styles.dayTabs}>
@@ -545,9 +620,9 @@ function EditView({ trip, remix, editUrl, onBack }) {
         ))}
       </nav>
       <section className={styles.dayPlan}>
-        <header><strong>{activeDay.label || formatDayTitle(dayIndex)}</strong><span>{activeDay.date || normalizeTitle(trip)}</span></header>
-        {placesForDay(trip, dayIndex).map((place, index) => {
-          const changedName = place.place === remix.target?.place ? remix.replacement?.place : place.place;
+        <header><strong>{activeDay.label || formatDayTitle(dayIndex)}</strong><span>{activeDay.date || normalizeTitle(previewPlan)}</span></header>
+        {placesForDay(previewPlan, dayIndex).map((place, index) => {
+          const changedName = place.place;
           return (
             <article key={`${place.place}-${index}`}>
               <label><input type="checkbox" /> <span>{changedName}</span></label>

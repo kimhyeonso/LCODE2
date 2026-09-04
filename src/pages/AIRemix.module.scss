@@ -1,5 +1,5 @@
-@use "../../styles/variables" as *;
-@use "../../styles/mixins" as *;
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
 
 .page {
   min-height: 100vh;
@@ -493,8 +493,16 @@
   color: #eee;
 }
 
+.timelineDark div,
+.timelineDark p,
+.timelineDark span,
+.timelineDark em {
+  color: #e9e4da;
+}
+
 .timelineDark b {
   border-color: rgba(255, 255, 255, 0.15);
+  color: #f7f2ea;
 }
 
 .placeChange {
@@ -1441,5 +1449,212 @@
     width: min(100%, 760px);
     box-sizing: border-box;
     margin: 20px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .page {
+    width: calc(100vw - 220px);
+    min-height: 100vh;
+    margin-left: 220px;
+    padding:
+      clamp(40px, 4vw, 64px)
+      clamp(48px, 5vw, 88px)
+      72px;
+    overflow-x: hidden;
+    background: $paper;
+  }
+
+  .selectPanel,
+  .result,
+  .edit,
+  .analyzing,
+  .complete {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .selectPanel,
+  .result {
+    width: min(860px, 100%);
+  }
+
+  .selectHeader,
+  .resultHeader {
+    width: 100%;
+  }
+
+  .intro,
+  .reasonList,
+  .result h1,
+  .result > p,
+  .compare,
+  .themePanel,
+  .summaryGrid,
+  .timeline,
+  .summaryNote,
+  .placeChange,
+  .softText,
+  .details,
+  .actions {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .intro,
+  .reasonList {
+    width: min(760px, 100%);
+  }
+
+  .result h1,
+  .result > p {
+    width: min(620px, 100%);
+  }
+
+  .compare,
+  .themePanel,
+  .timeline,
+  .details,
+  .actions {
+    width: 100%;
+  }
+
+  .summaryNote,
+  .placeChange,
+  .softText {
+    width: min(680px, 100%);
+  }
+
+  .summaryGrid {
+    width: min(520px, 100%);
+  }
+
+  .edit {
+    width: min(900px, 100%);
+  }
+
+  .editHero,
+  .dayTabs,
+  .dayPlan,
+  .saveEdit {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .editHero {
+    width: 100%;
+  }
+
+  .dayTabs {
+    width: min(620px, 100%);
+  }
+
+  .dayPlan,
+  .saveEdit {
+    width: min(760px, 100%);
+  }
+
+  .details article {
+    grid-template-columns: 170px minmax(0, 1fr);
+    column-gap: clamp(34px, 5vw, 72px);
+  }
+
+  .details div {
+    width: min(620px, 100%);
+    justify-self: end;
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .details del {
+    text-align: right;
+  }
+
+  .details b {
+    text-align: center;
+  }
+
+  .details strong {
+    text-align: left;
+  }
+}
+
+@media (min-width: 901px) {
+  .details article {
+    grid-template-columns:
+      150px
+      minmax(0, 1fr);
+    column-gap: clamp(28px, 4vw, 56px);
+  }
+
+  .details div {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: center;
+    width: min(560px, 100%);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+    margin-top: 0;
+  }
+
+  .details del {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .details b {
+    justify-self: center;
+    text-align: center;
+  }
+
+  .details strong {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+.resultHeader,
+.result h1,
+.result > p {
+  box-sizing: border-box;
+}
+
+@media (min-width: 901px) {
+  .result {
+    width: min(860px, calc(100vw - 220px - 96px));
+  }
+
+  .result h1,
+  .result > p {
+    width: min(620px, 100%);
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .resultHeader,
+  .result h1,
+  .result > p {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .result h1,
+  .result > p {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .result h1 {
+    font-size: clamp(21px, 5.8vw, 28px);
+    line-height: 1.35;
+    word-break: keep-all;
   }
 }

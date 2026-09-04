@@ -43,7 +43,7 @@ import OrderComplete from "./pages/OrderComplete";
 import MyPageMain from "./pages/MyPageMain";
 import ExchangeRate from "./pages/ExchangeRate";
 import Balance from "./pages/Balance";
-import AIRemix from "./pages/AIRemix/AIRemix";
+import AIRemix from "./pages/AIRemix";
 import DesrinationAll from "./pages/DesrinationAll";
 import styles from "./App.module.scss";
 function ScrollTop() {
