@@ -4,6 +4,7 @@ import {
 
 import styles from "../pages/Shop.module.scss";
 import { useShop } from "../hooks/useShop";
+import { resolveImageUrl } from "../utils/imageUtils";
 
 
 const STANDARD_OPTION = {
@@ -28,6 +29,10 @@ export default function ProductCard({
     saved.includes(
       product.id
     );
+
+  const imageNumber = Number(String(product.id).replace(/\D/g, ""));
+  const thumbnail = resolveImageUrl(product.image, "")
+    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.png`, "") : "");
 
 
   const handleAdd =
@@ -105,12 +110,20 @@ export default function ProductCard({
             }
           </span>
 
-          <b>
-            {product.name.slice(
-              0,
-              1
-            )}
-          </b>
+          {thumbnail ? (
+            <img
+              className={styles.productThumb}
+              src={thumbnail}
+              alt={product.name}
+            />
+          ) : (
+            <b>
+              {product.name.slice(
+                0,
+                1
+              )}
+            </b>
+          )}
         </Link>
 
 

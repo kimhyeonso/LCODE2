@@ -42,3 +42,65 @@ i {
   background: $ink;
   color: $paper;
 }
+
+/* 전체 폭 주요/보조 액션 버튼 공통 규격 */
+:where(button, a):is(
+  [class*="_submit_"],
+  [class*="_submitButton_"],
+  [class*="_saveButton_"],
+  [class*="_draft_"],
+  [class*="_confirm_"],
+  [class*="_newPlan_"],
+  [class*="_register_"],
+  [class*="_cta_"]
+) {
+  width: 100% !important;
+  height: 56px !important;
+  font-size: 14px !important;
+}
+
+@media (min-width: 901px) {
+  :where(button, a):is(
+    [class*="_submit_"],
+    [class*="_submitButton_"],
+    [class*="_saveButton_"],
+    [class*="_draft_"],
+    [class*="_confirm_"],
+    [class*="_newPlan_"],
+    [class*="_register_"],
+    [class*="_cta_"]
+  ) {
+    height: 60px !important;
+  }
+}
+
+/* 나란히 배치되는 소형 액션 버튼: Shop 상세 버튼 기준 */
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"]) {
+  display: flex;
+  gap: 8px;
+}
+
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"])
+  > :where(button, a) {
+  flex: 1;
+  width: 100% !important;
+  height: 50px !important;
+  padding: 17px !important;
+  font-size: 13px !important;
+  line-height: 1 !important;
+  text-align: center;
+}
+
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"])
+  > :where(button, a):first-child {
+  border: 1px solid #ddd !important;
+  background: #fff !important;
+  color: #171714 !important;
+}
+
+:where([class*="Actions_"], [class*="actions_"]):not([class*="_saveActions_"])
+  > :where(button, a):last-child {
+  border: 1px solid #171714 !important;
+  background: #171714 !important;
+  color: #fff !important;
+}

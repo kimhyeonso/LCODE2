@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
+import products from "../data/products.json";
 import searchIcon from "../assets/icons/search.svg";
-import travelKitImage from "../assets/images/travel_kit.webp";
-import travelPouchImage from "../assets/images/travel_pouch.webp";
-import travelAdapterImage from "../assets/images/travel_adapter.webp";
+import DesrinationThumnail from "../components/DesrinationThumnail";
+import ProductCard from "../components/ProductCard";
 import styles from "./Search.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 import { useAuth } from "../hooks/useAuth";
@@ -15,7 +15,12 @@ import {
   saveFavoriteTrip,
 } from "../services/firestoreService";
 
-const countryLabels = { korea: "KR", japan: "JP", china: "CN" };
+const themeNames = {
+  attraction: "ART & WALK",
+  restaurant: "SEA & FOOD",
+  hotel: "STAY & REST",
+  airport: "START A JOURNEY",
+};
 const getFavoriteStorageKey = (userId) => `lcode-favorite-trips:${userId}`;
 
 const getStoredFavoriteTrips = (userId) => {
@@ -78,8 +83,13 @@ const countPlaces = (trip) => trip.days.reduce(
   0,
 );
 
+const getFirstPlace = (trip) => trip.days
+  .flatMap((day) => day.items)
+  .find((item) => item.type === "place");
+
 export default function Search() {
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
+  const managedProducts = useManagedCollection("products", products);
   const { user } = useAuth();
   const [params] = useSearchParams();
   const navigate = useNavigate();
@@ -177,11 +187,6 @@ export default function Search() {
     navigate(value ? `/search?city=${encodeURIComponent(value)}` : "/search");
   };
 
-  const chooseKeyword = (city) => {
-    setQuery(city);
-    navigate(`/search?city=${encodeURIComponent(city)}`);
-  };
-
   const toggleFavoriteTrip = async (tripId) => {
     if (!user?.uid) {
       navigate("/login");
@@ -207,6 +212,18 @@ export default function Search() {
     }
   };
 
+  const hasActiveDestinationSearch = initialQuery.trim().length > 0 || country !== "all";
+  const travelEssentialsSection = (
+    <section className={styles.products} aria-labelledby="search-products-title">
+      <h1 id="search-products-title">TRAVEL ESSENTIALS</h1>
+      <div>
+        {managedProducts.slice(0, 3).map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </div>
+    </section>
+  );
+
   return (
     <main className={styles.searchPage}>
       <section className={styles.searchIntro}>
@@ -221,40 +238,11 @@ export default function Search() {
           />
         </form>
         <p>어디로 떠나볼까요?</p>
-        <div className={styles.keywords}>
-          <span>KR</span>
-          {['서울', '부산', '제주도'].map((city) => (
-            <button type="button" key={city} onClick={() => chooseKeyword(city)}>{city}</button>
+        <nav className={styles.tabs} aria-label="여행 국가">
+          {[["all", "ALL"], ["korea", "KOREA"], ["japan", "JAPAN"], ["china", "CHINA"]].map(([value, label]) => (
+            <button className={country === value ? styles.active : ""} type="button" key={value} onClick={() => setCountry(value)}>{label}</button>
           ))}
-          <span>JP</span>
-          {['도쿄', '오사카', '후쿠오카'].map((city) => (
-            <button type="button" key={city} onClick={() => chooseKeyword(city)}>{city}</button>
-          ))}
-          <span>CN</span>
-          {['상하이', '베이징'].map((city) => (
-            <button type="button" key={city} onClick={() => chooseKeyword(city)}>{city}</button>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.products} aria-labelledby="search-products-title">
-        <h1 id="search-products-title">TRAVEL ESSENTIALS</h1>
-        <div>
-          {[
-            ["TRAVEL KIT", travelKitImage],
-            ["TRAVEL POUCH", travelPouchImage],
-            ["ADAPTER", travelAdapterImage],
-          ].map(([name, image]) => (
-            <Link to="/shop" key={name}>
-              <img src={image} alt="" />
-              <strong>{name}</strong>
-              <span>SHOP NOW</span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      <section className={styles.archive} aria-labelledby="package-archive-title">
+        </nav>
         <div className={styles.controls}>
           <button type="button" onClick={() => setFilterOpen((open) => !open)}>FILTER</button>
           <select value={sort} onChange={(event) => setSort(event.target.value)} aria-label="정렬 방식">
@@ -262,34 +250,28 @@ export default function Search() {
             <option value="name">이름순</option>
           </select>
         </div>
+      </section>
+
+      {!hasActiveDestinationSearch && travelEssentialsSection}
+
+      <section className={styles.archive} aria-labelledby="package-archive-title">
         <h2 id="package-archive-title">PACKAGE ARCHIVE <b>{trips.length}</b></h2>
         <div className={styles.results}>
           {trips.map((trip, index) => {
             const image = representativeImages.get(trip.id);
+            const firstPlace = getFirstPlace(trip);
+            const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
             return (
-              <article className={styles.tripCard} key={trip.id}>
-                <Link to={`/plan?trip=${encodeURIComponent(trip.id)}`} className={styles.cardLink}>
-                  <div className={styles.cardImage} style={image ? { backgroundImage: `url(${image})` } : undefined}>
-                    <small>{String(index + 1).padStart(2, "0")}</small>
-                    <strong>{trip.city.toUpperCase()}</strong>
-                  </div>
-                  <div className={styles.cardCopy}>
-                    <p>{trip.duration}　—　{countryLabels[trip.country] || trip.country.toUpperCase()}</p>
-                    <h3>{trip.title}</h3>
-                    <small>{trip.city} 추천 여행 · {countPlaces(trip)}개 일정</small>
-                  </div>
-                </Link>
-                <button
-                  className={`${styles.favoriteButton} ${favoriteTripIds.includes(trip.id) ? styles.favoriteActive : ""}`}
-                  type="button"
-                  aria-label={`${trip.title} ${favoriteTripIds.includes(trip.id) ? "찜 해제" : "찜하기"}`}
-                  onClick={() => toggleFavoriteTrip(trip.id)}
-                >
-                  <svg aria-hidden="true" viewBox="0 0 24 24">
-                    <path d="M12 20.7 10.55 19.38C5.4 14.7 2 11.62 2 7.85 2 4.77 4.42 2.35 7.5 2.35c1.74 0 3.41.81 4.5 2.09a6.03 6.03 0 0 1 4.5-2.09c3.08 0 5.5 2.42 5.5 5.5 0 3.77-3.4 6.85-8.55 11.54Z" />
-                  </svg>
-                </button>
-              </article>
+              <DesrinationThumnail
+                key={trip.id}
+                trip={trip}
+                index={index}
+                image={image}
+                category={category}
+                to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+                isFavorite={favoriteTripIds.includes(trip.id)}
+                onToggleFavorite={() => toggleFavoriteTrip(trip.id)}
+              />
             );
           })}
           {!trips.length && (
@@ -300,6 +282,7 @@ export default function Search() {
           )}
         </div>
       </section>
+      {hasActiveDestinationSearch && travelEssentialsSection}
       {filterOpen && (
         <div className={styles.filterBackdrop} role="presentation" onMouseDown={() => setFilterOpen(false)}>
           <section className={styles.filterPanel} role="dialog" aria-modal="true" aria-labelledby="filter-title" onMouseDown={(event) => event.stopPropagation()}>

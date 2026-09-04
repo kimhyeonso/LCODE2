@@ -1242,7 +1242,7 @@ export default function Cart() {
         #77736c;
 
       font-size:
-        9px;
+        10px;
 
       letter-spacing:
         0.12em;
@@ -1503,7 +1503,7 @@ export default function Cart() {
         #858078;
 
       font-size:
-        9px;
+        10px;
 
       letter-spacing:
         0.14em;
@@ -1782,7 +1782,7 @@ export default function Cart() {
         );
 
       font-size:
-        9px;
+        10px;
 
       text-align:
         center;
@@ -1794,7 +1794,7 @@ export default function Cart() {
         #11110f;
 
       font-size:
-        9px;
+        10px;
 
       font-weight:
         600;
@@ -1884,7 +1884,7 @@ export default function Cart() {
         #858078;
 
       font-size:
-        9px;
+        10px;
     }
 
 
@@ -1967,7 +1967,7 @@ export default function Cart() {
         0.65;
 
       font-size:
-        8px;
+        10px;
     }
 
 
@@ -2302,7 +2302,7 @@ export default function Cart() {
         sans-serif;
 
       font-size:
-        9px;
+        10px;
 
       font-weight:
         400;
@@ -2335,7 +2335,7 @@ export default function Cart() {
         #88837b;
 
       font-size:
-        9px;
+        10px;
 
       letter-spacing:
         0.13em;
@@ -2445,7 +2445,7 @@ export default function Cart() {
         center;
 
       font-size:
-        9px;
+        10px;
 
       line-height:
         1.7;

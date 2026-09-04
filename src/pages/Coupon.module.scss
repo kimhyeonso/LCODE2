@@ -343,7 +343,7 @@ h1 {
   .available strong { margin-top: 10px; color: #111; font: 400 30px/1 $display; }
 
   .eyebrow {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   h1 {
@@ -433,7 +433,7 @@ h1 {
   // 쿠폰 아래쪽 코드(TC-0056)와 사용기한(VALID UNTIL ...)의 안쪽 여백
   .ticket footer {
     padding: 8px 22px;
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .featured .ticketBody {
@@ -448,7 +448,7 @@ h1 {
   .usedLabel {
     top: 25px;
     right: 12px;
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .cut {
@@ -458,7 +458,7 @@ h1 {
   }
 
   .cut small {
-    font-size: 8px;
+    font-size: 10px;
   }
 
   .ticket:not(.used) { height: 175px; aspect-ratio: auto; }
@@ -474,7 +474,7 @@ h1 {
   .used h2 { color: #f8f8f8; font-size: 29px; }
 
   // 사용 완료 쿠폰의 상단 작은 글자(SPECIAL EVENT)
-  .ticketType { font-size: 9px; }
+  .ticketType { font-size: 10px; }
 }
 
 @media (min-width: 901px) {
@@ -498,7 +498,7 @@ h1 {
   .description,
   .divider { margin-right: 25px; margin-left: 0px; }
   .archiveHeading { align-items: flex-start;  }
-  .eyebrow { margin-top: 0; margin-left:25px ; font-size: 9px; letter-spacing: .22em !important; }
+  .eyebrow { margin-top: 0; margin-left:25px ; font-size: 10px; letter-spacing: .22em !important; }
   h1 { max-width: 230px; margin-top: 10px; font-size: 40px; line-height: 1.08; }
   .archiveHeading h1 { transform: none; }
   .available { padding-top: 28px; }
@@ -577,7 +577,7 @@ h1 {
 @media (min-width: 901px) {
   .coupon { position: relative; margin-top: 0; padding: 60px 0; align-items: flex-start; }
   .archive > a:first-child { margin-bottom: 8px; }
-  .eyebrow { font-size: .58rem; letter-spacing: .24em !important; }
+  .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { margin-top: 0; font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }

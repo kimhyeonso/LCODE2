@@ -190,7 +190,7 @@
 .others article > span {
   display: block;
 
-  height: 220px;
+  aspect-ratio: 4 / 3;
 
   background: #ddd center / cover;
 }
@@ -236,26 +236,29 @@
 }
 
 .others nav {
-  display: grid;
+  display: flex;
 
-  grid-template-columns: 1fr 2fr;
-
-  gap: 9px;
+  gap: 8px;
 
   margin-top: 18px;
 }
 
 .others nav a {
-  height: 46px;
+  flex: 1;
+
+  width: 100%;
+  height: 50px;
 
   display: grid;
   place-items: center;
+
+  padding: 17px;
 
   border: 1px solid #ddd;
 
   background: #fff;
 
-  color: #888;
+  color: #171714;
 
   font-size: 13px;
 
@@ -263,9 +266,9 @@
 }
 
 .others nav a:last-child {
-  border-color: #111;
+  border-color: #171714;
 
-  background: #111;
+  background: #171714;
 
   color: #fff;
 }
