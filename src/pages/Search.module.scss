@@ -34,7 +34,7 @@
 .tabs {
   display: flex;
   gap: 22px;
-  margin: 24px 23px;
+  margin: 32px 0;
 }
 .tabs button {
   border: 0;
@@ -86,13 +86,13 @@
 }
 .archive > h2 {
   margin: 30px 0 14px 14px;
-  color: #aaa;
+  color: $ink;
   font: 600 30px/1.1 $serif;
   letter-spacing: normal;
 }
 .archive > h2 b {
   margin-left: 5px;
-  color: $ink;
+  color: #bb1934;
   font: inherit;
 }
 .results {

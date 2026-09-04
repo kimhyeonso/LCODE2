@@ -15,6 +15,20 @@ const thumbnailModules = import.meta.glob(
 const planThumbnail = (plan) =>
   tripRoad.thumbnailMap?.[plan?.country]?.[plan?.city];
 
+const cityEnglishNames = {
+  강릉: "GANGNEUNG",
+  서울: "SEOUL",
+  부산: "BUSAN",
+  제주: "JEJU",
+  제주도: "JEJU",
+  도쿄: "TOKYO",
+  오사카: "OSAKA",
+  상하이: "SHANGHAI",
+  베이징: "BEIJING",
+};
+
+const cityEnglishName = (city) => cityEnglishNames[city] || city?.toUpperCase();
+
 // Plan.jsx의 대표 썸네일(heroImage)과 동일하게 trip_road.json 썸네일을 최우선으로 사용한다.
 const planImage = (plan) =>
   imageUrl(
@@ -41,6 +55,31 @@ const updatedTime = (plan) =>
   plan.createdAt?.toMillis?.() ||
   (plan.createdAt?.seconds || 0) * 1000 ||
   0;
+
+const travelStartTime = (plan) => {
+  const startDate = plan?.dateRange?.start;
+  const time = startDate ? new Date(`${startDate}T00:00:00`).getTime() : NaN;
+
+  return Number.isFinite(time) ? time : null;
+};
+
+const compareByTravelDate = (a, b) => {
+  const today = new Date().setHours(0, 0, 0, 0);
+  const aStart = travelStartTime(a);
+  const bStart = travelStartTime(b);
+
+  if (aStart === null || bStart === null) {
+    if (aStart === bStart) return updatedTime(b) - updatedTime(a);
+    return aStart === null ? 1 : -1;
+  }
+
+  const aUpcoming = aStart >= today;
+  const bUpcoming = bStart >= today;
+
+  if (aUpcoming !== bUpcoming) return aUpcoming ? -1 : 1;
+  if (aUpcoming) return aStart - bStart;
+  return bStart - aStart;
+};
 
 const dday = (date) => {
   if (!date) return "D-DAY";
@@ -110,9 +149,7 @@ export default function SavedPlan() {
     getPlans(user.uid)
       .then((items) =>
         setPlans(
-          [...items].sort(
-            (a, b) => updatedTime(b) - updatedTime(a)
-          )
+          [...items].sort(compareByTravelDate)
         )
       )
       .catch(() =>
@@ -286,7 +323,7 @@ export default function SavedPlan() {
           </small>
 
           <h2>
-            {saved.city?.toUpperCase()}
+            {cityEnglishName(saved.city)}
           </h2>
 
           <p>

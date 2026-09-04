@@ -268,7 +268,7 @@ $type-display: 36px;
 }
 
 .upcomingMain strong {
-  font: 400 44px/1 $serif;
+  font: 400 32px/1 $serif;
   letter-spacing: -2px;
   color: $home-terracotta;
 }
@@ -453,6 +453,7 @@ $type-display: 36px;
 }
 
 .featurePick h3 {
+  margin: $space-2 0 0;
   font-family: $sans;
   font-size: $type-body;
   font-weight: 500;
@@ -1062,7 +1063,6 @@ $type-display: 36px;
 
   .heroVisual {
     height: min(620px, 70vh);
-    margin-top: 28px;
   }
 
   .destinationSection > .destinationHero {

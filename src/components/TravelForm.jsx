@@ -177,6 +177,7 @@ const createStops = (trip) =>
         time: item.time || "시간 미정",
         icon: categoryIcons[item.category] || pinIcon,
         name: item.place,
+        place: item.place,
         type: categoryNames[item.category] || item.category,
         note: item.recommendation || "",
         travel: nextTransport?.transport || "",
@@ -189,6 +190,8 @@ const createStops = (trip) =>
         imageSource: item.imageSource || "",
         imageStatus: item.imageStatus || "",
         imageError: item.imageError || "",
+        latitude: item.latitude,
+        longitude: item.longitude,
       });
       return stops;
     }, []),
@@ -664,7 +667,13 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             </button>
           ))}
         </div>
-        <div className={styles.mapPlaceholder}><span>{selectedTrip.city.toUpperCase()} · DAY {activeDay + 1}</span></div>
+        <div className={styles.mapPlaceholder} aria-label={`DAY ${activeDay + 1} 일정 지도`}>
+          <PlaceMap
+            places={stops}
+            fallbackPlaces={selectedTrip.days.flatMap((day) => day.items)}
+            fitToPlaces
+          />
+        </div>
       </section>
 
       <section className={styles.schedule}>

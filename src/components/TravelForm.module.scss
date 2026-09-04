@@ -314,17 +314,14 @@
 }
 
 .mapPlaceholder {
+  position: relative;
+  overflow: hidden;
   height: 150px;
-  display: grid;
-  place-items: center;
   background: #ddd;
-  color: #bbb;
-  font-size: 14px;
-  letter-spacing: 2px;
-}
 
-.mapPlaceholder span {
-  opacity: 0;
+  :global(.leaflet-container) {
+    height: 100%;
+  }
 }
 
 .schedule {
