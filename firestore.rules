@@ -28,7 +28,7 @@ service cloud.firestore {
       }
 
       match /shop/{documentId} {
-        allow read, write: if isOwner(userId);
+        allow read, write: if isOwner(userId) || isAdmin();
       }
 
       match /favoriteTrips/{tripId} {
@@ -37,6 +37,7 @@ service cloud.firestore {
 
       match /coupons/{couponId} {
         allow read: if isOwner(userId) || isAdmin();
+        allow create, update: if isAdmin();
         // Portfolio event: one client-issued coupon per account.
         allow create: if isOwner(userId)
           && couponId == 'gacha-2026'
