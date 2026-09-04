@@ -1,0 +1,1660 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+.page {
+  min-height: 100vh;
+  padding: 24px 0 88px;
+  background: #eeeeee;
+  color: #151515;
+}
+
+.selectPanel,
+.result,
+.edit {
+  width: min(100% - 32px, 390px);
+  margin: 0 auto;
+  background: #fbfaf7;
+}
+
+.selectPanel {
+  min-height: calc(100vh - 112px);
+}
+
+.selectHeader,
+.resultHeader {
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  color: #aaa29a;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.selectHeader button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.intro {
+  padding: 22px 22px 34px;
+  border-bottom: 1px solid #d8d4ce;
+}
+
+.intro h1,
+.analyzing h1,
+.result h1,
+.complete h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.3;
+  white-space: pre-line;
+}
+
+// 다른 페이지 모듈의 전역 `h1 { color:#111 }` 규칙이 새어 들어오므로 색을 직접 지정합니다.
+.intro h1,
+.result h1 {
+  color: $ink;
+}
+
+.analyzing h1 {
+  color: #f7f2ea;
+}
+
+.intro p,
+.result > p {
+  margin: 16px 0 0;
+  color: #8a857e;
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.reasonList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reasonList li + li {
+  border-top: 1px solid #e1ddd6;
+}
+
+.reasonList button {
+  width: 100%;
+  min-height: 78px;
+  border: 0;
+  display: grid;
+  grid-template-columns: 32px 28px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  padding: 0 22px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.reasonList span {
+  color: #b8b0a6;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.reasonList i {
+  color: #bdb6ad;
+  font-style: normal;
+  text-align: center;
+}
+
+.rainMark {
+  width: 28px;
+  height: 38px;
+  background-image: radial-gradient(circle, #bdb6ad 1.2px, transparent 1.4px);
+  background-size: 7px 7px;
+  background-position: 0 0;
+  opacity: .85;
+}
+
+.reasonList strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.reasonList em {
+  color: #9b958e;
+  font-size: 13px;
+  font-style: normal;
+  white-space: nowrap;
+}
+
+.analyzing,
+.complete {
+  width: min(100% - 32px, 390px);
+  min-height: calc(100vh - 48px);
+  margin: 0 auto;
+  display: grid;
+  background: #111;
+  color: #f7f2ea;
+}
+
+.analyzing {
+  grid-template-rows: auto auto 1fr auto;
+  padding: 72px 30px 38px;
+}
+
+.meta {
+  margin: 0 0 30px;
+  color: #555;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.analyzing h1 {
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(247, 242, 234, 0.6);
+}
+
+.analyzing ol {
+  margin: 28px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.analyzing li {
+  min-height: 44px;
+  display: grid;
+  grid-template-columns: 30px 1fr 20px;
+  align-items: center;
+  border-bottom: 1px solid rgba(247, 242, 234, 0.08);
+  color: #555;
+  font-size: 13px;
+}
+
+.analyzing li span,
+.progress span,
+.complete span {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.analyzing li p {
+  margin: 0;
+}
+
+.analyzing li b {
+  color: #666;
+  font-weight: 400;
+  text-align: right;
+}
+
+.done {
+  color: rgba(247, 242, 234, 0.72) !important;
+}
+
+.done b {
+  color: rgba(247, 242, 234, 0.8) !important;
+}
+
+.progress {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 18px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(247, 242, 234, 0.14);
+}
+
+.progress strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+  font-weight: 400;
+}
+
+.progress i {
+  height: 2px;
+  position: absolute;
+  left: 0;
+  bottom: 23px;
+  background: #f7f2ea;
+}
+
+.result {
+  min-height: calc(100vh - 112px);
+  padding-bottom: 18px;
+}
+
+.resultHeader {
+  padding-top: 8px;
+}
+
+.resultHeader em {
+  font-style: normal;
+}
+
+.result h1,
+.result > p {
+  padding-inline: 22px;
+}
+
+.result h1 {
+  font-size: 22px;
+}
+
+.compare {
+  margin-top: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  padding-inline: 22px;
+}
+
+.compare article {
+  min-height: 174px;
+  display: grid;
+  align-content: end;
+  padding: 10px;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, 0.04) 0%, rgba(0, 0, 0, 0.48) 100%),
+    var(--compare-image),
+    #aaa;
+  background-position: center;
+  background-size: cover;
+}
+
+.compare span,
+.timelineCard header,
+.details h2 {
+  color: #9e968d;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.compare span {
+  width: fit-content;
+  align-self: start;
+  padding: 4px 7px;
+  background: #555;
+  color: #eee;
+}
+
+.compare h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 13px;
+}
+
+.compare p,
+.softText {
+  margin: 4px 0 0;
+  color: #726c64;
+  font-size: 13px;
+}
+
+.summaryNote {
+  margin: 18px 22px 0;
+  padding: 20px;
+  background: #eeece7;
+  color: #625d56;
+  font-size: 13px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.details {
+  margin: 28px 22px 0;
+}
+
+.details h2,
+.timeline h2 {
+  margin: 0 0 18px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #dcd7ce;
+}
+
+.details article {
+  padding: 18px 0;
+  border-bottom: 1px solid #dcd7ce;
+}
+
+.details article > span {
+  display: inline-block;
+  color: #b3aa9e;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.details em {
+  float: right;
+  border: 1px solid #d8d2c9;
+  padding: 2px 6px;
+  color: #b3aa9e;
+  font-size: 13px;
+  font-style: normal;
+}
+
+.details div {
+  clear: both;
+  display: grid;
+  grid-template-columns: 1fr 18px 1fr;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.details del,
+.details strong {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+}
+
+.details del {
+  color: #9d958d;
+}
+
+.details b {
+  color: #bbb4aa;
+}
+
+.summaryGrid {
+  margin: 28px 22px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.themePanel {
+  margin: 28px 22px 0;
+  padding: 22px;
+  background: #111;
+  color: #f7f2ea;
+}
+
+.themePanel span {
+  color: #9e968d;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.themePanel h2 {
+  max-width: 260px;
+  margin: 22px 0 26px;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.themePanel div {
+  display: grid;
+  grid-template-columns: 1fr 44px 1fr;
+  align-items: center;
+  gap: 10px;
+  border-top: 1px solid rgba(247, 242, 234, 0.18);
+  padding-top: 18px;
+}
+
+.themePanel b {
+  font-size: 10px;
+  letter-spacing: 1.6px;
+}
+
+.themePanel b:last-child {
+  text-align: right;
+}
+
+.themePanel i {
+  height: 1px;
+  background: rgba(247, 242, 234, 0.5);
+}
+
+.summaryGrid article {
+  min-height: 104px;
+  padding: 18px;
+  background: #eeece7;
+  border-right: 1px solid #fbfaf7;
+}
+
+.summaryGrid span {
+  color: #aaa29a;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.summaryGrid strong {
+  display: block;
+  margin-top: 12px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 28px;
+}
+
+.summaryGrid del {
+  display: block;
+  margin-top: 12px;
+  color: #9d958d;
+}
+
+.summaryGrid p {
+  margin: 2px 0 0;
+  color: #8e887f;
+  font-size: 13px;
+}
+
+.timeline {
+  margin: 26px 22px 0;
+}
+
+.timeline h2 {
+  color: #9e968d;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.timelineCard {
+  margin-top: 8px;
+  background: #f0eee9;
+}
+
+.timelineCard header,
+.timelineCard div {
+  min-height: 32px;
+  display: grid;
+  grid-template-columns: 52px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+}
+
+.timelineCard div {
+  color: #222;
+  font-size: 13px;
+}
+
+.timelineCard p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.timelineCard b {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 2px 6px;
+  color: #8f887f;
+  font-size: 13px;
+}
+
+.timelineDark {
+  background: #111;
+  color: #eee;
+}
+
+.timelineDark div,
+.timelineDark p,
+.timelineDark span,
+.timelineDark em {
+  color: #e9e4da;
+}
+
+.timelineDark b {
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #f7f2ea;
+}
+
+.placeChange {
+  margin: 28px 22px 0;
+  padding: 18px;
+  background: #efede8;
+}
+
+.placeChange article {
+  padding: 14px;
+  background: #fbfaf7;
+}
+
+.placeChange b {
+  display: block;
+  padding: 12px 0;
+  color: #aaa29a;
+  text-align: center;
+}
+
+.placeChange span {
+  color: #aaa29a;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.placeChange h2 {
+  margin: 10px 0 4px;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 18px;
+}
+
+.placeChange p {
+  margin: 0;
+  color: #8f887f;
+  font-size: 13px;
+}
+
+.darkPlace {
+  background: #111 !important;
+  color: #f7f2ea;
+}
+
+.softText {
+  margin: 14px 22px 0;
+  line-height: 1.7;
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 4px;
+  margin: 28px 22px 0;
+}
+
+.actions button,
+.saveEdit {
+  min-height: 48px;
+  border: 1px solid #d8d4ce;
+  background: #fbfaf7;
+  color: #151515;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.actions button:last-child,
+.saveEdit {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.complete {
+  place-items: center;
+  border: 0;
+  text-align: center;
+}
+
+.complete span {
+  color: #555;
+}
+
+.complete h1 {
+  margin-top: 22px;
+  font-size: 25px;
+  color: #f7f2ea;
+}
+
+.complete i {
+  width: 30px;
+  height: 1px;
+  margin-top: 22px;
+  background: #f7f2ea;
+}
+
+.edit {
+  padding-bottom: 20px;
+}
+
+.editHero {
+  min-height: 260px;
+  position: relative;
+  padding: 116px 22px 20px;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.48)), #aaa;
+  color: #fff;
+}
+
+.editHero span {
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.editHero h1 {
+  margin: 4px 0 22px;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 32px;
+  line-height: 1;
+}
+
+.editHero p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.editHero button {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  font-size: 13px;
+}
+
+.dayTabs {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  background: #efede8;
+}
+
+.dayTabs button {
+  min-height: 44px;
+  border: 0;
+  background: transparent;
+  color: #aaa29a;
+  font-size: 13px;
+}
+
+.activeDay {
+  color: #111 !important;
+  background: #fbfaf7 !important;
+}
+
+.dayPlan {
+  padding: 18px 16px;
+}
+
+.dayPlan header {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #dcd7ce;
+  padding-bottom: 12px;
+}
+
+.dayPlan article {
+  min-height: 62px;
+  display: grid;
+  grid-template-columns: 1fr auto 24px;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #e5e1da;
+}
+
+.dayPlan label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.dayPlan em {
+  color: #8f887f;
+  font-size: 13px;
+  font-style: normal;
+}
+
+.dayPlan article button {
+  border: 0;
+  background: transparent;
+  color: #999;
+}
+
+.addSpot {
+  width: 100%;
+  min-height: 36px;
+  margin-top: 12px;
+  border: 0;
+  background: #fff;
+  color: #777;
+}
+
+.saveEdit {
+  width: calc(100% - 32px);
+  margin: 12px 16px 0;
+}
+
+@media (min-width: 901px) {
+  // 데스크톱 셸은 shop.module.scss와 동일한 규격을 사용합니다.
+  // (Header 220px sidebar + editorial gutter clamp(54px, 5vw, 88px))
+  .page {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding:
+      34px
+      clamp(48px, 4.5vw, 84px)
+      44px;
+    background: $paper-light;
+  }
+
+  // 편집 흐름 화면은 가운데 정렬하고, 읽기 좋은 폭에서 멈춥니다.
+  .selectPanel,
+  .result,
+  .edit {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  .analyzing,
+  .complete {
+    width: 100%;
+    margin-inline: 0;
+  }
+
+  .selectPanel,
+  .result,
+  .edit {
+    background: transparent;
+  }
+
+  .selectPanel,
+  .result {
+    min-height: calc(100vh - clamp(172px, 11vw, 194px));
+  }
+
+  .selectHeader,
+  .resultHeader {
+    min-height: 56px;
+    padding-inline: 0;
+  }
+
+  .intro {
+    width: min(880px, 100%);
+    max-width: 880px;
+    margin-inline: auto;
+    box-sizing: border-box;
+    text-align: center;
+    padding:
+      clamp(44px, 4vw, 68px)
+      clamp(40px, 4vw, 56px)
+      clamp(52px, 5vw, 76px);
+  }
+
+  .intro h1,
+  .analyzing h1,
+  .result h1,
+  .complete h1 {
+    font-size: clamp(34px, 3.2vw, 52px);
+  }
+
+  .intro p,
+  .result > p {
+    font-size: 15px;
+  }
+
+  .reasonList {
+    width: min(880px, 100%);
+    margin-inline: auto;
+  }
+
+  .reasonList button {
+    min-height: 88px;
+    grid-template-columns: 50px 44px 136px minmax(0, 1fr);
+    gap: 24px;
+    padding-inline: clamp(40px, 4vw, 56px);
+  }
+
+  .reasonList span,
+  .reasonList em {
+    font-size: 13px;
+  }
+
+  .reasonList i {
+    width: 44px;
+  }
+
+  .rainMark {
+    width: 32px !important;
+    height: 38px;
+    justify-self: center;
+    background-size: 7px 7px;
+  }
+
+  .reasonList strong {
+    min-width: 0;
+    font-size: clamp(26px, 2vw, 32px);
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .reasonList em {
+    justify-self: start;
+  }
+
+  .analyzing {
+    min-height: calc(100vh - clamp(172px, 11vw, 194px));
+    padding:
+      clamp(68px, 6vw, 96px)
+      clamp(48px, 4.5vw, 84px)
+      clamp(48px, 5vw, 72px);
+  }
+
+  .analyzing h1 {
+    padding-bottom: clamp(52px, 5vw, 80px);
+  }
+
+  // 넓은 어두운 패널 안에서도 텍스트 줄 길이를 읽기 좋은 폭으로 제한합니다.
+  .analyzing .meta,
+  .analyzing h1,
+  .analyzing ol,
+  .analyzing .progress {
+    width: min(760px, 100%);
+    margin-inline: auto;
+  }
+
+  .analyzing .meta,
+  .analyzing h1 {
+    text-align: center;
+  }
+
+  .analyzing li {
+    min-height: 56px;
+    grid-template-columns: 42px 1fr 28px;
+    font-size: 14px;
+  }
+
+  .result {
+    padding-bottom: 44px;
+  }
+
+  .result h1,
+  .result > p,
+  .compare,
+  .themePanel,
+  .details,
+  .timeline,
+  .summaryNote,
+  .placeChange,
+  .softText,
+  .actions {
+    margin-inline: clamp(40px, 4vw, 56px);
+    padding-inline: 0;
+  }
+
+  .result h1,
+  .result > p {
+    max-width: 680px;
+  }
+
+  .result h1 {
+    font-size: clamp(34px, 3vw, 48px);
+  }
+
+  .compare {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .compare article {
+    min-height: 280px;
+  }
+
+  .compare h2,
+  .placeChange h2 {
+    font-size: clamp(22px, 2vw, 30px);
+  }
+
+  .details del,
+  .details strong {
+    font-size: clamp(19px, 1.6vw, 24px);
+  }
+
+  .summaryGrid {
+    max-width: 520px;
+    margin-inline: clamp(40px, 4vw, 56px);
+    margin-bottom: 32px;
+  }
+
+  .timeline {
+    margin-top: 0;
+  }
+
+  .themePanel {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) minmax(260px, 420px);
+    align-items: end;
+    gap: clamp(30px, 4vw, 56px);
+    min-height: 176px;
+    padding: clamp(28px, 3vw, 42px);
+  }
+
+  .themePanel h2 {
+    max-width: 420px;
+    margin: 18px 0 0;
+    font-size: clamp(24px, 2.4vw, 34px);
+  }
+
+  .themePanel div {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .trafficResult .themePanel {
+    background:
+      linear-gradient(135deg, rgba(21, 21, 21, 0.95), rgba(21, 21, 21, 0.78)),
+      repeating-linear-gradient(90deg, transparent 0 28px, rgba(247, 242, 234, 0.12) 28px 29px);
+  }
+
+  .tiredResult .themePanel {
+    background:
+      linear-gradient(135deg, rgba(17, 17, 17, 0.92), rgba(80, 76, 70, 0.76)),
+      radial-gradient(circle at 76% 28%, rgba(247, 242, 234, 0.16), transparent 34%);
+  }
+
+  .costResult .themePanel {
+    background:
+      linear-gradient(135deg, rgba(17, 17, 17, 0.96), rgba(47, 54, 45, 0.86)),
+      linear-gradient(90deg, rgba(188, 169, 126, 0.22), transparent 42%);
+  }
+
+  // 시간·장소·태그를 왼쪽으로 모아 넓은 카드에서도 한 줄로 읽히게 합니다.
+  .timelineCard header,
+  .timelineCard div {
+    min-height: 42px;
+    grid-template-columns: 96px auto minmax(0, 1fr);
+    column-gap: 20px;
+  }
+
+  .timelineCard b {
+    justify-self: start;
+  }
+
+  // 어두운 AFTER 카드에서 `.timelineCard div`의 #222가 이겨 글자가 안 보이던 것을 바로잡습니다.
+  .timelineDark div {
+    color: #e9e4da;
+  }
+
+  .placeChange {
+    max-width: 760px;
+  }
+
+  .details {
+    max-width: none;
+  }
+
+  // 왼쪽 열에 라벨과 태그를 세로로 모으고, 오른쪽 열에 변경 전/후 값을 붙여 보여줍니다.
+  .details article {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    align-items: start;
+    column-gap: 24px;
+    row-gap: 10px;
+    min-height: 96px;
+    padding: 22px 0;
+  }
+
+  .details article > span {
+    display: block;
+    grid-column: 1;
+  }
+
+  .details em {
+    float: none;
+    grid-column: 1;
+    justify-self: start;
+    align-self: start;
+    white-space: nowrap;
+  }
+
+  .details div {
+    clear: none;
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    display: grid;
+    grid-template-columns: auto 22px minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    margin-top: 0;
+  }
+
+  .actions {
+    width: auto;
+    max-width: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .complete {
+    min-height: calc(100vh - clamp(172px, 11vw, 194px));
+    padding:
+      clamp(68px, 6vw, 96px)
+      clamp(48px, 4.5vw, 84px)
+      clamp(48px, 5vw, 72px);
+    box-sizing: border-box;
+  }
+
+  // 한 단짜리 편집 화면: 히어로 배너 → 일자 탭 → 일정 목록 순으로 쌓습니다.
+  // (이전의 2단 그리드는 사이드바를 뺀 폭에서 넘쳐 오른쪽이 잘리는 문제가 있었습니다.)
+  .edit {
+    min-height: calc(100vh - clamp(172px, 11vw, 194px));
+  }
+
+  .editHero {
+    min-height: clamp(300px, 34vh, 380px);
+    padding:
+      clamp(130px, 17vh, 210px)
+      clamp(32px, 4vw, 48px)
+      clamp(28px, 3vw, 44px);
+    background-position: center;
+    background-size: cover;
+  }
+
+  .editHero h1 {
+    font-size: clamp(40px, 4vw, 58px);
+  }
+
+  .dayTabs {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .dayPlan {
+    padding:
+      clamp(28px, 3vw, 40px)
+      clamp(8px, 2vw, 18px)
+      0;
+  }
+
+  .dayPlan article {
+    min-height: 66px;
+    grid-template-columns: 1fr auto 40px;
+  }
+
+  .saveEdit {
+    width: 100%;
+    margin: 14px 0 0;
+    min-height: 50px;
+  }
+
+  :global(body:has(.aiRemixPageRoot) footer) {
+    margin-top: 0;
+  }
+}
+
+@include mobile {
+  .page {
+    padding: 0;
+  }
+
+  .selectPanel,
+  .result,
+  .edit,
+  .analyzing,
+  .complete {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .analyzing {
+    min-height: 100svh;
+    grid-template-rows: auto auto auto auto;
+    align-content: start;
+    padding: 54px 24px 30px;
+  }
+
+  .analyzing .meta {
+    margin-bottom: 24px;
+  }
+
+  .analyzing h1 {
+    padding-bottom: 34px;
+  }
+
+  .analyzing ol {
+    margin-top: 24px;
+  }
+
+  .analyzing li {
+    min-height: 39px;
+  }
+
+  .progress {
+    margin-top: 42px;
+    padding-bottom: 20px;
+  }
+
+  .progress i {
+    bottom: 19px;
+  }
+
+  :global(body:has(.aiRemixPageRoot) footer) {
+    margin-top: calc(-58px - env(safe-area-inset-bottom));
+  }
+}
+
+@media (min-width: 901px) {
+  .page {
+    width: calc(100% - 220px);
+    margin-left: 220px;
+    padding: 48px 32px 0;
+    background: $paper;
+  }
+
+  .selectPanel,
+  .result {
+    width: min(100%, 960px);
+    min-height: auto;
+    margin-inline: auto;
+    background: transparent;
+  }
+
+  .analyzing,
+  .complete {
+    width: min(100%, 820px);
+    margin-inline: auto;
+    background: #111;
+    color: #f7f2ea;
+  }
+
+  .selectHeader,
+  .resultHeader {
+    width: min(100%, 960px);
+    min-height: 48px;
+    margin-inline: auto;
+    padding-inline: 0;
+  }
+
+  .intro {
+    width: min(100%, 720px);
+    margin-inline: auto;
+    padding: 72px 0 68px;
+    border-bottom: 0;
+    text-align: center;
+  }
+
+  .intro h1 {
+    font-size: 48px;
+    line-height: 1.28;
+  }
+
+  .intro p {
+    margin-top: 24px;
+    font-size: 15px;
+  }
+
+  .reasonList {
+    width: min(100%, 760px);
+    margin: 0 auto 88px;
+    border-top: 1px solid #d8d4ce;
+  }
+
+  .reasonList button {
+    min-height: 88px;
+    grid-template-columns: 44px 48px 250px minmax(0, 1fr);
+    gap: 20px;
+    padding-inline: 24px;
+  }
+
+  .reasonList span,
+  .reasonList em {
+    font-size: 11px;
+  }
+
+  .reasonList i {
+    width: 48px;
+    justify-self: center;
+  }
+
+  .rainMark {
+    width: 32px !important;
+    height: 38px;
+    background-size: 7px 7px;
+  }
+
+  .reasonList strong {
+    font-size: 31px;
+    line-height: 1;
+  }
+
+  .reasonList em {
+    justify-self: start;
+  }
+
+  .analyzing,
+  .complete {
+    min-height: calc(100vh - 96px);
+    padding: 76px 80px 56px;
+    box-sizing: border-box;
+  }
+
+  .analyzing {
+    width: min(100%, 820px);
+  }
+
+  .analyzing .meta,
+  .analyzing h1,
+  .analyzing ol,
+  .analyzing .progress {
+    width: min(100%, 620px);
+    margin-inline: auto;
+  }
+
+  .analyzing .meta,
+  .analyzing h1 {
+    text-align: center;
+  }
+
+  .analyzing h1 {
+    padding-bottom: 58px;
+    font-size: 42px;
+  }
+
+  .analyzing li {
+    min-height: 54px;
+    grid-template-columns: 46px minmax(0, 1fr) 28px;
+    font-size: 14px;
+  }
+
+  .result {
+    width: min(100%, 860px);
+    padding-bottom: 72px;
+  }
+
+  .resultHeader {
+    width: 100%;
+  }
+
+  .result h1,
+  .result > p,
+  .compare,
+  .themePanel,
+  .summaryGrid,
+  .timeline,
+  .summaryNote,
+  .placeChange,
+  .softText,
+  .details,
+  .actions {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .placeChange,
+  .softText {
+    width: min(100%, 680px);
+    margin-inline: auto;
+  }
+
+  .placeChange {
+    padding: 0;
+    background: transparent;
+  }
+
+  .placeChange article {
+    padding: 28px;
+  }
+
+  .placeChange b {
+    padding: 14px 0;
+  }
+
+  .softText {
+    text-align: center;
+  }
+
+  .result h1,
+  .result > p {
+    max-width: 620px;
+  }
+
+  .result h1 {
+    font-size: 42px;
+    line-height: 1.3;
+  }
+
+  .result > p {
+    margin-top: 22px;
+    font-size: 15px;
+  }
+
+  .compare {
+    margin-top: 36px;
+    gap: 12px;
+  }
+
+  .compare article {
+    min-height: 280px;
+    padding: 18px;
+  }
+
+  .summaryGrid {
+    width: min(100%, 520px);
+    margin-top: 32px;
+    margin-bottom: 32px;
+  }
+
+  .summaryGrid article {
+    min-height: 112px;
+    padding: 22px;
+  }
+
+  .timeline {
+    margin-top: 0;
+  }
+
+  .timelineCard header,
+  .timelineCard div {
+    min-height: 42px;
+    grid-template-columns: 100px minmax(0, 1fr) 92px;
+    column-gap: 20px;
+    padding-inline: 18px;
+  }
+
+  .timelineCard b {
+    justify-self: end;
+  }
+
+  .timelineDark div {
+    color: #e9e4da;
+  }
+
+  .themePanel {
+    min-height: 180px;
+    padding: 34px;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 36px;
+  }
+
+  .themePanel h2 {
+    max-width: 430px;
+    font-size: 30px;
+  }
+
+  .details {
+    margin-top: 34px;
+  }
+
+  .details article {
+    grid-template-columns: 150px minmax(0, 1fr);
+    min-height: 92px;
+    column-gap: 28px;
+    padding: 22px 0;
+  }
+
+  .details div {
+    grid-template-columns: minmax(160px, auto) 24px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .details del,
+  .details strong,
+  .placeChange h2 {
+    font-size: 24px;
+  }
+
+  .actions {
+    width: 100%;
+    max-width: none;
+    margin-top: 30px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .actions button,
+  .saveEdit {
+    min-height: 52px;
+  }
+
+  .complete {
+    width: min(100%, 820px);
+    place-items: center;
+    background: #111;
+  }
+
+  .edit {
+    width: min(100%, 1080px);
+    min-height: auto;
+    margin-inline: auto;
+    padding-bottom: 72px;
+    background: transparent;
+  }
+
+  .editHero {
+    min-height: 360px;
+    padding: 168px 44px 36px;
+  }
+
+  .editHero h1 {
+    font-size: 56px;
+  }
+
+  .dayTabs {
+    width: min(100%, 620px);
+    margin: 28px auto 0;
+  }
+
+  .dayPlan {
+    width: min(100%, 760px);
+    margin: 56px auto 0;
+    padding: 0;
+  }
+
+  .dayPlan header {
+    padding-bottom: 18px;
+  }
+
+  .dayPlan article {
+    min-height: 74px;
+    grid-template-columns: minmax(0, 1fr) 112px 36px;
+  }
+
+  .addSpot {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 44px;
+    margin-top: 16px;
+  }
+
+  .saveEdit {
+    display: block;
+    width: min(100%, 760px);
+    box-sizing: border-box;
+    margin: 20px auto 0;
+  }
+}
+
+@media (min-width: 901px) {
+  .page {
+    width: calc(100vw - 220px);
+    min-height: 100vh;
+    margin-left: 220px;
+    padding:
+      clamp(40px, 4vw, 64px)
+      clamp(48px, 5vw, 88px)
+      72px;
+    overflow-x: hidden;
+    background: $paper;
+  }
+
+  .selectPanel,
+  .result,
+  .edit,
+  .analyzing,
+  .complete {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .selectPanel,
+  .result {
+    width: min(860px, 100%);
+  }
+
+  .selectHeader,
+  .resultHeader {
+    width: 100%;
+  }
+
+  .intro,
+  .reasonList,
+  .result h1,
+  .result > p,
+  .compare,
+  .themePanel,
+  .summaryGrid,
+  .timeline,
+  .summaryNote,
+  .placeChange,
+  .softText,
+  .details,
+  .actions {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .intro,
+  .reasonList {
+    width: min(760px, 100%);
+  }
+
+  .result h1,
+  .result > p {
+    width: min(620px, 100%);
+  }
+
+  .compare,
+  .themePanel,
+  .timeline,
+  .details,
+  .actions {
+    width: 100%;
+  }
+
+  .summaryNote,
+  .placeChange,
+  .softText {
+    width: min(680px, 100%);
+  }
+
+  .summaryGrid {
+    width: min(520px, 100%);
+  }
+
+  .edit {
+    width: min(900px, 100%);
+  }
+
+  .editHero,
+  .dayTabs,
+  .dayPlan,
+  .saveEdit {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .editHero {
+    width: 100%;
+  }
+
+  .dayTabs {
+    width: min(620px, 100%);
+  }
+
+  .dayPlan,
+  .saveEdit {
+    width: min(760px, 100%);
+  }
+
+  .details article {
+    grid-template-columns: 170px minmax(0, 1fr);
+    column-gap: clamp(34px, 5vw, 72px);
+  }
+
+  .details div {
+    width: min(620px, 100%);
+    justify-self: end;
+    grid-template-columns: minmax(0, 1fr) 28px minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .details del {
+    text-align: right;
+  }
+
+  .details b {
+    text-align: center;
+  }
+
+  .details strong {
+    text-align: left;
+  }
+}
+
+@media (min-width: 901px) {
+  .details article {
+    grid-template-columns:
+      150px
+      minmax(0, 1fr);
+    column-gap: clamp(28px, 4vw, 56px);
+  }
+
+  .details div {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    align-self: center;
+    justify-self: center;
+    width: min(560px, 100%);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 36px minmax(0, 1fr);
+    align-items: center;
+    gap: 18px;
+    margin-top: 0;
+  }
+
+  .details del {
+    justify-self: end;
+    text-align: right;
+  }
+
+  .details b {
+    justify-self: center;
+    text-align: center;
+  }
+
+  .details strong {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+.resultHeader,
+.result h1,
+.result > p {
+  box-sizing: border-box;
+}
+
+@media (min-width: 901px) {
+  .result {
+    width: min(860px, calc(100vw - 220px - 96px));
+  }
+
+  .result h1,
+  .result > p {
+    width: min(620px, 100%);
+    margin-right: auto;
+    margin-left: auto;
+    text-align: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .resultHeader,
+  .result h1,
+  .result > p {
+    padding-right: 22px;
+    padding-left: 22px;
+  }
+
+  .result h1,
+  .result > p {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .result h1 {
+    font-size: clamp(21px, 5.8vw, 28px);
+    line-height: 1.35;
+    word-break: keep-all;
+  }
+}
