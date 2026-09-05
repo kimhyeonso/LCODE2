@@ -53,7 +53,7 @@ export default function Paking() {
       <div className={styles.content}>
         <header className={styles.hero}>
           <div className={styles.heading}>
-            <MypageBackLink to="/itinerary" label="여행 일정으로 돌아가기" />
+            <MypageBackLink to="/plan/saved" label="여행 일정으로 돌아가기" />
             <p className={styles.eyebrow}>MY JOURNEY</p>
             <h1>PACKING LIST</h1>
             <p className={styles.description}>여행 필수품과 초보 여행자를 위한 팁을 한 번에 확인해보세요.</p>

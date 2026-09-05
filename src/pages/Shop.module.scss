@@ -1210,7 +1210,7 @@
 ========================================================= */
 
 .detailPage {
-  padding: 36px clamp(54px, 5vw, 88px) 90px;
+  padding: 36px clamp(54px, 5vw, 88px) 0;
 }
 
 .detailSpread {
@@ -1602,7 +1602,7 @@
   .detailPage {
     width: 100%;
     margin-left: 0;
-    padding: 54px 36px 90px;
+    padding: 54px 36px 0;
   }
 
   .detailSpread {
@@ -1634,7 +1634,7 @@
 }
 
 @include mobile {
-  .detailPage { padding: 28px 16px 70px; }
+  .detailPage { padding: 28px 16px 72px; }
   .detailSpread { row-gap: 32px; }
   .productGallery { width: 100%; }
 
@@ -1858,7 +1858,7 @@
   padding:
     clamp(64px, 6vw, 96px)
     clamp(54px, 5vw, 88px)
-    110px;
+    0;
 }
 
 
@@ -2008,7 +2008,7 @@
 .completePage {
   min-height: 100vh;
 
-  padding: 36px clamp(54px, 5vw, 88px) 90px;
+  padding: 36px clamp(54px, 5vw, 88px) 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2344,7 +2344,7 @@
     padding:
       54px
       36px
-      100px;
+      0;
   }
 
 
@@ -2378,13 +2378,19 @@
   }
 
 
-  .cartPage,
+  .cartPage {
+    padding:
+      58px
+      36px
+      100px;
+  }
+
   .checkoutPage,
   .completePage {
     padding:
       58px
       36px
-      100px;
+      0;
   }
 
 
@@ -2409,6 +2415,10 @@
 ========================================================= */
 
 @include mobile {
+
+  .shopPage {
+    padding-bottom: 72px;
+  }
 
   .shopHero {
     min-height: 500px;
@@ -2500,7 +2510,7 @@
 
 
   .detailPage {
-    padding: 22px 16px 92px;
+    padding: 22px 16px 72px;
   }
 
 
@@ -2542,16 +2552,22 @@
   }
 
 
-  .cartPage,
-  .checkoutPage {
+  .cartPage {
     padding:
       46px
       16px
       90px;
   }
 
+  .checkoutPage {
+    padding:
+      46px
+      16px
+      72px;
+  }
+
   .completePage {
-    padding: 22px 16px 92px;
+    padding: 22px 16px 72px;
   }
 
 

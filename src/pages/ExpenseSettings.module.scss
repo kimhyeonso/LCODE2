@@ -4,7 +4,7 @@
   width: calc(100% - 32px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 22px 0 92px;
+  padding: 22px 0 72px;
   background: transparent;
   color: $ink;
 }
@@ -387,8 +387,8 @@
 @media (min-width: 641px) {
   .expenseSettings {
     width: min(1100px, calc(100% - 64px));
-    margin: 36px auto 70px;
-    padding: 36px 0 90px;
+    margin: 36px auto 0;
+    padding: 36px 0 0;
     font-family: $sans;
   }
 

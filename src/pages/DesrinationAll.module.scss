@@ -4,7 +4,7 @@
   width: min(100%, 720px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 22px 16px 92px;
+  padding: 22px 16px 72px;
   color: $ink;
 }
 
@@ -73,8 +73,8 @@
 @media (min-width: 641px) {
   .page {
     width: min(1100px, calc(100% - 64px));
-    margin: 36px auto 70px;
-    padding: 36px 0 90px;
+    margin: 36px auto 0;
+    padding: 36px 0 0;
   }
 
   .intro { padding: 36px 0 28px; }

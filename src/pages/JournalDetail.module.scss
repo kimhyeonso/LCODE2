@@ -3,7 +3,7 @@
   width: calc(100% - 32px);
   min-height: 100vh;
   margin: 0 auto;
-  padding: 22px 0 92px;
+  padding: 22px 0 72px;
   background: transparent;
   color: $ink;
 }
@@ -227,8 +227,8 @@
 @media (min-width: 641px) {
   .page {
     width: min(1100px, calc(100% - 64px));
-    margin: 36px auto 70px;
-    padding: 36px 0 90px;
+    margin: 36px auto 0;
+    padding: 36px 0 0;
   }
   .cover {
     height: 500px;
@@ -244,6 +244,6 @@
 @media (min-width: 901px) {
   .page {
     width: min(1320px, calc(100% - 332px));
-    margin: 36px 0 70px max(276px, calc(50% - 550px));
+    margin: 36px 0 0 max(276px, calc(50% - 550px));
   }
 }

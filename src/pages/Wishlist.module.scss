@@ -17,7 +17,7 @@
 .wishlist {
   
   min-height: calc(100vh - 10rem); // Keep short pages visually full-height.
-  padding: 1.875rem 0 4rem; // Reduce the desktop top breathing room by half.
+  padding: 1.875rem 0 0; // Reduce the desktop top breathing room by half.
   background-color: $paper;
   @include korean-font;
 }
@@ -166,29 +166,42 @@ h1 {
 
 .emptyState {
   display: grid;
-  justify-items: start;
-  gap: 1rem;
-  margin-top: 3rem;
-  padding: 3rem 0;
+  min-height: 360px;
+  align-content: center;
+  justify-items: center;
+  margin-top: 1px;
+  padding: 40px 16px;
   font-family: $korean;
+  text-align: center;
+}
+
+.emptyState strong {
+  margin-bottom: 22px;
+  color: #222;
+  font: 600 20px/1.4 $korean;
 }
 
 .emptyState p {
-  margin: 0;
-  color: #222;
-  font: 500 1rem $korean;
+  margin: 6px 0 22px;
+  color: #999;
+  font: 400 16px/1.5 $korean;
 }
 
 .emptyState a {
-  display: inline-flex;
-  align-items: center;
-  gap: .5rem;
-  color: #77736c;
-  font: 400 .72rem $korean;
+  display: inline-grid;
+  min-width: 143px;
+  min-height: 50px;
+  padding: 0 20px;
+  place-items: center;
+  grid-auto-flow: column;
+  gap: 6px;
+  background: #171714;
+  color: #fff;
+  font: 500 14px/1 $sans;
   text-decoration: none;
 }
 
-.emptyState a span { font-size: 1rem; }
+.emptyState a span { font-size: 14px; }
 
 // MY STORIES와 동일한 데스크톱 본문 여백을 사용합니다.
 @media (min-width: 901px) {
@@ -229,7 +242,7 @@ h1 {
 // 휴대폰 화면의 2열 카드 레이아웃입니다.
 @include mobile {
   .wishlist {
-    padding: 1.75rem 0 2.5rem; // Keep the mobile header compact.
+    padding: 1.75rem 0 72px; // Keep the mobile header compact.
   }
 
   .content {
@@ -297,9 +310,10 @@ h1 {
     aspect-ratio: 0.97 / 1; // Keep the near-square card proportion from the mobile mockup.
   }
 
-  .emptyState { margin-top: 1.5rem; padding: 2rem 0; }
-  .emptyState p { font-size: .8rem; }
-  .emptyState a { font-size: 0.625rem; }
+  .emptyState { min-height: 320px; margin-top: 1px; padding: 32px 16px; }
+  .emptyState strong { font-size: 20px; }
+  .emptyState p { font-size: 16px; }
+  .emptyState a { font-size: 14px; }
 }
 
 @media (min-width: 901px) {
@@ -309,7 +323,7 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .wishlist { margin-top: 0; padding: 22px 0 92px; }
+  .wishlist { margin-top: 0; padding: 22px 0 72px; }
   .content { width: calc(100% - 32px); margin: 0 auto; transform: none; }
   .content > :first-child { margin-bottom: 8px; }
   .content > :first-child,
@@ -326,7 +340,7 @@ h1 {
 
 // PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
 @media (min-width: 901px) {
-  .wishlist { position: relative; margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
+  .wishlist { position: relative; margin-top: 0; padding: 36px 0 0; align-items: flex-start; }
   .content > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }

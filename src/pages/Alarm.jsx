@@ -26,6 +26,5 @@ export default function Alarm() {
       </section>
       <div className={styles.imagePlaceholder} aria-label="알림 이미지 영역" />
     </div>
-    <p className={styles.sideCaption}>SUMMER ESCAPE<br /><em>Endless blue, endless memories.</em></p>
   </main>;
 }

@@ -33,7 +33,7 @@ export default function JournalDetail() {
     <JournalDay day="03" subtitle="아키하바라 · 도쿄역 · 야경" images={[tower, station]}><p>아키하바라는 낮보다 해질 무렵이 더 좋았다. 도쿄역 마루노우치 쪽에서 야경을 보다가 자연스럽게 하루가 끝났다. 걸어서 이동한 거리가 제법 됐지만 피곤하지 않았다.</p><small>마지막 날이라 조금 아쉬웠다. 다음에는 긴 일정으로 다시 찾고 싶다.</small></JournalDay>
     <section className={styles.favorites}><p>MY FAVORITE<br /><span>이번 여행에서 가장 좋았던 장소</span></p>{[["01", "MEIJI JINGU", "메이지 신궁"], ["02", "TOKYO STATION", "도쿄역"], ["03", "SHIBUYA CROSSING", "시부야 교차로"]].map(([no, name, ko]) => <div key={no}><b>{no}</b><strong>{name}</strong><span>{ko}</span></div>)}</section>
     <section className={styles.tip}><small>TRAVEL TIP</small><p>도쿄 여행은 하루에 너무 많은 장소를 넣기보다 지역별로 묶어서 이동하는 것이 편했어요. 시부야·하라주쿠·오모테산도는 한 번에, 아사쿠사·우에노·아키하바라는 다른 날 묶으면 이동 피로가 훨씬 적습니다.</p></section>
-    <footer className={styles.actions}><Link to="/">목록으로</Link><Link to="/plan?city=TOKYO">이 일정 담기</Link></footer>
+    <footer className={styles.actions}><Link to="/">목록으로</Link><Link to="/plan?city=TOKYO">일정 보기</Link></footer>
   </main>;
 }
 

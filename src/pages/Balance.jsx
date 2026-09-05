@@ -525,7 +525,7 @@ const Balance = () => {
       return (
         <MatchScreen
           recommendations={recommendations}
-          onItinerary={() => navigate("/itinerary")}
+          onItinerary={() => navigate("/plan/saved")}
           onHome={() => navigate("/")}
           onGame={() => {
             setShowMatches(false);

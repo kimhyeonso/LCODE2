@@ -5,7 +5,7 @@
 
 .review {
   min-height: 100vh;
-  padding: 36px 48px 90px;
+  padding: 36px 48px 0;
   background: $paper;
   color: $ink;
   font-family: $korean;
@@ -100,7 +100,7 @@
 .actions button:disabled { cursor: wait; opacity: .6; }
 
 @include tablet {
-  .review { padding: 32px; }
+  .review { padding: 32px; padding-bottom: 0; }
   .page { width: 100%; }
   .formRow { grid-template-columns: 150px 1fr; }
   .actions { margin-left: 150px; grid-template-columns: 1fr 1.4fr; }
@@ -108,7 +108,7 @@
 }
 
 @include mobile {
-  .review { padding: 26px 16px 40px; }
+  .review { padding: 26px 16px 72px; }
   .heading { margin-bottom: 18px; }
   .heading > div > a { display: inline-flex; margin-bottom: 16px; }
   .heading > a { display: none; }
@@ -135,7 +135,7 @@
 }
 
 @media (max-width: 600px) {
-  .review { padding: 22px 0 92px; }
+  .review { padding: 22px 0 72px; }
   .page { width: calc(100% - 32px); margin-inline: auto; }
   .page > :first-child { margin-bottom: 8px; }
   .heading { margin-top: 10px; }

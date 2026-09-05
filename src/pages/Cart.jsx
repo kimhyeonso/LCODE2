@@ -1048,7 +1048,7 @@ export default function Cart() {
       padding:
         52px
         0
-        130px;
+        0;
 
       display:
         grid;
@@ -2491,7 +2491,7 @@ export default function Cart() {
         padding:
           46px
           0
-          100px;
+          0;
       }
 
 
@@ -2534,6 +2534,24 @@ export default function Cart() {
       .lcode-cartOptionPanel {
         margin-left:
           126px;
+      }
+    }
+
+
+    /* =====================================================
+       FOOTER GAP (601px - 640px)
+    ===================================================== */
+
+    @media (
+      min-width:
+        601px
+    ) and (
+      max-width:
+        640px
+    ) {
+      .lcode-cartFrame {
+        padding-bottom:
+          72px;
       }
     }
 
@@ -2596,7 +2614,7 @@ export default function Cart() {
         padding:
           32px
           0
-          70px;
+          72px;
       }
 
 
