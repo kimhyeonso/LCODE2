@@ -8,9 +8,14 @@ $plan-muted: #8b8780;
 .plan {
   width: min(100%, 760px);
   margin: 0 auto;
-  padding-bottom: 92px;
+  padding-bottom: 72px;
   background: $plan-paper;
   color: $ink;
+}
+@media (min-width: 641px) {
+  .plan {
+    padding-bottom: 0;
+  }
 }
 .planStatus {
   min-height: 70vh;
@@ -844,7 +849,7 @@ $plan-muted: #8b8780;
   .plan {
     width: min(1100px, calc(100% - 64px));
     margin: auto 70px;
-    padding: 0 0 90px;
+    padding: 0;
     background-color: transparent;
   }
   .hero {
@@ -926,7 +931,7 @@ $plan-muted: #8b8780;
   .plan {
     width: min(1320px, calc(100% - 332px));
     margin: 0 0 70px max(276px, calc(50% - 550px));
-    padding-bottom: 90px;
+    padding-bottom: 0;
   }
 
   .hero {

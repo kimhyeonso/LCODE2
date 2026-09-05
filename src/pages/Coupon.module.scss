@@ -14,7 +14,7 @@
 // 쿠폰 아카이브 전체 배경과 여백입니다.
 .coupon {
   min-height: calc(100vh - 10rem);
-  padding: 1.875rem 0 7rem;
+  padding: 1.875rem 0 0;
   background: $paper;
   @include korean-font;
 }
@@ -316,7 +316,7 @@ h1 {
 }
 @include mobile {
   .coupon {
-    padding: 34px 0 150px;
+    padding: 34px 0 72px;
   }
 
   // 두 섹션의 자식들을 한 줄 흐름으로 풀어, 모바일에서 쿠폰과 버튼 순서를 바꿉니다.
@@ -491,7 +491,7 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .coupon { margin-top: 0; padding: 22px 0 92px; }
+  .coupon { margin-top: 0; padding: 22px 0 72px; }
   .content { width: calc(100% - 32px); margin: 0 auto; }
   .archive > a:first-child {
     display: inline-flex;
@@ -579,7 +579,7 @@ h1 {
 
 // PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
 @media (min-width: 901px) {
-  .coupon { position: relative; margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
+  .coupon { position: relative; margin-top: 0; padding: 36px 0 0; align-items: flex-start; }
   .archive > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }

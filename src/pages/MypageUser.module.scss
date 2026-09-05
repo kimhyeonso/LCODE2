@@ -87,14 +87,13 @@
 .menuList a, .menuList button { display: grid; grid-template-columns: .9rem 1fr auto; align-items: center; column-gap: .45rem; min-height: 1.75rem; border: 0; border-bottom: 1px solid #dedad3; background: transparent; color: #222; font: 400 .62rem $korean; text-align: left; text-decoration: none; }
 .menuList a::before, .menuList button::before { width: .7rem; height: .7rem; background: center / contain no-repeat; content: ""; }
 // Menu icons are sourced from public/Mypage-img and stay attached to their own menu row.
-.menuList a:nth-child(1)::before { background-image: url("/Mypage-img/bag.svg"); }
-.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/mylist.svg"); }
-.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/bag2.svg"); }
-.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/pen.svg"); }
-.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/heart.svg"); }
-.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/ticket.svg"); }
-.menuList a:nth-child(7)::before { background-image: url("/Mypage-img/bell.svg"); }
-.menuList a:nth-child(8)::before { background-image: url("/Mypage-img/set.svg"); }
+.menuList a:nth-child(1)::before { background-image: url("/Mypage-img/mylist.svg"); }
+.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/bag2.svg"); }
+.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/pen.svg"); }
+.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/heart.svg"); }
+.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/ticket.svg"); }
+.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/bell.svg"); }
+.menuList a:nth-child(7)::before { background-image: url("/Mypage-img/set.svg"); }
 .menuList button::before { background-image: url("/Mypage-img/out.svg"); }
 .menuList span { color: #aaa49c; }
 .menuList button { color: #aaa49c; }
@@ -211,12 +210,14 @@
 @media (min-width: 901px) {
   /* 여기가 위쪽 마진 ----------------------- */
   .mypageUser {
+    display: flex;
     height: 100vh;
     height: 100svh;
     min-height: 0;
     margin-top: 0;
     padding-right: 0;
     padding-left: 0;
+    align-items: center;
     overflow: hidden;
   }
 
@@ -225,14 +226,24 @@
     grid-template-rows: auto minmax(0, 1fr);
     width: min(1320px, calc(100% - 112px));
     min-height: 0;
-    height: 100%;
-    max-height: 100%;
+    height: 80%;
+    max-height: 80%;
+    align-self: auto;
     margin-right: 0;
     margin-left: max(56px, calc((100vw - 1540px) / 2));
     overflow: hidden;
   }
 
-  .dashboard { grid-row: 1 / span 2; align-self: center; height: 80%; }
+  .dashboard {
+    grid-row: 1 / span 2;
+    grid-template-rows: 34% 66%;
+    align-self: stretch;
+    width: 100%;
+    min-width: 0;
+    height: 100%;
+    padding-top: 0;
+    overflow: hidden;
+  }
   .heroVisual { height: 100%; }
   .heroVisual p { right: 18px; bottom: 18px; font-size: 46px; }
 
@@ -251,9 +262,11 @@
   .summary {
     grid-column: auto;
     grid-row: auto;
-    height: auto;
-    aspect-ratio: 1;
+    height: 100%;
+    aspect-ratio: auto;
   }
+
+  .summary article { aspect-ratio: auto; }
 
   // 프로필 정보만 아래로 이동합니다. 메뉴(.menuList)의 위치에는 영향을 주지 않습니다.
   .profile > .eyebrow,
@@ -266,7 +279,9 @@
     z-index: 1;
     grid-column: 2;
     grid-row: 2;
-    align-self: start;
+    align-self: stretch;
+    grid-auto-rows: 1fr;
+    min-height: 0;
     width: calc(100% - 112px);
     margin-top: clamp(16px, 4.2vh, 40px);
     margin-left: 56px;
@@ -306,7 +321,7 @@
 @include mobile {
   .mypageUser {
     min-height: 100vh;
-    padding: 34px 16px 28px;
+    padding: 34px 16px 72px;
   }
   .content {
     display: grid;
@@ -363,6 +378,6 @@
 }
 
 @media (max-width: 600px) {
-  .mypageUser { padding: 22px 0 92px; }
+  .mypageUser { padding: 22px 0 72px; }
   .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
 }

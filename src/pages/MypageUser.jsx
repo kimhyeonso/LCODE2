@@ -3,11 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useShop } from "../hooks/useShop";
 import { getFavoriteTrips, getPlans } from "../services/firestoreService";
-import MypageBackLink from "../components/MypageBackLink";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  ["여행 주문 내역", "/itinerary"], ["상품 주문 내역", "/buy"],
+  ["상품 주문 내역", "/buy"],
   ["내 일정", "/plan/saved"], ["나의 리뷰", "/mystories"],
   ["찜한 상품", "/saved"], ["찜한 일정", "/wishlist"], ["찜한 장소", "/favorite-places"],
   ["쿠폰함", "/coupon"], ["알림 설정", "/alarm"], ["고객센터", "/notice"],
@@ -30,20 +29,24 @@ const getDday = (startDate) => {
 };
 
 export default function MypageUser() {
-  const { user, logout } = useAuth();
-  const { saved: savedProducts } = useShop();
+  const auth = useAuth();
+  const shop = useShop();
+  const user = auth?.user;
+  const logout = auth?.logout;
+  const savedProducts = Array.isArray(shop?.saved) ? shop.saved : [];
   const navigate = useNavigate();
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
   const [slideIndex, setSlideIndex] = useState(0);
   const [favoriteTripCount, setFavoriteTripCount] = useState(0);
-  const displayName = user.displayName || user.email?.split("@")[0] || "여행자";
+  const displayName = user?.displayName || user?.email?.split("@")[0] || "여행자";
 
   useEffect(() => {
     if (!user) return undefined;
     let active = true;
     getPlans(user.uid).then((plans) => {
       if (!active) return;
-      const sortedPlans = [...plans].sort((a, b) => getCreatedTime(b) - getCreatedTime(a));
+      const sortedPlans = [...(Array.isArray(plans) ? plans : [])]
+        .sort((a, b) => getCreatedTime(b) - getCreatedTime(a));
       setPlanState({ userId: user.uid, plans: sortedPlans });
     }).catch(() => active && setPlanState({ userId: user.uid, plans: [] }));
     return () => { active = false; };
@@ -70,7 +73,7 @@ export default function MypageUser() {
     return () => window.clearInterval(timer);
   }, []);
 
-  const plans = planState.userId === user.uid ? planState.plans : [];
+  const plans = user && planState.userId === user.uid ? planState.plans : [];
   const latestPlan = plans[0];
   const planTitle = latestPlan?.title?.replace(" 일정", "") || latestPlan?.city || "NO UPCOMING TRIP";
   const planPeriod = latestPlan?.dateRange?.start && latestPlan?.dateRange?.end
@@ -82,6 +85,7 @@ export default function MypageUser() {
       ? `/plan?trip=${encodeURIComponent(latestPlan.tripId || "")}&saved=${encodeURIComponent(latestPlan.id)}`
       : "/search";
   const handleLogout = async () => {
+    if (!logout) return;
     await logout();
     navigate("/", { replace: true });
   };
@@ -92,7 +96,7 @@ export default function MypageUser() {
         <section className={styles.profile} aria-labelledby="user-name">
           <p className={styles.greeting}>안녕하세요,</p>
           <h1 id="user-name">{displayName}</h1>
-          <p className={styles.email}>{user.email}</p>
+          <p className={styles.email}>{user?.email || ""}</p>
           <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
         </section>
 

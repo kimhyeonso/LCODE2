@@ -133,7 +133,7 @@ export default function Wishlist() {
           </div>
         ) : (
           <div className={styles.emptyState}>
-            <p>아직 찜한 일정이 없어요!</p>
+            <strong>아직 찜한 일정이 없어요!</strong>
             <Link to="/search">패키지 여행 바로가기 <span aria-hidden="true">→</span></Link>
           </div>
         )}

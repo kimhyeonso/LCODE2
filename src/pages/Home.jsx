@@ -237,12 +237,12 @@ export default function Home() {
         <h1 className={`${styles.matchTitle} whereToNextTitle`}>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
-          <TextLink to="/itinerary">VIEW ALL</TextLink>
+          <TextLink to="/plan/saved">VIEW ALL</TextLink>
         </div>
         {planLoading ? (
           <div className={styles.upcomingLoading}>일정을 확인하고 있어요.</div>
         ) : upcomingPlan ? (
-          <Link to="/itinerary" className={styles.upcomingCard}>
+          <Link to="/plan/saved" className={styles.upcomingCard}>
             <div className={styles.upcomingMain}>
               <div>
                 <strong>{dDay === null ? "DATE TBD" : dDay > 0 ? `D−${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</strong>

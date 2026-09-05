@@ -128,7 +128,7 @@ export default function Header() {
         aria-label="주요 메뉴"
       >
         {desktopLinks.map(([link, label]) => {
-          const to = link === "PLAN" ? (user ? planDestination : "/plan") : link;
+          const to = link === "PLAN" ? (user ? "/plan/saved" : "/plan") : link;
           return (
           <NavLink
             key={to}

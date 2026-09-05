@@ -62,7 +62,6 @@ export default function MyPageMain() {
         <Link to="/mypage-user">mypage user</Link>
         <Link to="/profile/edit">profile edit</Link>
         <Link to="/login">login</Link>
-        <Link to="/itinerary">itinerary</Link>
         <Link to="/wishlist">wishlist</Link>
         <Link to="/mystories">mystories</Link>
         <Link to="/coupon">coupon</Link>

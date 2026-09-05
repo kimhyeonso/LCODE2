@@ -3,7 +3,7 @@
 .searchPage {
   width: calc(100% - 32px);
   margin: 0 auto;
-  padding: 22px 0 92px;
+  padding: 22px 0 72px;
   color: $ink;
 }
 .searchIntro form {
@@ -236,8 +236,8 @@
 @media (min-width: 641px) {
   .searchPage {
     width: min(1100px, calc(100% - 64px));
-    margin-block: 40px 80px;
-    padding: 44px 0 80px;
+    margin-block: 40px 0;
+    padding: 44px 0 0;
   }
   .results {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -253,7 +253,7 @@
 @media (min-width: 901px) {
   .searchPage {
     width: min(1320px, calc(100% - 332px));
-    margin: 40px 0 80px max(276px, calc(50% - 550px));
+    margin: 40px 0 0 max(276px, calc(50% - 550px));
   }
 
   .products h1,
@@ -264,8 +264,8 @@
 
 @media (min-width: 1024px) {
   .searchPage {
-    margin-block: 56px 120px;
-    padding: 36px 0 90px;
+    margin-block: 56px 0;
+    padding: 36px 0 0;
   }
 
   .searchIntro form {

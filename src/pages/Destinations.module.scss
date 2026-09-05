@@ -3,7 +3,7 @@
 .page {
   width: min(100%, 760px);
   margin: 0 auto;
-  padding: 22px 17px 92px;
+  padding: 22px 17px 72px;
   background: #fff;
   color: $ink;
 }
@@ -142,9 +142,15 @@
   color: #ddd;
 }
 
+@media (min-width: 641px) {
+  .page {
+    padding-bottom: 0;
+  }
+}
+
 @media (min-width: 800px) {
   .page {
-    padding: 36px 48px 90px;
+    padding: 36px 48px 0;
   }
   .page > h1 {
     font-size: 54px;

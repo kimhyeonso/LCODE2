@@ -14,7 +14,7 @@
 // 페이지 전체 배경과 상하 여백입니다.
 .mystories {
   min-height: calc(100vh - 10rem);
-  padding: 2.5rem 0 4rem;
+  padding: 2.5rem 0 0;
   background: $paper;
   @include korean-font;
 }
@@ -171,7 +171,11 @@ h1 {
   .storyCard:nth-child(n + 2) {
     display: none;
   }
-  .storyImage { width: 100%; height: 100%; background: url("/Mypage-img/2.png") center / cover no-repeat; }
+  .storyImage {
+    width: 100%;
+    height: 100%;
+    background: url("../assets/images/Thumbnail/Thumbnail-image/japan/fukuoka.png") center / cover no-repeat;
+  }
   .storyInfo { display: flex; flex-direction: column; padding: 1.45rem 1.55rem 1.2rem; }
   .storyInfo small { margin-top: 1.4rem; border-top: 1px solid #ddd9d1; padding-top: .85rem; }
   .storyInfo footer { margin-top: auto; }
@@ -257,7 +261,7 @@ h1 {
 }
 
 @include mobile {
-  .mystories { padding: 0.8rem 0 1.5rem; }
+  .mystories { padding: 0.8rem 0 72px; }
   // 확대된 rem 기준에서도 좌우 여백을 남겨 카드가 화면 밖으로 나가지 않게 합니다.
   .content {
     grid-template-columns: 1fr;
@@ -317,7 +321,7 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .mystories { padding-top: 22px; padding-bottom: 92px; }
+  .mystories { padding-top: 22px; padding-bottom: 72px; }
   .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
   .storyInfo footer a { align-self: stretch; height: 47px; margin-top: 0; }
   .stories > :first-child,
@@ -333,7 +337,7 @@ h1 {
 
 // PC: Itinerary 기준의 외곽 여백, 헤더 타이포와 사이드 레일입니다.
 @media (min-width: 901px) {
-  .mystories { position: relative; margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
+  .mystories { position: relative; margin-top: 0; padding: 36px 0 0; align-items: flex-start; }
   .stories > a { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
   .stories > h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
@@ -358,4 +362,112 @@ h1 {
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0 !important;
+}
+
+.storyInfo footer {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.storyInfo footer > a {
+  align-self: stretch;
+  height: 50px;
+  margin-top: 0;
+}
+
+.storyInfo footer > a:first-child {
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  height: 50px;
+  padding: 0 16px;
+  border: 1px solid #ddd9d2;
+  background: #fff;
+  color: #171714;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+
+.productCard footer > a:first-child {
+  border-color: #ddd9d2;
+  background: #fff;
+  color: #171714;
+}
+
+// 여행 리뷰 아래에 쇼핑 리뷰를 이어서 배치합니다.
+.shoppingTitle {
+  margin: 0 0 20px;
+  color: #aaa49c;
+  font: 400 0.625rem $display;
+  letter-spacing: 0.2em !important;
+}
+
+@media (min-width: 901px) {
+  .content {
+    display: block;
+  }
+
+  .storyCard {
+    max-width: 100%;
+  }
+
+  .shopping {
+    margin-top: 46px;
+    padding: 0;
+    border: 0;
+  }
+
+  .productGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
+    margin-top: 0;
+  }
+
+  .productCard,
+  .productCard:nth-child(n + 3) {
+    display: block;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .productImage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .productCard h2,
+  .productCard small,
+  .productCard p {
+    display: block;
+  }
+
+  .productCard footer {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 14px;
+  }
+
+  .productCard footer a {
+    height: 50px;
+    font-size: 14px;
+  }
+
+  .productCard::after {
+    content: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .shoppingTitle {
+    display: block;
+    margin-bottom: 17px;
+    font-size: 13px;
+  }
 }

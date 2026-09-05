@@ -13,7 +13,7 @@
   margin-top: -6rem;
   position: relative;
   min-height: calc(100vh - 10rem);
-  padding: 3.25rem 0 4rem;
+  padding: 3.25rem 0 0;
   background: $paper;
   @include korean-font;
 }
@@ -306,7 +306,7 @@
 
 // 모바일에서는 한 열로 전환하고, 공간을 차지하는 장식은 숨깁니다.
 @include mobile {
-  .notice { padding: 1.2rem 0 2rem; }
+  .notice { padding: 1.2rem 0 72px; }
   .content { grid-template-columns: 1fr; gap: 2rem; width: min(calc(100% - 2rem), 31rem); }
   .noticeList { padding-top: 0; }
   .noticeList::before, .stamp { display: none; }
@@ -342,7 +342,7 @@
 }
 
 @media (max-width: 600px) {
-  .notice { margin-top: 0; padding: 22px 0 92px; }
+  .notice { margin-top: 0; padding: 22px 0 72px; }
   .content { width: calc(100% - 32px); margin: 0 auto; transform: none; }
   .noticeList > :first-child { margin-bottom: 8px; }
   .eyebrow { margin-top: 0; font-size: 13px; letter-spacing: .16em !important; }
@@ -360,7 +360,7 @@
 
 // PC 공통 헤더는 Itinerary의 크기와 간격을 기준으로 맞춥니다.
 @media (min-width: 901px) {
-  .notice { margin-top: 0; padding: 36px 0 90px; align-items: flex-start; }
+  .notice { margin-top: 0; padding: 36px 0 0; align-items: flex-start; }
   .noticeList { padding-top: 0; }
   .noticeList > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }

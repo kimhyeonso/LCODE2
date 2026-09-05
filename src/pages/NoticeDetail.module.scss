@@ -4,10 +4,16 @@
 
 .page {
   min-height: calc(100vh - 10rem);
-  padding: clamp(4rem, 8vw, 7rem) 1rem;
+  padding: clamp(4rem, 8vw, 7rem) 1rem 72px;
   background: $paper;
   color: $ink;
   @include korean-font;
+}
+
+@media (min-width: 641px) {
+  .page {
+    padding-bottom: 0;
+  }
 }
 
 .article,

@@ -60,10 +60,14 @@ export default function Buy() {
           </nav>}
         </section>
         <aside className={styles.side}>
-          <div className={styles.stamp} aria-hidden="true" /><figure className={styles.heroFrame}><img src="/Buy-img/order-hero.png" alt="여행용품 컬렉션" /></figure><p className={styles.sideLabel}>CURATED SHOP · JOURNEY READY</p>
+          <div className={styles.stamp} aria-hidden="true" /><figure className={styles.heroFrame}><img src="/Buy-img/order-hero.png" alt="여행용품 컬렉션" /></figure>
           <section className={styles.snapshot}><h2>ORDER SNAPSHOT</h2><div className={styles.snapshotGrid}><div><span>총 주문</span><strong>{orders.length}</strong></div><div><span>배송 중</span><strong>0</strong></div><div><span>리뷰 가능</span><strong>{orders.length}</strong></div></div></section>
-          <section className={styles.contactBox}><div className={styles.contactIcon}><img src="/Mypage-img/set.svg" alt="" /></div><div><p>주문 관련 문의는<br />고객센터에서 확인할 수 있습니다.</p><Link to="/contact">고객센터 바로가기 <span>→</span></Link></div></section>
         </aside>
+        <section className={styles.contactBox} aria-label="주문 관련 문의">
+          <div className={styles.contactIcon}><img src="/Mypage-img/set.svg" alt="" /></div>
+          <div className={styles.contactCopy}><h2>주문 관련 문의가 있으신가요?</h2><p>평일 10:00–18:00&nbsp;&nbsp;·&nbsp;&nbsp;hello@lcode.travel</p></div>
+          <Link to="/contact">문의하기 <span aria-hidden="true">→</span></Link>
+        </section>
       </div>
     </main>
   );

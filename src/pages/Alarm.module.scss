@@ -9,7 +9,7 @@
 .alarm, .alarm * {  letter-spacing: -0.01em !important;  }
 
 // 알림 페이지 전체 배경과 여백입니다.
-.alarm { margin-top: -3rem; min-height: calc(100vh - 10rem); padding: 0.5rem 0 4rem; background: $paper; @include korean-font; }
+.alarm { margin-top: -3rem; min-height: calc(100vh - 10rem); padding: 0.5rem 0 0; background: $paper; @include korean-font; }
 // 알림 설정과 이미지 영역의 2단 레이아웃입니다.
 .content { display: grid; grid-template-columns: 21rem 17.7rem; gap: 3.8rem; align-items: start; width: min(calc(100% - 10.6rem), 42.5rem); margin: 0 auto; }
 .eyebrow { margin: 0; color: #aa9c9c; font: 400 .58rem $korean; letter-spacing: .24em; }
@@ -80,16 +80,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .settings {
     position: relative;
     padding-top: 39px;
-  }
-
-  .settings::before {
-    position: absolute;
-    top: -18px;
-    left: -64px;
-    width: 1px;
-    height: 790px;
-    background: #d8d3cb;
-    content: "";
+    transform: translateX(-64px);
   }
 
   .divider {
@@ -151,7 +142,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .imagePlaceholder {
     position: relative;
     box-sizing: border-box;
-    width: 80%;
+    width: 100%;
     height: 724px;
     margin-top: 100px;
     border: 1px solid #d8d3cb;
@@ -192,21 +183,6 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
     position: relative;
   }
 
-  .sideCaption {
-    position: absolute;
-    right: 145px;
-    bottom: 142px;
-    margin: 0;
-    color: #77736c;
-    font: 400 13px/1.4 $korean;
-    letter-spacing: .1em;
-    writing-mode: vertical-rl;
-  }
-
-  .sideCaption em {
-    font-family: $display;
-    font-style: italic;
-  }
 }
 
 @media (min-width: 901px) {
@@ -246,7 +222,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 
 @include mobile {
   // 모바일은 6개 설정과 안내문이 한 화면에 들어오도록 세로 밀도를 높입니다.
-  .alarm { padding: 22px 0 92px; }
+  .alarm { padding: 22px 0 72px; }
   .content { grid-template-columns: 1fr; width: min(calc(100% - 2rem), 31rem); }
 
   .eyebrow { font-size: 13px; letter-spacing: .16em; }
@@ -286,7 +262,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 }
 
 @media (max-width: 600px) {
-  .alarm { min-height: calc(100dvh - 129px); margin-top: 0; padding: 22px 0 92px; background: $paper; }
+  .alarm { min-height: calc(100dvh - 129px); margin-top: 0; padding: 22px 0 72px; background: $paper; }
   .content { display: block; width: calc(100% - 32px); margin-inline: auto; }
   .settings > :first-child { display: inline-flex; margin-bottom: 8px; }
   .eyebrow { margin: 0; font-size: 13px; letter-spacing: .16em !important; }
@@ -301,7 +277,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .setting button.enabled i { transform: translateX(17px); }
   .notice { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 67px; margin: 18px 0 0; padding: 12px 20px; background: #e6e3df; color: #666; font-size: 10px; line-height: 1.5; }
   .notice span { margin-right: 28px; font-size: 12px; }
-  .imagePlaceholder, .tape, .sideCaption { display: none; }
+  .imagePlaceholder, .tape { display: none; }
 
   .settings > :first-child,
   .eyebrow,
@@ -315,7 +291,7 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
 
 // PC 공통 헤더는 Itinerary의 크기와 간격을 기준으로 맞춥니다.
 @media (min-width: 901px) {
-  .alarm { margin-top: 0; padding-top: 36px; padding-bottom: 90px; align-items: flex-start; }
+  .alarm { margin-top: 0; padding-top: 36px; padding-bottom: 0; align-items: flex-start; }
   .settings { padding-top: 0; }
   .settings > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }

@@ -719,7 +719,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 10px;
-  margin: 0 auto 50px;
+  margin: 0 auto;
   padding: 0 16px;
 }
 
@@ -1824,8 +1824,8 @@
 
   .form {
     width: min(1100px, calc(100% - 64px));
-    margin: 0 auto 70px;
-    padding: 0 0 90px;
+    margin: 0 auto;
+    padding: 0;
   }
 
   .summary,
@@ -2002,7 +2002,7 @@
     grid-column: 1 / -1;
 
     width: min(100%);
-    margin: 0 auto 80px;
+    margin: 0 auto;
     padding: 0 32px;
 
     display: grid;

@@ -4,7 +4,7 @@
 @use "../styles/representative-title" as title;
 
 .pakingPage, .pakingPage * { box-sizing: border-box; }
-.pakingPage { min-height: 100vh; padding: 36px 0 90px; background: $paper; color: $ink; font-family: $korean; }
+.pakingPage { min-height: 100vh; padding: 36px 0 0; background: $paper; color: $ink; font-family: $korean; }
 .content { width: min(1310px, calc(100% - 112px)); margin: 0 auto; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 100px; align-items: end; }
 .heading { position: relative; }
@@ -56,7 +56,7 @@
 }
 
 @include mobile {
-  .pakingPage { padding: 26px 0 40px; }
+  .pakingPage { padding: 26px 0 72px; }
   .content { width: calc(100% - 32px); }
   .hero { display: block; }
   .heading::after, .postcard { display: none; }
@@ -140,7 +140,7 @@
 }
 
 @media (max-width: 600px) {
-  .pakingPage { padding-top: 22px; padding-bottom: 92px; }
+  .pakingPage { padding-top: 22px; padding-bottom: 72px; }
   .content { width: calc(100% - 32px); margin-inline: auto; }
   .heading > :first-child { margin-bottom: 8px; }
   .eyebrow { margin-top: 0; }

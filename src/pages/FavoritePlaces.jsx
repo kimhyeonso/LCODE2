@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/useAuth";
 import { deleteFavoritePlace, getFavoritePlaces } from "../services/firestoreService";
 import styles from "./FavoritePlaces.module.scss";
 import { resolveImageUrl as imageUrl, useImageFallback } from "../utils/imageUtils";
+import MypageBackLink from "../components/MypageBackLink";
 
 export default function FavoritePlaces() {
   const { user } = useAuth();
@@ -29,12 +30,14 @@ export default function FavoritePlaces() {
 
   return (
     <main className={styles.page}>
-      <p className={styles.eyebrow}>MY PLACES</p>
-      <h1>찜한 장소</h1>
-      <p className={styles.count}>{state.places.length} PLACES</p>
+      <MypageBackLink />
+      <p className={styles.eyebrow}>MY JOURNEY</p>
+      <h1>WISH LIST</h1>
+      <p className={styles.description}>다음 여행을 위해 저장해둔 장소</p>
+      <div className={styles.divider} />
       {state.loading && <p className={styles.empty}>불러오는 중…</p>}
       {state.error && <p className={styles.error} role="alert">{state.error}</p>}
-      {!state.loading && !state.places.length && <div className={styles.empty}><p>아직 찜한 장소가 없습니다.</p><Link to="/search">여행지 둘러보기 →</Link></div>}
+      {!state.loading && !state.places.length && <div className={styles.emptyState}><strong>아직 찜한 장소가 없어요!</strong><Link to="/search">여행지 둘러보기 <span aria-hidden="true">→</span></Link></div>}
       <section className={styles.grid}>
         {state.places.map((place) => (
           <article key={place.id}>
@@ -44,7 +47,6 @@ export default function FavoritePlaces() {
           </article>
         ))}
       </section>
-      <Link className={styles.add} to="/search">일정에 장소 추가하기 →</Link>
     </main>
   );
 }
