@@ -9,8 +9,6 @@ const asset = {
   bgIntro: "/event/event02/background01.png",
   bgResult: "/event/event02/background03.png",
 
-  gacha: "/event/event02/gacha01.png",
-
   capsuleClosed: "/event/event02/capsule01.png",
   capsuleOpen: "/event/event02/capsule02.png",
 
@@ -25,6 +23,18 @@ const asset = {
 
   travelKit: "/event/event02/gift02.png",
   mainPrize: "/event/event02/main.png",
+
+  machineEmpty: "/event/event02/gacha/machine-empty.png",
+  capsuleCluster: "/event/event02/gacha/capsules-cluster.png",
+
+  capsulePieces: [
+    "/event/event02/gacha/capsule-01.png",
+    "/event/event02/gacha/capsule-02.png",
+    "/event/event02/gacha/capsule-03.png",
+    "/event/event02/gacha/capsule-04.png",
+    "/event/event02/gacha/capsule-05.png",
+    "/event/event02/gacha/capsule-06.png",
+  ],
 };
 
 const prizes = [
@@ -90,6 +100,242 @@ const noticeItems = [
   "이벤트 및 경품 관련 문의는 L:CODE 고객센터를 통해 접수해 주세요.",
 ];
 
+const CAPSULE_LAYOUT = [
+  {
+    image: 0,
+    x: "12%",
+    y: "78%",
+    size: "34%",
+    rot: "-24deg",
+    motion: 1,
+    duration: "0.84s",
+    delay: "-0.12s",
+    z: 6,
+  },
+  {
+    image: 1,
+    x: "34%",
+    y: "81%",
+    size: "34%",
+    rot: "12deg",
+    motion: 2,
+    duration: "0.95s",
+    delay: "-0.47s",
+    z: 9,
+  },
+  {
+    image: 2,
+    x: "57%",
+    y: "79%",
+    size: "35%",
+    rot: "-8deg",
+    motion: 3,
+    duration: "0.8s",
+    delay: "-0.31s",
+    z: 8,
+  },
+  {
+    image: 3,
+    x: "79%",
+    y: "77%",
+    size: "32%",
+    rot: "26deg",
+    motion: 4,
+    duration: "0.98s",
+    delay: "-0.68s",
+    z: 5,
+  },
+  {
+    image: 4,
+    x: "20%",
+    y: "66%",
+    size: "32%",
+    rot: "34deg",
+    motion: 5,
+    duration: "0.86s",
+    delay: "-0.24s",
+    z: 6,
+  },
+  {
+    image: 5,
+    x: "44%",
+    y: "68%",
+    size: "35%",
+    rot: "-31deg",
+    motion: 6,
+    duration: "1.01s",
+    delay: "-0.83s",
+    z: 10,
+  },
+  {
+    image: 0,
+    x: "69%",
+    y: "66%",
+    size: "33%",
+    rot: "11deg",
+    motion: 1,
+    duration: "0.9s",
+    delay: "-0.55s",
+    z: 8,
+  },
+  {
+    image: 1,
+    x: "14%",
+    y: "57%",
+    size: "29%",
+    rot: "-17deg",
+    motion: 4,
+    duration: "0.81s",
+    delay: "-0.18s",
+    z: 4,
+  },
+  {
+    image: 2,
+    x: "36%",
+    y: "57%",
+    size: "32%",
+    rot: "22deg",
+    motion: 2,
+    duration: "0.97s",
+    delay: "-0.76s",
+    z: 7,
+  },
+  {
+    image: 3,
+    x: "59%",
+    y: "56%",
+    size: "31%",
+    rot: "-27deg",
+    motion: 5,
+    duration: "0.88s",
+    delay: "-0.41s",
+    z: 7,
+  },
+  {
+    image: 4,
+    x: "79%",
+    y: "58%",
+    size: "29%",
+    rot: "17deg",
+    motion: 3,
+    duration: "0.93s",
+    delay: "-0.92s",
+    z: 4,
+  },
+  {
+    image: 5,
+    x: "26%",
+    y: "48%",
+    size: "30%",
+    rot: "8deg",
+    motion: 6,
+    duration: "0.82s",
+    delay: "-0.37s",
+    z: 5,
+  },
+  {
+    image: 0,
+    x: "50%",
+    y: "48%",
+    size: "32%",
+    rot: "-14deg",
+    motion: 1,
+    duration: "0.95s",
+    delay: "-0.71s",
+    z: 6,
+  },
+  {
+    image: 1,
+    x: "73%",
+    y: "50%",
+    size: "29%",
+    rot: "28deg",
+    motion: 2,
+    duration: "0.8s",
+    delay: "-0.26s",
+    z: 5,
+  },
+  {
+    image: 2,
+    x: "19%",
+    y: "84%",
+    size: "29%",
+    rot: "39deg",
+    motion: 5,
+    duration: "0.99s",
+    delay: "-0.97s",
+    z: 3,
+  },
+  {
+    image: 3,
+    x: "42%",
+    y: "85%",
+    size: "30%",
+    rot: "-36deg",
+    motion: 3,
+    duration: "0.86s",
+    delay: "-0.61s",
+    z: 7,
+  },
+  {
+    image: 4,
+    x: "65%",
+    y: "84%",
+    size: "29%",
+    rot: "19deg",
+    motion: 6,
+    duration: "0.91s",
+    delay: "-0.44s",
+    z: 5,
+  },
+  {
+    image: 5,
+    x: "84%",
+    y: "82%",
+    size: "27%",
+    rot: "-7deg",
+    motion: 4,
+    duration: "0.83s",
+    delay: "-0.79s",
+    z: 3,
+  },
+
+  // 위쪽을 넓게 휘젓는 캡슐 3개
+  {
+    image: 0,
+    x: "24%",
+    y: "41%",
+    size: "31%",
+    rot: "-10deg",
+    motion: 7,
+    duration: "0.94s",
+    delay: "-0.51s",
+    z: 4,
+  },
+  {
+    image: 2,
+    x: "51%",
+    y: "36%",
+    size: "30%",
+    rot: "16deg",
+    motion: 8,
+    duration: "1.04s",
+    delay: "-0.87s",
+    z: 3,
+  },
+  {
+    image: 4,
+    x: "76%",
+    y: "42%",
+    size: "31%",
+    rot: "-20deg",
+    motion: 9,
+    duration: "0.88s",
+    delay: "-0.33s",
+    z: 4,
+  },
+];
+
 const previousStep = {
   capsule: "intro",
   open: "capsule",
@@ -97,6 +343,12 @@ const previousStep = {
 };
 
 const OPEN_AUTO_DELAY = 1000;
+const MACHINE_ROLL_DURATION = 3000;
+
+const wait = (milliseconds) =>
+  new Promise((resolve) => {
+    window.setTimeout(resolve, milliseconds);
+  });
 
 export default function GachaEvent({ onExit }) {
   const { user } = useAuth();
@@ -104,12 +356,13 @@ export default function GachaEvent({ onExit }) {
 
   const [step, setStep] = useState("intro");
   const [machineOpen, setMachineOpen] = useState(false);
-
   const [selectedPrize, setSelectedPrize] = useState(prizes[0]);
+
   const [drawing, setDrawing] = useState(false);
-  const [drawError, setDrawError] = useState("");
 
   const [noticeOpen, setNoticeOpen] = useState(false);
+  const [prizeOpen, setPrizeOpen] = useState(false);
+  const [eventAlert, setEventAlert] = useState(null);
 
   useEffect(() => {
     window.scrollTo({
@@ -126,17 +379,31 @@ export default function GachaEvent({ onExit }) {
       setStep("result");
     }, OPEN_AUTO_DELAY);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(timer);
+    };
   }, [step]);
 
   useEffect(() => {
-    if (!noticeOpen && !machineOpen) return undefined;
+    if (!noticeOpen && !prizeOpen && !machineOpen && !eventAlert) {
+      return undefined;
+    }
 
     const handleEscape = (event) => {
       if (event.key !== "Escape") return;
 
+      if (eventAlert) {
+        setEventAlert(null);
+        return;
+      }
+
       if (noticeOpen) {
         setNoticeOpen(false);
+        return;
+      }
+
+      if (prizeOpen) {
+        setPrizeOpen(false);
         return;
       }
 
@@ -150,11 +417,21 @@ export default function GachaEvent({ onExit }) {
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
-  }, [noticeOpen, machineOpen, drawing]);
+  }, [noticeOpen, prizeOpen, machineOpen, drawing, eventAlert]);
 
   const handleBack = () => {
+    if (eventAlert) {
+      setEventAlert(null);
+      return;
+    }
+
     if (noticeOpen) {
       setNoticeOpen(false);
+      return;
+    }
+
+    if (prizeOpen) {
+      setPrizeOpen(false);
       return;
     }
 
@@ -176,7 +453,6 @@ export default function GachaEvent({ onExit }) {
   const handleOpenMachine = () => {
     if (drawing) return;
 
-    setDrawError("");
     setMachineOpen(true);
   };
 
@@ -184,7 +460,6 @@ export default function GachaEvent({ onExit }) {
     if (drawing) return;
 
     setMachineOpen(false);
-    setDrawError("");
   };
 
   const handleDraw = async () => {
@@ -194,17 +469,18 @@ export default function GachaEvent({ onExit }) {
           from: "/event",
         },
       });
-
       return;
     }
 
     if (drawing) return;
 
     setDrawing(true);
-    setDrawError("");
 
     try {
-      const result = await drawEventCoupon(user.uid);
+      const [result] = await Promise.all([
+        drawEventCoupon(user.uid),
+        wait(MACHINE_ROLL_DURATION),
+      ]);
 
       const prize = prizes.find(
         (item) => item.prizeId === result.prizeId
@@ -215,10 +491,9 @@ export default function GachaEvent({ onExit }) {
       }
 
       if (result.alreadyClaimed) {
-        window.alert(
-          "이미 참여한 이벤트입니다. 발급된 쿠폰은 마이페이지 쿠폰함에서 확인해 주세요."
-        );
-
+        setEventAlert({
+          message: "이미 참여한 이벤트입니다.",
+        });
         return;
       }
 
@@ -231,24 +506,33 @@ export default function GachaEvent({ onExit }) {
           ? "쿠폰 저장 권한이 없습니다. Firestore 규칙을 확인해 주세요."
           : "쿠폰을 저장하지 못했습니다. 잠시 후 다시 시도해 주세요.";
 
-      setDrawError(message);
+      setEventAlert({ message });
     } finally {
       setDrawing(false);
     }
   };
 
   return (
-    <>
+    <div className={styles.gachaExperience}>
       {step === "intro" && (
-        <EventHeader
-          label="COUPON EVENT"
-          onBack={handleBack}
-        />
+        <>
+          <div className={styles.desktopEventHeader}>
+            <EventHeader
+              label="COUPON EVENT"
+              onBack={handleBack}
+            />
+          </div>
+
+          <button
+            className={styles.mobileBackButton}
+            type="button"
+            onClick={handleBack}
+          >
+            ← BACK
+          </button>
+        </>
       )}
 
-      {/* =====================================================
-          INTRO
-      ===================================================== */}
       {step === "intro" && (
         <section className={`${styles.scene} ${styles.intro}`}>
           <Background src={asset.bgIntro} />
@@ -288,13 +572,16 @@ export default function GachaEvent({ onExit }) {
               </p>
             </div>
 
-            <PrizePreview />
+            <div className={styles.desktopPrizePreview}>
+              <PrizePreview />
+            </div>
+
+            <MobileInfoDock
+              onPrizeOpen={() => setPrizeOpen(true)}
+              onNoticeOpen={() => setNoticeOpen(true)}
+            />
           </div>
 
-          {/* ===============================================
-              가차머신 FLOAT OVERLAY
-              박스형 팝업 없음
-          =============================================== */}
           <div
             className={`${styles.machineOverlay} ${
               machineOpen
@@ -335,71 +622,120 @@ export default function GachaEvent({ onExit }) {
                   aria-hidden="true"
                 />
 
-                <img
-                  src={asset.gacha}
-                  alt="L:CODE 가차 머신"
-                />
+                <div className={styles.machineArtwork}>
+                  <div
+                    className={styles.capsuleChamber}
+                    aria-hidden="true"
+                  >
+                    <img
+                      className={styles.clusterImage}
+                      src={asset.capsuleCluster}
+                      alt=""
+                    />
 
-                <div
-                  className={styles.spinBalls}
-                  aria-hidden="true"
-                >
-                  {Array.from({ length: 12 }).map(
-                    (_, index) => (
-                      <i key={index} />
-                    )
-                  )}
+                    <div className={styles.capsulePieces}>
+                      {CAPSULE_LAYOUT.map((capsule, index) => (
+                        <img
+                          key={index}
+                          className={`${styles.capsulePiece} ${
+                            styles[`capsuleMotion${capsule.motion}`]
+                          }`}
+                          src={asset.capsulePieces[capsule.image]}
+                          alt=""
+                          style={{
+                            "--x": capsule.x,
+                            "--y": capsule.y,
+                            "--size": capsule.size,
+                            "--rot": capsule.rot,
+                            "--duration": capsule.duration,
+                            "--delay": capsule.delay,
+                            "--z": capsule.z,
+                          }}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <img
+                    className={styles.machineShell}
+                    src={asset.machineEmpty}
+                    alt="L:CODE 가차 머신"
+                  />
+
+                  <button
+                    className={styles.machineDrawAction}
+                    type="button"
+                    onClick={handleDraw}
+                    disabled={drawing}
+                    aria-label="가차 추첨 시작"
+                  >
+                    <span className={styles.drawSpinGroup}>
+                      <img
+                        className={styles.drawMedallion}
+                        src={asset.coin}
+                        alt=""
+                      />
+
+                      <span className={styles.machineDrawWord}>
+                        DRAW
+                      </span>
+                    </span>
+                  </button>
                 </div>
               </div>
 
               <button
-                className={styles.gachaButton}
+                className={styles.couponMoveButton}
                 type="button"
-                onClick={handleDraw}
+                onClick={() => navigate("/coupon")}
                 disabled={drawing}
+                aria-label="쿠폰함 이동하기"
               >
-                <img src={asset.coin} alt="" />
+                <img
+                  className={styles.couponRibbonImage}
+                  src={asset.ribbon}
+                  alt=""
+                />
 
-                <span>
-                  {drawing ? (
-                    <>
-                      추첨 중
-                      <br />
-                      잠시만요
-                    </>
-                  ) : (
-                    <>
-                      가차
-                      <br />
-                      돌리기
-                    </>
-                  )}
-                </span>
+                <svg
+                  className={styles.couponRibbonSvg}
+                  viewBox="0 0 2048 630"
+                  preserveAspectRatio="xMidYMid meet"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <path
+                      id="couponRibbonCurve"
+                      d="M 420 292 Q 1024 132 1628 292"
+                    />
+                  </defs>
+
+                  <text className={styles.couponRibbonText}>
+                    <textPath
+                      href="#couponRibbonCurve"
+                      startOffset="50%"
+                      textAnchor="middle"
+                    >
+                      쿠폰함 이동하기
+                    </textPath>
+                  </text>
+                </svg>
               </button>
 
-              {drawError && (
-                <p
-                  className={styles.drawError}
-                  role="alert"
-                >
-                  {drawError}
-                </p>
-              )}
             </div>
           </div>
         </section>
       )}
 
-      {/* =====================================================
-          CAPSULE
-      ===================================================== */}
       {step === "capsule" && (
         <button
           className={`${styles.scene} ${styles.capsuleScene}`}
           type="button"
           onClick={() => setStep("open")}
         >
-          <h2>두근두근 결과는?</h2>
+          <h2>
+            두근두근 결과는?
+          </h2>
 
           <img
             className={styles.closedCapsule}
@@ -423,13 +759,8 @@ export default function GachaEvent({ onExit }) {
         </button>
       )}
 
-      {/* =====================================================
-          OPEN
-      ===================================================== */}
       {step === "open" && (
-        <section
-          className={`${styles.scene} ${styles.openScene}`}
-        >
+        <section className={`${styles.scene} ${styles.openScene}`}>
           <Background src={asset.bgResult} />
 
           <img
@@ -440,13 +771,8 @@ export default function GachaEvent({ onExit }) {
         </section>
       )}
 
-      {/* =====================================================
-          RESULT
-      ===================================================== */}
       {step === "result" && (
-        <section
-          className={`${styles.scene} ${styles.result}`}
-        >
+        <section className={`${styles.scene} ${styles.result}`}>
           <Background src={asset.bgResult} />
 
           <div className={styles.ribbonWrap}>
@@ -492,17 +818,14 @@ export default function GachaEvent({ onExit }) {
           </div>
 
           <p className={styles.resultNote}>
-            쿠폰은 마이페이지 &gt; 쿠폰함에서
-            확인할 수 있어요.
+            쿠폰은 마이페이지 &gt; 쿠폰함에서 확인할 수 있어요.
           </p>
 
           <div className={styles.resultActions}>
             <button
               className={styles.primaryButton}
               type="button"
-              onClick={() =>
-                navigate("/coupon")
-              }
+              onClick={() => navigate("/coupon")}
             >
               쿠폰함 보러가기 →
             </button>
@@ -518,26 +841,21 @@ export default function GachaEvent({ onExit }) {
         </section>
       )}
 
-      {/* =====================================================
-          NOTICE
-      ===================================================== */}
       {step === "intro" && (
         <>
           <button
             className={styles.noticeButton}
             type="button"
-            onClick={() =>
-              setNoticeOpen(true)
-            }
+            onClick={() => setNoticeOpen(true)}
           >
-            <span>
-              NOTICE
-            </span>
-
-            <b>
-              유의사항
-            </b>
+            <span>NOTICE</span>
+            <b>유의사항</b>
           </button>
+
+          <PrizeSheet
+            open={prizeOpen}
+            onClose={() => setPrizeOpen(false)}
+          />
 
           <div
             className={`${styles.noticeOverlay} ${
@@ -547,10 +865,7 @@ export default function GachaEvent({ onExit }) {
             }`}
             aria-hidden={!noticeOpen}
             onMouseDown={(event) => {
-              if (
-                event.target ===
-                event.currentTarget
-              ) {
+              if (event.target === event.currentTarget) {
                 setNoticeOpen(false);
               }
             }}
@@ -563,20 +878,13 @@ export default function GachaEvent({ onExit }) {
             >
               <header>
                 <div>
-                  <small>
-                    EVENT NOTICE
-                  </small>
-
-                  <h2>
-                    이벤트 유의사항
-                  </h2>
+                  <small>EVENT NOTICE</small>
+                  <h2>이벤트 유의사항</h2>
                 </div>
 
                 <button
                   type="button"
-                  onClick={() =>
-                    setNoticeOpen(false)
-                  }
+                  onClick={() => setNoticeOpen(false)}
                   aria-label="유의사항 닫기"
                 >
                   ×
@@ -594,9 +902,7 @@ export default function GachaEvent({ onExit }) {
               <button
                 className={styles.noticeConfirm}
                 type="button"
-                onClick={() =>
-                  setNoticeOpen(false)
-                }
+                onClick={() => setNoticeOpen(false)}
               >
                 확인
               </button>
@@ -604,7 +910,115 @@ export default function GachaEvent({ onExit }) {
           </div>
         </>
       )}
-    </>
+
+      <EventAlert
+        open={Boolean(eventAlert)}
+        message={eventAlert?.message ?? ""}
+        onClose={() => setEventAlert(null)}
+      />
+    </div>
+  );
+}
+
+function MobileInfoDock({
+  onPrizeOpen,
+  onNoticeOpen,
+}) {
+  return (
+    <div className={styles.mobileInfoDock}>
+      <button
+        className={`${styles.mobileInfoButton} ${styles.mobilePrizeButton}`}
+        type="button"
+        onClick={onPrizeOpen}
+      >
+        <span>PRIZE</span>
+        <strong>경품 미리보기</strong>
+        <small>당첨 경품 전체 보기</small>
+      </button>
+
+      <button
+        className={`${styles.mobileInfoButton} ${styles.mobileNoticeButton}`}
+        type="button"
+        onClick={onNoticeOpen}
+      >
+        <span>NOTICE</span>
+        <strong>유의사항</strong>
+        <small>참여 전 확인</small>
+      </button>
+    </div>
+  );
+}
+
+function PrizeSheet({
+  open,
+  onClose,
+}) {
+  return (
+    <div
+      className={`${styles.prizeOverlay} ${
+        open
+          ? styles.prizeOverlayOpen
+          : ""
+      }`}
+      aria-hidden={!open}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <aside
+        className={styles.prizePanel}
+        role="dialog"
+        aria-modal="true"
+        aria-label="경품 미리보기"
+      >
+        <header className={styles.prizePanelHeader}>
+          <div>
+            <small>EVENT PRIZE</small>
+            <h2>경품 미리보기</h2>
+          </div>
+
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="경품 미리보기 닫기"
+          >
+            ×
+          </button>
+        </header>
+
+        <div className={styles.mobilePrizeRows}>
+          {prizes.map((prize) => (
+            <article
+              className={styles.mobilePrizeRow}
+              key={prize.prizeId}
+            >
+              <span className={styles.mobilePrizeRank}>
+                {prize.rank}
+              </span>
+
+              <div className={styles.mobilePrizeImage}>
+                <img
+                  src={prize.image}
+                  alt={prize.previewTitle}
+                />
+              </div>
+
+              <div className={styles.mobilePrizeCopy}>
+                <strong>
+                  {prize.previewTitle}
+                </strong>
+
+                <small>
+                  {prize.previewSub}
+                </small>
+              </div>
+            </article>
+          ))}
+        </div>
+      </aside>
+    </div>
   );
 }
 
@@ -656,6 +1070,62 @@ function PrizePreview() {
         ))}
       </div>
     </section>
+  );
+}
+
+function EventAlert({
+  open,
+  message,
+  onClose,
+}) {
+  return (
+    <div
+      className={`${styles.eventAlertOverlay} ${
+        open ? styles.eventAlertOverlayOpen : ""
+      }`}
+      aria-hidden={!open}
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) {
+          onClose();
+        }
+      }}
+    >
+      <div
+        className={styles.eventAlertCard}
+        role="alertdialog"
+        aria-modal="true"
+        aria-label="이벤트 안내"
+      >
+        <span
+          className={styles.eventAlertSheen}
+          aria-hidden="true"
+        />
+
+        <div className={styles.eventAlertContent}>
+          <span
+            className={styles.eventAlertRule}
+            aria-hidden="true"
+          />
+
+          <p className={styles.eventAlertMessage}>
+            {message}
+          </p>
+
+          <span
+            className={`${styles.eventAlertRule} ${styles.eventAlertRuleBottom}`}
+            aria-hidden="true"
+          />
+
+          <button
+            className={styles.eventAlertConfirm}
+            type="button"
+            onClick={onClose}
+          >
+            확인
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
 
