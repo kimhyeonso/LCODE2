@@ -6,14 +6,14 @@
 .contactPage { min-height: 100vh; padding: 36px 0 90px; background: $paper; color: $ink; font-family: "Noto Sans KR", sans-serif; }
 .content { display: grid; grid-template-columns: minmax(0, 820px) minmax(300px, 370px); grid-template-rows: auto auto; gap: 54px clamp(68px, 6.5vw, 130px); width: min(1320px, calc(100% - 112px)); margin: 0 auto; }
 .mainContent { min-width: 0; }
-.eyebrow { margin: 0; color: #7f6547; font: 400 13px "DM Serif Display", serif; letter-spacing: .14em; }
+.eyebrow { margin: 0; color: #aaa; font: 400 13px "DM Serif Display", serif; letter-spacing: .14em; }
 .intro h1 { margin: 24px 0 0; color: #111; font-family: "Noto Sans KR", sans-serif; font-size: clamp(54px, 4.25vw, 82px); font-weight: 400; line-height: 1.14; letter-spacing: -.055em; }
 .description { margin: 22px 0 0; color: #4f4b46; font-family: "Noto Sans KR", sans-serif; font-size: 17px; line-height: 1.7; }
 
 .faq { margin-top: 42px; }
-.faq h2 { margin: 0 0 8px; color: #8c7458; font: 400 14px "DM Serif Display", serif; letter-spacing: .12em; }
-.faqList { border-top: 1px solid #d7d1c8; }
-.faqList details { border-bottom: 1px solid #d7d1c8; }
+.faq h2 { margin: 0 0 8px; padding-bottom: 12px; color: #aaa; font: 400 13px "DM Serif Display", serif; letter-spacing: .16em; }
+.faqList { border-top: 1px solid #d8d8d8; }
+.faqList details { border-bottom: 1px solid #d8d8d8; }
 .faqList summary { display: flex; min-height: 54px; align-items: center; justify-content: space-between; padding: 0 14px 0 28px; cursor: pointer; font-family: "Noto Sans KR", sans-serif; font-size: 17px; list-style: none; }
 .faqList summary::-webkit-details-marker { display: none; }
 .faqList summary i { position: relative; width: 18px; height: 18px; flex: none; }
@@ -34,7 +34,6 @@
 .photoFrame { position: relative; height: 480px; margin: 0; padding: 14px; border: 1px solid #cbc3b8; clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%); }
 .photoFrame::after { position: absolute; top: 7px; right: 7px; bottom: 7px; left: 7px; border: 1px solid #ddd6cd; clip-path: inherit; content: ""; pointer-events: none; }
 .photoFrame img { width: 100%; height: 100%; object-fit: cover; object-position: 56% center; }
-.visual > p { margin: 28px 0 0; color: #8a7156; font: 400 14px/1.55 "DM Serif Display", serif; letter-spacing: .12em; }
 
 .helpBox { grid-column: 1 / -1; display: grid; grid-template-columns: 112px minmax(280px, 1fr) 290px; min-height: 142px; align-items: center; border: 1px solid #d1c9bf; padding: 20px 30px; clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px)); }
 .helpIcon { display: grid; width: 74px; height: 74px; border-radius: 50%; background: #eee5d9; place-items: center; }
@@ -46,6 +45,10 @@
 
 @media (min-width: 901px) {
   .contactPage { width: calc(100% - 220px); margin-left: 220px; }
+}
+
+@media (min-width: 641px) {
+  .faq h2 { font: 400 13px/1 $sans; letter-spacing: .16em; }
 }
 
 @include tablet {
@@ -68,7 +71,6 @@
   .faqList details > p { padding: 0 30px 16px 8px; font-size: 12px; }
   .visual { order: 2; }
   .photoFrame { height: 360px; }
-  .visual > p { margin-top: 16px; font-size: 12px; }
   .helpBox { order: 3; grid-template-columns: 62px 1fr; gap: 14px; padding: 22px 18px; }
   .helpIcon { width: 56px; height: 56px; font-size: 24px; }
   .helpCopy { padding-left: 14px; }

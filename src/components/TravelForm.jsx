@@ -62,6 +62,13 @@ const cityDisplayNames = {
   "후쿠오카": "FUKUOKA",
 };
 
+const countryExchangeInfo = {
+  japan: { code: "JPY", symbol: "¥", defaultAmount: 35000 },
+  "일본": { code: "JPY", symbol: "¥", defaultAmount: 35000 },
+  china: { code: "CNY", symbol: "CN¥", defaultAmount: 50000 },
+  "중국": { code: "CNY", symbol: "CN¥", defaultAmount: 50000 },
+};
+
 const getTransportIcon = (transport = "") => {
   if (/도보/.test(transport)) return walkIcon;
   if (/지하철|전철|열차|신칸센/.test(transport)) return subwayIcon;
@@ -167,6 +174,32 @@ const sortStopsByTime = (items) => [...items].sort((left, right) => {
   return leftTime.localeCompare(rightTime);
 });
 
+const resequenceStopTimes = (items) => {
+  const timeSlots = items
+    .map((item) => /^\d{2}:\d{2}$/.test(item.time || "") ? item.time : null)
+    .filter(Boolean)
+    .sort();
+  let nextMinutes = timeSlots.length
+    ? (() => {
+      const [hour, minute] = timeSlots.at(-1).split(":").map(Number);
+      return hour * 60 + minute + 90;
+    })()
+    : 9 * 60;
+
+  while (timeSlots.length < items.length) {
+    const minutes = Math.min(nextMinutes, 23 * 60 + 30);
+    timeSlots.push(`${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`);
+    nextMinutes += 90;
+  }
+
+  return items.map((item, index) => ({ ...item, time: timeSlots[index] }));
+};
+
+const getDefaultTravelTime = (placeName = "", offset = 0) => {
+  const seed = [...String(placeName)].reduce((total, character) => total + character.charCodeAt(0), offset * 7);
+  return `자동차 · 약 ${10 + (seed % 16)}분`;
+};
+
 const createStops = (trip) =>
   trip.days.map((day) =>
     day.items.reduce((stops, item, index, items) => {
@@ -242,6 +275,8 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const [memoTarget, setMemoTarget] = useState(null);
   const [memoDraft, setMemoDraft] = useState("");
   const [draggedStopId, setDraggedStopId] = useState(null);
+  const [dragTargetId, setDragTargetId] = useState(null);
+  const draggedStopIdRef = useRef(null);
   const [isFlightOpen, setIsFlightOpen] = useState(false);
   const [flightError, setFlightError] = useState("");
   const airportStops = selectedTrip.days.flatMap((day) => day.items).filter((item) => item.type === "place" && item.category === "airport");
@@ -278,11 +313,23 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [wishlistCategory, setWishlistCategory] = useState("all");
   const [wishlistSelections, setWishlistSelections] = useState([]);
+  const summaryColumnRef = useRef(null);
+  const summaryRef = useRef(null);
+  const addActionsRef = useRef(null);
+  const [summaryDock, setSummaryDock] = useState({ mode: "flow", left: 0, top: 0, width: 0 });
   const dirtyTrackingStarted = useRef(false);
   const stops = stopsByDay[activeDay] || [];
   const estimatedBudget = 135000 + stopsByDay.flat().length * 32000;
-  const exchangeAmount = selectedTrip.country === "일본" ? 35000 : 50000;
-  const exchangeCurrency = selectedTrip.country === "일본" ? "JPY" : "LOCAL";
+  const expenseSettingsLink = `/plan/expense?trip=${encodeURIComponent(selectedTrip.tripId || selectedTrip.id || "")}`;
+  const isDomesticTrip = ["korea", "한국", "대한민국", "south korea"].includes(
+    String(selectedTrip.country || "").trim().toLowerCase(),
+  );
+  const exchangeInfo = countryExchangeInfo[String(selectedTrip.country || "").trim().toLowerCase()] || {
+    code: "USD",
+    symbol: "$",
+    defaultAmount: 500,
+  };
+  const exchangeRateLink = `/destination?currency=${encodeURIComponent(exchangeInfo.code)}`;
   const recommendationPlaces = selectedTrip.days
     .flatMap((day) => day.items)
     .filter((item) => item.type === "place" && item.image && !stops.some((stop) => stop.name === item.place))
@@ -410,6 +457,68 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     onDirtyChange?.(true);
   }, [flightInfo, onDirtyChange, stopsByDay, travelTitle, tripDateRange]);
 
+  useEffect(() => {
+    let frameId = 0;
+
+    const updateSummaryDock = () => {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        const column = summaryColumnRef.current;
+        const summary = summaryRef.current;
+        const stop = addActionsRef.current;
+
+        if (!column || !summary || !stop || window.innerWidth < 1180) {
+          setSummaryDock((current) => current.mode === "flow"
+            ? current
+            : { mode: "flow", left: 0, top: 0, width: 0 });
+          return;
+        }
+
+        const fixedTop = 20;
+        const columnRect = column.getBoundingClientRect();
+        const stopRect = stop.getBoundingClientRect();
+        const summaryHeight = summary.offsetHeight;
+
+        let next = { mode: "flow", left: 0, top: 0, width: 0 };
+        if (columnRect.top <= fixedTop) {
+          if (stopRect.bottom <= fixedTop + summaryHeight) {
+            next = {
+              mode: "stopped",
+              left: 0,
+              top: stopRect.bottom - columnRect.top - summaryHeight,
+              width: columnRect.width,
+            };
+          } else {
+            next = {
+              mode: "fixed",
+              left: columnRect.left,
+              top: fixedTop,
+              width: columnRect.width,
+            };
+          }
+        }
+
+        setSummaryDock((current) => (
+          current.mode === next.mode
+          && current.left === next.left
+          && current.top === next.top
+          && current.width === next.width
+            ? current
+            : next
+        ));
+      });
+    };
+
+    updateSummaryDock();
+    window.addEventListener("scroll", updateSummaryDock, { passive: true });
+    window.addEventListener("resize", updateSummaryDock);
+    return () => {
+      cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", updateSummaryDock);
+      window.removeEventListener("resize", updateSummaryDock);
+    };
+  }, [activeDay, stops.length]);
+
   const openTitleEdit = () => {
     setDraftTitle(travelTitle);
     setIsEditOpen(true);
@@ -459,7 +568,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       const nextStops = [...dayStops];
       const [movedStop] = nextStops.splice(sourceIndex, 1);
       nextStops.splice(targetIndex, 0, movedStop);
-      return nextStops;
+      return resequenceStopTimes(nextStops);
     }));
   };
 
@@ -530,21 +639,21 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const addSelectedPlace = () => {
     if (!selectedCandidate || !selectedPlaceTime) return;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? sortStopsByTime([...dayStops, {
+      ? resequenceStopTimes(sortStopsByTime([...dayStops, {
         id: `added-${Date.now()}`,
         time: selectedPlaceTime,
         icon: categoryIcons[selectedCandidate.category] || pinIcon,
         name: selectedCandidate.place,
         type: categoryNames[selectedCandidate.category] || selectedCandidate.category,
         note: selectedCandidate.recommendation || "",
-        travel: "",
+        travel: getDefaultTravelTime(selectedCandidate.place),
         image: getImageUrl(selectedCandidate.image),
         imagePath: selectedCandidate.image || "",
         category: selectedCandidate.category,
         recommendation: selectedCandidate.recommendation || "",
         latitude: selectedCandidate.latitude,
         longitude: selectedCandidate.longitude,
-      }])
+      }]))
       : dayStops));
     setIsPlaceAddOpen(false);
     setSelectedCandidate(null);
@@ -554,21 +663,21 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
 
   const addRecommendedPlace = (place) => {
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? sortStopsByTime([...dayStops, {
+      ? resequenceStopTimes(sortStopsByTime([...dayStops, {
         id: `recommended-${Date.now()}`,
         time: "시간 미정",
         icon: categoryIcons[place.category] || pinIcon,
         name: place.place,
         type: categoryNames[place.category] || place.category,
         note: place.recommendation || "",
-        travel: "",
+        travel: getDefaultTravelTime(place.place),
         image: getImageUrl(place.image),
         imagePath: place.image || "",
         category: place.category,
         recommendation: place.recommendation || "",
         latitude: place.latitude,
         longitude: place.longitude,
-      }])
+      }]))
       : dayStops));
   };
 
@@ -584,25 +693,47 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       : [...current, place.place]);
   };
 
+  const openWishlist = async () => {
+    if (!user) {
+      navigate("/login", {
+        state: { from: `${window.location.pathname}${window.location.search}` },
+      });
+      return;
+    }
+
+    setWishlistCategory("all");
+    setWishlistSelections([]);
+    setIsWishlistOpen(true);
+    setFavoriteState((current) => ({ ...current, loading: true, error: "" }));
+
+    try {
+      const places = await getFavoritePlaces(user.uid);
+      setSavedPlaces(places);
+      setFavoriteState({ loading: false, saving: false, error: "" });
+    } catch {
+      setFavoriteState({ loading: false, saving: false, error: "찜한 장소를 불러오지 못했습니다." });
+    }
+  };
+
   const addWishlistPlaces = () => {
     const selectedItems = wishlistPlaces.filter((place) => wishlistSelections.includes(place.place));
     if (!selectedItems.length) return;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
+      ? resequenceStopTimes(sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
         id: `wishlist-${Date.now()}-${placeIndex}`,
         time: "시간 미정",
         icon: categoryIcons[place.category] || pinIcon,
         name: place.place,
         type: categoryNames[place.category] || place.category,
         note: place.recommendation || "",
-        travel: "",
+        travel: getDefaultTravelTime(place.place, placeIndex),
         image: getImageUrl(place.image),
         imagePath: place.image || "",
         category: place.category,
         recommendation: place.recommendation || "",
         latitude: place.latitude,
         longitude: place.longitude,
-      }))])
+      }))]))
       : dayStops));
     setWishlistSelections([]);
     setIsWishlistOpen(false);
@@ -617,7 +748,16 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         <div className={styles.heroCopy}><p>{nights} NIGHTS · FOOD · CAFÉS</p><h1>{heroCityName}</h1></div>
       </section>
 
-      <section className={styles.summary}>
+      <div className={`${styles.summaryColumn} ${!isDomesticTrip ? styles.summaryColumnOverseas : ""}`} ref={summaryColumnRef}>
+      <section
+        ref={summaryRef}
+        className={`${styles.summary} ${!isDomesticTrip ? styles.summaryOverseas : ""} ${summaryDock.mode === "fixed" ? styles.summaryFixed : ""} ${summaryDock.mode === "stopped" ? styles.summaryStopped : ""}`}
+        style={summaryDock.mode === "flow" ? undefined : {
+          left: summaryDock.mode === "fixed" ? `${summaryDock.left}px` : undefined,
+          top: `${summaryDock.top}px`,
+          width: `${summaryDock.width}px`,
+        }}
+      >
         <div className={styles.summaryTitle}><h2>{travelTitle}</h2><button type="button" onClick={openTitleEdit}>EDIT</button></div>
         <section className={styles.tripExpense} aria-labelledby="trip-expense-title">
           <p className={styles.sectionEyebrow}>TRAVEL EXPENSE</p>
@@ -625,17 +765,17 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <span>패키지 예상 경비</span>
             <strong id="trip-expense-title">약 ₩{estimatedBudget.toLocaleString("ko-KR")}</strong>
           </div>
-          <div className={styles.expenseMeta}><span>항공권 · 숙박비 제외<br />100 JPY ≈ ₩920</span><button type="button">경비 설정하기 →</button></div>
+          <div className={styles.expenseMeta}><span>항공권 · 숙박비 제외<br />100 JPY ≈ ₩920</span><button type="button" onClick={() => navigate(expenseSettingsLink)}>경비 설정하기 →</button></div>
         </section>
-        <section className={styles.exchange} aria-labelledby="exchange-title">
-          <div className={styles.exchangeHeading}><p className={styles.sectionEyebrow}>EXCHANGE RATE</p><span>{selectedTrip.country.toUpperCase()} / {exchangeCurrency}</span></div>
+        {!isDomesticTrip && <section className={styles.exchange} aria-labelledby="exchange-title">
+          <div className={styles.exchangeHeading}><p className={styles.sectionEyebrow}>EXCHANGE RATE</p><span>{selectedTrip.country.toUpperCase()} / {exchangeInfo.code}</span></div>
           <p className={styles.exchangeLabel}>여행 환율</p>
           <div className={styles.exchangeCard}>
-            <span>환전 금액<strong id="exchange-title">¥{exchangeAmount.toLocaleString("ko-KR")}</strong></span>
+            <span>환전 금액<strong id="exchange-title">{exchangeInfo.symbol}{exchangeInfo.defaultAmount.toLocaleString("ko-KR")}</strong></span>
             <span>최근 업데이트<small>2026.08.31 15:30</small></span>
           </div>
-          <button className={styles.exchangeLink} type="button">환율 자세히 보기 →</button>
-        </section>
+          <button className={styles.exchangeLink} type="button" onClick={() => navigate(exchangeRateLink)}>환율 자세히 보기 →</button>
+        </section>}
         <section className={styles.tripDateEditor} aria-label="여행 날짜">
           <label>
             <span>여행 시작일</span>
@@ -659,7 +799,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <input type="date" required value={tripDateRange.end} readOnly />
           </label>
         </section>
-        <div className={styles.flight}><span><img src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>
+        {!isDomesticTrip && <div className={styles.flight}><span><img src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>}
         <div className={styles.dayTabs}>
           {days.map(([day, date], index) => (
             <button className={activeDay === index ? styles.selected : ""} key={day} type="button" onClick={() => setActiveDay(index)}>
@@ -675,6 +815,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           />
         </div>
       </section>
+      </div>
 
       <section className={styles.schedule}>
         <header><h2>DAY {String(activeDay + 1).padStart(2, "0")}</h2><span>{tripDateRange.start ? addDays(tripDateRange.start, activeDay) : selectedTrip.days[activeDay]?.date || "DATE TBD"}</span></header>
@@ -682,58 +823,87 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         <p className={styles.arrival}>총 {stops.length}개의 장소</p>
 
         <div className={styles.stopList}>
-          {stops.map((stop) => (
+          {stops.map((stop, stopIndex) => (
             <div
-              className={`${styles.stopGroup} ${draggedStopId === stop.id ? styles.dragging : ""}`}
+              className={`${styles.stopGroup} ${draggedStopId === stop.id ? styles.dragging : ""} ${dragTargetId === stop.id && draggedStopId !== stop.id ? styles.dragTarget : ""}`}
               key={stop.id}
               data-stop-id={stop.id}
+              draggable
+              onDragStart={(event) => {
+                if (String(draggedStopIdRef.current) !== String(stop.id)) {
+                  event.preventDefault();
+                  return;
+                }
+                setDraggedStopId(stop.id);
+                event.dataTransfer.effectAllowed = "move";
+                event.dataTransfer.setData("text/plain", String(stop.id));
+              }}
               onDragOver={(event) => {
                 event.preventDefault();
-                moveStop(draggedStopId, stop.id);
+                event.dataTransfer.dropEffect = "move";
+              }}
+              onDragEnter={() => {
+                if (String(draggedStopIdRef.current) !== String(stop.id)) {
+                  setDragTargetId(stop.id);
+                }
+              }}
+              onDrop={(event) => {
+                event.preventDefault();
+                const sourceId = draggedStopIdRef.current || event.dataTransfer.getData("text/plain");
+                moveStop(sourceId, stop.id);
+                setDragTargetId(null);
+              }}
+              onDragEnd={() => {
+                draggedStopIdRef.current = null;
+                setDraggedStopId(null);
+                setDragTargetId(null);
               }}
             >
               <article className={styles.stopCard}>
                 <time>{stop.time}</time>
                 <span className={styles.placeIcon}><img src={stop.icon} alt="" /></span>
                 <div className={styles.placeCopy}><strong>{stop.name}</strong><small>{stop.type}</small><button type="button" onClick={() => setSelectedStop(stop)}>자세히 보기 &gt;</button></div>
-                <button
+                <span
                   className={styles.drag}
-                  type="button"
-                  draggable
+                  role="button"
+                  tabIndex="0"
                   aria-label={`${stop.name} 순서 변경`}
                   title="드래그하여 일정 순서 변경"
-                  onDragStart={(event) => {
-                    setDraggedStopId(stop.id);
-                    event.dataTransfer.effectAllowed = "move";
-                    event.dataTransfer.setData("text/plain", String(stop.id));
+                  onMouseDown={() => {
+                    draggedStopIdRef.current = stop.id;
                   }}
-                  onDragEnd={() => setDraggedStopId(null)}
+                  onClick={() => { draggedStopIdRef.current = null; }}
                   onKeyDown={(event) => handleHandleKeyDown(event, stop.id)}
                   onPointerDown={(event) => {
                     if (event.pointerType === "mouse") return;
                     event.preventDefault();
                     event.currentTarget.setPointerCapture(event.pointerId);
+                    draggedStopIdRef.current = stop.id;
                     setDraggedStopId(stop.id);
                   }}
                   onPointerMove={(event) => {
-                    if (event.pointerType === "mouse" || draggedStopId === null) return;
+                    if (event.pointerType === "mouse" || draggedStopIdRef.current === null) return;
                     event.preventDefault();
                     const target = document
                       .elementFromPoint(event.clientX, event.clientY)
                       ?.closest("[data-stop-id]");
-                    if (target?.dataset.stopId) moveStop(draggedStopId, target.dataset.stopId);
+                    if (target?.dataset.stopId) moveStop(draggedStopIdRef.current, target.dataset.stopId);
                   }}
                   onPointerUp={(event) => {
                     if (event.pointerType === "mouse") return;
                     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
                       event.currentTarget.releasePointerCapture(event.pointerId);
                     }
+                    draggedStopIdRef.current = null;
                     setDraggedStopId(null);
                   }}
-                  onPointerCancel={() => setDraggedStopId(null)}
+                  onPointerCancel={() => {
+                    draggedStopIdRef.current = null;
+                    setDraggedStopId(null);
+                  }}
                 >
-                  <img src={menuIcon} alt="" />
-                </button>
+                  <img src={menuIcon} alt="" draggable="false" />
+                </span>
                 <button className={styles.remove} type="button" aria-label={`${stop.name} 삭제`} onClick={() => removeStop(stop.id)}><img src={closeIcon} alt="" /></button>
               </article>
               {stop.note && (
@@ -746,12 +916,12 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                 </div>
               )}
               <button className={styles.addMemo} type="button" onClick={() => openMemo(stop)}><img src={addIcon} alt="" />{stop.note ? "메모 수정" : "메모 추가"}</button>
-              {stop.travel && <div className={styles.travel}><span><img src={getTransportIcon(stop.travel)} alt="" />{stop.travel}</span><b><img src={arrowIcon} alt="" /></b></div>}
+              {stop.travel && stopIndex < stops.length - 1 && <div className={styles.travel}><span><img src={getTransportIcon(stop.travel)} alt="" />{stop.travel}</span><b><img src={arrowIcon} alt="" /></b></div>}
             </div>
           ))}
         </div>
 
-        <div className={styles.addActions}>
+        <div className={styles.addActions} ref={addActionsRef}>
           <button
             type="button"
             onClick={() => {
@@ -764,7 +934,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
 
           <button
             type="button"
-            onClick={() => setIsWishlistOpen(true)}
+            onClick={openWishlist}
           >
             찜한 장소 추가
           </button>
@@ -863,9 +1033,10 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       </div>
 
       {isPlaceAddOpen && (
-        <div className={styles.placeAdder} role="dialog" aria-modal="true" aria-labelledby="place-adder-title">
-          <div className={styles.placeAdderInner}>
-            <header><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}>←</button><div><h2 id="place-adder-title">장소 추가하기</h2><p>일정에 추가할 장소와 방문 시간을 설정하세요 · {selectedTrip.city}</p></div></header>
+        <div className={styles.placeAdder} role="presentation" onMouseDown={() => setIsPlaceAddOpen(false)}>
+          <section className={styles.placeAdderInner} role="dialog" aria-modal="true" aria-labelledby="place-adder-title" onMouseDown={(event) => event.stopPropagation()}>
+            <header><button type="button" aria-label="뒤로 가기" onClick={() => setIsPlaceAddOpen(false)}><img src={backIcon} alt="" /></button><h2 id="place-adder-title">장소 추가하기</h2><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}><img src={closeIcon} alt="" /></button></header>
+            <p className={styles.adderDescription}>일정에 추가할 장소와 방문 시간을 설정하세요 · {selectedTrip.city}</p>
             <section className={styles.placeMapArea}>
               <PlaceMap
                 places={placeCandidates}
@@ -901,16 +1072,18 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               </div>
             </section>
             <footer className={styles.placeAddFooter}><span>{selectedCandidate ? `${selectedPlaceTime} · 1개 장소` : "선택한 장소 0개"}</span><button type="button" disabled={!selectedCandidate || !selectedPlaceTime} onClick={addSelectedPlace}>선택한 장소 추가</button></footer>
-          </div>
+          </section>
         </div>
       )}
       {isWishlistOpen && (
-        <div className={styles.wishlistAdder} role="dialog" aria-modal="true" aria-labelledby="wishlist-adder-title">
-          <div className={styles.wishlistAdderInner}>
+        <div className={styles.wishlistAdder} role="presentation" onMouseDown={() => setIsWishlistOpen(false)}>
+          <section className={styles.wishlistAdderInner} role="dialog" aria-modal="true" aria-labelledby="wishlist-adder-title" onMouseDown={(event) => event.stopPropagation()}>
             <header>
-              <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}>←</button>
-              <div><h2 id="wishlist-adder-title">찜한 장소 불러오기</h2><p>지도에 저장해둔 장소를 일정에 담아보세요</p></div>
+              <button type="button" aria-label="뒤로 가기" onClick={() => setIsWishlistOpen(false)}><img src={backIcon} alt="" /></button>
+              <h2 id="wishlist-adder-title">찜한 장소 불러오기</h2>
+              <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}><img src={closeIcon} alt="" /></button>
             </header>
+            <p className={styles.adderDescription}>지도에 저장해둔 장소를 일정에 담아보세요</p>
             <section className={styles.wishlistMapArea}>
               <PlaceMap
                 places={wishlistPlaces}
@@ -927,8 +1100,11 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             </div>
             <section className={styles.wishlistResults}>
               <h3>검색 결과</h3>
+              {favoriteState.loading && <p className={styles.noPlaces}>찜한 장소를 불러오는 중…</p>}
+              {!favoriteState.loading && favoriteState.error && <p className={styles.noPlaces} role="alert">{favoriteState.error}</p>}
+              {!favoriteState.loading && !favoriteState.error && !wishlistPlaces.length && <p className={styles.noPlaces}>일정에 추가할 찜한 장소가 없습니다.</p>}
               <div>
-                {wishlistPlaces.map((place, index) => {
+                {!favoriteState.loading && wishlistPlaces.map((place, index) => {
                   const selected = wishlistSelections.includes(place.place);
                   return (
                     <article key={place.place}>
@@ -942,10 +1118,10 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               </div>
             </section>
             <footer className={styles.wishlistFooter}><span>찜한 장소 {wishlistSelections.length}개</span><button type="button" disabled={!wishlistSelections.length} onClick={addWishlistPlaces}>선택한 장소 추가</button></footer>
-          </div>
+          </section>
         </div>
       )}
-      {isFlightOpen && (
+      {!isDomesticTrip && isFlightOpen && (
         <div className={styles.flightEditor} role="dialog" aria-modal="true" aria-labelledby="flight-editor-title">
           <div className={styles.flightEditorInner}>
             <p className={styles.flightEyebrow}>CHANGE YOUR FLIGHT</p>
@@ -1076,7 +1252,8 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         </div>
       )}
       {selectedStop && (
-        <div className={styles.placeDetail} role="dialog" aria-modal="true" aria-labelledby="place-detail-title">
+        <div className={styles.placeDetailBackdrop} role="presentation" onMouseDown={() => setSelectedStop(null)}>
+        <section className={styles.placeDetail} role="dialog" aria-modal="true" aria-labelledby="place-detail-title" onMouseDown={(event) => event.stopPropagation()}>
           <header className={styles.detailHeader}>
             <button type="button" aria-label="뒤로 가기" onClick={() => setSelectedStop(null)}><img src={backIcon} alt="" /></button>
             <button type="button" aria-label="닫기" onClick={() => setSelectedStop(null)}><img src={closeIcon} alt="" /></button>
@@ -1109,6 +1286,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             </button>
           </div>
           {favoriteState.error && <p className={styles.favoriteError} role="alert">{favoriteState.error}</p>}
+        </section>
         </div>
       )}
     </form>

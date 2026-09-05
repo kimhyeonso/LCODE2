@@ -38,7 +38,6 @@ export default function Contact() {
           <figure className={styles.photoFrame}>
             <img src="/Mypage-img/content.png" alt="노을이 비치는 여행지 풍경" />
           </figure>
-          <p>JOURNEY<br />BEYOND<br />THE ORDINARY</p>
         </aside>
 
         <section className={styles.helpBox} aria-label="고객센터 문의">
