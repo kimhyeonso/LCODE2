@@ -109,7 +109,7 @@ const ExchangeRate = () => {
         <button type="button" className={styles.currencySelect} onClick={() => setIsCurrencyOpen(true)}>
           <span className={styles.flag}>{selectedRate.flag}</span>
           <span className={styles.currencyText}><small>{selectedRate.code}</small>{selectedRate.name}</span>
-          {selectedRate.travel && <b>여행 예정</b>}
+          {selectedRate.code === initialCurrency && <b>여행 예정</b>}
           <span className={styles.arrow}>⌄</span>
         </button>
 

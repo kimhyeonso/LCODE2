@@ -17,14 +17,28 @@ const planThumbnail = (plan) =>
 
 const cityEnglishNames = {
   강릉: "GANGNEUNG",
+  거제: "GEOJE",
+  광저우: "GUANGZHOU",
+  다롄: "DALIAN",
   서울: "SEOUL",
   부산: "BUSAN",
+  여수: "YEOSU",
   제주: "JEJU",
   제주도: "JEJU",
   도쿄: "TOKYO",
   오사카: "OSAKA",
+  "오사카·도쿄": "OSAKA · TOKYO",
+  장가계: "ZHANGJIAJIE",
+  청두: "CHENGDU",
+  충칭: "CHONGQING",
+  칭다오: "QINGDAO",
+  하얼빈: "HARBIN",
+  항저우: "HANGZHOU",
+  홋카이도: "HOKKAIDO",
+  후쿠오카: "FUKUOKA",
   상하이: "SHANGHAI",
   베이징: "BEIJING",
+  시안: "XI'AN",
 };
 
 const cityEnglishName = (city) => cityEnglishNames[city] || city?.toUpperCase();
@@ -337,42 +351,22 @@ export default function SavedPlan() {
           </p>
         </div>
 
-        {/* 하단 메뉴 */}
-        <footer>
-          <span>{saved.title}</span>
-
-          <nav>
-            {saved.status === "draft" ? (
-              <Link
-                to={`/travel-planner?plan=${encodeURIComponent(
-                  saved.id
-                )}`}
-              >
-                이어서 작성
+        <nav className={styles.heroActions} aria-label={`${saved.title} 일정 메뉴`}>
+          {saved.status === "draft" ? (
+            <Link to={`/travel-planner?plan=${encodeURIComponent(saved.id)}`}>
+              이어서 작성
+            </Link>
+          ) : (
+            <>
+              <Link to={`/plan?trip=${encodeURIComponent(saved.tripId)}&saved=${encodeURIComponent(saved.id)}`}>
+                일정 확인
               </Link>
-            ) : (
-              <>
-                <Link
-                  to={`/plan?trip=${encodeURIComponent(
-                    saved.tripId
-                  )}&saved=${encodeURIComponent(
-                    saved.id
-                  )}`}
-                >
-                  일정 확인
-                </Link>
-
-                <Link
-                  to={`/travel-planner?plan=${encodeURIComponent(
-                    saved.id
-                  )}`}
-                >
-                  수정하기 →
-                </Link>
-              </>
-            )}
-          </nav>
-        </footer>
+              <Link to={`/travel-planner?plan=${encodeURIComponent(saved.id)}`}>
+                수정하기 →
+              </Link>
+            </>
+          )}
+        </nav>
       </article>
 
       {/* 다른 저장 일정 */}

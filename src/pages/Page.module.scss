@@ -226,7 +226,7 @@
   .planner {
     width: min(1320px, calc(100% - 332px));
     margin: 0 0 70px max(276px, calc(50% - 550px));
-    padding: 36px 0 90px;
+    padding: 0 0 90px;
   }
 }
 .planner > header {
@@ -396,7 +396,7 @@
 @include mobile {
   .planner {
     width: 100%;
-    padding: 22px 0 92px;
+    padding: 0 0 92px;
   }
   .productGrid {
     grid-template-columns: 1fr;

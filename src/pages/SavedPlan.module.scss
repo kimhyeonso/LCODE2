@@ -35,7 +35,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 20px 18px 58px;
+  padding: 20px 18px 88px;
 
   background-color: #bbb;
   background-position: center;
@@ -108,11 +108,12 @@
 /* D-DAY */
 .heroCard > b {
   position: absolute;
-
-  top: 20px;
-  right: 20px;
-
-  font: 54px $serif;
+  top: 18px;
+  right: 18px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  font: 54px/1 $serif;
 }
 
 .heroCard small {
@@ -133,46 +134,6 @@
 
   font-size: 13px;
   letter-spacing: 1.5px;
-}
-
-/* HERO 하단 검정 영역 */
-.heroCard footer {
-  position: absolute;
-
-  right: 0;
-  bottom: 0;
-  left: 0;
-
-  height: 44px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 0 18px;
-
-  background: #111;
-
-  font-size: 13px;
-}
-
-.heroCard footer span {
-  color: #888;
-}
-
-.heroCard footer nav {
-  display: flex;
-  align-items: center;
-
-  gap: 14px;
-}
-
-.heroCard footer nav a:first-child {
-  color: #aaa;
-}
-
-.heroCard a {
-  color: #fff;
 }
 
 /* =========================
@@ -238,7 +199,8 @@
   font-size: 13px;
 }
 
-.others nav {
+.others nav,
+.heroActions {
   display: flex;
 
   gap: 8px;
@@ -246,7 +208,16 @@
   margin-top: 18px;
 }
 
-.others nav a {
+.heroActions {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+  width: min(calc(100% - 36px), 320px);
+  margin: 0;
+}
+
+.others nav a,
+.heroActions a {
   flex: 1;
 
   width: 100%;
@@ -272,7 +243,8 @@
   cursor: pointer;
 }
 
-.others nav a:last-child {
+.others nav a:last-child,
+.heroActions a:last-child {
   border-color: #171714;
 
   background: #171714;
@@ -280,8 +252,18 @@
   color: #fff;
 }
 
-.others nav a:only-child {
+.others nav a:only-child,
+.heroActions a:only-child {
   grid-column: 1 / -1;
+}
+
+@media (max-width: 640px) {
+  .heroActions {
+    right: 18px;
+    bottom: 18px;
+    left: 18px;
+    width: auto;
+  }
 }
 
 /* =========================
@@ -538,6 +520,14 @@
 @media (min-width: 800px) {
   .heroCard {
     height: 520px;
+    padding-bottom: 20px;
+  }
+
+  .heroCard > div {
+    position: absolute;
+    bottom: 18px;
+    left: 18px;
+    max-width: calc(100% - 374px);
   }
 
   .others {
