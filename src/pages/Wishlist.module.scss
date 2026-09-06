@@ -349,3 +349,7 @@ h1 {
   .placeGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 }
+
+@include title.mypage-layout(".wishlist", ".content");
+@include title.mypage-heading(".content", ".eyebrow", "> h1", ".description");
+.content > .divider { display: none; }

@@ -105,43 +105,6 @@ function getProductImage(
 
 
 /* =========================================================
-   TRAVEL HERO IMAGE
-========================================================= */
-
-const TRAVEL_IMAGE_MODULES =
-  import.meta.glob(
-    "../assets/images/destinations/pexels/*.{png,jpg,jpeg,webp}",
-    {
-      eager: true,
-      import: "default",
-    }
-  );
-
-
-const TRAVEL_IMAGES =
-  Object.values(
-    TRAVEL_IMAGE_MODULES
-  );
-
-
-function getTravelImage() {
-  if (
-    TRAVEL_IMAGES.length ===
-    0
-  ) {
-    return "";
-  }
-
-
-  return (
-    TRAVEL_IMAGES[3] ||
-    TRAVEL_IMAGES[0] ||
-    ""
-  );
-}
-
-
-/* =========================================================
    DEFAULT OPTION
 ========================================================= */
 
@@ -161,7 +124,6 @@ export default function Saved() {
     saved = [],
     toggleSaved,
     addToCart,
-    cart = [],
   } = useShop();
 
 
@@ -446,40 +408,6 @@ export default function Saved() {
 
 
   /* =======================================================
-     CART COUNT
-  ======================================================= */
-
-  const cartCount =
-    useMemo(
-      () =>
-        cart.reduce(
-          (
-            total,
-            item
-          ) =>
-            total +
-            Number(
-              item.quantity ||
-                1
-            ),
-          0
-        ),
-      [cart]
-    );
-
-
-  /* =======================================================
-     HERO
-  ======================================================= */
-
-  const heroBackground =
-    getTravelImage() ||
-    productList[0]
-      ?.thumbnail ||
-    "";
-
-
-  /* =======================================================
      ADD TO CART
   ======================================================= */
 
@@ -629,98 +557,11 @@ export default function Saved() {
           HERO
       =================================================== */}
 
-      <section
-        className={
-          styles.hero
-        }
-        style={{
-          backgroundImage:
-            heroBackground
-              ? `url(${heroBackground})`
-              : "none",
-        }}
-      >
-        <div
-          className={
-            styles.heroOverlay
-          }
-        />
-
-
-        <div
-          className={
-            styles.heroInner
-          }
-        >
-          <div
-            className={
-              styles.heroUtility
-            }
-          >
-            <span>
-              SHOP / SAVED
-            </span>
-
-
-            <Link to="/cart">
-              CART
-
-              <b>
-                {cartCount}
-              </b>
-            </Link>
-          </div>
-
-
-          <div
-            className={
-              styles.heroContent
-            }
-          >
-            <small>
-              MY SHOP
-            </small>
-
-
-            <h1>
-              SAVED
-            </h1>
-
-
-            <p>
-              마음에 담아둔 여행 준비물을
-              한곳에서 다시 확인해보세요.
-            </p>
-          </div>
-
-
-          <div
-            className={
-              styles.heroBottom
-            }
-          >
-            <span>
-              {String(
-                savedItems.length
-              ).padStart(
-                2,
-                "0"
-              )}{" "}
-              ITEMS
-            </span>
-
-
-            <a href="#saved-items">
-              VIEW SAVED
-
-              <b>
-                ↓
-              </b>
-            </a>
-          </div>
-        </div>
-      </section>
-
+      <header className={styles.pageHeading}>
+        <p className={styles.eyebrow}>MY SHOP</p>
+        <h1>SAVED</h1>
+        <p className={styles.description}>마음에 담아둔 여행 준비물을 한곳에서 다시 확인해보세요.</p>
+      </header>
 
       {/* ===================================================
           CONTENT

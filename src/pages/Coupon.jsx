@@ -108,7 +108,7 @@ export default function Coupon() {
             </div>
             <div className={styles.available}><span>AVAILABLE</span><strong>{String(availableCount).padStart(2, "0")}</strong></div>
           </div>
-          <p className={styles.description}>나만의 여행을 위해 남긴 글</p>
+          <p className={styles.description}>보유한 쿠폰과 사용 가능한 혜택을 확인해보세요.</p>
           <div className={styles.divider} />
           {welcomeCoupon && <CouponTicket coupon={welcomeCoupon} featured />}
           <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>

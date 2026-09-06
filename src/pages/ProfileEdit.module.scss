@@ -153,3 +153,6 @@
 }
 
 @include title.saved-plan-title(".eyebrow", ".hero");
+
+@include title.mypage-layout(".profileEdit", ".layout");
+@include title.mypage-heading(".formSection", ".eyebrow", ".hero", ".subtitle");

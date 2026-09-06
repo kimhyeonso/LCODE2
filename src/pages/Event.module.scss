@@ -342,3 +342,29 @@ $black: #000;
 }
 
 @include title.saved-plan-title(".listHeader span", ".listHeader h1");
+
+// Match SavedPlan's page inset and spacing between the two titles.
+.listHeader span {
+  display: block;
+  margin: 0 0 25px !important;
+  font-size: 13px;
+  line-height: normal !important;
+}
+
+.listHeader h1 {
+  margin: 20px 0 18px !important;
+  padding-top: 0;
+}
+
+@media (max-width: 640px) {
+  .listHeader { padding: 22px 16px 0; }
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .listHeader { padding: 94px 32px 0; }
+}
+
+@media (min-width: 901px) {
+  .eventList { padding-top: 72px; }
+  .eventListInner { margin-left: max(56px, calc(50% - 660px)); margin-right: 0; }
+}

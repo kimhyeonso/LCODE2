@@ -25,7 +25,6 @@ export default function Notice() {
               return <Link className={styles.noticeLink} to={`/notice/${encodeURIComponent(notice.id)}`} key={notice.id}>{content}</Link>;
             })}
           </div>
-          <p className={styles.contact}><span aria-hidden="true">ⓘ</span>고객센터 전화번호: 070 - 548 - 8679</p>
         </section>
         <section className={styles.journal} aria-label="L:CODE 여행 저널">
           {journalCards.map(({ image, location, caption }) => (
@@ -35,6 +34,15 @@ export default function Notice() {
             </article>
           ))}
           <span className={styles.stamp} aria-hidden="true" />
+        </section>
+        <section className={styles.contact} aria-label="고객센터 전화 안내">
+          <div className={styles.contactIcon} aria-hidden="true">
+            <img src="/Mypage-img/set.svg" alt="" />
+          </div>
+          <div className={styles.contactCopy}>
+            <h2>고객센터 문의</h2>
+            <p>고객센터 전화번호: 070 - 548 - 8679</p>
+          </div>
         </section>
       </div>
     </main>

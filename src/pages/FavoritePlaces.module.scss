@@ -186,3 +186,7 @@
 }
 
 @include title.saved-plan-title(".eyebrow", ".page > h1");
+
+@include title.mypage-heading(".page", "> .eyebrow", "> h1", "> .description");
+@include title.mypage-layout(".page");
+.page > .divider { display: none; }

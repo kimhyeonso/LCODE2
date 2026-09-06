@@ -471,3 +471,7 @@ h1 {
     font-size: 13px;
   }
 }
+
+@include title.mypage-layout(".mystories", ".content");
+@include title.mypage-heading(".stories", "> .eyebrow", "> h1", "> .description");
+.stories > .divider { display: none; }

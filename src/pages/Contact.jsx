@@ -33,7 +33,6 @@ export default function Contact() {
         </section>
 
         <aside className={styles.visual} aria-label="여행 풍경">
-          <div className={styles.stamp} aria-hidden="true" />
           <img src="/Mypage-img/tape.png" alt="테이프 이미지" className={styles.tape}/>
           <figure className={styles.photoFrame}>
             <img src="/Mypage-img/content.png" alt="노을이 비치는 여행지 풍경" />

@@ -299,3 +299,73 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 }
+
+@include title.mypage-layout(".alarm", ".content");
+@include title.mypage-heading(".settings", ".eyebrow", "> h1", ".description");
+.settings > .divider { display: none; }
+
+.settings .setting { font-size: 17px; }
+
+@media (max-width: 640px) {
+  .settings .setting { font-size: 14px; }
+}
+
+.content > .notice {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  width: 100%;
+  min-height: 142px;
+  align-items: center;
+  margin: 27px 0 0;
+  border: 1px solid #d1c9bf;
+  padding: 20px 30px;
+  background: transparent;
+  color: $ink;
+  text-align: left;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+
+.noticeIcon {
+  display: grid;
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  background: #eee5d9;
+  place-items: center;
+}
+
+.noticeIcon img { width: 38px; height: 38px; object-fit: contain; opacity: .72; }
+.noticeCopy { min-width: 0; border-left: 1px solid #d9d2c9; padding-left: 28px; }
+.noticeCopy h2 { margin: 0; font: 500 22px/1.4 $sans; }
+.noticeCopy p { margin: 10px 0 0; color: #66615b; font: 400 14px/1.7 $sans; }
+
+@media (max-width: 900px) {
+  .content > .notice { grid-template-columns: 88px minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .content > .notice { grid-template-columns: 62px minmax(0, 1fr); gap: 14px; margin-top: 18px; padding: 22px 18px; }
+  .noticeIcon { width: 56px; height: 56px; }
+  .noticeCopy { padding-left: 14px; }
+  .noticeCopy h2 { font-size: 17px; }
+  .noticeCopy p { font-size: 11px; }
+}
+
+.content > .notice { grid-column: 1 / -1; }
+
+@media (min-width: 641px) {
+  .content { row-gap: 27px; }
+  .content > .notice { margin-top: 0; }
+}
+
+@media (min-width: 901px) {
+  .content > .notice {
+    margin-top: clamp(24px, 4vh, 48px);
+  }
+
+  .content > .imagePlaceholder {
+    align-self: stretch;
+    height: auto;
+    min-height: 0;
+  }
+}

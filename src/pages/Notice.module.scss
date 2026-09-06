@@ -35,13 +35,7 @@
 }
 
 .noticeList::before {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -3.25rem;
-  width: 1px;
-  background: #d8d3cb;
-  content: "";
+  content: none;
 }
 
 .eyebrow {
@@ -367,4 +361,74 @@
   .title { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
+}
+
+@include title.mypage-layout(".notice", ".content");
+@include title.mypage-heading(".noticeList", ".eyebrow", ".title", ".description");
+.noticeList > .divider { display: none; }
+
+.noticeList .noticeLink,
+.noticeList .contact {
+  font-size: 17px;
+}
+
+.noticeList .noticeLink {
+  min-height: 3.55rem;
+  padding: 0 1rem;
+}
+
+.noticeList .noticeLink b { font-size: 22px; }
+
+@media (min-width: 901px) {
+  .noticeList .noticeLink { min-height: 69px; padding-inline: 14px; }
+}
+
+@media (max-width: 640px) {
+  .noticeList .noticeLink b { font-size: 20px; }
+  .noticeList .noticeLink { min-height: 2.1rem; padding-inline: .7rem; }
+
+  .noticeList .noticeLink,
+  .noticeList .contact {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 600px) {
+  .noticeList .noticeLink { min-height: 57px; padding-inline: 20px; }
+}
+
+.content > .contact {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  gap: 0;
+  min-height: 142px;
+  margin: 0;
+  border: 1px solid #d1c9bf;
+  padding: 20px 30px;
+  background: transparent;
+  color: $ink;
+  clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+}
+.contactIcon { display: grid; width: 74px; height: 74px; border-radius: 50%; background: #eee5d9; place-items: center; }
+.contactIcon img { width: 38px; height: 38px; object-fit: contain; opacity: .72; }
+.contactCopy { min-width: 0; border-left: 1px solid #d9d2c9; padding-left: 28px; }
+.contactCopy h2 { margin: 0; font: 500 22px/1.4 $sans; }
+.contactCopy p { margin: 10px 0 0; color: #66615b; font: 400 14px/1.7 $sans; }
+
+@media (min-width: 901px) {
+  .content { row-gap: 32px; }
+  .journalCard img { height: clamp(180px, 16vw, 240px); }
+}
+
+@media (max-width: 900px) {
+  .content > .contact { grid-template-columns: 88px minmax(0, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .content > .contact { grid-template-columns: 62px minmax(0, 1fr); gap: 14px; margin-top: 24px; padding: 22px 18px; }
+  .contactIcon { width: 56px; height: 56px; }
+  .contactCopy { padding-left: 14px; }
+  .contactCopy h2 { font-size: 17px; }
+  .contactCopy p { font-size: 11px; }
 }

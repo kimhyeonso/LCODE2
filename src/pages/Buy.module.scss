@@ -127,3 +127,9 @@
 }
 
 @include title.saved-plan-title(".eyebrow", ".titleRow h1");
+
+@include title.mypage-layout(".buyPage", ".content");
+@include title.mypage-heading(".main", ".eyebrow", ".titleRow h1", ".titleRow p");
+
+.main .titleRow { width: 100%; margin: 0; padding: 0; border: 0; }
+.main .titleRow::after { content: none; }

@@ -1,6 +1,43 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 
+// Minimum text sizes for the shop listing; shared detail styles stay independent.
+@mixin shop-text-minimums {
+  .shopPage {
+    .lowStock,
+    .soldOut,
+    .quickCart em {
+      font-size: 11px;
+    }
+  }
+
+  @media (min-width: 641px) {
+    .shopPage {
+      .heroLocation,
+      .heroEyebrow,
+      .heroNumber,
+      .heroMenu,
+      .heroMenu b,
+      .heroBottom p,
+      .heroButton,
+      .categoryBar button,
+      .sectionLabel,
+      .search input,
+      .search small,
+      .productVisual .cardCategory,
+      .productMeta small,
+      .productMeta p,
+      .lowStock,
+      .soldOut,
+      .quickCart > small,
+      .quickCart em,
+      .quickCart a {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
 
 /* =========================================================
    DESKTOP SHOP WORKSPACE
@@ -15,6 +52,10 @@
   width: calc(100% - 220px);
   margin-left: 220px;
   background: $paper-light;
+}
+
+.shopPage {
+  background: $paper;
 }
 
 .detailPage {
@@ -3160,3 +3201,5 @@
     animation: none;
   }
 }
+
+@include shop-text-minimums;

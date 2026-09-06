@@ -22,9 +22,18 @@ export default function Alarm() {
           const isEnabled = enabledAlarms.includes(label);
           return <div className={styles.setting} key={label}><span>{label}</span><button className={isEnabled ? styles.enabled : ""} type="button" role="switch" aria-checked={isEnabled} aria-label={`${label} 알림`} onClick={() => toggleAlarm(label)}><i /></button></div>;
         })}</div>
-        <p className={styles.notice}><span aria-hidden="true">ⓘ</span> 푸시 알림 설정 &gt; 알림 설정에서<br />언제든지 변경할 수 있습니다</p>
+
       </section>
       <div className={styles.imagePlaceholder} aria-label="알림 이미지 영역" />
+      <section className={styles.notice} aria-label="푸시 알림 설정 안내">
+        <div className={styles.noticeIcon} aria-hidden="true">
+          <img src="/Mypage-img/set.svg" alt="" />
+        </div>
+        <div className={styles.noticeCopy}>
+          <h2>푸시 알림 설정</h2>
+          <p>알림 설정에서 언제든지 변경할 수 있습니다.</p>
+        </div>
+      </section>
     </div>
   </main>;
 }

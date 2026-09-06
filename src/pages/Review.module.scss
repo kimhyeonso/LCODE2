@@ -142,3 +142,9 @@
 }
 
 @include title.saved-plan-title(".heading > div > p", ".heading h1");
+
+@include title.mypage-layout(".review", ".page");
+@include title.mypage-heading(".heading", "> div > p:first-of-type", "h1", ".description");
+
+.review .heading { margin-top: 0; }
+.heading > div { width: 100%; }

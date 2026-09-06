@@ -1,3 +1,4 @@
+@use "../styles/representative-title" as title;
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
@@ -230,3 +231,9 @@
   .articleHeader h1 { margin-top: 10px; }
   .images { display: none; }
 }
+
+@include title.mypage-layout(".openGuide", ".content");
+@include title.mypage-heading(".articleHeader", ".category", "> h1", "> p");
+.articleHeader > .divider { display: none; }
+
+.articleHeader .category::after { content: none; }

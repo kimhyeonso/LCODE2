@@ -14,7 +14,7 @@ export default function MypageBackLink({ to = "/my", label = "마이페이지로
   };
 
   return (
-    <button className={styles.backLink} type="button" onClick={handleBack} aria-label={label}>
+    <button data-mypage-back className={styles.backLink} type="button" onClick={handleBack} aria-label={label}>
       <span aria-hidden="true">←</span>
       BACK
     </button>

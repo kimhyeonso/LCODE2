@@ -278,6 +278,10 @@ export default function SavedPlan() {
         PLAN
       </h1>
 
+      <p className={styles.description}>
+        저장된 일정을 확인해보세요.
+      </p>
+
       {/* 메인 저장 일정 */}
       <article
         className={styles.heroCard}

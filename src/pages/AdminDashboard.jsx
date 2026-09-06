@@ -244,7 +244,11 @@ export default function AdminDashboard() {
     <main className={styles.dashboard}>
       <header className={styles.hero}>
         <p className={styles.eyebrow}>L:CODE · ADMIN</p>
-        <h1>운영 대시보드</h1>
+        <h1>
+          OPERATIONAL
+          <br />
+          DASHBOARD
+        </h1>
         <p>{profile?.nickname || "관리자"}님, 서비스 콘텐츠를 관리하세요.</p>
       </header>
 

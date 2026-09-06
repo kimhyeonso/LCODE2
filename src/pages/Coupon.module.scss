@@ -587,3 +587,12 @@ h1 {
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
 
 }
+
+@include title.mypage-layout(".coupon", ".content");
+@include title.mypage-heading(".archive", ".eyebrow", ".archiveHeading h1", "> .description");
+.archive > .divider { display: none; }
+
+.coupon .content { position: relative; }
+.archive .archiveHeading { margin: 0; }
+.archiveHeading > div:first-child { flex: 1; }
+.archive > .description { order: 2; }

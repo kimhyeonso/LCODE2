@@ -18,11 +18,21 @@
 
 .page > h1 {
   margin: 20px 0 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #cec7bb;
   font-family: $serif;
   font-size: 38px;
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -.05em;
+}
+
+.description {
+  margin: 0 0 34px;
+  color: #8c857b;
+  font-family: $sans;
+  font-size: 16px;
+  line-height: 1.7;
 }
 
 /* =========================

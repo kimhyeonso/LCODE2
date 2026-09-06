@@ -1,36 +1,38 @@
+@use "../styles/variables" as *;
+
 .dashboard {
-  width: calc(100% - 220px);
+  width: min(1320px, calc(100% - 332px));
   min-height: 100vh;
-  margin-left: 220px;
-  padding: 56px max(32px, calc((100vw - 1460px) / 2)) 0;
-  background: #f7f8f7;
+  margin-left: max(276px, calc(50% - 550px));
+  padding: 72px 0 0;
+  background: $paper;
   color: #202521;
 }
 
 .hero {
-  padding-bottom: 28px;
-  border-bottom: 1px solid #dfe3e0;
+  padding-bottom: 0;
 }
 
 .hero h1 {
-  margin: 8px 0;
-  font-size: clamp(30px, 3vw, 42px);
-  font-weight: 700;
-  letter-spacing: -0.04em;
+  margin: 20px 0 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #cec7bb;
+  color: $ink;
+  font: 400 54px/1.08 $serif;
+  letter-spacing: -0.05em;
 }
 
 .hero > p:last-child {
   margin: 0;
-  color: #68706a;
-  font-size: 14px;
+  color: #8c857b;
+  font: 400 16px/1.7 $sans;
 }
 
 .eyebrow {
-  margin: 0;
-  color: #7b837d;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  margin: 0 0 25px;
+  color: #aaa;
+  font: 400 13px/normal $sans;
+  letter-spacing: 0.16em;
 }
 
 .metrics {
@@ -526,10 +528,10 @@ tbody tr:hover {
 
 @media (max-width: 900px) {
   .dashboard {
-    width: 100%;
+    width: calc(100% - 64px);
     min-height: calc(100vh - 56px);
-    margin-left: 0;
-    padding: 36px 20px 0;
+    margin-inline: auto;
+    padding: 94px 0 0;
   }
 
   .metrics {
@@ -569,19 +571,18 @@ tbody tr:hover {
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
   .dashboard {
-    padding: 28px 16px 80px;
-  }
-
-  .hero {
-    padding-bottom: 22px;
+    width: calc(100% - 32px);
+    padding: 22px 0 80px;
   }
 
   .hero h1 {
-    font-size: 30px;
+    font-size: 38px;
   }
+}
 
+@media (max-width: 480px) {
   .metrics {
     gap: 8px;
     margin-block: 16px;

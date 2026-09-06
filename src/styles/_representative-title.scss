@@ -1,5 +1,107 @@
 @use "./variables" as *;
 
+// Full title treatment for pages reached from My Page.
+@mixin mypage-heading($scope, $eyebrow, $heading, $description) {
+  #{$scope} {
+    position: relative;
+    min-width: 0;
+    padding-top: 0;
+    transform: none;
+
+    [data-mypage-back] {
+      position: absolute;
+      top: 0;
+      right: 0;
+      margin: 0;
+    }
+
+    #{$eyebrow} {
+      display: block;
+      margin: 0 0 25px !important;
+      padding: 0;
+      color: #aaa !important;
+      font: 400 13px/normal $sans !important;
+      letter-spacing: .16em !important;
+    }
+
+    #{$heading} {
+      display: block;
+      width: 100%;
+      max-width: none;
+      margin: 0 0 18px !important;
+      padding: 0 0 18px;
+      border-bottom: 1px solid #cec7bb;
+      color: $ink !important;
+      font: 400 38px/1.08 $serif !important;
+      letter-spacing: -.05em !important;
+      transform: none;
+    }
+
+    #{$description} {
+      display: block;
+      max-width: none;
+      margin: 0 0 28px !important;
+      padding: 0;
+      border: 0;
+      color: #8c857b !important;
+      font: 400 16px/1.7 $sans !important;
+      letter-spacing: normal !important;
+    }
+  }
+
+  @media (min-width: 641px) {
+    #{$scope} #{$heading} { font-size: 54px !important; }
+  }
+}
+
+@mixin mypage-layout($page, $content: null) {
+  #{$page} {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 22px 0 72px;
+    align-items: flex-start;
+  }
+
+  @if $content {
+    #{$page} #{$content} {
+      width: calc(100% - 32px);
+      margin: 0 auto;
+      transform: none;
+    }
+  } @else {
+    #{$page} { width: calc(100% - 32px); margin-inline: auto; }
+  }
+
+  @media (min-width: 641px) and (max-width: 900px) {
+    #{$page} { padding-top: 94px; }
+    @if $content {
+      #{$page} #{$content} { width: calc(100% - 64px); }
+    } @else {
+      #{$page} { width: calc(100% - 64px); }
+    }
+  }
+
+  @media (min-width: 901px) {
+    #{$page} {
+      width: calc(100% - 220px);
+      margin-left: 220px;
+      padding-top: 72px;
+    }
+    @if $content {
+      #{$page} #{$content} {
+        width: min(1320px, calc(100% - 112px));
+        margin: 0 0 0 max(56px, calc(50% - 660px));
+      }
+    } @else {
+      #{$page} {
+        width: min(1320px, calc(100% - 332px));
+        margin-left: max(276px, calc(50% - 550px));
+      }
+    }
+  }
+}
+
 // Shared desktop treatment based on the Saved Plan page title.
 // Small-screen title scales remain page-specific for readable mobile layouts.
 @mixin saved-plan-title($eyebrow, $title) {

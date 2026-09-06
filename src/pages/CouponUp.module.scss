@@ -90,3 +90,6 @@
     transform: none;
   }
 }
+
+@include title.mypage-layout(".couponUp", ".layout");
+@include title.mypage-heading(".formArea", ".eyebrow", "> h1", ".description");

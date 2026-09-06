@@ -8,7 +8,7 @@
 .mainContent { min-width: 0; }
 .eyebrow { margin: 0; color: #aaa; font: 400 13px "DM Serif Display", serif; letter-spacing: .14em; }
 .intro h1 { margin: 24px 0 0; color: #111; font-family: "Noto Sans KR", sans-serif; font-size: clamp(54px, 4.25vw, 82px); font-weight: 400; line-height: 1.14; letter-spacing: -.055em; }
-.description { margin: 22px 0 0; color: #4f4b46; font-family: "Noto Sans KR", sans-serif; font-size: 17px; line-height: 1.7; }
+.description { margin: 0; color: #8c857b; font-family: "Noto Sans KR", sans-serif; font-size: 16px; line-height: 1.7; }
 
 .faq { margin-top: 42px; }
 .faq h2 { margin: 0 0 8px; padding-bottom: 12px; color: #aaa; font: 400 13px "DM Serif Display", serif; letter-spacing: .16em; }
@@ -30,7 +30,6 @@
   opacity: 0.8;
 }
 .visual { position: relative; align-self: start; margin: 0; padding-top: 10px; }
-.stamp { position: absolute; z-index: 1; top: -16px; left: -184px; width: 210px; height: 112px; background: url("/Mypage-img/u.png") center / contain no-repeat; opacity: .38; transform: rotate(-8deg); }
 .photoFrame { position: relative; height: 480px; margin: 0; padding: 14px; border: 1px solid #cbc3b8; clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 0 100%); }
 .photoFrame::after { position: absolute; top: 7px; right: 7px; bottom: 7px; left: 7px; border: 1px solid #ddd6cd; clip-path: inherit; content: ""; pointer-events: none; }
 .photoFrame img { width: 100%; height: 100%; object-fit: cover; object-position: 56% center; }
@@ -47,16 +46,13 @@
   .contactPage { width: calc(100% - 220px); margin-left: 220px; }
 }
 
-@media (min-width: 641px) {
-  .faq h2 { font: 400 13px/1 $sans; letter-spacing: .16em; }
-}
+.faq h2 { font: 400 13px/1 $sans; letter-spacing: .16em; }
 
 @include tablet {
   .contactPage { padding: 52px 0 0; }
   .content { grid-template-columns: minmax(0, 1fr) 290px; gap: 48px; width: min(100% - 64px, 1120px); }
   .intro h1 { font-size: 56px; }
   .photoFrame { height: 420px; }
-  .stamp { display: none; }
   .helpBox { grid-template-columns: 88px 1fr 240px; }
 }
 
@@ -65,7 +61,6 @@
   .content { display: flex; width: calc(100% - 32px); flex-direction: column; gap: 30px; }
   .eyebrow { font-size: 13px; letter-spacing: .16em; }
   .intro h1 { margin-top: 16px; font-size: 38px; }
-  .description { margin-top: 16px; font-size: 14px; }
   .faq { margin-top: 30px; }
   .faqList summary { min-height: 50px; padding: 0 8px; font-size: 14px; }
   .faqList details > p { padding: 0 30px 16px 8px; font-size: 12px; }
@@ -92,3 +87,59 @@
 }
 
 @include title.saved-plan-title(".eyebrow", ".intro h1");
+
+// Match SavedPlan's page inset and spacing between the two titles.
+.contactPage { padding-top: 22px; }
+.eyebrow { margin: 0 0 25px !important; line-height: normal !important; }
+.intro h1 {
+  margin: 20px 0 18px !important;
+  padding-bottom: 18px;
+  border-bottom: 1px solid #cec7bb;
+}
+
+@media (min-width: 641px) {
+  .contactPage { padding-top: 94px; }
+}
+
+@media (min-width: 901px) {
+  .contactPage {
+    --contact-body-offset: clamp(48px, 7vh, 96px);
+    padding-top: 72px;
+    padding-bottom: 72px;
+  }
+  .content { margin-left: max(56px, calc(50% - 660px)); margin-right: 0; }
+  .faq { margin-top: calc(42px + var(--contact-body-offset)); }
+  .visual {
+    display: flex;
+    flex-direction: column;
+    align-self: stretch;
+    margin-top: var(--contact-body-offset);
+  }
+  .photoFrame { flex: 1; height: auto; }
+  .photoFrame img {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    width: calc(100% - 28px);
+    height: calc(100% - 28px);
+  }
+}
+
+.contactPage {
+  min-height: 100svh;
+  padding-bottom: 32px;
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .contactPage { min-height: calc(100svh - 56px); }
+}
+
+@media (max-width: 640px) {
+  .contactPage {
+    min-height: calc(100svh - 56px - 58px - env(safe-area-inset-bottom));
+  }
+}
+
+:global(body):has(.contactPage) :global(footer) {
+  margin-top: 0;
+}

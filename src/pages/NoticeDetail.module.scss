@@ -1,3 +1,4 @@
+@use "../styles/representative-title" as title;
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 @use "../styles/mypage-global" as *;
@@ -90,3 +91,9 @@
   display: inline-block;
   margin-top: 2rem;
 }
+
+@include title.mypage-layout(".page", ".article");
+@include title.mypage-heading(".article", "> .eyebrow", "> h1", "> .meta");
+.article > .divider { display: none; }
+
+.article > .back { position: absolute; top: 0; right: 0; margin: 0; }
