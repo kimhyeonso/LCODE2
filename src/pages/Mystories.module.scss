@@ -479,50 +479,43 @@ h1 {
 @include title.mypage-heading(".stories", "> .eyebrow", "> h1", "> .description");
 .stories > .divider { display: none; }
 
-// 모바일: 여행 리뷰(STORIES) 카드만 가로 스와이프 슬라이더로 표시합니다.
-// SHOPPING REVIEW(상품)는 기존 그리드 그대로 둡니다.
-// 규칙 순서상 마지막에 두어 앞선 카드/버튼 규칙을 확실히 덮어씁니다.
-@include mobile {
-  .storyList {
-    display: flex;
-    gap: 0;
-    margin-top: 0.9rem;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-  .storyList::-webkit-scrollbar { display: none; }
-  .storyCard,
-  .storyCard:nth-child(n + 2) {
-    display: block;
-    flex: 0 0 100%;
-    scroll-snap-align: start;
-  }
+.stories .emptyState { padding: 32px 20px; border: 1px solid #ddd9d2; margin: 24px 0; }
+.stories .emptyState h2 { font-size: 18px; line-height: 1.6; }
+.stories .emptyState p { margin-top: 12px; font-size: 14px; color: #777; }
+.stories .newReview { display: flex; align-items: center; justify-content: center; min-height: 52px; margin-top: 20px; padding: 12px 20px; background: #171714; color: #fff; font-size: 14px; }
+.storyCard .storyInfo { width: 100%; }
+.stories .storyList .storyCard { display: block; aspect-ratio: auto; min-height: 0; margin-bottom: 16px; }
+.stories .storyInfo { padding: 22px 18px; }
+.stories .storyInfo h2 { overflow-wrap: anywhere; }
+.stories .storyInfo footer { margin-top: 20px; }
+.stories .reviewSlider { display: grid; grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 8px; align-items: center; }
+.reviewSlider .slideViewport { overflow: hidden; min-width: 0; }
+.reviewSlider .slideTrack { display: flex; transition: transform 300ms ease; }
+.reviewSlider .reviewSlide { flex: 0 0 100%; min-width: 0; margin: 0; }
+.reviewSlider .slideArrow { width: 36px; min-height: 48px; padding: 0; border: 1px solid #ddd9d2; background: #fff; color: #171714; font-size: 28px; cursor: pointer; }
+.reviewSlider .slideArrow:disabled { opacity: .3; cursor: default; }
+.reviewSlider .slideCount { grid-column: 1 / -1; margin: 0; text-align: center; font-size: 12px; }
+@media (prefers-reduced-motion: reduce) { .reviewSlider .slideTrack { transition: none; } }
 
-  // 상세보기 / 리뷰쓰기 버튼: 두 카드 모두 동일한 컴팩트 규격으로 통일합니다.
-  .storyInfo footer,
-  .productCard footer {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    align-items: stretch;
-  }
-  .storyInfo footer > a,
-  .storyInfo footer > a:first-child,
-  .storyInfo footer > a:last-child,
-  .productCard footer a,
-  .productCard footer a:first-child,
-  .productCard footer a:last-child {
-    display: grid;
-    box-sizing: border-box;
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
-    height: 36px;
-    margin-top: 0;
-    padding: 0 10px;
-    font-size: 11px;
-    line-height: 1;
-    white-space: nowrap;
-  }
+.shopping .productCard footer {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
 }
+
+.shopping .productCard footer > a,
+.shopping .productCard footer > button {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  min-height: 50px;
+  height: 50px;
+  margin: 0;
+  padding: 0 8px;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0 !important;
+  white-space: nowrap;
+}
+.shopping .productCard footer > button:disabled { opacity: .5; cursor: default; }

@@ -29,6 +29,7 @@ import Notice from "./pages/Notice";
 import NoticeDetail from "./pages/NoticeDetail";
 import OpenGuide from "./pages/OpenGuide";
 import Review from "./pages/Review";
+import ReviewDetail from "./pages/ReviewDetail";
 import Buy from "./pages/Buy";
 import Paking from "./pages/Paking";
 import NotFound from "./pages/NotFound";
@@ -158,7 +159,8 @@ export default function App() {
           <Route path="/buy" element={<Buy />} />
           <Route path="/paking" element={<Paking />} />
           <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
-          <Route path="/mystories" element={<Mystories />} />
+          <Route path="/mystories" element={<ProtectedRoute><Mystories /></ProtectedRoute>} />
+          <Route path="/review/:reviewId" element={<ProtectedRoute><ReviewDetail /></ProtectedRoute>} />
           <Route path="/mypagemain" element={<MyPageMain />} />
           <Route
             path="/review"

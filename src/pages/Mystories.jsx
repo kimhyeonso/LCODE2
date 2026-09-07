@@ -1,12 +1,13 @@
 import MypageBackLink from "../components/MypageBackLink";
 import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import products from "../data/products.json";
 import { myStoryTrips, shoppingReviewLimit } from "../data/myStoriesSummary";
 import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Mystories.module.scss";
+import { getReviewProducts } from "../services/purchaseHistory";
 
 const reviewStorageKey = "lcode-saved-reviews";
 const fallbackNames = ["여행용 키트", "멀티 어댑터", "트래블 파우치", "캐리어 커버"];
@@ -35,73 +36,118 @@ const categorizedProducts = products.map((product, index) => ({
   displayImage: getProductImage(index) || product.image || "",
 }));
 
-function StoryCard({ title, review }) {
+function StoryCard({ review }) {
   return <article className={styles.storyCard}>
-    <div className={styles.storyImage} aria-hidden="true" />
-    <div className={styles.storyInfo}><h2>{title}</h2><p>나만의 여행</p><small>2026.08.17 - 08.20 | 12개 일정</small><footer>
-      <Link to="/plan/saved">상세 보기</Link>
-      <Link className={styles.reviewLink} to="/review" state={{ tripTitle: title, review }}>{review ? "리뷰 수정" : "리뷰 쓰기"}</Link>
+    <div className={styles.storyInfo}><h2>{review.title}</h2><p>{review.tripTitle || "여행 리뷰"}</p><small>평점 {review.rating} / 5</small><footer>
+      <Link to={`/review/${encodeURIComponent(review.id)}`}>상세 보기</Link>
+      <Link className={styles.reviewLink} to="/review" state={{ review }}>리뷰 수정</Link>
     </footer></div>
   </article>;
 }
 
 export default function Mystories() {
   const { user } = useAuth();
-  const [reviews, setReviews] = useState(() => { try { return JSON.parse(localStorage.getItem(reviewStorageKey)) || []; } catch { return []; } });
-  const storyTrackRef = useRef(null);
-  const [storyIndex, setStoryIndex] = useState(0);
-
+  const [reviews, setReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [slide, setSlide] = useState(0);
+  const [purchasedProducts, setPurchasedProducts] = useState([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [productsError, setProductsError] = useState("");
+  const [deletingId, setDeletingId] = useState("");
+  const deleteLock = useRef(false);
+  const [deleteError, setDeleteError] = useState("");
+  const deleteProductReview = async (review) => {
+    if (deleteLock.current || review.userId !== user.uid) return;
+    if (!window.confirm("제품 리뷰를 삭제할까요? 내용과 사진이 함께 삭제되며 복구할 수 없습니다.")) return;
+    deleteLock.current = true;
+    setDeletingId(review.id);
+    setDeleteError("");
+    let serverDeleted = false;
+    try {
+      if (!review.id.startsWith("local-")) {
+        await deleteDoc(doc(db, "reviews", review.id));
+        serverDeleted = true;
+      }
+      const local = JSON.parse(localStorage.getItem(reviewStorageKey) || "[]");
+      if (Array.isArray(local)) localStorage.setItem(reviewStorageKey, JSON.stringify(local.filter((item) => !(item.id === review.id && item.userId === user.uid))));
+      setReviews((current) => current.filter((item) => item.id !== review.id));
+    } catch {
+      setDeleteError(serverDeleted ? "서버에서 삭제했지만 기기 저장 내용을 정리하지 못했어요. 삭제를 다시 눌러 주세요." : "리뷰를 삭제하지 못했어요. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      deleteLock.current = false;
+      setDeletingId("");
+    }
+  };
   useEffect(() => {
+    let active = true;
+    getReviewProducts(user.uid).then((items) => { if (active) setPurchasedProducts(items); })
+      .catch(() => { if (active) setProductsError("구매 내역을 불러오지 못했어요. 새로고침 후 다시 시도해 주세요."); })
+      .finally(() => { if (active) setProductsLoading(false); });
+    return () => { active = false; };
+  }, [user.uid]);
+  useEffect(() => {
+    let active = true;
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem(reviewStorageKey)) || []; } catch { /* No saved reviews. */ }
+    local = Array.isArray(local) ? local.filter((review) => user?.uid && review.userId === user.uid) : [];
     if (!db || !user?.uid) return;
-    getDocs(collection(db, "reviews")).then((snapshot) => {
-      const remoteReviews = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })).filter((review) => review.userId === user.uid);
-      if (!remoteReviews.length) return;
-      setReviews((localReviews) => {
-        const merged = [...remoteReviews];
-        localReviews.forEach((review) => { if (!merged.some((item) => item.id === review.id)) merged.push(review); });
-        localStorage.setItem(reviewStorageKey, JSON.stringify(merged));
-        return merged;
-      });
-    }).catch((error) => console.warn("저장된 리뷰를 불러오지 못했습니다.", error));
+    getDocs(query(collection(db, "reviews"), where("userId", "==", user.uid))).then((snapshot) => {
+      if (!active) return;
+      const remote = snapshot.docs.map((item) => ({ ...item.data(), id: item.id }));
+      const merged = [...local.filter((item) => item.pendingSync), ...remote.filter((item) => !local.some((saved) => saved.id === item.id && saved.pendingSync))];
+      // Only unsynced drafts survive a successful server refresh.
+      setReviews(merged);
+    }).catch(() => { if (active) { setReviews(local); setError("리뷰를 불러오지 못했어요. 잠시 후 새로고침해 주세요."); } })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, [user?.uid]);
 
-  const visibleProducts = categorizedProducts.slice(0, shoppingReviewLimit);
-
-  const handleStoryScroll = () => {
-    const track = storyTrackRef.current;
-    if (!track || !track.clientWidth) return;
-    setStoryIndex(Math.round(track.scrollLeft / track.clientWidth));
-  };
-
-  const goToStory = (index) => {
-    const track = storyTrackRef.current;
-    if (track) track.scrollTo({ left: index * track.clientWidth, behavior: "smooth" });
-  };
+  const productReviews = reviews.filter((item) => item.userId === user.uid && item.productId);
+  const reviewProducts = productReviews.filter((review) => !purchasedProducts.some((item) => item.id === review.productId))
+    .map((review) => ({ id: review.productId, name: review.productName, price: null, image: "" }));
+  const visibleProducts = [...purchasedProducts, ...reviewProducts].filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index).map((product) => ({ ...product, displayName: product.name,
+    displayImage: product.image || categorizedProducts.find((item) => String(item.id) === product.id)?.displayImage || "" }));
+  const travelReviews = reviews.filter((item) => item.userId === user?.uid && !item.productName);
+  const currentSlide = Math.min(slide, Math.max(0, travelReviews.length - 1));
 
   return <main className={styles.mystories}><div className={styles.content}>
     <section className={styles.stories} aria-labelledby="my-stories-title">
       <MypageBackLink /><p className={styles.eyebrow}>JOURNAL</p><h1 id="my-stories-title">MY<span className={styles.mobileBreak}><br /></span> STORIES</h1><p className={styles.description}>나만의 여행을 위해 남긴 글</p><div className={styles.divider} />
-      <div className={styles.storyList} ref={storyTrackRef} onScroll={handleStoryScroll}>{myStoryTrips.map((title) => <StoryCard key={title} title={title} review={reviews.find((item) => item.tripTitle === title)} />)}</div>
-      {myStoryTrips.length > 0 && (
-        <div className={styles.storyDots}>
-          {myStoryTrips.map((title, index) => (
-            <button key={title} type="button" className={index === storyIndex ? styles.activeDot : ""} aria-label={`${index + 1}번째 여행 리뷰 보기`} onClick={() => goToStory(index)} />
-          ))}
-        </div>
-      )}
+      {loading && <p role="status">리뷰를 불러오고 있어요.</p>}
+      {error && <p role="alert">{error}</p>}
+      {travelReviews.length > 0 && <section className={styles.reviewSlider} aria-label="작성한 여행 리뷰" aria-roledescription="슬라이드">
+        <button type="button" className={styles.slideArrow} aria-label="이전 리뷰" disabled={travelReviews.length < 2} onClick={() => setSlide((currentSlide - 1 + travelReviews.length) % travelReviews.length)}>‹</button>
+        <div className={styles.slideViewport}><div className={styles.slideTrack} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+          {travelReviews.map((review, index) => <div className={`${styles.storyList} ${styles.reviewSlide}`} key={review.id} aria-hidden={index !== currentSlide} inert={index !== currentSlide}><StoryCard review={review} /></div>)}
+        </div></div>
+        <button type="button" className={styles.slideArrow} aria-label="다음 리뷰" disabled={travelReviews.length < 2} onClick={() => setSlide((currentSlide + 1) % travelReviews.length)}>›</button>
+        <p className={styles.slideCount} aria-live="polite">{currentSlide + 1} / {travelReviews.length}</p>
+      </section>}
+      {!loading && !error && !reviews.some((item) => item.userId === user?.uid && !item.productName) && <div className={styles.emptyState}><h2>아직 작성한 여행 리뷰가 없어요.</h2><p>첫 여행 이야기를 남겨보세요.</p></div>}
+      <Link className={styles.newReview} to="/review" state={{ newReview: true }}>새 리뷰 작성</Link>
     </section>
     <section className={styles.shopping} aria-labelledby="shopping-review-title">
       <h2 className={styles.shoppingTitle} id="shopping-review-title">SHOPPING REVIEW</h2>
-      <div className={styles.productGrid}>{visibleProducts.map((product) => <article className={styles.productCard} key={product.id}>
+      {productsLoading && <p role="status">구매 내역을 불러오고 있어요.</p>}
+      {productsError && <p role="alert">{productsError}</p>}
+      {deleteError && <p role="alert">{deleteError}</p>}
+      {!productsLoading && !productsError && !visibleProducts.length && <p>최근 30일간 구매한 상품이 없어요.</p>}
+      <div className={styles.productGrid}>{visibleProducts.map((product) => {
+        const review = reviews.find((item) => item.userId === user.uid && item.productId === product.id);
+        return <article className={styles.productCard} key={product.id}>
         <div
           className={styles.productImage}
           role={product.displayImage ? "img" : undefined}
           aria-label={product.displayImage ? `${product.displayName} 상품 이미지` : undefined}
           aria-hidden={product.displayImage ? undefined : "true"}
           style={product.displayImage ? { backgroundImage: `url("${product.displayImage}")`, backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundSize: "cover" } : undefined}
-        /><h2>{product.displayName}</h2><small>{Number(product.price).toLocaleString("ko-KR")}원</small><p>평점 <span>★ ★ ★ ★ ★</span></p>
-        <footer><Link to="/shop">상세보기</Link><Link to="/review" state={{ productName: product.displayName }}>리뷰쓰기</Link></footer>
-      </article>)}</div>
+        /><h2>{product.displayName}</h2>{product.price !== null && <small>{Number(product.price).toLocaleString("ko-KR")}원</small>}<p>{review ? `내 평점 ${review.rating} / 5` : "리뷰 작성 가능"}</p>
+        <footer>{review ? <>
+          {deletingId === review.id ? <button type="button" disabled>리뷰 수정</button> : <Link to={`/review?productId=${encodeURIComponent(product.id)}`} state={{ review, productName: product.displayName }}>리뷰 수정</Link>}
+          <button type="button" disabled={Boolean(deletingId)} onClick={() => deleteProductReview(review)}>{deletingId === review.id ? "삭제 중..." : "리뷰 삭제"}</button>
+        </> : <><Link to={`/shop/${encodeURIComponent(product.id)}`}>상세보기</Link>{loading || error ? <button type="button" disabled>리뷰 확인 중</button> : <Link to={`/review?productId=${encodeURIComponent(product.id)}`} state={{ productName: product.displayName }}>리뷰쓰기</Link>}</>}</footer>
+      </article>; })}</div>
     </section>
   </div></main>;
 }

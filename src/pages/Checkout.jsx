@@ -10,7 +10,8 @@ import {
 } from "react-router-dom";
 
 import { useShop } from "../hooks/useShop";
-import { enrichShopProduct } from "../utils/shopProductResolver";
+import { useAuth } from "../hooks/useAuth";
+import { recordPurchase } from "../services/purchaseHistory";
 import { decreaseProductStocks } from "../services/firestoreService";
 import styles from "./Shop.module.scss";
 
@@ -317,6 +318,8 @@ function buildCheckoutItems(
 ========================================================= */
 
 export default function Checkout() {
+  const { user } = useAuth();
+  const paymentLock = useRef(false);
   const {
     cart,
     removePurchasedItems,
@@ -847,7 +850,7 @@ export default function Checkout() {
 
   const handlePayment =
     async () => {
-      if (loading) {
+      if (loading || paymentLock.current) {
         return;
       }
 
@@ -860,17 +863,20 @@ export default function Checkout() {
 
 
       setLoading(true);
+      paymentLock.current = true;
 
       try {
         await decreaseProductStocks(checkoutItems);
       } catch (error) {
-        console.error("상품 재고 차감 실패", error);
         window.alert(error?.message || "재고를 확인하지 못했습니다. 잠시 후 다시 시도해 주세요.");
+        paymentLock.current = false;
         setLoading(false);
         return;
       }
 
       const orderData = {
+        demo: true,
+        userId: user?.uid || null,
         orderNumber:
           `LCODE-${Date.now()}`,
 
@@ -936,6 +942,11 @@ export default function Checkout() {
       };
 
 
+      try {
+        await recordPurchase(user?.uid, orderData);
+      } catch {
+        window.alert("주문 이력을 저장하지 못했습니다. 주문번호를 보관하고 고객센터에 문의해 주세요.");
+      }
       sessionStorage.setItem(
         "lastOrder",
         JSON.stringify(
@@ -2605,6 +2616,7 @@ export default function Checkout() {
               <br />
               & PAYMENT
             </h1>
+            <p>데모 결제 화면입니다. 실제 결제·배송은 진행되지 않지만 주문 수량만큼 상품 재고가 차감됩니다. 배송 정보는 예시로 입력해 주세요.</p>
 
 
             <div
@@ -3187,9 +3199,8 @@ export default function Checkout() {
                     </b>
 
                     <p>
-                      결제하기를 누르면
-                      카카오페이 결제
-                      단계로 진행됩니다.
+                      카카오페이 결제 화면을 체험하는 데모입니다.
+                      실제 결제나 외부 앱 연결은 진행되지 않습니다.
                     </p>
                   </div>
                 )}
@@ -3205,9 +3216,8 @@ export default function Checkout() {
                     </b>
 
                     <p>
-                      결제하기를 누르면
-                      네이버페이 결제
-                      단계로 진행됩니다.
+                      네이버페이 결제 화면을 체험하는 데모입니다.
+                      실제 결제나 외부 앱 연결은 진행되지 않습니다.
                     </p>
                   </div>
                 )}
@@ -3491,15 +3501,15 @@ export default function Checkout() {
                 }
               >
                 {total.toLocaleString()}
-                원 결제하기
+                원 데모 결제하기
               </button>
 
 
               <p
                 className="lcode-payNotice"
               >
-                주문 내용을 확인한 후
-                결제를 진행해주세요.
+                결제 체험용 데모입니다. 실제 요금 청구·배송은 없으며,
+                데모 주문으로 리뷰 기능을 이용할 수 있습니다.
               </p>
             </aside>
           </div>
@@ -3521,11 +3531,11 @@ export default function Checkout() {
             />
 
             <small>
-              PAYMENT PROCESSING
+              DEMO ORDER
             </small>
 
             <h2>
-              결제를 처리하고
+              데모 주문을 생성하고
               있습니다.
             </h2>
 

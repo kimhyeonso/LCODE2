@@ -354,7 +354,7 @@ export default function Plan() {
         <h1 className={styles.heroTitle}>{heroCityName}</h1>
         <p className={styles.heroWeather}>
           <b>{weather.loading ? "--" : weather.temperature ?? "--"}°C</b><span>·</span>
-          <span>{weather.error ? "WEATHER" : weather.label}</span><span>·</span>
+          <span>{weather.error ? "날씨 정보 없음" : weather.label}</span><span>·</span>
           <span>{startDate && endDate ? `${startDate.slice(5).replace("-", "/")}–${endDate.slice(5).replace("-", "/")}` : selectedTrip.duration}</span>
         </p>
       </section>
@@ -379,7 +379,7 @@ export default function Plan() {
       </section>
 
       <section className={styles.visualBreak} aria-label="여행 장소 지도">
-        <PlaceMap places={allPlaces} fitToPlaces />
+        <PlaceMap places={allPlaces} fitToPlaces fallbackCenter={weather.location} requireLocation />
       </section>
 
       <section className={styles.expense} aria-labelledby="estimated-expense-title">
