@@ -24,7 +24,7 @@ import styles from "./Shop.module.scss";
 ========================================================= */
 
 const detailImageModules = import.meta.glob(
-  "../assets/images/detail/*.png",
+  "../assets/images/detail/*.{webp,png,jpg,jpeg}",
   {
     eager: true,
     import: "default",
@@ -35,9 +35,15 @@ const getDetailImage = (
   number,
   suffix = ""
 ) => {
-  const path = `../assets/images/detail/${number}${suffix}.png`;
+  const base = `../assets/images/detail/${number}${suffix}`;
 
-  return detailImageModules[path] || "";
+  return (
+    detailImageModules[`${base}.webp`]
+    || detailImageModules[`${base}.png`]
+    || detailImageModules[`${base}.jpg`]
+    || detailImageModules[`${base}.jpeg`]
+    || ""
+  );
 };
 
 const STANDARD_OPTION = {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
+import BackButton from "../components/BackButton";
 import styles from "./ExchangeRate.module.scss";
 import { getExchangeRates } from "../services/exchangeRateApi";
 
@@ -95,7 +96,7 @@ const ExchangeRate = () => {
 
   return (
     <main className={styles.page}>
-      <Link to="/" className={styles.backButton}>← BACK</Link>
+      <BackButton className={styles.backButton} />
       <header className={styles.intro}>
         <p>EXCHANGE</p>
         <h1>TRAVEL<br />EXCHANGE</h1>

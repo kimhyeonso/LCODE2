@@ -8,7 +8,9 @@
   right: 0;
   bottom: 0;
   height: calc(58px + env(safe-area-inset-bottom));
-  background: #f7f7f7;
+  background: rgba(255, 255, 255, 0.78);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
   border-top: 1px solid #eee;
   align-items: center;
   justify-content: space-around;
@@ -39,29 +41,29 @@
   cursor: pointer;
 }
 .nav a > span {
-  height: 25px;
+  height: 28px;
   display: grid;
   place-items: center;
 }
 .nav a > span img {
-  width: 23px;
-  height: 23px;
+  width: 27px;
+  height: 27px;
   display: block;
 }
 .nav small {
-  font-size: 13px;
+  font-size: 10px;
 }
 .nav .add {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background: #ddd;
 }
 .nav .add img {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
 }
 .active small {
   font-weight: 700;

@@ -114,9 +114,22 @@ export async function getPlan(id) {
   return snap.exists() ? { id: snap.id, ...snap.data() } : null;
 }
 
-export async function updatePlan(userId, planId, data) {
+export async function updatePlan(userId, planId, data, expectedDays) {
   if (!userId || !planId) throw new Error("일정 수정 정보가 올바르지 않습니다.");
   const planRef = doc(requireDb(), "plans", planId);
+  if (expectedDays) {
+    return runTransaction(requireDb(), async (transaction) => {
+      const current = await transaction.get(planRef);
+      if (!current.exists() || current.data().userId !== userId) throw new Error("일정 수정 권한이 없습니다.");
+      const stable = (value) => Array.isArray(value) ? value.map(stable)
+        : value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, stable(value[key])])) : value;
+      if (JSON.stringify(stable(current.data().days)) !== JSON.stringify(stable(expectedDays))) {
+        throw new Error("다른 화면에서 일정이 변경되었습니다. 최신 일정에서 다시 리믹스해 주세요.");
+      }
+      transaction.update(planRef, { ...data, updatedAt: serverTimestamp() });
+      return { id: planId, ...current.data(), ...data };
+    });
+  }
   const snap = await getDoc(planRef);
   if (!snap.exists()) throw new Error("수정할 일정을 찾을 수 없습니다.");
   if (snap.data().userId !== userId) {

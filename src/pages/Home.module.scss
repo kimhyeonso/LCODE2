@@ -58,6 +58,7 @@ $type-display: 36px;
 }
 
 .heroSlide {
+  position: relative;
   flex: 0 0 100%;
   min-width: 0;
   height: 100%;
@@ -76,6 +77,128 @@ $type-display: 36px;
   object-fit: cover;
   object-position: center;
   user-select: none;
+}
+
+.heroCopy {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: clamp(28px, 9.4vw, 180px);
+  width: min(44%, 640px);
+  transform: translateY(-50%);
+  color: $home-ink;
+}
+
+.heroCopyCentered {
+  left: 50%;
+  width: min(54%, 680px);
+  text-align: center;
+  transform: translate(-50%, -50%);
+}
+
+.heroCopyCentered .heroEyebrow {
+  justify-content: center;
+}
+
+.heroCopyCentered .heroCta {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.heroEyebrow,
+.heroSubtitle,
+.heroDescription {
+  margin: 0;
+}
+
+.heroEyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #8d785e;
+  font: 500 clamp(11px, 0.9vw, 14px)/1.2 $sans;
+  letter-spacing: 0.22em;
+}
+
+.heroEyebrow::after {
+  width: clamp(40px, 7vw, 150px);
+  height: 1px;
+  background: currentColor;
+  content: "";
+  opacity: 0.5;
+}
+
+.heroCopy h1 {
+  margin: clamp(14px, 2vw, 28px) 0 0;
+  font: 400 clamp(38px, 7vw, 112px)/0.9 $serif;
+  letter-spacing: -0.035em;
+  white-space: pre-line;
+}
+
+.heroCopyCompactTitle h1 {
+  font-size: clamp(30px, 5vw, 78px);
+  line-height: 1;
+}
+
+.heroSubtitle {
+  margin-top: clamp(12px, 1.5vw, 22px);
+  color: #8d785e;
+  font: 400 clamp(17px, 2vw, 30px)/1.25 $serif;
+}
+
+.heroDescription {
+  margin-top: clamp(16px, 2.2vw, 32px);
+  font: 400 clamp(12px, 1.1vw, 17px)/1.6 $sans;
+  letter-spacing: -0.025em;
+}
+
+.heroCta {
+  width: fit-content;
+  min-width: clamp(160px, 14vw, 252px);
+  height: clamp(44px, 3.5vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+  margin-top: clamp(18px, 2.6vw, 42px);
+  padding: 0 clamp(17px, 1.7vw, 28px);
+  background: $home-ink;
+  color: #fff;
+  font: 500 clamp(11px, 0.85vw, 13px)/1 $sans;
+  letter-spacing: 0.14em;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.heroCta:hover,
+.heroCta:focus-visible {
+  background: #fff;
+  color: $home-ink;
+  transform: translateY(-2px);
+}
+
+.heroSlideDark .heroCopy {
+  color: #f8f3ea;
+}
+
+.heroSlideDark .heroCopy h1 {
+  color: #fff;
+}
+
+.heroSlideDark .heroEyebrow,
+.heroSlideDark .heroSubtitle {
+  color: #d7b27b;
+}
+
+.heroSlideDark .heroCta {
+  border: 1px solid rgba(215, 178, 123, 0.72);
+  background: rgba(7, 12, 16, 0.62);
+  color: #e2be88;
+}
+
+.heroSlideDark .heroCta:hover,
+.heroSlideDark .heroCta:focus-visible {
+  background: #e2be88;
+  color: #131313;
 }
 
 .heroDots {
@@ -113,6 +236,70 @@ $type-display: 36px;
   .heroVisual {
     height: auto;
     aspect-ratio: 1122 / 1402;
+  }
+
+  .heroCopy {
+    top: 9.5%;
+    width: min(78%, 340px);
+    transform: none;
+  }
+
+  .heroCopyCentered {
+    top: 13%;
+    left: 50%;
+    width: min(86%, 360px);
+    transform: translateX(-50%);
+  }
+
+  .heroCopyMobileRight {
+    left: auto;
+    right: 6%;
+    width: min(60%, 270px);
+    text-align: right;
+  }
+
+  .heroCopyMobileRight .heroEyebrow {
+    justify-content: flex-end;
+  }
+
+  .heroCopyMobileRight .heroCta {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .heroCopyMobileRight .heroEyebrow,
+  .heroCopyMobileRight .heroSubtitle {
+    color: #5c4a34;
+  }
+
+  // The tower's antenna/spire passes directly behind this text, so a flat
+  // color alone isn't enough once the busy structure crosses the letters -
+  // a soft light halo keeps every word legible regardless of what's behind it.
+  .heroCopyMobileRight .heroEyebrow,
+  .heroCopyMobileRight .heroSubtitle,
+  .heroCopyMobileRight .heroDescription {
+    text-shadow:
+      0 1px 3px rgba(255, 255, 255, 0.9),
+      0 0 10px rgba(255, 255, 255, 0.85),
+      0 0 18px rgba(255, 255, 255, 0.6);
+  }
+
+  .heroEyebrow {
+    gap: 10px;
+    letter-spacing: 0.18em;
+  }
+
+  .heroCopy h1 {
+    font-size: clamp(38px, 11vw, 54px);
+    line-height: 1.04;
+  }
+
+  .heroCopyCompactTitle h1 {
+    font-size: clamp(28px, 8vw, 40px);
+  }
+
+  .heroDescription {
+    max-width: 260px;
   }
 }
 
@@ -406,42 +593,17 @@ $type-display: 36px;
 }
 
 .placeholder {
+  position: relative;
+  overflow: hidden;
   background: $home-placeholder;
 }
 
-.tokyoImage,
-.seoulImage,
-.shanghaiImage,
-.koreaImage,
-.japanImage,
-.chinaImage {
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.tokyoImage {
-  background-image: url("../assets/images/tokyo_japan.jpg");
-}
-
-.seoulImage {
-  background-image: url("../assets/images/seoul_korea.jpg");
-}
-
-.shanghaiImage {
-  background-image: url("../assets/images/shanghai_china.jpg");
-}
-
-.koreaImage {
-  background-image: url("../assets/images/korea.jpg");
-}
-
-.japanImage {
-  background-image: url("../assets/images/japan.jpg");
-}
-
-.chinaImage {
-  background-image: url("../assets/images/china.jpg");
+.bgFillImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .featurePick {
@@ -499,12 +661,10 @@ $type-display: 36px;
 }
 
 .destinationHero {
+  position: relative;
   height: 316px;
+  overflow: hidden;
   background: $home-sage;
-  background-image: url("../assets/images/BANNER.png");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   margin: 0;
   display: block;
 }
@@ -569,6 +729,8 @@ $type-display: 36px;
 }
 
 .countryImage {
+  position: relative;
+  overflow: hidden;
   background-color: $home-placeholder;
 }
 
@@ -601,12 +763,53 @@ $type-display: 36px;
 ======================================== */
 
 .essentialGrid {
+  display: flex;
+  --shop-gap: 12px;
+  gap: var(--shop-gap);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  cursor: none;
+  user-select: none;
+}
+
+.essentialGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.essentialGrid img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+.shopDragCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 40;
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  width: 64px;
+  height: 64px;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  color: $ink;
+  font: 600 11px $sans;
+  letter-spacing: 0.08em;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  will-change: transform, opacity;
+}
+
+@media (max-width: 900px) {
+  .shopDragCursor {
+    display: none;
+  }
 }
 
 .productCard {
+  flex: 0 0 calc((100% - var(--shop-gap) * 2) / 3);
   min-width: 0;
 }
 
@@ -810,7 +1013,7 @@ $type-display: 36px;
 
 @media (max-width: 640px) {
   .essentialGrid {
-    gap: 8px;
+    --shop-gap: 8px;
   }
 
   .productThumbnail {
@@ -873,7 +1076,7 @@ $type-display: 36px;
 
 @media (min-width: 901px) {
   .essentialGrid {
-    gap: 24px;
+    --shop-gap: 24px;
   }
 
   .productThumbnail {
@@ -951,11 +1154,8 @@ $type-display: 36px;
 .journalVisual {
   height: 280px;
   background: $home-placeholder;
-  background-image: url("../assets/images/journal_tokyo.jpg");
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
   position: relative;
+  overflow: hidden;
 }
 
 .journalVisual span {

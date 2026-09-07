@@ -326,11 +326,11 @@ h1 {
   .wishlist { margin-top: 0; padding: 22px 0 72px; }
   .content { width: calc(100% - 32px); margin: 0 auto; transform: none; }
   .content > :first-child { margin-bottom: 8px; }
-  .content > :first-child,
+  .content > :first-child { margin-right: 25px; margin-left: 25px; }
   .eyebrow,
   h1,
   .description,
-  .divider { margin-right: 25px; margin-left: 25px; }
+  .divider { margin-right: 0; margin-left: 0; }
   .eyebrow { margin-top: 0; }
   .eyebrow { font-size: 13px; letter-spacing: .16em !important; }
   h1 { margin-top: 10px; font-size: 38px; line-height: 1.08; }
@@ -352,4 +352,6 @@ h1 {
 
 @include title.mypage-layout(".wishlist", ".content");
 @include title.mypage-heading(".content", ".eyebrow", "> h1", ".description");
+.content > [data-mypage-back] { letter-spacing: .2em !important; }
+.content > [data-mypage-back] span { letter-spacing: 0 !important; }
 .content > .divider { display: none; }

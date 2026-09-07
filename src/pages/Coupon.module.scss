@@ -500,9 +500,9 @@ h1 {
   }
   .archiveHeading,
   .description,
-  .divider { margin-right: 25px; margin-left: 0px; }
+  .divider { margin-right: 0; margin-left: 0; }
   .archiveHeading { align-items: flex-start;  }
-  .eyebrow { margin-top: 0; margin-left:25px ; font-size: 13px; letter-spacing: .16em !important; }
+  .eyebrow { margin-top: 0; margin-left: 0; font-size: 13px; letter-spacing: .16em !important; }
   h1 { max-width: 230px; margin-top: 10px; font-size: 38px; line-height: 1.08; }
   .archiveHeading h1 { transform: none; }
   .available { padding-top: 28px; }

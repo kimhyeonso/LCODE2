@@ -81,16 +81,10 @@ $plan-muted: #8b8780;
 }
 .backButton {
   position: absolute;
-  top: 24px;
-  left: 20px;
+  top: 22px;
+  left: 16px;
   z-index: 1;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #fff;
-  font-size: 13px;
-  letter-spacing: .16em;
-  cursor: pointer;
+  margin: 0;
 }
 .heroTop {
   display: flex;
@@ -500,7 +494,7 @@ $plan-muted: #8b8780;
   cursor: wait;
   opacity: 0.62;
 }
-.savedActions {
+.saveArea .savedActions {
   display: grid;
   grid-template-columns: 1fr 1.4fr 1fr;
   gap: 10px;
@@ -533,18 +527,29 @@ $plan-muted: #8b8780;
 }
 
 .savedActions a {
-  grid-auto-flow: column;
+  display: flex;
+  align-items: center;
   justify-content: center;
+  min-width: 0;
+  padding: 12px;
+  white-space: nowrap;
+  line-height: 1.4;
   gap: 9px;
   border-color: #59675e;
   background: #59675e;
 }
 
 .savedActions a span {
+  flex-shrink: 0;
   padding-right: 9px;
   border-right: 1px solid rgba(255, 255, 255, .35);
   font-size: 10px;
   letter-spacing: 1.5px;
+}
+
+.savedActions a b {
+  font: inherit;
+  letter-spacing: 0;
 }
 
 .savedActions button:last-child {
@@ -560,9 +565,34 @@ $plan-muted: #8b8780;
   background: #435148;
 }
 
-@media (max-width: 560px) {
-  .savedActions {
-    grid-template-columns: 1fr;
+@media (max-width: 760px) {
+  .saveArea .savedActions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .saveArea .savedActions > button,
+  .saveArea .savedActions > a {
+    flex: none;
+    width: 100%;
+    min-width: 0;
+    min-height: 56px;
+    padding: 14px 16px;
+    font-size: 14px;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+
+  .saveArea .savedActions > a span {
+    font-size: 11px;
+    letter-spacing: 1px;
+  }
+
+  .saveArea .savedActions > a b {
+    font-size: 14px;
   }
 
   .savedControls > div:first-child {
@@ -1035,7 +1065,6 @@ $plan-muted: #8b8780;
   .planEmpty > span,
   .planEmpty p,
   .planEmpty a,
-  .backButton,
   .heroTop,
   .heroTags,
   .heroWeather,

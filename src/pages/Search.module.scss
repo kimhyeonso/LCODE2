@@ -69,6 +69,28 @@
 .archive {
   margin-top: 28px;
 }
+
+.balanceGameCta {
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 22px;
+  padding: 12px 20px;
+  background: #111;
+  color: #fff;
+  font: 500 13px/1.45 $sans;
+  letter-spacing: -0.025em;
+  text-align: center;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.balanceGameCta:hover,
+.balanceGameCta:focus-visible {
+  background: #333;
+  transform: translateY(-2px);
+}
+
 .controls {
   display: flex;
   align-items: center;
@@ -85,7 +107,7 @@
   letter-spacing: 1px;
 }
 .archive > h2 {
-  margin: 30px 0 14px 14px;
+  margin: 0 0 14px 14px;
   color: $ink;
   font: 600 30px/1.1 $serif;
   letter-spacing: normal;
@@ -111,6 +133,121 @@
   margin: 8px 0 0;
   color: #999;
   font-size: 13px;
+}
+
+.durationBackdrop {
+  position: fixed;
+  z-index: 300;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.durationModal {
+  position: relative;
+  width: min(100%, 760px);
+  padding: 62px 20px calc(36px + env(safe-area-inset-bottom));
+  background: #fff;
+  color: $ink;
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.16);
+}
+
+.modalHandle {
+  position: absolute;
+  top: 27px;
+  left: 50%;
+  width: 36px;
+  height: 3px;
+  border-radius: 3px;
+  transform: translateX(-50%);
+  background: #d1cdc5;
+}
+
+.modalBrand {
+  margin: 0 0 22px 20px;
+  color: #aaa;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.durationModal h2 {
+  margin: 0 20px;
+  font-size: 31px;
+  font-weight: 500;
+  letter-spacing: -1.5px;
+}
+
+.modalMessage {
+  margin: 20px 20px 24px;
+  color: #999;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.durationChoices {
+  display: grid;
+  gap: 8px;
+  margin: 0 20px 28px;
+}
+
+.durationChoices button {
+  min-height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #dedbd6;
+  padding: 14px 16px;
+  background: #fff;
+  color: #777;
+  font-family: $sans;
+  text-align: left;
+  cursor: pointer;
+}
+
+.durationChoices strong {
+  color: $ink;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.durationChoices span {
+  color: #999;
+  font-size: 12px;
+  text-align: right;
+}
+
+.durationChoices button.durationChoiceActive {
+  border-color: $ink;
+  background: #f7f4ed;
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  padding-top: 24px;
+  border-top: 1px solid #dedbd6;
+}
+
+.modalActions button,
+.modalActions a {
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #777;
+  font: 500 14px/1 $sans;
+  cursor: pointer;
+}
+
+.modalActions a {
+  border-color: $ink;
+  background: $ink;
+  color: #fff;
 }
 
 .filterBackdrop {
@@ -248,6 +385,16 @@
   .filterPanel {
     max-height: calc(100dvh - 80px);
   }
+
+  .durationBackdrop {
+    align-items: center;
+  }
+
+  .durationModal {
+    width: min(calc(100% - 64px), 560px);
+    padding: 66px 36px 36px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+  }
 }
 
 @media (min-width: 901px) {
@@ -304,7 +451,12 @@
   }
 
   .archive {
-    margin-top: 72px;
+    margin-top: 32px;
+  }
+  .balanceGameCta {
+    min-height: 64px;
+    margin-top: 28px;
+    font-size: 14px;
   }
   .controls button,
   .controls select {
@@ -313,7 +465,7 @@
     font-size: 10px;
   }
   .archive > h2 {
-    margin: 38px 0 20px;
+    margin: 0 0 20px;
   }
   .results {
     grid-template-columns: repeat(3, minmax(0, 1fr));

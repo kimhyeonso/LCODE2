@@ -997,7 +997,7 @@
     display: flex;
     width: calc(100% - 32px);
     margin: 0 16px;
-    padding: 24px 0 34px;
+    padding: clamp(54px, 8dvh, 72px) 0 34px;
     flex-direction: column;
   }
 
