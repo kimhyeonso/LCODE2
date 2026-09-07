@@ -12,6 +12,24 @@
 }
 
 .review * { box-sizing: border-box; }
+.review .tripPicker { margin-bottom: 28px; }
+.review .tripPicker label { display: block; font-size: 16px; font-weight: 500; }
+.review .tripPicker p { margin: 10px 0; font-size: 13px; line-height: 1.7; }
+.review .tripPicker select { width: 100%; min-height: 50px; padding: 12px; border: 1px solid #ddd9d2; background: #fff; color: #171714; font: inherit; font-size: 14px; }
+.review .photoItem { position: relative; }
+.review .photoItem button { position: absolute; top: 4px; right: 4px; width: 28px; height: 28px; border: 0; border-radius: 50%; background: #111; color: #fff; cursor: pointer; }
+.review .savedPhotos { display: grid; gap: 16px; margin-top: 24px; }
+.review .savedPhotos img { display: block; width: 100%; max-width: 800px; height: auto; border-radius: 4px; }
+
+.review .savedReview { padding: 28px 0 60px; width: 100%; }
+.savedReview h2 { font-size: 24px; line-height: 1.5; overflow-wrap: anywhere; }
+.savedReview p { margin: 20px 0; line-height: 1.7; }
+.savedReview .savedContent { padding: 24px 0; border-block: 1px solid #ddd9d2; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 16px; line-height: 1.9; }
+.savedReview a { display: inline-flex; justify-content: center; padding: 16px 28px; background: #171714; color: #fff; }
+.savedReview .reviewDetailActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; max-width: 440px; margin-top: 24px; }
+.savedReview .reviewDetailActions > * { display: flex; align-items: center; justify-content: center; min-width: 0; min-height: 50px; margin: 0; padding: 12px; border: 1px solid #171714; font: inherit; font-size: 14px; text-decoration: none; }
+.savedReview .reviewDetailActions button { background: #fff; color: #171714; cursor: pointer; }
+.savedReview .reviewDetailActions button:disabled { opacity: .5; cursor: wait; }
 
 .page { width: min(1215px, calc(100% - 24px)); margin: 0 auto; }
 

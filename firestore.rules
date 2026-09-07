@@ -28,7 +28,8 @@ service cloud.firestore {
       }
 
       match /shop/{documentId} {
-        allow read, write: if isOwner(userId) || isAdmin();
+        allow read: if isOwner(userId) || isAdmin();
+        allow write: if isAdmin() || (isOwner(userId) && documentId != 'purchaseHistory');
       }
 
       match /favoriteTrips/{tripId} {
@@ -67,9 +68,15 @@ service cloud.firestore {
 
     match /reviews/{reviewId} {
       allow read: if isSignedIn();
-      allow create: if isOwner(request.resource.data.userId);
+      allow create: if isOwner(request.resource.data.userId)
+        && request.resource.data.get('productId', '') == ''
+        && request.resource.data.get('productName', '') == '';
       allow update: if isOwner(resource.data.userId)
-        && request.resource.data.userId == resource.data.userId;
+        && request.resource.data.userId == resource.data.userId
+        && resource.data.get('productId', '') == ''
+        && resource.data.get('productName', '') == ''
+        && request.resource.data.get('productId', '') == ''
+        && request.resource.data.get('productName', '') == '';
       allow delete: if isOwner(resource.data.userId);
     }
 

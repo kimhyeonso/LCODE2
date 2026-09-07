@@ -1,10 +1,14 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
 import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Review.module.scss";
+import { prepareReviewPhoto } from "../services/reviewPhotos";
+import { getPlans } from "../services/firestoreService";
+import { recentReviewTrips } from "../services/recentReviewTrips";
+import { getReviewProducts, saveProductReview } from "../services/purchaseHistory";
 
 const baseTags = ["도시", "야경", "맛집", "감성", "재방문 의사"];
 const draftKey = "lcode-review-draft";
@@ -15,21 +19,19 @@ function saveReviewLocally(review) {
   try { reviews = JSON.parse(localStorage.getItem(reviewStorageKey)) || []; }
   catch { reviews = []; }
 
-  const index = reviews.findIndex((item) => (
-    item.id === review.id
-    || (item.userId === review.userId && item.tripTitle === review.tripTitle)
-  ));
+  if (!Array.isArray(reviews)) reviews = [];
+  const index = reviews.findIndex((item) => item.id === review.id && item.userId === review.userId);
   const next = index >= 0
     ? reviews.map((item, itemIndex) => itemIndex === index ? review : item)
     : [review, ...reviews];
   localStorage.setItem(reviewStorageKey, JSON.stringify(next));
 }
 
-function readDraft() {
+function readDraft(key) {
   try {
-    return JSON.parse(localStorage.getItem(draftKey)) || {};
+    return JSON.parse(localStorage.getItem(key)) || {};
   } catch {
-    localStorage.removeItem(draftKey);
+    localStorage.removeItem(key);
     return {};
   }
 }
@@ -37,18 +39,54 @@ function readDraft() {
 export default function Review() {
   const { user } = useAuth();
   const { state } = useLocation();
+  const editingReview = state?.review?.userId === user.uid ? state.review : null;
+  const [params] = useSearchParams();
+  const productId = params.get("productId") || state?.review?.productId || "";
+  const isProductReview = Boolean(productId || state?.productName || state?.review?.productName);
+  const [purchase, setPurchase] = useState(null);
+  const [purchaseLoading, setPurchaseLoading] = useState(isProductReview);
+  const [purchaseError, setPurchaseError] = useState("");
+  useEffect(() => {
+    if (!isProductReview || editingReview) return;
+    let active = true;
+    getReviewProducts(user.uid).then((items) => {
+      if (!active) return;
+      const item = items.find((item) => item.id === productId);
+      setPurchase(item || null);
+      if (!item) setPurchaseError("최근 30일 이내에 구매한 상품만 리뷰를 작성할 수 있어요.");
+    }).catch(() => { if (active) setPurchaseError("구매 내역을 확인하지 못했어요. 새로고침 후 다시 시도해 주세요."); })
+      .finally(() => { if (active) setPurchaseLoading(false); });
+    return () => { active = false; };
+  }, [user.uid, productId, isProductReview, editingReview]);
   const navigate = useNavigate();
-  const [draft] = useState(readDraft);
-  const editingReview = state?.review;
+  const userDraftKey = `${draftKey}:${user.uid}:${productId || state?.productName || "travel"}`;
+  const [draft] = useState(() => state?.newReview ? {} : readDraft(userDraftKey));
   const initialReview = editingReview || draft;
   const [rating, setRating] = useState(initialReview.rating || 0);
   const [title, setTitle] = useState(initialReview.title || "");
   const [content, setContent] = useState(initialReview.content || "");
   const [tags, setTags] = useState(initialReview.tags || []);
   const [customTags, setCustomTags] = useState(initialReview.customTags || []);
-  const [photos, setPhotos] = useState([]);
+  const [photos, setPhotos] = useState(() => initialReview.photos || []);
+  const [processingPhotos, setProcessingPhotos] = useState(false);
   const [status, setStatus] = useState({ saving: false, message: "", error: "" });
-  const tripTitle = state?.tripTitle || editingReview?.tripTitle || "후쿠오카 3박 4일";
+  const productName = isProductReview ? purchase?.name || state?.productName || editingReview?.productName || "상품 리뷰" : "";
+  const [tripId, setTripId] = useState(initialReview.tripId || "");
+  const [trips, setTrips] = useState([]);
+  const [tripsLoading, setTripsLoading] = useState(!productName && !editingReview);
+  const [tripsError, setTripsError] = useState("");
+  useEffect(() => {
+    if (productName || editingReview) return;
+    let active = true;
+    getPlans(user.uid).then((plans) => {
+      if (active) setTrips(recentReviewTrips(plans));
+    }).catch(() => {
+      if (active) setTripsError("여행 목록을 불러오지 못했어요. 새로고침 후 다시 시도해 주세요.");
+    }).finally(() => { if (active) setTripsLoading(false); });
+    return () => { active = false; };
+  }, [user.uid, productName, editingReview]);
+  const selectedTrip = trips.find((trip) => trip.id === tripId);
+  const tripTitle = selectedTrip?.title || selectedTrip?.city || state?.tripTitle || editingReview?.tripTitle || (productName ? "후쿠오카 3박 4일" : "나의 여행");
 
   const allTags = useMemo(() => [...baseTags, ...customTags], [customTags]);
   const toggleTag = (tag) => setTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag]);
@@ -61,19 +99,41 @@ export default function Review() {
     }
   };
 
-  const selectPhotos = (event) => {
+  const selectPhotos = async (event) => {
+    if (processingPhotos || status.saving) return;
     const files = Array.from(event.target.files || []).slice(0, Math.max(0, 3 - photos.length));
-    setPhotos((current) => [...current, ...files.map((file) => ({ file, preview: URL.createObjectURL(file) }))]);
     event.target.value = "";
+    setProcessingPhotos(true);
+    try {
+      const additions = await Promise.all(files.map(prepareReviewPhoto));
+      setPhotos((current) => [...current, ...additions].slice(0, 3));
+      setStatus({ saving: false, message: "", error: "" });
+    } catch (error) {
+      setStatus({ saving: false, message: "", error: error.message || "사진을 불러오지 못했어요." });
+    } finally { setProcessingPhotos(false); }
   };
 
   const saveDraft = () => {
-    localStorage.setItem(draftKey, JSON.stringify({ rating, title, content, tags, customTags }));
+    try {
+      localStorage.setItem(userDraftKey, JSON.stringify({ rating, title, content, tags, customTags, photos, tripId }));
+    } catch {
+      setStatus({ saving: false, message: "", error: "기기 저장 공간이 부족해 임시 저장하지 못했어요." });
+      return;
+    }
     setStatus({ saving: false, message: "임시 저장되었습니다.", error: "" });
   };
 
   const submit = async (event) => {
     event.preventDefault();
+    if (status.saving || processingPhotos) return;
+    if (isProductReview && !editingReview && (!purchase || purchaseLoading || purchaseError)) {
+      setStatus({ saving: false, message: "", error: "최근 30일 이내의 구매 내역을 확인한 후 작성할 수 있어요." });
+      return;
+    }
+    if (!productName && !editingReview && !recentReviewTrips(trips).some((trip) => trip.id === tripId)) {
+      setStatus({ saving: false, message: "", error: "최근 30일 이내에 종료된 여행을 선택해 주세요." });
+      return;
+    }
     if (!rating || !title.trim() || !content.trim()) {
       setStatus({ saving: false, message: "", error: "별점, 제목, 상세 리뷰를 모두 입력해주세요." });
       return;
@@ -83,19 +143,39 @@ export default function Review() {
       userId: user.uid,
       userEmail: user.email || "",
       tripTitle,
-      tripType: "나만의 여행",
-      tripDate: "2026.08.17 - 08.20",
-      scheduleCount: 12,
+      tripId: selectedTrip?.id || editingReview?.tripId || "",
+      tripDate: selectedTrip ? `${selectedTrip.dateRange.start || ""} ~ ${selectedTrip.dateRange.end}` : (editingReview?.tripDate || ""),
+      productName,
+      productId,
+      orderNumber: purchase?.orderNumber || editingReview?.orderNumber || "",
+      customTags,
       rating,
       title: title.trim(),
       content: content.trim(),
       tags,
-      photoNames: photos.map(({ file }) => file.name),
+      photos,
+      photoNames: photos.map((photo) => photo.name),
     };
 
+    if (isProductReview && !editingReview) {
+      try {
+        const eligible = await getReviewProducts(user.uid);
+        if (!eligible.some((item) => item.id === productId)) {
+          setStatus({ saving: false, message: "", error: "리뷰 작성 가능한 구매 기간이 지났어요." });
+          return;
+        }
+      } catch {
+        setStatus({ saving: false, message: "", error: "구매 내역을 확인하지 못해 등록하지 않았어요. 다시 시도해 주세요." });
+        return;
+      }
+    }
     try {
       let reviewId = editingReview?.id;
-      if (reviewId && !reviewId.startsWith("local-")) {
+      if (isProductReview) {
+        const saved = await saveProductReview(reviewData, reviewId);
+        reviewId = saved.id;
+        Object.assign(reviewData, saved);
+      } else if (reviewId && !reviewId.startsWith("local-")) {
         await updateDoc(doc(db, "reviews", reviewId), {
           ...reviewData,
           updatedAt: serverTimestamp(),
@@ -109,15 +189,30 @@ export default function Review() {
         reviewId = savedReview.id;
       }
 
+      try {
       saveReviewLocally({ ...reviewData, id: reviewId, updatedAt: Date.now() });
-      localStorage.removeItem(draftKey);
+      if (editingReview?.id?.startsWith("local-") && editingReview.id !== reviewId) {
+        const saved = JSON.parse(localStorage.getItem(reviewStorageKey)) || [];
+        localStorage.setItem(reviewStorageKey, JSON.stringify(saved.filter((item) => item.id !== editingReview.id || item.userId !== user.uid)));
+      }
+      localStorage.removeItem(userDraftKey);
+      } catch { /* Server save succeeded; a full local cache must not undo it. */ }
       setStatus({ saving: false, message: editingReview ? "리뷰가 수정되었습니다." : "리뷰가 등록되었습니다.", error: "" });
       setTimeout(() => navigate("/mystories", { replace: true }), 700);
     } catch (error) {
+      if (isProductReview) {
+        setStatus({ saving: false, message: "", error: error.code === "functions/failed-precondition" ? "최근 30일 이내의 주문 내역이 필요합니다." : "상품 리뷰를 저장하지 못했어요. 구매 내역과 연결을 확인하고 다시 시도해 주세요." });
+        return;
+      }
       const localId = editingReview?.id || `local-${Date.now()}`;
-      saveReviewLocally({ ...reviewData, id: localId, updatedAt: Date.now(), pendingSync: true });
-      localStorage.removeItem(draftKey);
-      setStatus({ saving: false, message: "리뷰가 저장되었습니다.", error: "" });
+      try {
+        saveReviewLocally({ ...reviewData, id: localId, updatedAt: Date.now(), pendingSync: true });
+      } catch {
+        setStatus({ saving: false, message: "", error: "리뷰와 사진을 저장하지 못했어요. 연결과 기기 저장 공간을 확인한 뒤 다시 등록해 주세요." });
+        return;
+      }
+      localStorage.removeItem(userDraftKey);
+      setStatus({ saving: false, message: "서버에 저장하지 못해 이 기기에 임시 보관했습니다.", error: "" });
       console.warn("Firestore 리뷰 저장 실패, 로컬에 저장했습니다.", error);
       setTimeout(() => navigate("/mystories", { replace: true }), 700);
     }
@@ -127,14 +222,26 @@ export default function Review() {
     <main className={styles.review}>
       <div className={styles.page}>
         <header className={styles.heading}>
-          <div><p>MY JOURNEY</p><h1>REVIEW</h1><p className={styles.description}>여행과 상품 이용 후기를 남겨보세요.</p></div>
+          <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
           <MypageBackLink to="/mystories" label="나의 리뷰로 돌아가기" />
         </header>
 
         <form onSubmit={submit}>
+          {!productName && !editingReview && <section className={styles.tripPicker}>
+            <label htmlFor="review-trip">리뷰를 작성할 여행</label>
+            <p>종료일 기준 최근 30일 이내의 저장된 여행을 선택해 주세요.</p>
+            {tripsError ? <p role="alert">{tripsError}</p> : tripsLoading ? <p role="status">여행을 불러오고 있어요.</p> : trips.length ?
+              <select id="review-trip" value={tripId} onChange={(event) => setTripId(event.target.value)} required>
+                <option value="">여행 선택</option>
+                {trips.map((trip) => <option key={trip.id} value={trip.id}>{trip.title || trip.city || "여행"} · {trip.dateRange.start} ~ {trip.dateRange.end}</option>)}
+              </select> : <p>최근 30일 이내에 종료된 여행이 없어요. 저장된 일정의 여행 날짜를 확인해 주세요.</p>}
+          </section>}
           <section className={styles.tripSummary}>
-            <img src="/Mypage-img/2.png" alt="후쿠오카 여행 거리" />
-            <div><h2>{tripTitle}</h2><p>나만의 여행</p><span>2026.08.17 - 08.20&nbsp;&nbsp; | &nbsp;&nbsp;12개 일정</span></div>
+            {productName ? <>
+              {purchase?.image && <img src={purchase.image} alt={productName} />}
+              <div><h2>{productName}</h2>{purchase && <p>구매일 {new Date(purchase.orderedAt).toLocaleDateString("ko-KR")}</p>}
+              {!editingReview && purchaseLoading && <p role="status">구매 내역 확인 중...</p>}{purchaseError && <p role="alert">{purchaseError}</p>}</div>
+            </> : <div><h2>{tripTitle}</h2><p>{editingReview ? "작성한 리뷰 수정" : "새 리뷰 작성"}</p></div>}
           </section>
 
           <section className={styles.formRow}>
@@ -157,9 +264,8 @@ export default function Review() {
           <section className={`${styles.formRow} ${styles.photoRow}`}>
             <h2>4. 사진 추가<small>(선택)</small></h2>
             <div className={styles.photos}>
-              {["/Mypage-img/2.png", "/Mypage-img/3.png"].map((src) => <img src={src} alt="여행 사진 미리보기" key={src} />)}
-              {photos.map((photo) => <img src={photo.preview} alt={photo.file.name} key={photo.preview} />)}
-              {photos.length < 3 && <label className={styles.addPhoto}>＋<span>사진 추가</span><input type="file" accept="image/*" multiple onChange={selectPhotos} /></label>}
+              {photos.map((photo, index) => <div className={styles.photoItem} key={`${index}-${photo.name}`}><img src={photo.src} alt={photo.name} /><button type="button" disabled={status.saving || processingPhotos} aria-label={`${photo.name} 삭제`} onClick={() => setPhotos((current) => current.filter((_, i) => i !== index))}>×</button></div>)}
+              {photos.length < 3 && <label className={styles.addPhoto}>＋<span>{processingPhotos ? "처리 중..." : "사진 추가"}</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={processingPhotos || status.saving} onChange={selectPhotos} /></label>}
             </div>
           </section>
 
@@ -169,7 +275,7 @@ export default function Review() {
           </section>
 
           {(status.error || status.message) && <p className={status.error ? styles.error : styles.success}>{status.error || status.message}</p>}
-          <div className={styles.actions}><button type="button" onClick={saveDraft}>♡&nbsp; 임시 저장</button><button type="submit" disabled={status.saving}>{status.saving ? "등록 중..." : "리뷰 등록"}</button></div>
+          <div className={styles.actions}><button type="button" disabled={processingPhotos || status.saving} onClick={saveDraft}>♡&nbsp; 임시 저장</button><button type="submit" disabled={status.saving || processingPhotos}>{status.saving ? "등록 중..." : "리뷰 등록"}</button></div>
         </form>
       </div>
     </main>
