@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { useLayoutEffect } from "react";
 import BackButton from "../components/BackButton";
-import hero from "../assets/images/journal_tokyo.jpg";
+import hero from "../assets/images/journal_tokyo.webp";
 import coffee from "../assets/images/Tokyo/Tokyo/GlitchCoffee&Roasters.png";
 import crossing from "../assets/images/Tokyo/Tokyo/ShibuyaCrossing.webp";
 import tower from "../assets/images/Tokyo/Tokyo/TokyoTower.jpg";

@@ -7,7 +7,7 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import MypageBackLink from "../components/MypageBackLink";
 import { createUserProfile, getUserProfile, updateUserProfile } from "../services/firestoreService";
-import kyotoImage from "../assets/images/japan.jpg";
+import kyotoImage from "../assets/images/japan.webp";
 import beijingImage from "../assets/images/beijing_china.jpg";
 import styles from "./ProfileEdit.module.scss";
 

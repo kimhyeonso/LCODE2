@@ -7,22 +7,27 @@ import { useManagedCollection } from "../hooks/useManagedCollection";
 import { getPlans } from "../services/firestoreService";
 import products from "../data/products.json";
 import tripRoad from "../data/trip_road.json";
-import productImage01 from "../assets/images/detail/1_1.png";
-import productImage02 from "../assets/images/detail/2_1.png";
-import productImage03 from "../assets/images/detail/3_1.png";
-import productImage04 from "../assets/images/detail/4_1.png";
-import productImage05 from "../assets/images/detail/5_1.png";
-import productImage06 from "../assets/images/detail/6_1.png";
-import bannerPC1 from "../assets/images/banner/banner01-pc.png";
-import bannerPC2 from "../assets/images/banner/banner02-pc.png";
-import bannerPC3 from "../assets/images/banner/banner03-pc.png";
-import bannerPC4 from "../assets/images/banner/banner04-pc.png";
-import bannerPC5 from "../assets/images/banner/banner05-pc.png";
-import bannerMO1 from "../assets/images/banner/banner01-mo.png";
-import bannerMO2 from "../assets/images/banner/banner02-mo.png";
-import bannerMO3 from "../assets/images/banner/banner03-mo.png";
-import bannerMO4 from "../assets/images/banner/banner04-mo.png";
-import bannerMO5 from "../assets/images/banner/banner05-mo.png";
+import productImage01 from "../assets/images/detail/1_1.webp";
+import productImage02 from "../assets/images/detail/2_1.webp";
+import productImage03 from "../assets/images/detail/3_1.webp";
+import productImage04 from "../assets/images/detail/4_1.webp";
+import productImage05 from "../assets/images/detail/5_1.webp";
+import productImage06 from "../assets/images/detail/6_1.webp";
+import bannerPC1 from "../assets/images/banner/banner01-pc.webp";
+import bannerPC2 from "../assets/images/banner/banner02-pc.webp";
+import bannerPC3 from "../assets/images/banner/banner03-pc.webp";
+import bannerPC4 from "../assets/images/banner/banner04-pc.webp";
+import bannerPC5 from "../assets/images/banner/banner05-pc.webp";
+import bannerMO1 from "../assets/images/banner/banner01-mo.webp";
+import bannerMO2 from "../assets/images/banner/banner02-mo.webp";
+import bannerMO3 from "../assets/images/banner/banner03-mo.webp";
+import bannerMO4 from "../assets/images/banner/banner04-mo.webp";
+import bannerMO5 from "../assets/images/banner/banner05-mo.webp";
+import destinationBanner from "../assets/images/BANNER.webp";
+import koreaImage from "../assets/images/korea.webp";
+import japanImage from "../assets/images/japan.webp";
+import chinaImage from "../assets/images/china.webp";
+import journalTokyoImage from "../assets/images/journal_tokyo.webp";
 
 import styles from "./Home.module.scss";
 
@@ -51,6 +56,7 @@ const heroSlides = [
     description: "맛집과 감성을 담은 시티 트립",
     cta: "VIEW PACKAGE",
     to: "/plan?city=FUKUOKA",
+    mobileShiftRight: true,
   },
   {
     desktop: bannerPC2,
@@ -316,7 +322,7 @@ export default function Home() {
             className={styles.heroTrack}
             style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}
           >
-            {heroSlides.map(({ desktop, mobile, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle }, index) => (
+            {heroSlides.map(({ desktop, mobile, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight }, index) => (
               <div
                 className={`${styles.heroSlide} ${dark ? styles.heroSlideDark : ""}`}
                 key={desktop}
@@ -324,9 +330,14 @@ export default function Home() {
               >
                 <picture>
                   <source media="(max-width: 640px)" srcSet={mobile} />
-                  <img src={desktop} alt="" />
+                  <img
+                    src={desktop}
+                    alt=""
+                    loading={index === 0 ? "eager" : "lazy"}
+                    fetchPriority={index === 0 ? "high" : "auto"}
+                  />
                 </picture>
-                <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""}`}>
+                <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>
                   {subtitle && <p className={styles.heroSubtitle}>{subtitle}</p>}
@@ -418,10 +429,14 @@ export default function Home() {
         </div>
         <div className={styles.pickGrid}>
           <Link to="/plan?city=SHANGHAI" className={styles.featurePick}>
-            <div
-              className={`${styles.placeholder} ${styles.shanghaiImage}`}
-              style={{ backgroundImage: `url(${getImageUrl(tripRoad.thumbnailMap?.china?.["상하이"])})` }}
-            />
+            <div className={styles.placeholder}>
+              <img
+                src={getImageUrl(tripRoad.thumbnailMap?.china?.["상하이"])}
+                alt=""
+                loading="lazy"
+                className={styles.bgFillImage}
+              />
+            </div>
             <h3>
               상하이에서 만나는
               <br />
@@ -429,18 +444,26 @@ export default function Home() {
             </h3>
           </Link>
           <Link to="/plan?city=TOKYO" className={styles.smallPick}>
-            <div
-              className={`${styles.placeholder} ${styles.tokyoImage}`}
-              style={{ backgroundImage: `url(${getImageUrl(tripRoad.thumbnailMap?.japan?.["도쿄"])})` }}
-            />
+            <div className={styles.placeholder}>
+              <img
+                src={getImageUrl(tripRoad.thumbnailMap?.japan?.["도쿄"])}
+                alt=""
+                loading="lazy"
+                className={styles.bgFillImage}
+              />
+            </div>
             <h3>TOKYO</h3>
             <p>조용한 골목과 작은 카페를 찾아서</p>
           </Link>
           <Link to="/plan?city=SEOUL" className={styles.smallPick}>
-            <div
-              className={`${styles.placeholder} ${styles.seoulImage}`}
-              style={{ backgroundImage: `url(${getImageUrl(tripRoad.thumbnailMap?.korea?.["서울"])})` }}
-            />
+            <div className={styles.placeholder}>
+              <img
+                src={getImageUrl(tripRoad.thumbnailMap?.korea?.["서울"])}
+                alt=""
+                loading="lazy"
+                className={styles.bgFillImage}
+              />
+            </div>
             <h3>SEOUL</h3>
             <p>도시 속 오래된 풍경을 천천히</p>
           </Link>
@@ -450,20 +473,24 @@ export default function Home() {
       <section className={`${styles.section} ${styles.destinationSection}`}>
         <SectionLabel number="04">DESTINATIONS</SectionLabel>
         <h2 className={`${styles.scriptTitle} whereToNextTitle`}>Where to Next?</h2>
-        <div className={styles.destinationHero} />
+        <div className={styles.destinationHero}>
+          <img src={destinationBanner} alt="" loading="lazy" className={styles.bgFillImage} />
+        </div>
         <div className={styles.destinationList}>
           {[
-            ["KOREA", "서울, 부산, 제주", styles.koreaImage],
-            ["JAPAN", "교토, 도쿄", styles.japanImage],
-            ["CHINA", "상하이", styles.chinaImage],
-          ].map(([country, cities, imageClass]) => (
+            ["KOREA", "서울, 부산, 제주", koreaImage],
+            ["JAPAN", "교토, 도쿄", japanImage],
+            ["CHINA", "상하이", chinaImage],
+          ].map(([country, cities, image]) => (
             <Link to={`/desrinationAll?country=${country.toLowerCase()}`} key={country}>
               <div>
                 <span>EAST ASIA</span>
                 <h3>{country}</h3>
                 <p>{cities}</p>
               </div>
-              <div className={`${styles.countryImage} ${imageClass}`} />
+              <div className={styles.countryImage}>
+                <img src={image} alt="" loading="lazy" className={styles.bgFillImage} />
+              </div>
             </Link>
           ))}
         </div>
@@ -592,6 +619,7 @@ export default function Home() {
           onClick={() => sessionStorage.setItem("homeJournalScrollY", String(window.scrollY))}
         >
           <div className={styles.journalVisual}>
+            <img src={journalTokyoImage} alt="" loading="lazy" className={styles.bgFillImage} />
             <span>JOURNAL 04</span>
           </div>
           <div className={styles.journalMeta}>
