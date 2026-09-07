@@ -214,6 +214,9 @@ h1 {
 .storyInfo footer a,
 .productCard footer a {
   display: grid;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   border: 1px solid #ddd9d2;
   color: #77736c;
   font-family: $korean;
@@ -242,9 +245,9 @@ h1 {
   .storyInfo small { margin-top: 8px; font-size: 10px; }
   .storyInfo footer { grid-template-columns: .9fr 1.35fr; gap: 8px; margin-top: 17px; }
   .storyInfo footer a { height: 47px; font-size: 11px; }
-  .storyDots { display: flex; justify-content: center; gap: 3px; margin: 11px 0 27px; }
-  .storyDots i { width: 5px; height: 5px; border-radius: 50%; background: #d4d1cc; }
-  .storyDots i:first-child { background: #99948d; }
+  .storyDots { display: flex; justify-content: center; gap: 6px; margin: 11px 0 27px; }
+  .storyDots button { width: 6px; height: 6px; padding: 0; border: 0; border-radius: 50%; background: #d4d1cc; cursor: pointer; }
+  .storyDots .activeDot { background: #99948d; }
   .shopping { margin: 0; border-top: 1px solid #ddd9d1; padding-top: 17px; }
   .shopping h1, .shopping > p { display: none; }
   .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin: 0; }
@@ -475,3 +478,51 @@ h1 {
 @include title.mypage-layout(".mystories", ".content");
 @include title.mypage-heading(".stories", "> .eyebrow", "> h1", "> .description");
 .stories > .divider { display: none; }
+
+// 모바일: 여행 리뷰(STORIES) 카드만 가로 스와이프 슬라이더로 표시합니다.
+// SHOPPING REVIEW(상품)는 기존 그리드 그대로 둡니다.
+// 규칙 순서상 마지막에 두어 앞선 카드/버튼 규칙을 확실히 덮어씁니다.
+@include mobile {
+  .storyList {
+    display: flex;
+    gap: 0;
+    margin-top: 0.9rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .storyList::-webkit-scrollbar { display: none; }
+  .storyCard,
+  .storyCard:nth-child(n + 2) {
+    display: block;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+
+  // 상세보기 / 리뷰쓰기 버튼: 두 카드 모두 동일한 컴팩트 규격으로 통일합니다.
+  .storyInfo footer,
+  .productCard footer {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    align-items: stretch;
+  }
+  .storyInfo footer > a,
+  .storyInfo footer > a:first-child,
+  .storyInfo footer > a:last-child,
+  .productCard footer a,
+  .productCard footer a:first-child,
+  .productCard footer a:last-child {
+    display: grid;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: 36px;
+    margin-top: 0;
+    padding: 0 10px;
+    font-size: 11px;
+    line-height: 1;
+    white-space: nowrap;
+  }
+}

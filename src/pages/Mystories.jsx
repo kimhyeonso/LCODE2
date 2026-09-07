@@ -1,13 +1,13 @@
 import MypageBackLink from "../components/MypageBackLink";
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import products from "../data/products.json";
+import { myStoryTrips, shoppingReviewLimit } from "../data/myStoriesSummary";
 import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Mystories.module.scss";
 
-const trips = ["후쿠오카 3박 4일"];
 const reviewStorageKey = "lcode-saved-reviews";
 const fallbackNames = ["여행용 키트", "멀티 어댑터", "트래블 파우치", "캐리어 커버"];
 
@@ -48,6 +48,8 @@ function StoryCard({ title, review }) {
 export default function Mystories() {
   const { user } = useAuth();
   const [reviews, setReviews] = useState(() => { try { return JSON.parse(localStorage.getItem(reviewStorageKey)) || []; } catch { return []; } });
+  const storyTrackRef = useRef(null);
+  const [storyIndex, setStoryIndex] = useState(0);
 
   useEffect(() => {
     if (!db || !user?.uid) return;
@@ -63,13 +65,30 @@ export default function Mystories() {
     }).catch((error) => console.warn("저장된 리뷰를 불러오지 못했습니다.", error));
   }, [user?.uid]);
 
-  const visibleProducts = categorizedProducts.slice(0, 4);
+  const visibleProducts = categorizedProducts.slice(0, shoppingReviewLimit);
+
+  const handleStoryScroll = () => {
+    const track = storyTrackRef.current;
+    if (!track || !track.clientWidth) return;
+    setStoryIndex(Math.round(track.scrollLeft / track.clientWidth));
+  };
+
+  const goToStory = (index) => {
+    const track = storyTrackRef.current;
+    if (track) track.scrollTo({ left: index * track.clientWidth, behavior: "smooth" });
+  };
 
   return <main className={styles.mystories}><div className={styles.content}>
     <section className={styles.stories} aria-labelledby="my-stories-title">
       <MypageBackLink /><p className={styles.eyebrow}>JOURNAL</p><h1 id="my-stories-title">MY<span className={styles.mobileBreak}><br /></span> STORIES</h1><p className={styles.description}>나만의 여행을 위해 남긴 글</p><div className={styles.divider} />
-      <div className={styles.storyList}>{trips.map((title) => <StoryCard key={title} title={title} review={reviews.find((item) => item.tripTitle === title)} />)}</div>
-      <div className={styles.storyDots} aria-hidden="true"><i /><i /><i /></div>
+      <div className={styles.storyList} ref={storyTrackRef} onScroll={handleStoryScroll}>{myStoryTrips.map((title) => <StoryCard key={title} title={title} review={reviews.find((item) => item.tripTitle === title)} />)}</div>
+      {myStoryTrips.length > 0 && (
+        <div className={styles.storyDots}>
+          {myStoryTrips.map((title, index) => (
+            <button key={title} type="button" className={index === storyIndex ? styles.activeDot : ""} aria-label={`${index + 1}번째 여행 리뷰 보기`} onClick={() => goToStory(index)} />
+          ))}
+        </div>
+      )}
     </section>
     <section className={styles.shopping} aria-labelledby="shopping-review-title">
       <h2 className={styles.shoppingTitle} id="shopping-review-title">SHOPPING REVIEW</h2>
