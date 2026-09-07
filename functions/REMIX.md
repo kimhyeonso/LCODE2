@@ -17,16 +17,16 @@ firebase.cmd deploy --only functions:remixPlan --project lcode-dev
 firebase.cmd emulators:start --only functions --project lcode-dev
 ```
 
-Functions만 에뮬레이션하면 인증/Firestore는 실제 프로젝트를 사용합니다. 리믹스 캐시·사용량 문서가 생성되며 실제 OpenAI 호출은 유료입니다. `remixRequests`, `remixUsage`는 기존 Firestore 기본 거부 규칙으로 클라이언트 접근이 금지됩니다.
+Functions만 에뮬레이션하면 인증/Firestore는 실제 프로젝트를 사용합니다. 리믹스 캐시 문서가 생성되며 실제 OpenAI 호출은 유료입니다. `remixRequests`는 기존 Firestore 기본 거부 규칙으로 클라이언트 접근이 금지됩니다.
 
 ## 비용과 제한
 
 - 모델 `gpt-5.4-nano`, 추론 low, 과금 출력 최대 1,200토큰, 자동 재시도 없음.
 - 후보 최대 5개, 변경 최대 2개. 항공·역·호텔·잠금·예약·완료 장소 보호.
-- 사용자 하루 3회, 프로젝트 하루 100회. UTC 자정 초기화. 실패한 유료 요청도 횟수에 포함.
+- 사용자별·프로젝트 전체 일일 횟수 제한 없음. 이전 `remixUsage` 문서는 더 이상 읽거나 갱신하지 않습니다.
 - 같은 사용자/일정/원본 버전/상황/날짜/후보는 15분 재사용. 동시 중복은 차단.
-- `minInstances: 0`, `maxInstances: 2`. 일일 횟수 제한은 OpenAI 요청 제한이며 전체 Firebase 요금 상한이 아닙니다.
-- `remixRequests`와 `remixUsage`는 서버 전용입니다. 장기 운영 시 만료 문서 정리/TTL 정책을 별도로 설정하세요.
+- `minInstances: 0`, `maxInstances: 2`. 동시 실행 규모 제한이며 이용 횟수나 총비용 상한은 아닙니다.
+- `remixRequests`는 서버 전용입니다. 장기 운영 시 만료 문서 정리/TTL 정책을 별도로 설정하세요.
 
 ## 현재 범위
 
@@ -39,4 +39,4 @@ node functions/build-remix-catalog.cjs
 node --test functions/remix-core.test.js
 ```
 
-배포 후 본인의 저장된 일정으로 비/문닫힘, 동일 요청 재사용, 일일 한도, 키 오류를 확인하세요. 오류 시 가짜 결과를 표시하지 않고 원본을 유지합니다.
+배포 후 본인의 저장된 일정으로 비/문닫힘, 동일 요청 재사용, 키 오류를 확인하세요. 오류 시 가짜 결과를 표시하지 않고 원본을 유지합니다.

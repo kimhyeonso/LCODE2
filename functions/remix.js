@@ -65,19 +65,13 @@ exports.remixPlan = onCall({ region: "asia-northeast3", secrets: [apiKey], timeo
   const secret = apiKey.value();
   if (!secret) throw new HttpsError("failed-precondition", "OpenAI 서버 키가 아직 설정되지 않았습니다.");
   const cache = db.doc(`remixRequests/${digest([request.auth.uid, input.planId, context.key])}`);
-  const day = new Date().toISOString().slice(0, 10); // UTC daily quota
-  const userQuota = db.doc(`remixUsage/${digest([request.auth.uid, day])}`);
-  const globalQuota = db.doc(`remixUsage/global-${day}`);
   const attempt = randomUUID();
   const now = Date.now();
   const cached = await db.runTransaction(async (tx) => {
-    const [entry, user, global] = await Promise.all([tx.get(cache), tx.get(userQuota), tx.get(globalQuota)]);
+    const entry = await tx.get(cache);
     const data = entry.data();
     if (data?.status === "ready" && data.expiresAt > now) return data.decision;
     if (data?.status === "pending" && data.expiresAt > now) throw new HttpsError("already-exists", "같은 일정의 리믹스를 처리하고 있습니다. 잠시 후 다시 시도해 주세요.");
-    if ((user.data()?.count || 0) >= 3 || (global.data()?.count || 0) >= 100) throw new HttpsError("resource-exhausted", "오늘 AI 리믹스 이용 한도에 도달했습니다. 내일 다시 이용해 주세요.");
-    tx.set(userQuota, { count: (user.data()?.count || 0) + 1, day });
-    tx.set(globalQuota, { count: (global.data()?.count || 0) + 1, day });
     tx.set(cache, { status: "pending", attempt, expiresAt: now + 90000 });
     return null;
   });
@@ -95,7 +89,7 @@ exports.remixPlan = onCall({ region: "asia-northeast3", secrets: [apiKey], timeo
       inputTokens: usage.input_tokens || 0, outputTokens: usage.output_tokens || 0 });
     return { ...result, cached: false };
   } catch (error) {
-    // Failed paid requests count toward quotas; do not automatically retry or log prompts/keys.
+    // Do not automatically retry paid requests or log prompts/keys.
     await db.runTransaction(async (tx) => {
       const current = await tx.get(cache);
       if (current.data()?.attempt === attempt) tx.set(cache, { status: "failed", expiresAt: 0, attempt });

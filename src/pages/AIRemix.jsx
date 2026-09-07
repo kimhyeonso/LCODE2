@@ -303,11 +303,43 @@ export default function AIRemix() {
   const [loadDone, setLoadDone] = useState(false);
   const [sourcePlan, setSourcePlan] = useState(null);
   const [planError, setPlanError] = useState("");
+  const [remixError, setRemixError] = useState("");
+  const failureHeading = useRef(null);
   const [aiResult, setAiResult] = useState(null);
   const [selectedDay, setSelectedDay] = useState(0);
   const requestLock = useRef(false);
   const requestGeneration = useRef(0);
+  const progressValue = useRef(0);
   useEffect(() => () => { requestGeneration.current += 1; }, []);
+
+  useEffect(() => {
+    if (stage !== "analyzing") return undefined;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const startedAt = performance.now();
+    const startValue = progressValue.current;
+    let frame;
+    let resultTimer;
+    const animate = (now) => {
+      const elapsed = now - startedAt;
+      const completion = Math.min(elapsed / 650, 1);
+      // Waiting progress is an estimate; only a verified response can reach 100%.
+      const next = aiResult
+        ? reducedMotion ? 100 : startValue + (100 - startValue) * (1 - Math.pow(1 - completion, 3))
+        : reducedMotion ? 20 : 92 - (92 - startValue) * Math.exp(-elapsed / 9000);
+      progressValue.current = next;
+      setProgress(next);
+      if (aiResult && (reducedMotion || completion === 1)) {
+        resultTimer = window.setTimeout(() => setStage("result"), reducedMotion ? 0 : 200);
+      } else if (!reducedMotion) {
+        frame = window.requestAnimationFrame(animate);
+      }
+    };
+    frame = window.requestAnimationFrame(animate);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(resultTimer);
+    };
+  }, [stage, aiResult]);
 
   const requestedPlanId = params.get("planId") || params.get("plan") || params.get("saved") || "";
   const requestedTripId = params.get("trip") || "";
@@ -386,6 +418,7 @@ export default function AIRemix() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (stage === "error") failureHeading.current?.focus();
   }, [stage]);
 
   const selectReason = async (item) => {
@@ -394,25 +427,31 @@ export default function AIRemix() {
     requestLock.current = true;
     const generation = ++requestGeneration.current;
     setPlanError("");
+    setRemixError("");
     setAiResult(null);
     setReason(item);
-    setProgress(20);
+    progressValue.current = 0;
+    setProgress(0);
     setStage("analyzing");
     try {
       const response = await requestRemix({ planId, reason: item.id, dayIndex: selectedDay });
       if (generation !== requestGeneration.current) return;
       setAiResult(response);
-      setProgress(100);
-      setStage("result");
     } catch (error) {
       if (generation !== requestGeneration.current) return;
       const messages = {
-        "functions/not-found": "AI 리믹스 서버가 아직 배포되지 않았습니다.",
+        "functions/not-found": "일정 또는 리믹스 서비스를 찾지 못했어요. 일정이 저장되어 있는지 확인해 주세요.",
         "functions/unauthenticated": "다시 로그인한 뒤 이용해 주세요.",
-        "functions/unavailable": "AI 서버에 연결하지 못했습니다. 원본 일정은 유지됩니다.",
+        "functions/permission-denied": "이 일정을 변경할 권한이 없어요. 로그인 계정을 확인해 주세요.",
+        "functions/unavailable": "AI 서버에 연결하지 못했어요. 인터넷 연결을 확인하고 잠시 후 다시 시도해 주세요.",
+        "functions/deadline-exceeded": "응답 시간이 길어져 요청을 마쳤어요. 잠시 후 다시 시도해 주세요.",
+        "functions/resource-exhausted": "현재 요청이 몰리고 있어요. 잠시 후 다시 시도해 주세요.",
+        "functions/failed-precondition": "현재 리믹스를 진행할 수 없어요. 잠시 후에도 계속되면 서비스 관리자에게 문의해 주세요.",
+        "functions/invalid-argument": "일정 정보를 확인하지 못했어요. 일정 수정 화면에서 저장한 뒤 다시 시도해 주세요.",
+        "functions/aborted": "다른 요청이 처리 중이거나 일정이 변경되었어요. 잠시 후 다시 시도해 주세요.",
       };
-      setPlanError(messages[error.code] || (error.code?.startsWith("functions/") ? error.message : "AI 요청에 실패했습니다. 잠시 후 다시 시도해 주세요."));
-      setStage("select");
+      setRemixError(messages[error.code] || "변경안을 만드는 중 문제가 생겼어요. 잠시 후 다시 시도해 주세요.");
+      setStage("error");
     } finally { requestLock.current = false; }
   };
 
@@ -469,10 +508,10 @@ export default function AIRemix() {
         <section className={styles.analyzing}>
           <p className={styles.meta}>L:CODE AI REMIX <span aria-hidden="true">—</span> {reason.title}</p>
           <h1>남은 일정을<br />다시 계산하고 있어요.</h1>
-          <div className={styles.analysisRule} aria-hidden="true"><i style={{ width: `${progress}%` }} /></div>
+          <div className={styles.analysisRule} aria-hidden="true"><i style={{ transform: `scaleX(${progress / 100})` }} /></div>
           <ol>
             {analyzeSteps.map((step, index) => {
-              const done = progress >= (index + 1) * 20;
+              const done = Boolean(aiResult) || index === 0;
               return (
                 <li className={done ? styles.done : ""} key={step}>
                   <span>{String(index + 1).padStart(2, "0")}</span>
@@ -482,12 +521,27 @@ export default function AIRemix() {
               );
             })}
           </ol>
-          <div className={styles.progress} role="progressbar" aria-label="일정 재구성 진행률" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
+          <div className={styles.progress} role="progressbar" aria-label="일정 재구성 예상 진행률" aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(progress)} aria-valuetext={aiResult ? "변경안 준비 완료" : "AI 응답을 기다리고 있습니다. 진행률은 예상치입니다."}>
             <span>ANALYZING</span>
-            <strong>{progress === 100 ? "100%" : "•••"}</strong>
-            <i style={{ width: `${progress}%` }} />
+            <strong>{Math.round(progress)}%</strong>
+            <i style={{ transform: `scaleX(${progress / 100})` }} />
           </div>
           <footer className={styles.analysisFooter}>PERSONAL TRAVEL CURATION — L:CODE</footer>
+        </section>
+      )}
+
+      {stage === "error" && (
+        <section className={styles.failurePanel} aria-labelledby="remix-failure-title">
+          <p className={styles.failureMeta}>REMIX FAILED <span>{reason.title}</span></p>
+          <div className={styles.failureIcon} aria-hidden="true">!</div>
+          <h1 id="remix-failure-title" ref={failureHeading} tabIndex={-1}>일정을 다시 구성하지<br />못했어요.</h1>
+          <p className={styles.failureMessage}>{remixError}</p>
+          <p className={styles.failureNotice}>기존 일정은 변경되지 않았어요.</p>
+          <div className={styles.failureActions}>
+            <button type="button" onClick={() => selectReason(reason)}>다시 시도</button>
+            <button type="button" onClick={() => navigate(editUrl)}>일정 수정으로 돌아가기</button>
+            <button type="button" onClick={reset}>다른 상황 선택하기</button>
+          </div>
         </section>
       )}
 
