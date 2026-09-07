@@ -3113,6 +3113,43 @@ header > button {
 }
 
 /* =========================================================
+   DESKTOP INTRO POLISH
+   - 꽝 없는 이벤트 위치 유지
+   - 중앙 선물 이미지 위치 유지
+   - 메인 타이틀만 시각적으로 조금 아래 + 확대
+   - 안내 문구 가독성 확대
+   - 경품 미리보기 영역을 하단에서 조금 띄움
+========================================================= */
+
+@media (min-width: 901px) {
+  .introCopy {
+    transform: translateY(20px);
+  }
+
+  .intro h1 {
+    transform:
+      translateY(10px)
+      scale(1.1);
+
+    transform-origin:
+      center
+      top;
+  }
+
+  .heroHint {
+    color:
+      rgba(248, 241, 230, 0.8);
+
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+
+  .desktopPrizePreview {
+    transform: translateY(-18px);
+  }
+}
+
+/* =========================================================
    MOBILE FULLSCREEN EVENT EXPERIENCE
 ========================================================= */
 
