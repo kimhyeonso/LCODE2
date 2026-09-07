@@ -93,6 +93,7 @@ export default function App() {
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
+  const isRemixPage = pathname === "/ai-remix" || pathname === "/remix";
 
   return (
     <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
@@ -180,7 +181,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {!isImmersivePage && <Footer />}
+      {!isImmersivePage && !isRemixPage && <Footer />}
       {!isImmersivePage && <BottomNav />}
     </div>
   );

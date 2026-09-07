@@ -1,0 +1,4106 @@
+[
+  {
+    "id": "f74ef36dc78f5943",
+    "city": "강릉",
+    "place": "경포해변",
+    "category": "attraction",
+    "image": "img/gangleung/gangleung/GyeongpoBeach.jpg",
+    "indoor": false
+  },
+  {
+    "id": "d49a361385512ff7",
+    "city": "강릉",
+    "place": "보사노바 커피로스터스 강릉점",
+    "category": "restaurant",
+    "image": "img/gangleung/gangleung/BossaNovaCoffeeRoastersGangneung.jpg",
+    "indoor": false
+  },
+  {
+    "id": "045855cb1ec40e47",
+    "city": "강릉",
+    "place": "최일순 짬뽕순두부",
+    "category": "restaurant",
+    "image": "img/gangleung/gangleung/ChoeilsunJjamppongsundubu.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f0deee7e1cf50b84",
+    "city": "강릉",
+    "place": "강릉중앙시장",
+    "category": "restaurant",
+    "image": "img/gangleung/gangleung/GangneungJungangMarket.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5ed931b5556edb03",
+    "city": "강릉",
+    "place": "스카이베이호텔 경포",
+    "category": "attraction",
+    "image": "img/gangleung/gangleung/SkybayHotelGyeongpo.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e3f4410bdac3fbb1",
+    "city": "강릉",
+    "place": "오죽헌(율곡 이이 생가)",
+    "category": "attraction",
+    "image": "img/gangleung/gangleung/Ojukheon.jpg",
+    "indoor": false
+  },
+  {
+    "id": "6e303c124a37d8a1",
+    "city": "강릉",
+    "place": "모래시계공원",
+    "category": "attraction",
+    "image": "img/gangleung/gangleung/SandglassPark.jpg",
+    "indoor": false
+  },
+  {
+    "id": "370ce2731b82d56e",
+    "city": "강릉",
+    "place": "하슬라아트월드",
+    "category": "restaurant",
+    "image": "img/gangleung/gangleung/HasllaArtWorld.jpg",
+    "indoor": false
+  },
+  {
+    "id": "448679e019c5c932",
+    "city": "강릉",
+    "place": "강릉짬뽕순두부 동화가든 본점",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "713ff7628ee649e8",
+    "city": "거제",
+    "place": "매미성",
+    "category": "attraction",
+    "image": "img/geoje/geoje/MaemiCastle.jpg",
+    "indoor": false
+  },
+  {
+    "id": "50af9a32dd82e0c2",
+    "city": "거제",
+    "place": "몰리힐스",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/MOLLIHILLS.jpg",
+    "indoor": false
+  },
+  {
+    "id": "62e2f5258c0c086f",
+    "city": "거제",
+    "place": "바람의언덕",
+    "category": "attraction",
+    "image": "img/geoje/geoje/WindyHill.jpg",
+    "indoor": false
+  },
+  {
+    "id": "454638cda1ff543e",
+    "city": "거제",
+    "place": "신선대",
+    "category": "attraction",
+    "image": "img/geoje/geoje/Sinseondae.jpg",
+    "indoor": false
+  },
+  {
+    "id": "54ce7b9ccccb32a3",
+    "city": "거제",
+    "place": "용화횟집",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/YonghwaSashimiRestaurant.jpg",
+    "indoor": false
+  },
+  {
+    "id": "2e24e19982549a2e",
+    "city": "거제",
+    "place": "온더선셋",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/OnTheSunset.jpg",
+    "indoor": false
+  },
+  {
+    "id": "1b869ba388c55f62",
+    "city": "거제",
+    "place": "외도 보타니아",
+    "category": "attraction",
+    "image": "img/geoje/geoje/OedoBotania.jpg",
+    "indoor": false
+  },
+  {
+    "id": "296bdaed51cf66e4",
+    "city": "거제",
+    "place": "학동 흑진주 몽돌해변",
+    "category": "attraction",
+    "image": "img/geoje/geoje/HakdongMongdolBeach.png",
+    "indoor": false
+  },
+  {
+    "id": "0ad9f495be7b8e37",
+    "city": "거제",
+    "place": "대박난맛집 학동점",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/DaebaknanMatjip.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8da749c452d540b1",
+    "city": "거제",
+    "place": "N436",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/N436.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a0482fc3f9055fe2",
+    "city": "거제",
+    "place": "스터번호텔",
+    "category": "attraction",
+    "image": "img/geoje/geoje/StubbornHotel.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5f35cc0315f688a4",
+    "city": "거제",
+    "place": "거제포로수용소 유적공원",
+    "category": "attraction",
+    "image": "img/geoje/geoje/GeojePOW.CampHistoricPark.jpg",
+    "indoor": false
+  },
+  {
+    "id": "55ea82e550667441",
+    "city": "거제",
+    "place": "충남식당",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/ChungnamSikdang.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c9824c61b9a74e05",
+    "city": "거제",
+    "place": "시방리 카페 매미성점",
+    "category": "restaurant",
+    "image": "img/geoje/geoje/CaféSibangri.jpg",
+    "indoor": false
+  },
+  {
+    "id": "bfb58d52b20bf61e",
+    "city": "부산",
+    "place": "해운대원조할매국밥",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/HaeundaeWonjoHalmaeGukbap.jpg",
+    "indoor": false
+  },
+  {
+    "id": "bd7328e31df44c13",
+    "city": "부산",
+    "place": "모모스커피 마린시티점",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/MomosCoffee.jpg",
+    "indoor": false
+  },
+  {
+    "id": "cbcb0527248dfc41",
+    "city": "부산",
+    "place": "해운대해수욕장",
+    "category": "attraction",
+    "image": "img/Busan/Busan/HaeundaeBeach.jpg",
+    "indoor": false
+  },
+  {
+    "id": "19bd58284560fb4c",
+    "city": "부산",
+    "place": "더베이101",
+    "category": "attraction",
+    "image": "img/Busan/Busan/TheBay101.jpg",
+    "indoor": false
+  },
+  {
+    "id": "9318ae42d97b64e5",
+    "city": "부산",
+    "place": "광안리 진양호횟집",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/GwangalliJinyanghohoetjip.jpg",
+    "indoor": false
+  },
+  {
+    "id": "146ac1c273d515e7",
+    "city": "부산",
+    "place": "웨이브온커피",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/WaveonCoffee.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a4eee663e7ed9460",
+    "city": "부산",
+    "place": "광안리해수욕장",
+    "category": "attraction",
+    "image": "img/Busan/Busan/GwangalliBeach.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b4e2b399316964db",
+    "city": "부산",
+    "place": "파라다이스 호텔 부산",
+    "category": "attraction",
+    "image": "img/Busan/Busan/ParadiseHotelBusan.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f15fd0c9c6770a4b",
+    "city": "부산",
+    "place": "감천문화마을",
+    "category": "attraction",
+    "image": "img/Busan/Busan/GamcheonCultureVillage.jpg",
+    "indoor": false
+  },
+  {
+    "id": "368f0043f0843dca",
+    "city": "부산",
+    "place": "자갈치시장",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/JagalchiMarket.jpg",
+    "indoor": false
+  },
+  {
+    "id": "92b1bda13b98e296",
+    "city": "부산",
+    "place": "18번완당집",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/No.18Wandang.jpg",
+    "indoor": false
+  },
+  {
+    "id": "51ad9ea22900dc96",
+    "city": "부산",
+    "place": "브라운핸즈 백제",
+    "category": "restaurant",
+    "image": "img/Busan/Busan/BrownHandsBaekje.jpg",
+    "indoor": false
+  },
+  {
+    "id": "13e29f7ec838aa10",
+    "city": "부산",
+    "place": "부산타워",
+    "category": "attraction",
+    "image": "img/Busan/Busan/BusanTower.jpg",
+    "indoor": false
+  },
+  {
+    "id": "95dd35514d84d0cf",
+    "city": "서울",
+    "place": "경복궁",
+    "category": "attraction",
+    "image": "img/seoul/seoul/gyeongboggung.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f0c56254d1cec9d8",
+    "city": "서울",
+    "place": "북촌한옥마을",
+    "category": "attraction",
+    "image": "img/seoul/seoul/BukchonHanokVillage.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3d70f8e117e8fdba",
+    "city": "서울",
+    "place": "익선동 호호식당",
+    "category": "restaurant",
+    "image": "img/seoul/seoul/HohoSikdangIkseon.jpg",
+    "indoor": false
+  },
+  {
+    "id": "7d6cd6743849bbd1",
+    "city": "서울",
+    "place": "익선동 청수당",
+    "category": "restaurant",
+    "image": "img/seoul/seoul/CheongsudangBakery.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a65b2d3c34a7aa38",
+    "city": "서울",
+    "place": "인사동",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "826f67983efc633e",
+    "city": "서울",
+    "place": "광장시장",
+    "category": "attraction",
+    "image": "img/seoul/seoul/GwangjangMarket.jpg",
+    "indoor": false
+  },
+  {
+    "id": "370467c7cccdd49a",
+    "city": "서울",
+    "place": "명동교자 본점",
+    "category": "restaurant",
+    "image": "img/seoul/seoul/MyeongdongKyojaMainRestaurant.jpg",
+    "indoor": false
+  },
+  {
+    "id": "acdc56fcebe2c507",
+    "city": "서울",
+    "place": "더스팟패뷸러스",
+    "category": "restaurant",
+    "image": "img/seoul/seoul/TheSpotFabulous.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4c44792a067267aa",
+    "city": "서울",
+    "place": "N서울타워",
+    "category": "attraction",
+    "image": "img/seoul/seoul/NSeoulTower.jpg",
+    "indoor": false
+  },
+  {
+    "id": "dd2185a816fce269",
+    "city": "서울",
+    "place": "나인트리 바이 파르나스 서울 명동 II",
+    "category": "attraction",
+    "image": "img/seoul/seoul/NineTreebyParnasSeoulMyeongdongII.jpg",
+    "indoor": false
+  },
+  {
+    "id": "046d594c14130424",
+    "city": "서울",
+    "place": "서울숲",
+    "category": "attraction",
+    "image": "img/seoul/seoul/SeoulForest.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a99cb249bc381873",
+    "city": "서울",
+    "place": "조조칼국수",
+    "category": "restaurant",
+    "image": "img/seoul/seoul/JoJoKalguksu.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4ff27293fd2e262e",
+    "city": "서울",
+    "place": "어니언 성수",
+    "category": "restaurant",
+    "image": "img/seoul/seoul/Onion.jpg",
+    "indoor": false
+  },
+  {
+    "id": "2368b5bc98f2b619",
+    "city": "서울",
+    "place": "대림창고",
+    "category": "attraction",
+    "image": "img/seoul/seoul/DaelimChanggoGallery.jpg",
+    "indoor": false
+  },
+  {
+    "id": "dad8b1ba8b121f38",
+    "city": "서울",
+    "place": "뚝섬한강공원",
+    "category": "attraction",
+    "image": "img/seoul/seoul/TtukseomHangangPark.jpg",
+    "indoor": false
+  },
+  {
+    "id": "74535e8dbf211bd8",
+    "city": "여수",
+    "place": "향일암",
+    "category": "attraction",
+    "image": "img/yeosu/yeosu/HyangiramTemple.jpg",
+    "indoor": false
+  },
+  {
+    "id": "9f1ab60c971ba8d2",
+    "city": "여수",
+    "place": "여수게장 나래밥상",
+    "category": "restaurant",
+    "image": "img/yeosu/yeosu/YeosuGejangNaraeBapsang.jpg",
+    "indoor": false
+  },
+  {
+    "id": "0a822324951c8321",
+    "city": "여수",
+    "place": "모이핀 오션점",
+    "category": "restaurant",
+    "image": "img/yeosu/yeosu/MOIFIN.jpg",
+    "indoor": false
+  },
+  {
+    "id": "70630867ed8a4780",
+    "city": "여수",
+    "place": "오동도",
+    "category": "attraction",
+    "image": "img/yeosu/yeosu/OdongdoIsland.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8268b3773ae096a9",
+    "city": "여수",
+    "place": "여수 명동게장",
+    "category": "restaurant",
+    "image": "img/yeosu/yeosu/YeosuMyeongdongGejang.jpg",
+    "indoor": false
+  },
+  {
+    "id": "34dafa6956acb2ca",
+    "city": "여수",
+    "place": "낭만카페",
+    "category": "restaurant",
+    "image": "img/yeosu/yeosu/RomanticCafe.jpg",
+    "indoor": false
+  },
+  {
+    "id": "af398c69a8246aff",
+    "city": "여수",
+    "place": "이순신광장",
+    "category": "attraction",
+    "image": "img/yeosu/yeosu/YiSunsinSquare.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4dec4d2bf2e9c888",
+    "city": "여수",
+    "place": "여수낭만포차거리",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8e755434a47745aa",
+    "city": "여수",
+    "place": "소노캄 여수",
+    "category": "attraction",
+    "image": "img/yeosu/yeosu/SonoCalmYeosu.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a62d904658002d4e",
+    "city": "여수",
+    "place": "여수해상케이블카",
+    "category": "attraction",
+    "image": "img/yeosu/yeosu/YeosuMaritimeCableCar.jpg",
+    "indoor": false
+  },
+  {
+    "id": "0995514193ba63b1",
+    "city": "여수",
+    "place": "낭만포차18번 이순신해물삼합",
+    "category": "restaurant",
+    "image": "img/yeosu/yeosu/NangmanPocha18LeeSunshinSeafood.jpg",
+    "indoor": false
+  },
+  {
+    "id": "d8b7807a82d7aa6a",
+    "city": "여수",
+    "place": "카페 라피끄",
+    "category": "restaurant",
+    "image": "img/yeosu/yeosu/CafeRafik.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5b79736fbb6db8b3",
+    "city": "제주도",
+    "place": "한담해변(애월)",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/HandamBeach.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f64e84485a90a632",
+    "city": "제주도",
+    "place": "몽상드애월",
+    "category": "restaurant",
+    "image": "img/Jeju/Jeju/MonsantdeAewol.jpg",
+    "indoor": false
+  },
+  {
+    "id": "9f5306396f808f9b",
+    "city": "제주도",
+    "place": "숙성도 애월점(흑돼지숙성구이)",
+    "category": "restaurant",
+    "image": "img/Jeju/Jeju/SukseongdoAewol.jpg",
+    "indoor": false
+  },
+  {
+    "id": "dfba39fbff0bdbfe",
+    "city": "제주도",
+    "place": "새별오름",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/SaebyeolOreum.jpg",
+    "indoor": false
+  },
+  {
+    "id": "15b1ddfa1290c8b2",
+    "city": "제주도",
+    "place": "협재해수욕장",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/HyeopjaeBeach.jpg",
+    "indoor": false
+  },
+  {
+    "id": "61b455d79ab9bcdd",
+    "city": "제주도",
+    "place": "한림공원",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/HallimPark.jpg",
+    "indoor": false
+  },
+  {
+    "id": "53ff152678c4c13d",
+    "city": "제주도",
+    "place": "산방산 · 용머리해안",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/YongmeoriCoast.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f57bf9f9c557c5dd",
+    "city": "제주도",
+    "place": "카페 더클리프",
+    "category": "restaurant",
+    "image": "img/Jeju/Jeju/TheCliff.jpg",
+    "indoor": false
+  },
+  {
+    "id": "6b7026c29a010f5c",
+    "city": "제주도",
+    "place": "중문관광단지",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/JungmunTouristComplex.jpg",
+    "indoor": false
+  },
+  {
+    "id": "df41ded258adbcef",
+    "city": "제주도",
+    "place": "중문고등어쌈밥",
+    "category": "restaurant",
+    "image": "img/Jeju/Jeju/JungmunGodeungeoSsambap.jpg",
+    "indoor": false
+  },
+  {
+    "id": "39af8b06476e1e8c",
+    "city": "제주도",
+    "place": "초콜릿랜드",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/ChocolateLand.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c3f3b6a2559717fb",
+    "city": "오사카",
+    "place": "글리코상",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1070b22c07205b19",
+    "city": "오사카",
+    "place": "에비스바시 다리 - 관광지",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8c8bd0356cbab2d5",
+    "city": "오사카",
+    "place": "킨류라멘 도톤보리점(라면전문식당)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0a510228709374cf",
+    "city": "오사카",
+    "place": "도톤보리 대관람차 에비스 타워",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4e7ff06bee5148b0",
+    "city": "오사카",
+    "place": "돈키호테 도톤보리점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "673b3c0a10891550",
+    "city": "오사카",
+    "place": "크로스 호텔 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "296a770ee9dd337c",
+    "city": "오사카",
+    "place": "호젠지",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "80ac5189bd68cff1",
+    "city": "오사카",
+    "place": "구로몬 시장(성게,참치,와규,꼬치)",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "bb6e12c30f2f9589",
+    "city": "후쿠오카",
+    "place": "다이치노 우동",
+    "category": "restaurant",
+    "image": "img/Fukuoka/Fukuoka/DaichinoUdon.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e17fe3efd11bc754",
+    "city": "후쿠오카",
+    "place": "BOUL'ANGE 하카타점(제과점)",
+    "category": "restaurant",
+    "image": "img/Fukuoka/Fukuoka/BOUL'ANGE.jpg",
+    "indoor": false
+  },
+  {
+    "id": "446859d340e79205",
+    "city": "후쿠오카",
+    "place": "캐널시티 하카타",
+    "category": "restaurant",
+    "image": "img/Fukuoka/Fukuoka/CanalCityHakata.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8b85cf28df019bd4",
+    "city": "후쿠오카",
+    "place": "니시테츠 호텔 크룸 하카타",
+    "category": "attraction",
+    "image": "img/Fukuoka/Fukuoka/NishitetsuHotelCROOMHakata.jpg",
+    "indoor": false
+  },
+  {
+    "id": "d23459b740885f36",
+    "city": "후쿠오카",
+    "place": "텐진 모츠나베 오야마 (모츠나베 전문점)",
+    "category": "restaurant",
+    "image": "img/Fukuoka/Fukuoka/HakataMotsunabeOoyama.jpg",
+    "indoor": false
+  },
+  {
+    "id": "d2d59bb5f673bde3",
+    "city": "후쿠오카",
+    "place": "텐진 지하상가",
+    "category": "restaurant",
+    "image": "img/Fukuoka/Fukuoka/TenjinUndergroundMall.jpg",
+    "indoor": false
+  },
+  {
+    "id": "be06521a4fcbd4bd",
+    "city": "도쿄",
+    "place": "스시 이시야마 (오마카세)",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/SushiIshiyama.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5c7b247fb87fd0fd",
+    "city": "도쿄",
+    "place": "카페 드 람브르",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/CafédeL'Ambre.jpg",
+    "indoor": false
+  },
+  {
+    "id": "da6727f55063e83e",
+    "city": "도쿄",
+    "place": "긴자 샤부키(스키야끼)",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/GINZAShabuki.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b6445240e425394a",
+    "city": "도쿄",
+    "place": "토리코로루",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/Tricolore.jpg",
+    "indoor": false
+  },
+  {
+    "id": "07f9af75c6323683",
+    "city": "도쿄",
+    "place": "삿포로생맥주 블랙라벨 더 바(비어홀)",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/SapporoDraftBeerBlackLabelTHEBAR.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a73d85646c524462",
+    "city": "도쿄",
+    "place": "Mitsui Garden Hotel Ginza Premier(5성급호텔)",
+    "category": "attraction",
+    "image": "img/Tokyo/Tokyo/MitsuiGardenHotelGinzaPremier.jpg",
+    "indoor": false
+  },
+  {
+    "id": "df8760f386ab45aa",
+    "city": "도쿄",
+    "place": "츠키지 장외시장(계란말이,성게,참치꼬치등길거리먹거리)",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/TsukijiOuterMarket.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5841cd74b89b9b02",
+    "city": "도쿄",
+    "place": "고쿄(성곽)",
+    "category": "attraction",
+    "image": "img/Tokyo/Tokyo/TheImperialPalace.jpg",
+    "indoor": false
+  },
+  {
+    "id": "2e0f4d8b4e0868d8",
+    "city": "도쿄",
+    "place": "글릿치 커피 & 로스터스",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/GlitchCoffee&Roasters.png",
+    "indoor": false
+  },
+  {
+    "id": "a26366a1b7e3bac0",
+    "city": "도쿄",
+    "place": "Kanda Ponchiken(돈카츠)",
+    "category": "restaurant",
+    "image": "img/Tokyo/Tokyo/KandaPonchiken.jpg",
+    "indoor": false
+  },
+  {
+    "id": "64eaffb68caf2298",
+    "city": "제주도",
+    "place": "제주국제공항",
+    "category": "attraction",
+    "image": "img/Jeju/Jeju/JejuInternationalAirport.jpg",
+    "indoor": false
+  },
+  {
+    "id": "031685828fff025a",
+    "city": "제주도",
+    "place": "애월 한담해변",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "fa40f784f2df1108",
+    "city": "제주도",
+    "place": "미포집 제주 애월점(간장게장·해물장)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e8dc219ff5c1737a",
+    "city": "제주도",
+    "place": "제주당",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b27944eb8964592b",
+    "city": "제주도",
+    "place": "세도나 중문 풀빌라",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b46537ade8c180db",
+    "city": "제주도",
+    "place": "천지연폭포",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a9dff1149bc36e11",
+    "city": "제주도",
+    "place": "서귀포매일올레시장",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "2551cc727f57146a",
+    "city": "제주도",
+    "place": "순대이야기",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6ba63de8ea03a415",
+    "city": "제주도",
+    "place": "요리바카 제주",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3e42f9f27c9636c5",
+    "city": "오사카",
+    "place": "간사이국제공항",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1ac6a332b89da337",
+    "city": "오사카",
+    "place": "난바역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "238132ad85376a96",
+    "city": "오사카",
+    "place": "난바 오리엔탈 호텔",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ef65847882e4f068",
+    "city": "오사카",
+    "place": "아지노야 오코노미야끼",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "52c89db37ba7bc25",
+    "city": "오사카",
+    "place": "--- 식사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7d91472c6aeffb1b",
+    "city": "오사카",
+    "place": "신사이바시스지 상점가",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f52ad193e789530d",
+    "city": "오사카",
+    "place": "도톤보리강 크루즈(야경)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8fe5203a45662139",
+    "city": "오사카",
+    "place": "오사카성",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c75b3be3837e7ba5",
+    "city": "오사카",
+    "place": "니시노마루 정원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "575d4a03d346398f",
+    "city": "오사카",
+    "place": "츠텐카쿠 전망대 & 신세카이",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "992484984a32169d",
+    "city": "오사카",
+    "place": "쿠시카츠 다루마 신세카이 총본점(일식꼬치및튀김전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "46f06c5a5c23fade",
+    "city": "오사카",
+    "place": "하루카스 300(전망대,야경)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f00aab77be8a5df3",
+    "city": "오사카",
+    "place": "카니도라쿠 도톤보리 본점(게요리)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3d5113c137682607",
+    "city": "오사카",
+    "place": "우메다 스카이빌딩 공중정원 전망대",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "eb3e0d4c2b10a694",
+    "city": "오사카",
+    "place": "헵파이브(HEP FIVE)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ba91418a83331810",
+    "city": "오사카",
+    "place": "야마모토 네기야키(오코노미야끼전문식당)-- 식사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f3ea7b8530f9e641",
+    "city": "오사카",
+    "place": "스위소텔 난카이 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1be0d7b6bc68a5e4",
+    "city": "오사카",
+    "place": "이치란 라멘 도톤보리점 별관",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "99e85a8c855ed14e",
+    "city": "오사카",
+    "place": "gashacoco 난바 에비스바시스지（가챠샵）",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8cda3ab1995dec8d",
+    "city": "오사카",
+    "place": "돈키호테 난바센니치마에점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "bded71f1f72f3f33",
+    "city": "오사카",
+    "place": "유니버설 스튜디오 재팬(USJ)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b87b94e6d0bb1856",
+    "city": "오사카",
+    "place": "유니버설 스튜디오 재팬",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ccf84b43d37ec0da",
+    "city": "오사카",
+    "place": "우메다 스카이빌딩 공중정원 전망대(야경)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "39f9acf39e5076b3",
+    "city": "오사카",
+    "place": "그랜드 프론트 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c545ca24991e5bc8",
+    "city": "오사카",
+    "place": "신세카이 & 츠텐카쿠",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8b52ac9eb016eb7a",
+    "city": "오사카",
+    "place": "-",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "760a4cbd6e386706",
+    "city": "오사카",
+    "place": "잇토쿠 총본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "216799bdcf11deb9",
+    "city": "오사카",
+    "place": "(일식꼬치및튀김전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0728c866ef099fd6",
+    "city": "오사카",
+    "place": "호텔 몬토레 그라스미아 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5102b5594e103f50",
+    "city": "오사카",
+    "place": "--- 체크인 · 짐 보관",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e591e5bcc43a30eb",
+    "city": "오사카",
+    "place": "＃C-pla+ 大阪心斎橋筋店",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "41c003977153ba80",
+    "city": "오사카",
+    "place": "--- 숙소 복귀",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "17cb031dc90433dd",
+    "city": "오사카",
+    "place": "--- 조식 후 출발",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b6962ceafd871758",
+    "city": "오사카",
+    "place": "교토역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "95f98d7f2d526895",
+    "city": "오사카",
+    "place": "기요미즈데라",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "16675ac041c27e62",
+    "city": "오사카",
+    "place": "산넨자카 & 니넨자카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "be2f08d6e7258d39",
+    "city": "오사카",
+    "place": "스타벅스 니넨자카 야사카차야점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6942ca4e3bd0b70e",
+    "city": "오사카",
+    "place": "--- 카페",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "9e99c52be543d845",
+    "city": "오사카",
+    "place": "후시미이나리 신사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f610f9f0eaafbdd6",
+    "city": "오사카",
+    "place": "규카츠 교토가츠규 후시미이나리 신(돈까스전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "80a0004e307e5b6b",
+    "city": "오사카",
+    "place": "교토 역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d4135f618be965ee",
+    "city": "오사카",
+    "place": "호텔 몬테레이 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1aea6edd690231d9",
+    "city": "오사카",
+    "place": "구로몬 시장",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "548f24065b9d1d92",
+    "city": "오사카",
+    "place": "--- 조식 후 체크아웃 & 짐은 프런트 보관",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "cfa32d07d7160bc6",
+    "city": "오사카",
+    "place": "신세카이 츠텐카쿠 & 잔잔요코초",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "819b749a980a4da6",
+    "city": "오사카",
+    "place": "쓰케카모우동 가모킨 에비스점(우동전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f1083880b60a6502",
+    "city": "오사카",
+    "place": "오사카역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "2109f66159c07c97",
+    "city": "오사카",
+    "place": "호텔 그랑비아 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "95e24bd50ade6785",
+    "city": "오사카",
+    "place": "글리코사인",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "82861b430e548827",
+    "city": "오사카",
+    "place": "와규 이다텐(고기)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5c74332bb9ea0dbc",
+    "city": "오사카",
+    "place": "유니버설시티역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "bb046845ea2c17d2",
+    "city": "오사카",
+    "place": "유니버셜시티역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "20e6016f93a01f53",
+    "city": "오사카",
+    "place": "나라역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0eaf8b88f4edc939",
+    "city": "오사카",
+    "place": "나라공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f2e0a5187113a837",
+    "city": "오사카",
+    "place": "도다이지",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a2914e3804cf066a",
+    "city": "오사카",
+    "place": "나카타니도우",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e9aff9229c763f69",
+    "city": "오사카",
+    "place": "와카쿠사 카레 본점(일본식카레전문식당)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "69b9f2fa4c455485",
+    "city": "오사카",
+    "place": "고베산노미야역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0eb80eef919dd68a",
+    "city": "오사카",
+    "place": "기타노이진칸",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "47a33e13c28a4e63",
+    "city": "오사카",
+    "place": "고베 하버랜드",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "969967bdd57c6d3b",
+    "city": "오사카",
+    "place": "고베 크루즈 콘체르토",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "74cd7b74493e459e",
+    "city": "오사카",
+    "place": "고베역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "54dd71b744055a9d",
+    "city": "오사카",
+    "place": "야키니쿠 고리짱 우메다 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8c74bda282a825a5",
+    "city": "오사카",
+    "place": "헵파이브 관람차",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "48fd02ea967848c7",
+    "city": "오사카",
+    "place": "니혼바시 마루에이",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e669493b116f3fb3",
+    "city": "오사카·도쿄",
+    "place": "간사이국제공항",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a3c3541f6a0117b1",
+    "city": "오사카·도쿄",
+    "place": "호텔 한큐 레스파이어 오사카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e3043d73e85a68c1",
+    "city": "오사카·도쿄",
+    "place": "글리코상",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c5adca8e73f76f09",
+    "city": "오사카·도쿄",
+    "place": "홋쿄쿠세이 신사이바시 본점(오므라이스)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "99be4968159b41a8",
+    "city": "오사카·도쿄",
+    "place": "신사이바시스지 상점가",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "688638033457b978",
+    "city": "오사카·도쿄",
+    "place": "오사카성",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "be180f72e2a2933d",
+    "city": "오사카·도쿄",
+    "place": "니시노마루 정원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "469ca740022ac5ef",
+    "city": "오사카·도쿄",
+    "place": "신세카이",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "44e28df4c54b1a90",
+    "city": "오사카·도쿄",
+    "place": "츠텐카쿠(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3705aaaeb1276664",
+    "city": "오사카·도쿄",
+    "place": "로쿠센 스시(초밥)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6b2429b85cdd842a",
+    "city": "오사카·도쿄",
+    "place": "메가돈키호테 신세카이점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4ab2b3372350edb1",
+    "city": "오사카·도쿄",
+    "place": "교토역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "cb6d5404d29f96cf",
+    "city": "오사카·도쿄",
+    "place": "산넨자카·니넨자카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "402bfe9fa8a58bdb",
+    "city": "오사카·도쿄",
+    "place": "기요미즈데라",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f93bf10e3b3fb9b8",
+    "city": "오사카·도쿄",
+    "place": "니시키 시장",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "66582d6ea7cfeb26",
+    "city": "오사카·도쿄",
+    "place": "후시미이나리 신사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5403d768f4eab87c",
+    "city": "오사카·도쿄",
+    "place": "이나리역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3d502e627f6284a9",
+    "city": "오사카·도쿄",
+    "place": "오사카역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c6660f8f54189033",
+    "city": "오사카·도쿄",
+    "place": "헵파이브 관람차",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4b9c7101675c98a1",
+    "city": "오사카·도쿄",
+    "place": "이즈모 루쿠아",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d21160ea0c2629fd",
+    "city": "오사카·도쿄",
+    "place": "JR 오사카역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5fec7661eedfccf6",
+    "city": "오사카·도쿄",
+    "place": "신오사카역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b1e18230fe95046a",
+    "city": "오사카·도쿄",
+    "place": "도쿄역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1ad36557a499029a",
+    "city": "오사카·도쿄",
+    "place": "도쿄 스테이션 호텔",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e7c2bdf1cf8e402a",
+    "city": "오사카·도쿄",
+    "place": "시부야 스카이(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8813252520f2c4da",
+    "city": "오사카·도쿄",
+    "place": "규카츠 모토무라 시부야점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a349cd2986ebed42",
+    "city": "오사카·도쿄",
+    "place": "마이하마역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d4a19ffe6b7432fd",
+    "city": "오사카·도쿄",
+    "place": "도쿄 디즈니랜드 or 도쿄 디즈니씨",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d364c237973d87a5",
+    "city": "오사카·도쿄",
+    "place": "파크 내",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e139e3845c89ae75",
+    "city": "오사카·도쿄",
+    "place": "아사쿠사 센소지 & 나카미세도리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a7329bd5fc80cf85",
+    "city": "오사카·도쿄",
+    "place": "다이코쿠야 텐푸라 아사쿠사 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "23b8cb81cff479de",
+    "city": "오사카·도쿄",
+    "place": "도쿄타워(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8100c490ee0f6b69",
+    "city": "오사카·도쿄",
+    "place": "킷테 마루노우치",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0cac69ee08a37a84",
+    "city": "오사카·도쿄",
+    "place": "나리타공항",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "902ad363731e186e",
+    "city": "후쿠오카",
+    "place": "후쿠오카공항",
+    "category": "attraction",
+    "image": "img/Fukuoka/Fukuoka/FukuokaInternationalAirport.jpg",
+    "indoor": false
+  },
+  {
+    "id": "21e84d35ff6181ea",
+    "city": "후쿠오카",
+    "place": "하카타역",
+    "category": "attraction",
+    "image": "img/Fukuoka/Fukuoka/HakataStation.jpg",
+    "indoor": false
+  },
+  {
+    "id": "eeaf20145204903a",
+    "city": "후쿠오카",
+    "place": "미야코 호텔 하카타",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "29eb7a5db33fa6d8",
+    "city": "후쿠오카",
+    "place": "AMU 플라자 하카타 시티",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "83ad77d5471eed53",
+    "city": "후쿠오카",
+    "place": "모츠나베 이치후지 텐진 니시도리점(모츠나베)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3397dae12d1618ba",
+    "city": "후쿠오카",
+    "place": "돈키호테 후쿠오카 텐진 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b18aa95ff51021a1",
+    "city": "후쿠오카",
+    "place": "오호리공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3076a5134ab2a82b",
+    "city": "후쿠오카",
+    "place": "후쿠오카성터",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "51b4323abe519ca6",
+    "city": "후쿠오카",
+    "place": "시나리(우동전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "850f3f69400eb102",
+    "city": "후쿠오카",
+    "place": "후쿠오카타워",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0f786659d333ac6d",
+    "city": "후쿠오카",
+    "place": "모모치 시사이드 파크",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "be7a9fec80e1d72d",
+    "city": "후쿠오카",
+    "place": "-",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a4a094d19a407509",
+    "city": "후쿠오카",
+    "place": "후지우나ㅡ장어덮밥",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "32a4b403c39890a9",
+    "city": "후쿠오카",
+    "place": "후글렌 후쿠오카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "468eb8e8bcbcd344",
+    "city": "후쿠오카",
+    "place": "--- 카페",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "07bc9575facf8352",
+    "city": "후쿠오카",
+    "place": "하카타 라멘 신신 하카타 데이토스점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7000df573b1bb4e0",
+    "city": "후쿠오카",
+    "place": "그랜드 하얏트 후쿠오카",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6c83ef32ce916ae7",
+    "city": "후쿠오카",
+    "place": "야나기바시 렌고 시장",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "063dce17e2a44e7a",
+    "city": "후쿠오카",
+    "place": "나카스 포장마차거리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "18641577d35eee40",
+    "city": "후쿠오카",
+    "place": "00:00] 오호리공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e1b69632a85c864f",
+    "city": "후쿠오카",
+    "place": "신지다이 텐진점(이자카야)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "06afa0e0f7568faa",
+    "city": "후쿠오카",
+    "place": "다이마루 후쿠오카텐진점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "49db571c76648a8a",
+    "city": "후쿠오카",
+    "place": "후쿠오카타워(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "bc8ae7d040080385",
+    "city": "후쿠오카",
+    "place": "모모치 시사이드파크(인공해변공원)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b7e82c904ea0362f",
+    "city": "후쿠오카",
+    "place": "다자이후텐만구",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "34127effb85d28db",
+    "city": "후쿠오카",
+    "place": "카사노야 다자이후 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "54ae5e40c6cf7be7",
+    "city": "후쿠오카",
+    "place": "규슈국립박물관",
+    "category": "attraction",
+    "image": null,
+    "indoor": true
+  },
+  {
+    "id": "3cf80f3348a4fa1d",
+    "city": "후쿠오카",
+    "place": "요도바시 하카타",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "eaf2d5ab7f92efdc",
+    "city": "후쿠오카",
+    "place": "아뮤플라자 하카타",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f1767b5c203aacb1",
+    "city": "후쿠오카",
+    "place": "하카타",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "10ebc921c890f4ac",
+    "city": "후쿠오카",
+    "place": "JR 큐슈 호텔 블라섬 하카타 센트럴",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "101fc3be4ffb5450",
+    "city": "후쿠오카",
+    "place": "멘야 타이손",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "511ee7700817dc1f",
+    "city": "후쿠오카",
+    "place": "나카스 포장마차 거리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ec9992b59e3c42b8",
+    "city": "후쿠오카",
+    "place": "유후인역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "16b2a273929f8207",
+    "city": "후쿠오카",
+    "place": "유후인노쇼 사이가쿠칸 (由布院庄 彩岳館)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f24fb039af05ef9d",
+    "city": "후쿠오카",
+    "place": "긴린코 호수",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "df15e3981c683e6e",
+    "city": "후쿠오카",
+    "place": "유노타케안(가정식)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e6656a89d5346421",
+    "city": "후쿠오카",
+    "place": "유후인노쇼 사이가쿠칸",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4eaa648874f065c4",
+    "city": "후쿠오카",
+    "place": "유노츠보 거리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b0e12135009f9a20",
+    "city": "후쿠오카",
+    "place": "벳푸 지옥순례",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "62ce0de411c8e53c",
+    "city": "후쿠오카",
+    "place": "벳푸 스기노이 호텔",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c021894bf2436bb2",
+    "city": "후쿠오카",
+    "place": "Shunkoen(야키니쿠)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3e315daa5c329342",
+    "city": "후쿠오카",
+    "place": "다카사키야마 자연동물원(야생원숭이)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c52bc1d092d0c05a",
+    "city": "후쿠오카",
+    "place": "벳푸 카이힌 스나유 (모래찜질,온천)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a5a19ef8d8faa96f",
+    "city": "후쿠오카",
+    "place": "토요츠네 본점(이자카야)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e70c4e7bfdad0a49",
+    "city": "후쿠오카",
+    "place": "스시사카바 사시스 킷테하카타점(스시)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "61f4ed58d4bdcdb4",
+    "city": "후쿠오카",
+    "place": "렌터카 픽업 (브랜드별공항점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6180623ae6f02148",
+    "city": "후쿠오카",
+    "place": "하카타 엑셀 호텔 도큐",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "63a411d28bdb0b9c",
+    "city": "후쿠오카",
+    "place": "이치란 라멘 하카타 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "645a88eb94c31d9c",
+    "city": "후쿠오카",
+    "place": "오호리공원 & 후쿠오카성터",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b108ca9cfe980a27",
+    "city": "후쿠오카",
+    "place": "츠키시마 몬자 타마토야 텐진(몬자야키)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "fc3337fed24383d8",
+    "city": "후쿠오카",
+    "place": "모모치해변",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f8e98727bc356dc0",
+    "city": "후쿠오카",
+    "place": "야나가와 도항 뱃놀이 유람",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3598da79bdf30203",
+    "city": "후쿠오카",
+    "place": "모토요시야 우나기 본점(장어덮밥)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "99db37a295d8c7cf",
+    "city": "후쿠오카",
+    "place": "다자이후 참도 상점가",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "38361c12ce5f9e4f",
+    "city": "후쿠오카",
+    "place": "바이엔 가든 리조트",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "25dcc436e8f5bc57",
+    "city": "후쿠오카",
+    "place": "유후인 바이엔 조식 후 출발",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1ae226871ce47cb3",
+    "city": "후쿠오카",
+    "place": "유후인 플로럴 빌리지",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e0d25af5ddcbf27e",
+    "city": "후쿠오카",
+    "place": "유후인 바이엔",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "668915fb5f9f07d4",
+    "city": "후쿠오카",
+    "place": "코게츠",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "25ecaef1eb7012b8",
+    "city": "후쿠오카",
+    "place": "카메노이 호텔 벳푸",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8cb00e2c6865a2eb",
+    "city": "후쿠오카",
+    "place": "벳푸 로프웨이 & 쓰루미다케 전망대",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1eac68a3c921629f",
+    "city": "후쿠오카",
+    "place": "효탄온천",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "2f9aecedda8ede53",
+    "city": "후쿠오카",
+    "place": "신하카타(초밥)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "88540e0f7ef02b15",
+    "city": "후쿠오카",
+    "place": "하카타 도착",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "07504a39809e1622",
+    "city": "후쿠오카",
+    "place": "하카타 나카스 워싱턴 호텔 플라자",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1a0f028c9f179d90",
+    "city": "후쿠오카",
+    "place": "키스이마루 하카타점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "2fd2bdae63355815",
+    "city": "후쿠오카",
+    "place": "렌터카 반납 (후쿠오카공항점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3247897cfcfc619f",
+    "city": "도쿄",
+    "place": "나리타공항 - 도착",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4efca930faf3bb0b",
+    "city": "도쿄",
+    "place": "츠지한 아크 힐즈점(해산물 돈부리 전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6eeb424f9f4a374f",
+    "city": "도쿄",
+    "place": "렘 롯폰기(3성급 호텔)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b5c6429c39ad5287",
+    "city": "도쿄",
+    "place": "벌브 커피 로스터즈 롯폰기",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "cdb1d2ed8cf9a7b1",
+    "city": "도쿄",
+    "place": "도쿄 타워",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "9ee5e31734049ead",
+    "city": "도쿄",
+    "place": "시바 공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "64dbe49a5c20cbfb",
+    "city": "도쿄",
+    "place": "Sanshuu-ya(이자카야)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7905bbcc4a97ee04",
+    "city": "도쿄",
+    "place": "렘 롯폰기",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f1d7b6838d578ba1",
+    "city": "도쿄",
+    "place": "센소지 & 나카미세도리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4cbebbd140e73225",
+    "city": "도쿄",
+    "place": "Tempura Asakusa SAKURA(튀김전문식당)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "805ad29d3ff3261a",
+    "city": "도쿄",
+    "place": "도쿄 스카이트리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e13ffa7138b6724e",
+    "city": "도쿄",
+    "place": "스시노미도리 긴자점(스시초밥집)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "143deeb5bd7d25c9",
+    "city": "도쿄",
+    "place": "렘 롯폰기 숙소 복귀",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a6d5119e646a011b",
+    "city": "도쿄",
+    "place": "시부야스카이",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b97d7bf2cf97c7f4",
+    "city": "도쿄",
+    "place": "goodNess渋谷 - 브런치/카페",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c1c975719a2db96f",
+    "city": "도쿄",
+    "place": "오모이데요코초(이자카야먹자골목)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4fa72521eb753f3e",
+    "city": "도쿄",
+    "place": "나리타공항",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "afd9261358715beb",
+    "city": "도쿄",
+    "place": "-",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "63dc02c8828a352c",
+    "city": "도쿄",
+    "place": "아사쿠사역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "052de2a5bccad5b7",
+    "city": "도쿄",
+    "place": "아사쿠사 몬자 카노야 하나레(몬자야키전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f0a823b156b0489d",
+    "city": "도쿄",
+    "place": "신주쿠 워싱턴 호텔",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "209d6aaae820873e",
+    "city": "도쿄",
+    "place": "신주쿠 골든가이(이자카야골목)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "824f35687fea7cac",
+    "city": "도쿄",
+    "place": "마이하마역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c26814a88acdb7c6",
+    "city": "도쿄",
+    "place": "도쿄 디즈니씨",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6c7869b1931dcf62",
+    "city": "도쿄",
+    "place": "메이지 신궁 신사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "806d7ff1a13e3942",
+    "city": "도쿄",
+    "place": "하라주쿠 다케시타도리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6b9852710c02be37",
+    "city": "도쿄",
+    "place": "시부야 스크램블 교차로 & 시부야 스카이",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1778b2c0b4611a9f",
+    "city": "도쿄",
+    "place": "신지다이 시부야도겐자카점(이자카야)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4586a3f4e4698a2d",
+    "city": "도쿄",
+    "place": "메가 돈키호테 시부야 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f704f848e3210a3f",
+    "city": "도쿄",
+    "place": "신주쿠 교엔",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1e47bbf5fe875668",
+    "city": "도쿄",
+    "place": "신주쿠 다카시마야",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "10ca72ad3476b85e",
+    "city": "도쿄",
+    "place": "[00:00 신주쿠역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7925db119975fb87",
+    "city": "도쿄",
+    "place": "나리타국제공항",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b20852730bff08ef",
+    "city": "도쿄",
+    "place": "텐푸라 아사쿠사 SAKURA(튀김전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5b9489316d8e1dff",
+    "city": "도쿄",
+    "place": "아사쿠사 실크푸딩 본점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "b96e25c41c56b7c5",
+    "city": "도쿄",
+    "place": "하얏트 리젠시 도쿄",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ead0b5831d6fdcac",
+    "city": "도쿄",
+    "place": "아키하바라역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "42454dc6c13220ec",
+    "city": "도쿄",
+    "place": "만다라케 콤플렉스(피규어/굿즈)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "203f5034209a81e9",
+    "city": "도쿄",
+    "place": "아키하바라 라디오회관",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d25d2e6898b97e48",
+    "city": "도쿄",
+    "place": "규카츠 모토무라 아키하바라점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7e5ae0207167360a",
+    "city": "도쿄",
+    "place": "우에노 공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "547dd1a8badf8352",
+    "city": "도쿄",
+    "place": "우에노 아메요코 상점가",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "799b74229ccd67a7",
+    "city": "도쿄",
+    "place": "신주쿠역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "251836601c7213ea",
+    "city": "도쿄",
+    "place": "오모이데요코초(이자카야골목)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "95508e675495936e",
+    "city": "도쿄",
+    "place": "버스타 신주쿠 버스 정류장",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "52c0d895e4186cc4",
+    "city": "도쿄",
+    "place": "카와구치코역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "63d0be89d72d25dc",
+    "city": "도쿄",
+    "place": "오이시공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "317f6223808b8ca2",
+    "city": "도쿄",
+    "place": "오이시 공원 카페",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "187095c03f7cf39a",
+    "city": "도쿄",
+    "place": "호토우 후도(명물)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "766d23a9998d9404",
+    "city": "도쿄",
+    "place": "버스타 신주쿠",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0ef50d636226ecf6",
+    "city": "도쿄",
+    "place": "시부야스카이(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ac993934209215ba",
+    "city": "도쿄",
+    "place": "시부야 스크램블 교차로",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "78f55c29845ffbaf",
+    "city": "도쿄",
+    "place": "C-pla Harajuku Takeshita Street(가챠샵)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "86d5dcbed6dc48c8",
+    "city": "도쿄",
+    "place": "--- 쇼핑",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "befa22bc45d6f3a0",
+    "city": "도쿄",
+    "place": "로스트 비프 오노 하라주쿠점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "13743a0668917efa",
+    "city": "도쿄",
+    "place": "도쿄도청 북쪽 전망대",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "cc876076b14f75b0",
+    "city": "도쿄",
+    "place": "아부라소바 니시신주쿠구미",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e46b095f24c30d4b",
+    "city": "도쿄",
+    "place": "도쿄역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c7e94baa1283e07a",
+    "city": "도쿄",
+    "place": "신바시역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "e48c65c713855790",
+    "city": "도쿄",
+    "place": "호텔빌라퐁텐도쿄-시오도메",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "dd087a0f3a3cab39",
+    "city": "도쿄",
+    "place": "반테츠(철판구이전문식당)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7ce850a09a430d8c",
+    "city": "도쿄",
+    "place": "하마리큐 은사정원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5f89636a471b3043",
+    "city": "도쿄",
+    "place": "Nakajima Tea House",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ff74c7b4f553f5ea",
+    "city": "도쿄",
+    "place": "호텔 빌라 폰테인 그랜드 도쿄-시오도메",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "866b753574dce660",
+    "city": "도쿄",
+    "place": "롯폰기역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "fd6eb29cea55ed6d",
+    "city": "도쿄",
+    "place": "모리타워 전망대 &모리미술관",
+    "category": "attraction",
+    "image": null,
+    "indoor": true
+  },
+  {
+    "id": "d3a957a969d2ac8d",
+    "city": "도쿄",
+    "place": "아후리 롯폰기힐즈",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f2d4e5b3c57455fc",
+    "city": "도쿄",
+    "place": "도쿄 미드타운",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7c4a1d564ef4c6f9",
+    "city": "도쿄",
+    "place": "곤파치 니시아자부(이자카야)-- 식사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ebd7f975430ecdd4",
+    "city": "도쿄",
+    "place": "오다이바카이힌코엔역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a6ef288b7c7583a1",
+    "city": "도쿄",
+    "place": "오다이바 해변공원",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "da9369a49420034e",
+    "city": "도쿄",
+    "place": "다이버시티 도쿄 플라자",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "fa7c1b75ee0470eb",
+    "city": "도쿄",
+    "place": "규카츠 교토가츠규 오다이바 DiverCity Tokyo Plaza점",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "f3325dee5dc1291e",
+    "city": "도쿄",
+    "place": "아쿠아시티 오다이바",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8950758d9a1d694c",
+    "city": "도쿄",
+    "place": "구체전망실 하치타마(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ea28fbcd41edcef7",
+    "city": "도쿄",
+    "place": "도쿄역(야에스 남쪽출구)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3ed46ad7129f47d1",
+    "city": "도쿄",
+    "place": "오이시 공원 카페 -- 카페",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "297446ad21da8b1b",
+    "city": "도쿄",
+    "place": "호토우 후도(명물)-- 식사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "cbb551a4a434aa13",
+    "city": "도쿄",
+    "place": "가마쿠라코코마에 역",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "10f1777fef0cc166",
+    "city": "도쿄",
+    "place": "고토쿠인",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "c25ff6f29b5e5242",
+    "city": "도쿄",
+    "place": "에노시마",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d50625d646d86ecf",
+    "city": "도쿄",
+    "place": "시라스야(해산물요리전문식당)-- 식사",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ce33477d92d95901",
+    "city": "도쿄",
+    "place": "코마치도리 거리",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6b209dc8eaa5c778",
+    "city": "도쿄",
+    "place": "도쿄타워(전망대)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3fc7dc235302c6fa",
+    "city": "도쿄",
+    "place": "헤케룬",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d4b63296499682de",
+    "city": "도쿄",
+    "place": "우동 오니얀마 신바시점(우동전문점)",
+    "category": "attraction",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4130a6f19923d165",
+    "city": "상하이",
+    "place": "예원·상하이 옛거리",
+    "category": "attraction",
+    "image": "img/Shanghai/gm_010.jpg",
+    "indoor": false
+  },
+  {
+    "id": "202adc32df2f0277",
+    "city": "상하이",
+    "place": "예원",
+    "category": "attraction",
+    "image": "img/Shanghai/gm_001.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ec03139856a34ec1",
+    "city": "상하이",
+    "place": "신천지",
+    "category": "attraction",
+    "image": "img/Shanghai/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "cdbca3cefd21b78d",
+    "city": "상하이",
+    "place": "난징동루",
+    "category": "attraction",
+    "image": "img/Shanghai/gm_004.jpg",
+    "indoor": false
+  },
+  {
+    "id": "26f996db6229fba5",
+    "city": "상하이",
+    "place": "와이탄",
+    "category": "attraction",
+    "image": "img/Shanghai/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3a46f97d052f308f",
+    "city": "상하이",
+    "place": "예원 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "5a7ebc5ecaf5ecbc",
+    "city": "상하이",
+    "place": "상하이 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a936cbf7040b2c73",
+    "city": "칭다오",
+    "place": "피차이위엔",
+    "category": "restaurant",
+    "image": "img/Qingdao/road_gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ba71759362687392",
+    "city": "칭다오",
+    "place": "성 미카엘 대성당",
+    "category": "attraction",
+    "image": "img/Qingdao/gm_002.jpg",
+    "indoor": false
+  },
+  {
+    "id": "d357e74e8deee37c",
+    "city": "칭다오",
+    "place": "잔교",
+    "category": "attraction",
+    "image": "img/Qingdao/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c71473734b9e9684",
+    "city": "칭다오",
+    "place": "칭다오 맥주박물관",
+    "category": "attraction",
+    "image": "img/Qingdao/gm_004.jpg",
+    "indoor": true
+  },
+  {
+    "id": "3cd8a12f5babeb59",
+    "city": "칭다오",
+    "place": "타이동 야시장",
+    "category": "restaurant",
+    "image": "img/Qingdao/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3383386a6ef19a15",
+    "city": "칭다오",
+    "place": "타이동 야시장 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6ab827dc5fd8b2d0",
+    "city": "칭다오",
+    "place": "신호산공원",
+    "category": "attraction",
+    "image": "img/Qingdao/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "2b61ed5f459637d0",
+    "city": "칭다오",
+    "place": "오사광장",
+    "category": "attraction",
+    "image": "img/Qingdao/gm_007.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c2efa7741d0f807b",
+    "city": "칭다오",
+    "place": "올림픽 요트센터",
+    "category": "attraction",
+    "image": "img/Qingdao/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "0784e4a644dc8b94",
+    "city": "칭다오",
+    "place": "올림픽 요트센터 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "d6fbede1a30a4283",
+    "city": "베이징",
+    "place": "옹화궁",
+    "category": "attraction",
+    "image": "img/Beijing/gm_001.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c592203bf91b7613",
+    "city": "베이징",
+    "place": "국자감·공묘",
+    "category": "attraction",
+    "image": "img/Beijing/gm_017.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4eb69693c471f957",
+    "city": "베이징",
+    "place": "난뤄구샹",
+    "category": "attraction",
+    "image": "img/Beijing/gm_004.jpg",
+    "indoor": false
+  },
+  {
+    "id": "840572b67d2511e7",
+    "city": "베이징",
+    "place": "스차하이",
+    "category": "attraction",
+    "image": "img/Beijing/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "52762e0ce663b498",
+    "city": "베이징",
+    "place": "스차하이 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1f30ae77b8b1d0a9",
+    "city": "베이징",
+    "place": "천안문광장",
+    "category": "attraction",
+    "image": "img/Beijing/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "7c4d6094e834db53",
+    "city": "베이징",
+    "place": "자금성",
+    "category": "attraction",
+    "image": "img/Beijing/gm_007.jpg",
+    "indoor": false
+  },
+  {
+    "id": "50204f2a12e4bff5",
+    "city": "베이징",
+    "place": "경산공원",
+    "category": "attraction",
+    "image": "img/Beijing/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c9c2c5ed927a0230",
+    "city": "베이징",
+    "place": "왕푸징",
+    "category": "attraction",
+    "image": "img/Beijing/gm_009.jpg",
+    "indoor": false
+  },
+  {
+    "id": "181a69251a3181b9",
+    "city": "베이징",
+    "place": "왕푸징 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ade2772b2216d930",
+    "city": "베이징",
+    "place": "무톈위 만리장성",
+    "category": "attraction",
+    "image": "img/Beijing/gm_010.jpg",
+    "indoor": false
+  },
+  {
+    "id": "73bf84270f90b9b8",
+    "city": "베이징",
+    "place": "무톈위",
+    "category": "attraction",
+    "image": "img/Beijing/gm_010.jpg",
+    "indoor": false
+  },
+  {
+    "id": "91079d6da5eb57c3",
+    "city": "베이징",
+    "place": "베이징 시내",
+    "category": "attraction",
+    "image": "img/Beijing/road_gm_007.jpg",
+    "indoor": false
+  },
+  {
+    "id": "70aec6b5701d2a1d",
+    "city": "베이징",
+    "place": "구이제",
+    "category": "restaurant",
+    "image": "img/Beijing/gm_011.jpg",
+    "indoor": false
+  },
+  {
+    "id": "22546ff7875ecb88",
+    "city": "베이징",
+    "place": "구이제 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "4c783cc794476c23",
+    "city": "베이징",
+    "place": "이화원",
+    "category": "attraction",
+    "image": "img/Beijing/gm_012.jpg",
+    "indoor": false
+  },
+  {
+    "id": "353fa4d4ed9f77f0",
+    "city": "베이징",
+    "place": "이화원 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "6f7cef0e9f1741e1",
+    "city": "장가계",
+    "place": "시부제",
+    "category": "restaurant",
+    "image": "img/Zhangjiajie/gm_001.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a98c17915602ca52",
+    "city": "장가계",
+    "place": "시부제 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "fe744cf1de67dc3a",
+    "city": "장가계",
+    "place": "국가삼림공원 동문",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_016.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8df442d09a084e09",
+    "city": "장가계",
+    "place": "백룡엘리베이터",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "23fd1d571c6ce01a",
+    "city": "장가계",
+    "place": "원가계",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_004.jpg",
+    "indoor": false
+  },
+  {
+    "id": "05897ab413fa54bc",
+    "city": "장가계",
+    "place": "천자산",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "978c09008df42432",
+    "city": "장가계",
+    "place": "동문",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_016.jpg",
+    "indoor": false
+  },
+  {
+    "id": "2a1943a526884ce8",
+    "city": "장가계",
+    "place": "동문 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "dd712068487937fb",
+    "city": "장가계",
+    "place": "대협곡·유리다리",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_017.jpg",
+    "indoor": false
+  },
+  {
+    "id": "dc027594524c53a3",
+    "city": "장가계",
+    "place": "대협곡",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_018.jpg",
+    "indoor": false
+  },
+  {
+    "id": "312d4a5407fc6a69",
+    "city": "장가계",
+    "place": "대협곡 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "2c6f282931fab009",
+    "city": "장가계",
+    "place": "천문산 관광",
+    "category": "attraction",
+    "image": "img/Zhangjiajie/gm_022.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b45e595acc57bfde",
+    "city": "장가계",
+    "place": "천문산 관광 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "9db67aa7721bb92e",
+    "city": "청두",
+    "place": "톈푸광장",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_013.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b231f06f628f4acd",
+    "city": "청두",
+    "place": "타이쿠리·IFS",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_015.jpg",
+    "indoor": false
+  },
+  {
+    "id": "99186000b7b27611",
+    "city": "청두",
+    "place": "춘시루",
+    "category": "restaurant",
+    "image": "img/Chengdu/gm_016.jpg",
+    "indoor": false
+  },
+  {
+    "id": "48726729e5f43543",
+    "city": "청두",
+    "place": "춘시루 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a7a1817c4c4afe21",
+    "city": "청두",
+    "place": "판다기지",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_018.jpg",
+    "indoor": false
+  },
+  {
+    "id": "78a080b1a8aec425",
+    "city": "청두",
+    "place": "문수원",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_004.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f2d7a29748468335",
+    "city": "청두",
+    "place": "인민공원",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b4442683dfce64b1",
+    "city": "청두",
+    "place": "콴자이샹쯔",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4180e36b0980637f",
+    "city": "청두",
+    "place": "러산대불 북문",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_021.jpg",
+    "indoor": false
+  },
+  {
+    "id": "466f021084f38d70",
+    "city": "청두",
+    "place": "러산 시내",
+    "category": "attraction",
+    "image": "img/Chengdu/road_gm_010.jpg",
+    "indoor": false
+  },
+  {
+    "id": "6c12ea603ce53ec8",
+    "city": "청두",
+    "place": "무후사",
+    "category": "attraction",
+    "image": "img/Chengdu/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e9d68110096778d2",
+    "city": "청두",
+    "place": "진리거리",
+    "category": "restaurant",
+    "image": "img/Chengdu/gm_009.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4b2f5471866227c3",
+    "city": "청두",
+    "place": "문수원 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a9aca4f2e1b51508",
+    "city": "시안",
+    "place": "종루",
+    "category": "attraction",
+    "image": "img/Xian/gm_014.jpg",
+    "indoor": false
+  },
+  {
+    "id": "79d95ad7fe72e615",
+    "city": "시안",
+    "place": "고루",
+    "category": "attraction",
+    "image": "img/Xian/gm_015.jpg",
+    "indoor": false
+  },
+  {
+    "id": "30113d4d5c56b599",
+    "city": "시안",
+    "place": "회민거리",
+    "category": "restaurant",
+    "image": "img/Xian/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "9f31192347634035",
+    "city": "시안",
+    "place": "회민거리 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a01a2f19a176f93a",
+    "city": "시안",
+    "place": "병마용",
+    "category": "attraction",
+    "image": "img/Xian/gm_019.jpg",
+    "indoor": false
+  },
+  {
+    "id": "43e775a91b668706",
+    "city": "시안",
+    "place": "대안탑",
+    "category": "attraction",
+    "image": "img/Xian/gm_020.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8bbc0571e4b8e37a",
+    "city": "시안",
+    "place": "대당불야성",
+    "category": "attraction",
+    "image": "img/Xian/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ddfc78f74081f188",
+    "city": "시안",
+    "place": "대당불야성 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "ecf2f6497225a199",
+    "city": "시안",
+    "place": "시안성벽",
+    "category": "attraction",
+    "image": "img/Xian/gm_022.jpg",
+    "indoor": false
+  },
+  {
+    "id": "25e412d96de975c5",
+    "city": "시안",
+    "place": "서원문",
+    "category": "attraction",
+    "image": "img/Xian/gm_023.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3ea83310c20519d1",
+    "city": "시안",
+    "place": "종루 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "45229ef1c4507b67",
+    "city": "하얼빈",
+    "place": "성 소피아성당",
+    "category": "attraction",
+    "image": "img/Harbin/gm_001.jpg",
+    "indoor": false
+  },
+  {
+    "id": "26fd4c85bf433351",
+    "city": "하얼빈",
+    "place": "중앙대가",
+    "category": "restaurant",
+    "image": "img/Harbin/gm_002.jpg",
+    "indoor": false
+  },
+  {
+    "id": "24db569432261adc",
+    "city": "하얼빈",
+    "place": "홍수방지기념탑",
+    "category": "attraction",
+    "image": "img/Harbin/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3009d581d45803c3",
+    "city": "하얼빈",
+    "place": "스탈린공원·송화강",
+    "category": "attraction",
+    "image": "img/Harbin/gm_014.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c5b11ce1eec2d081",
+    "city": "하얼빈",
+    "place": "스탈린공원·송화강 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "8264412f84b4ff2e",
+    "city": "하얼빈",
+    "place": "시베리아호랑이공원",
+    "category": "attraction",
+    "image": "img/Harbin/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "9848f1386fb92b6c",
+    "city": "하얼빈",
+    "place": "빙설대세계",
+    "category": "attraction",
+    "image": "img/Harbin/gm_015.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e9ef0b77afb35446",
+    "city": "하얼빈",
+    "place": "빙설대세계 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "da3a51799239376e",
+    "city": "하얼빈",
+    "place": "중화 바로크 거리·노도외",
+    "category": "restaurant",
+    "image": "img/Harbin/gm_018.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c96a6d9d77511a44",
+    "city": "하얼빈",
+    "place": "중화 바로크 거리·노도외 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "1598c973876b57d4",
+    "city": "다롄",
+    "place": "중산광장",
+    "category": "attraction",
+    "image": "img/Dalian/gm_012.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5e442de8129521b4",
+    "city": "다롄",
+    "place": "동방수성·동항",
+    "category": "attraction",
+    "image": "img/Dalian/gm_014.jpg",
+    "indoor": false
+  },
+  {
+    "id": "acc24b937d321827",
+    "city": "다롄",
+    "place": "동방수성·동항 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "3be7844339c9f73f",
+    "city": "다롄",
+    "place": "연화산 전망대",
+    "category": "attraction",
+    "image": "img/Dalian/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "53c0c289e8833e5c",
+    "city": "다롄",
+    "place": "어인부두",
+    "category": "restaurant",
+    "image": "img/Dalian/gm_017.jpg",
+    "indoor": false
+  },
+  {
+    "id": "54791ad104b2a726",
+    "city": "다롄",
+    "place": "어인부두 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "979f3e19cb621960",
+    "city": "다롄",
+    "place": "러시아풍정거리",
+    "category": "attraction",
+    "image": "img/Dalian/gm_007.jpg",
+    "indoor": false
+  },
+  {
+    "id": "bcbfde55504dc749",
+    "city": "다롄",
+    "place": "톈진거리",
+    "category": "restaurant",
+    "image": "img/Dalian/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "7f44eb541dc37213",
+    "city": "다롄",
+    "place": "톈진거리 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "9516abc53148d2f2",
+    "city": "충칭",
+    "place": "해방비",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_016.jpg",
+    "indoor": false
+  },
+  {
+    "id": "7c8feb532e8c762b",
+    "city": "충칭",
+    "place": "팔일호츠제",
+    "category": "restaurant",
+    "image": "img/Chongqing/gm_002.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e34a23060e06b0a5",
+    "city": "충칭",
+    "place": "홍야동",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b30f87a79987ed29",
+    "city": "충칭",
+    "place": "홍야동 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "bee4965174751ac2",
+    "city": "충칭",
+    "place": "리쯔바 관람대",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_018.jpg",
+    "indoor": false
+  },
+  {
+    "id": "46bfa503be37bd5d",
+    "city": "충칭",
+    "place": "리쯔바",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_004.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f2be4af22eaf18df",
+    "city": "충칭",
+    "place": "어링2창",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "7ff87bebeacc5256",
+    "city": "충칭",
+    "place": "십팔제·자오창커우",
+    "category": "attraction",
+    "image": "img/Chongqing/road_gm_015.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8a5e189044de9e21",
+    "city": "충칭",
+    "place": "용문호 노가",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c1cff5035b1a5c56",
+    "city": "충칭",
+    "place": "용문호 노가 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "0540ef68410e5133",
+    "city": "충칭",
+    "place": "조천문광장",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_009.jpg",
+    "indoor": false
+  },
+  {
+    "id": "6ff2469d980f1e28",
+    "city": "충칭",
+    "place": "래플스시티",
+    "category": "attraction",
+    "image": "img/Chongqing/gm_024.jpg",
+    "indoor": false
+  },
+  {
+    "id": "96ada0c37be2b07d",
+    "city": "충칭",
+    "place": "래플스시티 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "41bb0ca836822248",
+    "city": "광저우",
+    "place": "베이징루",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_015.jpg",
+    "indoor": false
+  },
+  {
+    "id": "54696f8303efeb72",
+    "city": "광저우",
+    "place": "대불고사",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_002.jpg",
+    "indoor": false
+  },
+  {
+    "id": "6fb81d6d7ca94c83",
+    "city": "광저우",
+    "place": "대불고사 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "7314368ff20cce86",
+    "city": "광저우",
+    "place": "영경방",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_004.jpg",
+    "indoor": false
+  },
+  {
+    "id": "2c3532899130d0e2",
+    "city": "광저우",
+    "place": "상하구",
+    "category": "restaurant",
+    "image": "img/Guangzhou/gm_018.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ca5678c59e0178b7",
+    "city": "광저우",
+    "place": "사면도",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "cfe8d7ad9a9fdaf6",
+    "city": "광저우",
+    "place": "화성광장",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_007.jpg",
+    "indoor": false
+  },
+  {
+    "id": "d96ae9bd3b216996",
+    "city": "광저우",
+    "place": "광저우타워",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "08f225ffd873642b",
+    "city": "광저우",
+    "place": "광저우타워 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "048d4282ea249186",
+    "city": "광저우",
+    "place": "웨슈공원",
+    "category": "attraction",
+    "image": "img/Guangzhou/gm_009.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e8e3b9b1055d2911",
+    "city": "광저우",
+    "place": "베이징루 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "a9b7843776efc168",
+    "city": "항저우",
+    "place": "서호 호빈공원",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_001.jpg",
+    "indoor": false
+  },
+  {
+    "id": "9b0a211cbdeeecb7",
+    "city": "항저우",
+    "place": "서호 선착장",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_016.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8f0ee958bf377acc",
+    "city": "항저우",
+    "place": "삼담인월·샤오잉저우섬",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_002.jpg",
+    "indoor": false
+  },
+  {
+    "id": "59a68682f211e14c",
+    "city": "항저우",
+    "place": "서호 동쪽 호반",
+    "category": "attraction",
+    "image": "img/Hangzhou/road_gm_019.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b1fc63c3c618c2c8",
+    "city": "항저우",
+    "place": "호빈인타이 IN77",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_003.jpg",
+    "indoor": false
+  },
+  {
+    "id": "44b00f6ead368690",
+    "city": "항저우",
+    "place": "호빈인타이 IN77 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "2d1c0f8505a727d7",
+    "city": "항저우",
+    "place": "영은비래봉 풍경구·영은사",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_017.jpg",
+    "indoor": false
+  },
+  {
+    "id": "bb4f2a4878993f8e",
+    "city": "항저우",
+    "place": "영은사",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_005.jpg",
+    "indoor": false
+  },
+  {
+    "id": "eb3a0e4fb80ab814",
+    "city": "항저우",
+    "place": "뇌봉탑",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_006.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3843a8107b682cd4",
+    "city": "항저우",
+    "place": "정자사",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_007.jpg",
+    "indoor": false
+  },
+  {
+    "id": "5e538f69d3d1e477",
+    "city": "항저우",
+    "place": "청하방·하방가",
+    "category": "restaurant",
+    "image": "img/Hangzhou/gm_008.jpg",
+    "indoor": false
+  },
+  {
+    "id": "b844b6b27c34269d",
+    "city": "항저우",
+    "place": "남송어가",
+    "category": "restaurant",
+    "image": "img/Hangzhou/gm_009.jpg",
+    "indoor": false
+  },
+  {
+    "id": "62902f046c2f04ea",
+    "city": "항저우",
+    "place": "남송어가 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "edc42b917749be4b",
+    "city": "항저우",
+    "place": "단교잔설",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_010.jpg",
+    "indoor": false
+  },
+  {
+    "id": "a46527436382604c",
+    "city": "항저우",
+    "place": "백제",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_011.jpg",
+    "indoor": false
+  },
+  {
+    "id": "51762a4a1c63204a",
+    "city": "항저우",
+    "place": "롱샹차오·호빈인타이",
+    "category": "attraction",
+    "image": "img/Hangzhou/gm_018.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4956404a78919127",
+    "city": "항저우",
+    "place": "롱샹차오·호빈인타이 주변 자유 식사",
+    "category": "restaurant",
+    "image": null,
+    "indoor": false
+  },
+  {
+    "id": "517539fbd3165a50",
+    "city": "홋카이도",
+    "place": "오타루 마사즈시 본점",
+    "category": "restaurant",
+    "image": "img/Hokkaido/OtaruMasazushi.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ed1236619866d9f5",
+    "city": "홋카이도",
+    "place": "오타루 오르골당 본관·증기시계",
+    "category": "attraction",
+    "image": "img/Hokkaido/OtaruMusicBoxMuseumMainBuilding.jpg",
+    "indoor": false
+  },
+  {
+    "id": "44be8b0a482bf603",
+    "city": "홋카이도",
+    "place": "르타오 본점",
+    "category": "restaurant",
+    "image": "img/Hokkaido/LeTAOMainShop.jpg",
+    "indoor": false
+  },
+  {
+    "id": "620b22e2d887b305",
+    "city": "홋카이도",
+    "place": "오타루 운하",
+    "category": "attraction",
+    "image": "img/Hokkaido/OtaruCanal.jpg",
+    "indoor": false
+  },
+  {
+    "id": "e60da2756a045a73",
+    "city": "홋카이도",
+    "place": "수프카레 킹 게이트웨이점",
+    "category": "restaurant",
+    "image": "img/Hokkaido/SOUPCURRYKINGGateway.jpg",
+    "indoor": false
+  },
+  {
+    "id": "c9227e74724b9c7b",
+    "city": "홋카이도",
+    "place": "홋카이도청 구본청사",
+    "category": "attraction",
+    "image": "img/Hokkaido/HokkaidoGovernment.jpg",
+    "indoor": false
+  },
+  {
+    "id": "31cabb0c00dfdf6f",
+    "city": "홋카이도",
+    "place": "오도리공원",
+    "category": "attraction",
+    "image": "img/Hokkaido/OdoriPark.jpg",
+    "indoor": false
+  },
+  {
+    "id": "33d784c5c58d7c29",
+    "city": "홋카이도",
+    "place": "니조시장",
+    "category": "restaurant",
+    "image": "img/Hokkaido/NijoMarket.jpg",
+    "indoor": false
+  },
+  {
+    "id": "3d9856fd64feb121",
+    "city": "홋카이도",
+    "place": "모이와산 로프웨이",
+    "category": "attraction",
+    "image": "img/Hokkaido/MoiwaSanrokuStation.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ce039bdb114d7d77",
+    "city": "홋카이도",
+    "place": "다누키코지 상점가",
+    "category": "attraction",
+    "image": "img/Hokkaido/TanukikojiShoppingStreet.jpg",
+    "indoor": false
+  },
+  {
+    "id": "7782bcf94539e6f2",
+    "city": "홋카이도",
+    "place": "라멘 신겐",
+    "category": "restaurant",
+    "image": "img/Hokkaido/RamenShingen.jpg",
+    "indoor": false
+  },
+  {
+    "id": "f9375df0b76a43a9",
+    "city": "홋카이도",
+    "place": "삿포로 스텔라 플레이스",
+    "category": "attraction",
+    "image": "img/Hokkaido/STELLARPLACESAPPORO.jpg",
+    "indoor": false
+  },
+  {
+    "id": "361c79b1ef528717",
+    "city": "홋카이도",
+    "place": "홋카이도청 구본청사·삿포로 시계탑",
+    "category": "attraction",
+    "image": "img/Hokkaido/HokkaidoGovernment.jpg",
+    "indoor": false
+  },
+  {
+    "id": "4283af13e18d818d",
+    "city": "홋카이도",
+    "place": "홋카이도 징기스칸 마사진 스스키노 본점",
+    "category": "restaurant",
+    "image": "img/Hokkaido/Jingisukan.jpg",
+    "indoor": false
+  },
+  {
+    "id": "ff1757c1101f8a95",
+    "city": "홋카이도",
+    "place": "파르페 커피 술 사토",
+    "category": "restaurant",
+    "image": "img/Hokkaido/ParfaitCoffeeSakeSato.jpg",
+    "indoor": false
+  },
+  {
+    "id": "8866ed1f96c07d6b",
+    "city": "홋카이도",
+    "place": "아사히야마동물원",
+    "category": "attraction",
+    "image": "img/Hokkaido/AsahiyamaZoo.jpg",
+    "indoor": false
+  },
+  {
+    "id": "1a16c7343056339f",
+    "city": "홋카이도",
+    "place": "준페이",
+    "category": "restaurant",
+    "image": "img/Hokkaido/Junpei.jpg",
+    "indoor": false
+  },
+  {
+    "id": "653ff74d523ee14d",
+    "city": "홋카이도",
+    "place": "청의호수·시라히게폭포",
+    "category": "attraction",
+    "image": "img/Hokkaido/ShirahigeFalls.jpg",
+    "indoor": false
+  },
+  {
+    "id": "edf91935b2d78b19",
+    "city": "홋카이도",
+    "place": "후라노 닝구르테라스",
+    "category": "attraction",
+    "image": "img/Hokkaido/NingleTerrace.jpg",
+    "indoor": false
+  },
+  {
+    "id": "cd73341905a3b5cf",
+    "city": "홋카이도",
+    "place": "삿포로 라멘요코초",
+    "category": "restaurant",
+    "image": "img/Hokkaido/SapporoRamenYokocho.jpg",
+    "indoor": false
+  },
+  {
+    "id": "af1206320d3c76b2",
+    "city": "홋카이도",
+    "place": "사카이마치도리 상점가",
+    "category": "attraction",
+    "image": "img/Hokkaido/SakaimachiStreet.jpg",
+    "indoor": false
+  },
+  {
+    "id": "69bb40e7223d6074",
+    "city": "홋카이도",
+    "place": "수프카레 킹 센트럴점",
+    "category": "restaurant",
+    "image": "img/Hokkaido/SOUPCURRYKINGCentral.jpg",
+    "indoor": false
+  }
+]

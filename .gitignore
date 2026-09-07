@@ -2,6 +2,10 @@ node_modules
 dist
 .env
 .env.local
+.secret.local
+.env.*
+!.env.example
+!.env.sample
 firebase-debug.log
 .DS_Store
 nul

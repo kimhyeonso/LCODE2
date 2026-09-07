@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TravelForm from "../components/TravelForm";
 import Loading from "../components/Loading";
 import { useAuth } from "../hooks/useAuth";
@@ -11,12 +11,15 @@ export default function TravelPlanner() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const planId = params.get("plan");
-  const [savedPlan, setSavedPlan] = useState(null);
-  const [editState, setEditState] = useState({ loading: Boolean(planId), saving: false, error: "", saved: false });
+  const location = useLocation();
+  const remixDraft = location.state?.remixPlanId === (planId || null) ? location.state?.remixDraft : null;
+  const [savedPlan, setSavedPlan] = useState(remixDraft || null);
+  const [editState, setEditState] = useState({ loading: Boolean(planId && !remixDraft), saving: false, error: "", saved: false });
   const [draftState, setDraftState] = useState({ saving: false, saved: false, savedAt: null, error: "" });
-  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
+  const [hasUnsavedChanges, setHasUnsavedChanges] = useState(Boolean(remixDraft));
   const [conflictingPlan, setConflictingPlan] = useState(null);
   const saveLockRef = useRef(false);
+  const remixBaseDays = useRef(remixDraft ? location.state?.remixOriginalDays : undefined);
 
   const handleDirtyChange = useCallback((dirty) => {
     setHasUnsavedChanges(dirty);
@@ -51,7 +54,7 @@ export default function TravelPlanner() {
   }, [hasUnsavedChanges]);
 
   useEffect(() => {
-    if (!planId) return undefined;
+    if (!planId || remixDraft) return undefined;
     let active = true;
     getPlan(planId)
       .then((plan) => {
@@ -61,7 +64,7 @@ export default function TravelPlanner() {
       })
       .catch(() => active && setEditState({ loading: false, saving: false, error: "일정을 불러오지 못했습니다.", saved: false }));
     return () => { active = false; };
-  }, [planId]);
+  }, [planId, remixDraft]);
 
   const saveChanges = async (changes) => {
     if (!user || !planId || saveLockRef.current) return;
@@ -81,7 +84,8 @@ export default function TravelPlanner() {
         saveLockRef.current = false;
         return;
       }
-      const updated = await updatePlan(user.uid, planId, changes);
+      const updated = await updatePlan(user.uid, planId, changes, remixBaseDays.current);
+      remixBaseDays.current = updated.days;
       setSavedPlan(updated);
       setEditState({ loading: false, saving: false, error: "", saved: true });
       setHasUnsavedChanges(false);
@@ -90,7 +94,7 @@ export default function TravelPlanner() {
       navigate(`/plan/saved?id=${encodeURIComponent(planId)}`);
     } catch (saveError) {
       console.error("일정 수정 실패:", saveError);
-      setEditState({ loading: false, saving: false, error: "변경 내용을 저장하지 못했습니다.", saved: false });
+      setEditState({ loading: false, saving: false, error: saveError.message || "변경 내용을 저장하지 못했습니다.", saved: false });
       saveLockRef.current = false;
     }
   };
@@ -140,7 +144,8 @@ export default function TravelPlanner() {
     setDraftState({ saving: true, saved: false, savedAt: null, error: "" });
     try {
       if (planId) {
-        const updated = await updatePlan(user.uid, planId, draft);
+        const updated = await updatePlan(user.uid, planId, draft, remixBaseDays.current);
+        remixBaseDays.current = updated.days;
         setSavedPlan(updated);
         setDraftState({ saving: false, saved: true, savedAt: new Date(), error: "" });
       } else {

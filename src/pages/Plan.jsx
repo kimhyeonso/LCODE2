@@ -476,7 +476,7 @@ export default function Plan() {
               </div>
               <div className={styles.savedActions}>
                 <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>일정 수정</button>
-                <Link to={`/ai-remix?planId=${encodeURIComponent(savedPlanId)}`}><span>AI REMIX</span>AI로 일정 다시 짜기</Link>
+                <Link to={`/ai-remix?planId=${encodeURIComponent(savedPlanId)}`}><span>AI REMIX</span><b>AI로 일정 다시 짜기</b></Link>
                 <button type="button" onClick={() => {
                   setDeleteState({ deleting: false, error: "" });
                   setIsDeleteOpen(true);
