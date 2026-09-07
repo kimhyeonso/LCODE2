@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import products from "../data/products.json";
 import searchIcon from "../assets/icons/search.svg";
@@ -98,6 +98,8 @@ export default function Search() {
   const [country, setCountry] = useState("all");
   const [sort, setSort] = useState("recommended");
   const [filterOpen, setFilterOpen] = useState(false);
+  const [durationModal, setDurationModal] = useState(null);
+  const [selectedDurationId, setSelectedDurationId] = useState("");
   const [favoriteTripIds, setFavoriteTripIds] = useState(
     () => user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : [],
   );
@@ -105,16 +107,10 @@ export default function Search() {
   const [filters, setFilters] = useState({ duration: "all", companion: "all", styles: [], pace: "all", season: "all" });
 
   const trips = useMemo(() => {
-    const uniqueTrips = Array.from(
-      managedTrips.reduce((map, trip) => {
-        if (!map.has(trip.city)) map.set(trip.city, trip);
-        return map;
-      }, new Map()).values(),
-    );
     const normalizedQuery = (cityAliases[initialQuery.toUpperCase()] || initialQuery)
       .trim()
       .toLowerCase();
-    const filtered = uniqueTrips.filter((trip) => {
+    const filtered = managedTrips.filter((trip) => {
       const matchesQuery = !normalizedQuery
         || `${trip.city} ${trip.country} ${trip.title}`.toLowerCase().includes(normalizedQuery);
       const matchesDuration = filters.duration === "all"
@@ -135,10 +131,39 @@ export default function Search() {
       : filtered;
   }, [country, filters, initialQuery, managedTrips, sort]);
 
+  const cityCards = useMemo(() => Array.from(
+    trips.reduce((groups, trip) => {
+      const cityKey = `${trip.country}:${trip.city}`;
+      const cityTrips = groups.get(cityKey) || [];
+      cityTrips.push(trip);
+      groups.set(cityKey, cityTrips);
+      return groups;
+    }, new Map()).values(),
+  ).map((cityTrips) => ({
+    trip: cityTrips[0],
+    variants: [...cityTrips].sort((first, second) => first.days.length - second.days.length),
+  })), [trips]);
+
   const representativeImages = useMemo(
-    () => assignRepresentativeImages(trips),
-    [trips],
+    () => assignRepresentativeImages(cityCards.map(({ trip }) => trip)),
+    [cityCards],
   );
+
+  const selectedDurationTrip = durationModal?.trips.find((trip) => trip.id === selectedDurationId) || null;
+
+  const openDurationModal = (cityTrips) => {
+    setDurationModal({ city: cityTrips[0].city, trips: cityTrips });
+    setSelectedDurationId(cityTrips[0].id);
+  };
+
+  useEffect(() => {
+    if (!durationModal) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setDurationModal(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [durationModal]);
 
   useEffect(() => {
     if (!user?.uid) {
@@ -251,13 +276,21 @@ export default function Search() {
         </div>
       </section>
 
+      <Link to="/balance" className={styles.balanceGameCta}>
+        밸런스 게임으로 나만의 여행 취향 찾기 &amp; 추천받기
+      </Link>
+
       <section className={styles.archive} aria-labelledby="package-archive-title">
-        <h2 id="package-archive-title" className="whereToNextTitle">PACKAGE ARCHIVE <b>{trips.length}</b></h2>
+        <h2 id="package-archive-title" className="whereToNextTitle">PACKAGE ARCHIVE <b>{cityCards.length}</b></h2>
         <div className={styles.results}>
-          {trips.map((trip, index) => {
+          {cityCards.map(({ trip, variants }, index) => {
             const image = representativeImages.get(trip.id);
             const firstPlace = getFirstPlace(trip);
             const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
+            const hasDurationOptions = variants.length > 1;
+            const scheduleSummary = hasDurationOptions
+              ? `${variants[0].duration} ~ ${variants[variants.length - 1].duration}까지 총 ${variants.length}개 일정`
+              : undefined;
             return (
               <DesrinationThumnail
                 key={trip.id}
@@ -268,10 +301,16 @@ export default function Search() {
                 to={`/plan?trip=${encodeURIComponent(trip.id)}`}
                 isFavorite={favoriteTripIds.includes(trip.id)}
                 onToggleFavorite={() => toggleFavoriteTrip(trip.id)}
+                onTripClick={hasDurationOptions ? (event) => {
+                  event.preventDefault();
+                  openDurationModal(variants);
+                } : undefined}
+                actionLabel={hasDurationOptions ? "여행 일수 선택 >" : undefined}
+                scheduleSummary={scheduleSummary}
               />
             );
           })}
-          {!trips.length && (
+          {!cityCards.length && (
             <div className={styles.empty}>
               <strong>검색 결과가 없습니다.</strong>
               <p>다른 도시나 국가를 검색해 보세요.</p>
@@ -291,6 +330,43 @@ export default function Search() {
             <div className={styles.filterGroup}><h3>일정 강도</h3><div className={styles.paceOptions}>{[["slow", "SLOW", "여유로운 일정"], ["balance", "BALANCE", "적당한 일정"], ["full", "FULL", "알찬 일정"]].map(([value, label, copy]) => <button className={filters.pace === value ? styles.selected : ""} type="button" key={value} onClick={() => selectFilter("pace", filters.pace === value ? "all" : value)}><b>{label}</b><span>{copy}</span></button>)}</div></div>
             <FilterGroup title="계절" values={["봄", "여름", "가을", "겨울"]} selected={filters.season} onSelect={(value) => selectFilter("season", filters.season === value ? "all" : value)} />
             <footer><button type="button" onClick={resetFilters}>초기화</button><button type="button" onClick={() => setFilterOpen(false)}>{trips.length}개의 패키지 보기</button></footer>
+          </section>
+        </div>
+      )}
+      {durationModal && (
+        <div className={styles.durationBackdrop} role="presentation" onMouseDown={() => setDurationModal(null)}>
+          <section
+            className={styles.durationModal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="duration-modal-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <span className={styles.modalHandle} aria-hidden="true" />
+            <p className={styles.modalBrand}>L:CODE</p>
+            <h2 id="duration-modal-title">여행 일수를<br />선택해 주세요.</h2>
+            <p className={styles.modalMessage}>{durationModal.city}에서 원하는 여행 기간을 골라보세요.</p>
+            <div className={styles.durationChoices} role="radiogroup" aria-label={`${durationModal.city} 여행 일수 선택`}>
+              {durationModal.trips.map((trip) => (
+                <button
+                  key={trip.id}
+                  className={trip.id === selectedDurationId ? styles.durationChoiceActive : ""}
+                  type="button"
+                  role="radio"
+                  aria-checked={trip.id === selectedDurationId}
+                  onClick={() => setSelectedDurationId(trip.id)}
+                >
+                  <strong>{trip.duration}</strong>
+                  <span>{trip.days.length} DAYS · {trip.title}</span>
+                </button>
+              ))}
+            </div>
+            <div className={styles.modalActions}>
+              <button type="button" onClick={() => setDurationModal(null)}>닫기</button>
+              {selectedDurationTrip && (
+                <Link to={`/plan?trip=${encodeURIComponent(selectedDurationTrip.id)}`}>상세 일정 보기</Link>
+              )}
+            </div>
           </section>
         </div>
       )}

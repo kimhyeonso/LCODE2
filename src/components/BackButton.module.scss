@@ -1,0 +1,30 @@
+@use "../styles/variables" as *;
+
+.backButton {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  margin: 0 0 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #aaa6a0;
+  cursor: pointer;
+  font: 400 13px/1 $sans !important;
+  letter-spacing: .2em !important;
+}
+
+.backButton span {
+  margin-right: .2em;
+  font: inherit !important;
+  letter-spacing: 0 !important;
+}
+
+.light {
+  color: #fff;
+}
+
+.backButton:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 4px;
+}

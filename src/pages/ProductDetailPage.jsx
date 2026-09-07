@@ -12,6 +12,7 @@ import {
 import products from "../data/products.json";
 import { useManagedCollection } from "../hooks/useManagedCollection";
 import { useShop } from "../hooks/useShop";
+import BackButton from "../components/BackButton";
 import styles from "./Shop.module.scss";
 import customStyles from "./ProductCustom.module.scss";
 
@@ -722,6 +723,7 @@ export default function ProductDetailPage() {
           styles.empty
         }
       >
+        <BackButton />
         <h1>
           상품을 찾을 수 없어요.
         </h1>
@@ -1459,6 +1461,7 @@ export default function ProductDetailPage() {
         styles.detailPage
       }
     >
+      <BackButton />
       {/* ===================================================
           PRODUCT TOP
       =================================================== */}

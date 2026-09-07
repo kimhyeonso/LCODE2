@@ -7,7 +7,7 @@ import styles from "./MypageUser.module.scss";
 
 const menuItems = [
   ["상품 주문 내역", "/buy"],
-  ["내 일정", "/plan/saved"], ["나의 리뷰", "/mystories"],
+  ["내 일정", "/my/plans"], ["나의 리뷰", "/mystories"],
   ["찜한 상품", "/saved"], ["찜한 일정", "/wishlist"], ["찜한 장소", "/favorite-places"],
   ["쿠폰함", "/coupon"], ["알림 설정", "/alarm"], ["고객센터", "/notice"],
 ];

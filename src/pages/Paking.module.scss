@@ -4,13 +4,13 @@
 @use "../styles/representative-title" as title;
 
 .pakingPage, .pakingPage * { box-sizing: border-box; }
-.pakingPage { min-height: 100vh; padding: 36px 0 0; background: $paper; color: $ink; font-family: $korean; }
+.pakingPage { min-height: 100vh; padding: 22px 0 0; background: $paper; color: $ink; font-family: $korean; }
 .content { width: min(1310px, calc(100% - 112px)); margin: 0 auto; }
 .hero { display: grid; grid-template-columns: minmax(0, 1fr) 305px; gap: 100px; align-items: end; }
 .heading { position: relative; }
 .heading::after { position: absolute; top: 60px; right: -45px; width: 220px; height: 112px; background: url("/Mypage-img/u.png") center/contain no-repeat; content: ""; opacity: .38; }
 .eyebrow { margin: 0; color: #9b958d; font: 400 13px $korean; letter-spacing: .13em; }
-.heading h1 { position: relative; z-index: 1; margin: 17px 0 0; font: 400 clamp(56px, 5vw, 78px)/1 $display; letter-spacing: -.035em; }
+.heading h1 { position: relative; z-index: 1; margin: 20px 0 0; font: 400 clamp(56px, 5vw, 78px)/1 $display; letter-spacing: -.035em; }
 .description { margin: 20px 0 0; color: #918b83; font: 400 14px $korean; }
 .divider { position: relative; width: 82%; height: 1px; margin-top: 34px; background: #d5d0c8; }
 .divider::after { position: absolute; right: -35px; top: -13px; width: 28px; height: 28px; background: url("/Mypage-img/port.png") center/contain no-repeat; content: ""; }
@@ -45,7 +45,7 @@
 .tips li p { margin: 0; font: 400 14px/1.65 $korean; }
 .stampModal { display: none; }
 
-@media (min-width: 901px) { .pakingPage { width: calc(100% - 220px); margin-left: 220px; } }
+@media (min-width: 901px) { .pakingPage { width: calc(100% - 220px); margin-left: 220px; padding-top: 72px; } }
 
 @include tablet {
   .content { width: min(100% - 64px, 980px); }
@@ -56,7 +56,7 @@
 }
 
 @include mobile {
-  .pakingPage { padding: 26px 0 72px; }
+  .pakingPage { padding: 22px 0 72px; }
   .content { width: calc(100% - 32px); }
   .hero { display: block; }
   .heading::after, .postcard { display: none; }

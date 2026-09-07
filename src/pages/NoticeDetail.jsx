@@ -1,4 +1,5 @@
 import { Link, useParams } from "react-router-dom";
+import BackButton from "../components/BackButton";
 import { useManagedCollectionState } from "../hooks/useManagedCollection";
 import { defaultNotices } from "../data/defaultNotices";
 import styles from "./NoticeDetail.module.scss";
@@ -33,7 +34,7 @@ export default function NoticeDetail() {
   return (
     <main className={styles.page}>
       <article className={styles.article}>
-        <Link className={styles.back} to="/notice">← NOTICE</Link>
+        <BackButton data-mypage-back className={styles.back} label="이전 페이지로 돌아가기" />
         <p className={styles.eyebrow}>L:CODE · NOTICE</p>
         <h1>{notice.title}</h1>
         <p className={styles.meta}>{formatDate(notice.updatedAt || notice.createdAt)}</p>

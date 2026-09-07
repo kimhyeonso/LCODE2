@@ -1,8 +1,9 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
 import { useEffect, useLayoutEffect } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomNav from "./components/BottomNav";
+import TopButton from "./components/TopButton";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -45,18 +46,48 @@ import Balance from "./pages/Balance";
 import AIRemix from "./pages/AIRemix";
 import DesrinationAll from "./pages/DesrinationAll";
 import styles from "./App.module.scss";
+
+if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
+  // We restore scroll ourselves (see ScrollTop below). Leaving this on "auto"
+  // makes the browser snap to the old scroll position against the still-old
+  // DOM right as popstate fires, then our own restore snaps again once the
+  // new route renders - two jumps that read as the page bouncing up and down.
+  window.history.scrollRestoration = "manual";
+}
+
+// Keyed by history entry (location.key) so each visited page remembers its own
+// scroll position, independent of how many times that path has been visited.
+const scrollPositions = new Map();
+
 function ScrollTop() {
-  const { pathname, state } = useLocation();
+  const { pathname, state, key } = useLocation();
+  const navigationType = useNavigationType();
+
   useLayoutEffect(() => {
     const root = document.documentElement;
     const previousScrollBehavior = root.style.scrollBehavior;
-    const savedScrollY = Number(state?.restoreScrollY);
-    const scrollY = Number.isFinite(savedScrollY) ? savedScrollY : 0;
+    let scrollY = 0;
+
+    if (navigationType === "POP") {
+      scrollY = scrollPositions.get(key) ?? 0;
+    } else {
+      const savedScrollY = Number(state?.restoreScrollY);
+      scrollY = Number.isFinite(savedScrollY) ? savedScrollY : 0;
+    }
 
     root.style.scrollBehavior = "auto";
     window.scrollTo(0, scrollY);
     root.style.scrollBehavior = previousScrollBehavior;
-  }, [pathname, state]);
+  }, [pathname, state, navigationType, key]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      scrollPositions.set(key, window.scrollY);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [key]);
+
   return null;
 }
 
@@ -113,6 +144,7 @@ export default function App() {
           <Route path="/shop/:productId" element={<ProductDetailPage />} />
           <Route path="/saved" element={<Saved />} />
           <Route path="/plan/saved" element={<ProtectedRoute><SavedPlan /></ProtectedRoute>} />
+          <Route path="/my/plans" element={<ProtectedRoute><SavedPlan showBack /></ProtectedRoute>} />
           <Route path="/journal/tokyo" element={<JournalDetail />} />
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/favorite-places" element={<ProtectedRoute><FavoritePlaces /></ProtectedRoute>} />
@@ -182,6 +214,7 @@ export default function App() {
       </div>
       {!isImmersivePage && <Footer />}
       {!isImmersivePage && <BottomNav />}
+      <TopButton />
     </div>
   );
 }

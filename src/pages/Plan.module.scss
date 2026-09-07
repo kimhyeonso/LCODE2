@@ -81,16 +81,10 @@ $plan-muted: #8b8780;
 }
 .backButton {
   position: absolute;
-  top: 24px;
-  left: 20px;
+  top: 22px;
+  left: 16px;
   z-index: 1;
-  border: 0;
-  padding: 0;
-  background: transparent;
-  color: #fff;
-  font-size: 13px;
-  letter-spacing: .16em;
-  cursor: pointer;
+  margin: 0;
 }
 .heroTop {
   display: flex;
@@ -1035,7 +1029,6 @@ $plan-muted: #8b8780;
   .planEmpty > span,
   .planEmpty p,
   .planEmpty a,
-  .backButton,
   .heroTop,
   .heroTags,
   .heroWeather,

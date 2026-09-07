@@ -50,11 +50,11 @@
   },
   "thumbnailMap": {
     "korea": {
-      "강릉": "img/Thumbnail/Thumbnail-image/korea/gyeongju.png",
+      "강릉": "img/Thumbnail/Thumbnail-image/korea/gangneung.png",
       "거제": "img/Thumbnail/Thumbnail-image/korea/geoje.png",
       "부산": "img/Thumbnail/Thumbnail-image/korea/busan.png",
-      "서울": "img/seoul_korea.jpg",
-      "여수": "img/Thumbnail/Thumbnail-image/korea/jeju.png",
+      "서울": "img/Thumbnail/Thumbnail-image/korea/seoul.png",
+      "여수": "img/Thumbnail/Thumbnail-image/korea/Yeosu.png",
       "제주도": "img/Thumbnail/Thumbnail-image/korea/jeju.png"
     },
     "japan": {
@@ -70,11 +70,11 @@
       "베이징": "img/Thumbnail/Thumbnail-image/china/beijing.png",
       "장가계": "img/Thumbnail/Thumbnail-image/china/zhangjiajie.png",
       "청두": "img/Thumbnail/Thumbnail-image/china/chengdu.png",
-      "시안": "img/Thumbnail/Thumbnail-image/china/beijing.png",
+      "시안": "img/Thumbnail/Thumbnail-image/china/xian.png",
       "하얼빈": "img/Thumbnail/Thumbnail-image/china/harbin.png",
       "다롄": "img/Thumbnail/Thumbnail-image/china/dalian.png",
       "충칭": "img/Thumbnail/Thumbnail-image/china/chongqing.png",
-      "광저우": "img/Thumbnail/Thumbnail-image/china/chengdu.png",
+      "광저우": "img/Thumbnail/Thumbnail-image/china/guangzhou.png",
       "항저우": "img/Thumbnail/Thumbnail-image/china/hangzhou.png"
     }
   },

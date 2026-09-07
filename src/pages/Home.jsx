@@ -40,13 +40,60 @@ const getImageUrl = (imagePath) => {
   return key ? imageModules[key] : "";
 };
 
-// Add a banner by importing its image above and appending it to this array.
+// Add a banner by importing its image above and appending its copy here.
 const heroSlides = [
-  { desktop: bannerPC1, mobile: bannerMO1 },
-  { desktop: bannerPC2, mobile: bannerMO2 },
-  { desktop: bannerPC3, mobile: bannerMO3 },
-  { desktop: bannerPC4, mobile: bannerMO4 },
-  { desktop: bannerPC5, mobile: bannerMO5 },
+  {
+    desktop: bannerPC1,
+    mobile: bannerMO1,
+    eyebrow: "RECOMMENDED PACKAGE",
+    title: "FUKUOKA",
+    subtitle: "후쿠오카 3박 4일",
+    description: "맛집과 감성을 담은 시티 트립",
+    cta: "VIEW PACKAGE",
+    to: "/plan?city=FUKUOKA",
+  },
+  {
+    desktop: bannerPC2,
+    mobile: bannerMO2,
+    eyebrow: "RECOMMENDED PACKAGE",
+    title: "SEOUL",
+    subtitle: "서울 2박 3일",
+    description: "도시의 감성과 로컬 스팟을 담은 여행",
+    cta: "VIEW PACKAGE",
+    to: "/plan?city=SEOUL",
+  },
+  {
+    desktop: bannerPC3,
+    mobile: bannerMO3,
+    eyebrow: "BALANCE GAME",
+    title: "취향\n밸런스 게임",
+    description: "6개의 질문으로 찾는 나만의 여행 취향",
+    cta: "PLAY NOW",
+    to: "/balance",
+    centered: true,
+    compactTitle: true,
+  },
+  {
+    desktop: bannerPC4,
+    mobile: bannerMO4,
+    eyebrow: "TRAVEL GACHA",
+    title: "가챠 돌리고\n쿠폰 받기",
+    description: "랜덤 보상으로 여행의 재미를 더해보세요",
+    cta: "JOIN EVENT",
+    to: "/event",
+    compactTitle: true,
+  },
+  {
+    desktop: bannerPC5,
+    mobile: bannerMO5,
+    eyebrow: "MYSTERY EVENT",
+    title: "비행기 사건의\n범인을 찾아라",
+    description: "남겨진 단서 속에 숨겨진 진실을 밝혀내라",
+    cta: "START GAME",
+    to: "/event",
+    dark: true,
+    compactTitle: true,
+  },
 ];
 
 const homeProductImages = [
@@ -100,6 +147,9 @@ const TextLink = ({ to, children, ...props }) => (
 export default function Home() {
   const page = useRef(null);
   const heroTouchStart = useRef(null);
+  const shopRowRef = useRef(null);
+  const shopCursorRef = useRef(null);
+  const shopDrag = useRef({ active: false, startX: 0, startScroll: 0, moved: false });
   const { user, loading: authLoading } = useAuth();
   const { saved, toggleSaved } = useShop();
   const managedProducts = useManagedCollection("products", products);
@@ -130,6 +180,64 @@ export default function Home() {
 
     return () => window.clearInterval(timer);
   }, []);
+
+  const SHOP_CURSOR_SIZE = 64;
+
+  const moveShopCursor = (event) => {
+    const cursor = shopCursorRef.current;
+    if (!cursor) return;
+    cursor.style.transform = `translate3d(${event.clientX - SHOP_CURSOR_SIZE / 2}px, ${event.clientY - SHOP_CURSOR_SIZE / 2}px, 0)`;
+  };
+
+  const handleShopPointerEnter = (event) => {
+    if (event.pointerType !== "mouse") return;
+    moveShopCursor(event);
+    if (shopCursorRef.current) shopCursorRef.current.style.opacity = "1";
+  };
+
+  const handleShopPointerMove = (event) => {
+    if (event.pointerType === "mouse") moveShopCursor(event);
+  };
+
+  const handleShopPointerLeave = () => {
+    if (shopCursorRef.current) shopCursorRef.current.style.opacity = "0";
+  };
+
+  // Dragging is tracked with window-level listeners rather than
+  // setPointerCapture: capturing the pointer on the row would re-target the
+  // eventual mouseup/click to the row itself instead of the card link under
+  // the cursor, breaking plain (non-drag) clicks on the product cards.
+  const handleShopPointerDown = (event) => {
+    if (event.pointerType !== "mouse") return;
+    const el = shopRowRef.current;
+    if (!el) return;
+    shopDrag.current = { active: true, startX: event.clientX, startScroll: el.scrollLeft, moved: false };
+
+    const handleWindowPointerMove = (moveEvent) => {
+      const state = shopDrag.current;
+      if (!state.active) return;
+      const delta = moveEvent.clientX - state.startX;
+      if (Math.abs(delta) > 4) state.moved = true;
+      el.scrollLeft = state.startScroll - delta;
+    };
+
+    const handleWindowPointerUp = () => {
+      shopDrag.current.active = false;
+      window.removeEventListener("pointermove", handleWindowPointerMove);
+      window.removeEventListener("pointerup", handleWindowPointerUp);
+    };
+
+    window.addEventListener("pointermove", handleWindowPointerMove);
+    window.addEventListener("pointerup", handleWindowPointerUp);
+  };
+
+  const handleShopClickCapture = (event) => {
+    if (shopDrag.current.moved) {
+      event.preventDefault();
+      event.stopPropagation();
+      shopDrag.current.moved = false;
+    }
+  };
 
   const handleHeroTouchStart = (event) => {
     heroTouchStart.current = event.touches[0]?.clientX ?? null;
@@ -208,12 +316,26 @@ export default function Home() {
             className={styles.heroTrack}
             style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}
           >
-            {heroSlides.map(({ desktop, mobile }, index) => (
-              <div className={styles.heroSlide} key={desktop} aria-hidden={index !== activeHeroSlide}>
+            {heroSlides.map(({ desktop, mobile, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle }, index) => (
+              <div
+                className={`${styles.heroSlide} ${dark ? styles.heroSlideDark : ""}`}
+                key={desktop}
+                aria-hidden={index !== activeHeroSlide}
+              >
                 <picture>
                   <source media="(max-width: 640px)" srcSet={mobile} />
                   <img src={desktop} alt="" />
                 </picture>
+                <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""}`}>
+                  <p className={styles.heroEyebrow}>{eyebrow}</p>
+                  <h1>{title}</h1>
+                  {subtitle && <p className={styles.heroSubtitle}>{subtitle}</p>}
+                  <p className={styles.heroDescription}>{description}</p>
+                  <Link className={styles.heroCta} to={to} tabIndex={index === activeHeroSlide ? 0 : -1}>
+                    <span>{cta}</span>
+                    <span aria-hidden="true">→</span>
+                  </Link>
+                </div>
               </div>
             ))}
           </div>
@@ -237,12 +359,12 @@ export default function Home() {
         <h1 className={`${styles.matchTitle} whereToNextTitle`}>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
-          <TextLink to="/plan/saved">VIEW ALL</TextLink>
+          <TextLink to="/plan">VIEW ALL</TextLink>
         </div>
         {planLoading ? (
           <div className={styles.upcomingLoading}>일정을 확인하고 있어요.</div>
         ) : upcomingPlan ? (
-          <Link to="/plan/saved" className={styles.upcomingCard}>
+          <Link to="/plan" className={styles.upcomingCard}>
             <div className={styles.upcomingMain}>
               <div>
                 <strong>{dDay === null ? "DATE TBD" : dDay > 0 ? `D−${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</strong>
@@ -358,7 +480,16 @@ export default function Home() {
           </TextLink>
         </div>
 
-        <div className={styles.essentialGrid}>
+        <div
+          className={styles.essentialGrid}
+          ref={shopRowRef}
+          onPointerEnter={handleShopPointerEnter}
+          onPointerDown={handleShopPointerDown}
+          onPointerMove={handleShopPointerMove}
+          onPointerLeave={handleShopPointerLeave}
+          onClickCapture={handleShopClickCapture}
+          onDragStart={(event) => event.preventDefault()}
+        >
           {homeProducts.map((product, index) => (
             <article
               className={styles.productCard}
@@ -439,15 +570,15 @@ export default function Home() {
             </article>
           ))}
         </div>
+        <div className={styles.shopDragCursor} ref={shopCursorRef} aria-hidden="true">
+          DRAG
+        </div>
       </section>
 
       <section className={`${styles.section} ${styles.journal}`}>
         <SectionLabel number="06">JOURNAL</SectionLabel>
         <div className={styles.rowTitle}>
-          <div>
-            <h2 className={styles.matchTitle}>JOURNAL</h2>
-            <p>여행자의 기록</p>
-          </div>
+          <p>여행자의 기록</p>
           <TextLink
             to="/journal/tokyo"
             onClick={() => sessionStorage.setItem("homeJournalScrollY", String(window.scrollY))}

@@ -1,0 +1,41 @@
+@use "../styles/variables" as *;
+
+.topButton {
+  position: fixed;
+  right: 20px;
+  bottom: 24px;
+  z-index: 60;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: 50%;
+  background: $ink;
+  color: $paper;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(23, 23, 20, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+}
+
+.topButton.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.topButton:hover {
+  background: $muted;
+}
+
+@media (max-width: 640px) {
+  .topButton {
+    right: 16px;
+    bottom: calc(58px + env(safe-area-inset-bottom) + 16px);
+    width: 40px;
+    height: 40px;
+  }
+}
