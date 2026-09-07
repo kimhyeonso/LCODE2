@@ -279,13 +279,13 @@ h1 { margin: 1.2rem 0 1.25rem; color: #111; font: 400 2rem/1 $display; letter-sp
   .notice span { margin-right: 28px; font-size: 12px; }
   .imagePlaceholder, .tape { display: none; }
 
-  .settings > :first-child,
+  .settings > :first-child { margin-right: 25px; margin-left: 25px; }
   .eyebrow,
   h1,
   .description,
   .divider {
-    margin-right: 25px;
-    margin-left: 25px;
+    margin-right: 0;
+    margin-left: 0;
   }
 }
 

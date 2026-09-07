@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
+import BackButton from "../components/BackButton";
 import tripRoad from "../data/trip_road.json";
 import { useManagedCollection } from "../hooks/useManagedCollection";
 import styles from "./Destinations.module.scss";
@@ -78,7 +79,7 @@ export default function Destinations() {
 
   return (
     <main className={styles.page}>
-      <Link className={styles.back} to="/">← BACK</Link>
+      <BackButton className={styles.back} />
       <p className={styles.eyebrow}>DESTINATIONS</p>
       <h1>WHERE SHOULD<br />WE TRAVEL?</h1>
       <p className={styles.description}>어디로 떠나실 건가요?</p>

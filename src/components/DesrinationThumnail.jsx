@@ -9,17 +9,20 @@ export default function DesrinationThumnail({
   to,
   isFavorite = false,
   onToggleFavorite,
+  onTripClick,
+  actionLabel = "일정에 추가 >",
+  scheduleSummary,
 }) {
   return (
     <div className={styles.tripCard}>
-      <Link to={to} className={styles.tripLink}>
+      <Link to={to} className={styles.tripLink} onClick={onTripClick}>
         <div className={styles.tripImage} style={image ? { backgroundImage: `url(${image})` } : undefined} />
         <div className={styles.tripCopy}>
           <small>CITY {String(index + 1).padStart(2, "0")} · {category}</small>
           <h2>{trip.city}</h2>
           <p>{trip.title}</p>
-          <strong>{trip.duration} · {trip.country.toUpperCase()}</strong>
-          <em>일정에 추가 &gt;</em>
+          <strong>{scheduleSummary || `${trip.duration} · ${trip.country.toUpperCase()}`}</strong>
+          <em>{actionLabel}</em>
         </div>
       </Link>
       {onToggleFavorite && (

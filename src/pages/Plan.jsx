@@ -9,6 +9,7 @@ import travelIcon from "../assets/icons/transportation/travel.svg";
 import diningIcon from "../assets/icons/dining.svg";
 import carIcon from "../assets/icons/transportation/directions_car.svg";
 import PlaceMap from "../components/PlaceMap";
+import BackButton from "../components/BackButton";
 import styles from "./Plan.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 
@@ -347,13 +348,7 @@ export default function Plan() {
   return (
     <main className={styles.plan}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.7)), url(${heroImage})` } : undefined}>
-        <button
-          type="button"
-          className={styles.backButton}
-          onClick={() => window.history.length > 1 ? navigate(-1) : navigate("/")}
-        >
-          ← BACK
-        </button>
+        <BackButton className={styles.backButton} tone="light" />
         <div className={styles.heroTop}><span>TRAVEL PLAN</span><span>{selectedTrip.country.toUpperCase()} / ISSUE 01</span></div>
         <p className={styles.heroTags}>{nights} NIGHTS · FOOD · CAFÉS</p>
         <h1 className={styles.heroTitle}>{heroCityName}</h1>

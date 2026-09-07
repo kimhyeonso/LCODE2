@@ -5,6 +5,7 @@ import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
 import { deleteFavoritePlace, getFavoritePlaces, saveFavoritePlace } from "../services/firestoreService";
 import PlaceMap from "./PlaceMap";
+import BackButton from "./BackButton";
 import styles from "./TravelForm.module.scss";
 import travelIcon from "../assets/icons/transportation/travel.svg";
 import walkIcon from "../assets/icons/transportation/directions_walk.svg";
@@ -741,9 +742,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   return (
     <form className={styles.form} onSubmit={submit}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(to bottom, #c7c7c766 0%, #444 100%), url(${heroImage})` } : undefined}>
-        <button type="button" className={styles.backButton} onClick={() => window.history.length > 1 ? navigate(-1) : navigate("/")}>
-          ← BACK
-        </button>
+        <BackButton className={styles.backButton} tone="light" />
         <div className={styles.weather} aria-live="polite"><small>LIVE WEATHER</small><strong>{weather.loading ? "--" : weather.temperature ?? "--"}°</strong><span>● {weather.error ? "OFFLINE" : weather.label}</span></div>
         <div className={styles.heroCopy}><p>{nights} NIGHTS · FOOD · CAFÉS</p><h1>{heroCityName}</h1></div>
       </section>

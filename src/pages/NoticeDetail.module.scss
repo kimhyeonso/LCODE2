@@ -24,12 +24,7 @@
 }
 
 .back {
-  display: inline-block;
-  margin-bottom: 3rem;
-  color: #5f5a53;
-  font-size: .72rem;
-  letter-spacing: .12em;
-  text-decoration: none;
+  display: inline-flex;
 }
 
 .eyebrow,
@@ -95,5 +90,3 @@
 @include title.mypage-layout(".page", ".article");
 @include title.mypage-heading(".article", "> .eyebrow", "> h1", "> .meta");
 .article > .divider { display: none; }
-
-.article > .back { position: absolute; top: 0; right: 0; margin: 0; }

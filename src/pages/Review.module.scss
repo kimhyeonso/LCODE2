@@ -146,5 +146,5 @@
 @include title.mypage-layout(".review", ".page");
 @include title.mypage-heading(".heading", "> div > p:first-of-type", "h1", ".description");
 
-.review .heading { margin-top: 0; }
+.review .heading { display: block; margin-top: 0; }
 .heading > div { width: 100%; }

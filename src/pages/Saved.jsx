@@ -8,6 +8,7 @@ import {
 import { Link } from "react-router-dom";
 
 import products from "../data/products.json";
+import MypageBackLink from "../components/MypageBackLink";
 import { useShop } from "../hooks/useShop";
 import styles from "./Saved.module.scss";
 
@@ -558,6 +559,7 @@ export default function Saved() {
       =================================================== */}
 
       <header className={styles.pageHeading}>
+        <MypageBackLink label="이전 페이지로 돌아가기" />
         <p className={styles.eyebrow}>MY SHOP</p>
         <h1>SAVED</h1>
         <p className={styles.description}>마음에 담아둔 여행 준비물을 한곳에서 다시 확인해보세요.</p>

@@ -130,13 +130,13 @@
     padding: 22px 0 72px;
   }
 
-  .page > :first-child,
+  .page > :first-child { margin-right: 25px; margin-left: 25px; }
   .eyebrow,
   .page > h1,
   .description,
   .divider {
-    margin-right: 25px;
-    margin-left: 25px;
+    margin-right: 0;
+    margin-left: 0;
   }
 
   .eyebrow {

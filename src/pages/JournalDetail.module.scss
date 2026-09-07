@@ -8,13 +8,12 @@
   color: $ink;
 }
 .back {
-  color: #777;
-  font-size: 13px;
+  display: inline-flex;
 }
 .cover {
   position: relative;
   height: 330px;
-  margin-top: 28px;
+  margin-top: 0;
   padding: 20px;
   background: #aaa center/cover;
   color: #fff;
