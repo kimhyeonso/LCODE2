@@ -277,6 +277,15 @@ $draw-font:
   cursor: pointer;
 
   isolation: isolate;
+
+  /* PC + 모바일 공통: 아주 미세하게 통통 들썩이는 선물 */
+  animation:
+    heroGiftIdle
+    3.2s
+    ease-in-out
+    infinite;
+
+  will-change: transform;
 }
 
 .heroGlow {
@@ -289,29 +298,42 @@ $draw-font:
   top: 50%;
   left: 50%;
 
-  z-index: -1;
+  /* 이미지 바로 뒤에 확실히 보이도록 같은 stacking context 안에 배치 */
+  z-index: 0;
 
   border-radius: 50%;
+
+  pointer-events: none;
 
   background:
     radial-gradient(
       ellipse,
-      rgba(240, 187, 84, 0.26),
-      rgba(217, 170, 84, 0.08) 45%,
-      transparent 72%
+      rgba(255, 218, 132, 0.34) 0%,
+      rgba(217, 170, 84, 0.14) 38%,
+      rgba(217, 170, 84, 0.045) 58%,
+      transparent 74%
     );
 
-  opacity: 0.42;
+  opacity: 0.2;
 
-  filter: blur(15px);
+  filter: blur(17px);
 
   transform:
-    translate(-50%, -50%);
+    translate(-50%, -50%)
+    scale(0.94);
+
+  transition:
+    opacity 0.36s ease,
+    filter 0.36s ease,
+    transform 0.36s ease;
 }
 
 .introMainPrize {
   width: 100%;
   height: auto;
+
+  position: relative;
+  z-index: 1;
 
   display: block;
 
@@ -338,6 +360,70 @@ $draw-font:
 
 .heroButton:active .introMainPrize {
   transform: scale(0.98);
+}
+
+/*
+  웹/마우스 환경에서만 후광 강화.
+  모바일 터치에서는 hover 상태가 남지 않도록 적용하지 않음.
+*/
+@media (hover: hover) and (pointer: fine) {
+  .heroButton:hover .heroGlow,
+  .heroButton:focus-visible .heroGlow {
+    opacity: 0.92;
+
+    filter:
+      blur(24px)
+      brightness(1.16);
+
+    transform:
+      translate(-50%, -50%)
+      scale(1.17);
+  }
+
+  .heroButton:hover .introMainPrize,
+  .heroButton:focus-visible .introMainPrize {
+    filter:
+      drop-shadow(
+        0
+        19px
+        28px
+        rgba(0, 0, 0, 0.66)
+      )
+      drop-shadow(
+        0
+        0
+        15px
+        rgba(233, 185, 89, 0.16)
+      );
+  }
+}
+
+/* PC + 모바일 공통: 과하지 않은 두 번의 작은 들썩임 */
+@keyframes heroGiftIdle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  20% {
+    transform: translateY(-2px);
+  }
+
+  36% {
+    transform: translateY(0);
+  }
+
+  54% {
+    transform: translateY(-4px);
+  }
+
+  70% {
+    transform: translateY(-1px);
+  }
+
+  84% {
+    transform: translateY(0);
+  }
 }
 
 .heroHint {
@@ -3027,6 +3113,43 @@ header > button {
 }
 
 /* =========================================================
+   DESKTOP INTRO POLISH
+   - 꽝 없는 이벤트 위치 유지
+   - 중앙 선물 이미지 위치 유지
+   - 메인 타이틀만 시각적으로 조금 아래 + 확대
+   - 안내 문구 가독성 확대
+   - 경품 미리보기 영역을 하단에서 조금 띄움
+========================================================= */
+
+@media (min-width: 901px) {
+  .introCopy {
+    transform: translateY(20px);
+  }
+
+  .intro h1 {
+    transform:
+      translateY(10px)
+      scale(1.1);
+
+    transform-origin:
+      center
+      top;
+  }
+
+  .heroHint {
+    color:
+      rgba(248, 241, 230, 0.8);
+
+    transform: scale(1.2);
+    transform-origin: center;
+  }
+
+  .desktopPrizePreview {
+    transform: translateY(-18px);
+  }
+}
+
+/* =========================================================
    MOBILE FULLSCREEN EVENT EXPERIENCE
 ========================================================= */
 
@@ -3107,7 +3230,7 @@ header > button {
       )
       16px
       calc(
-        14px +
+        18px +
         env(safe-area-inset-bottom)
       );
   }
@@ -3166,6 +3289,9 @@ header > button {
     align-self: start;
 
     padding-top: 5px;
+
+    /* 모바일 제목을 상단에서 더 과감하게 내려 여백 균형 조정 */
+    transform: translateY(44px);
   }
 
   .intro h1 {
@@ -3173,9 +3299,9 @@ header > button {
 
     font-size:
       clamp(
-        26px,
-        8.2vw,
-        34px
+        29px,
+        8.9vw,
+        37px
       );
 
     line-height: 1.04;
@@ -3209,8 +3335,8 @@ header > button {
   .heroButton {
     width:
       min(
-        86vw,
-        350px
+        96vw,
+        390px
       );
 
     max-height: 100%;
@@ -3225,7 +3351,9 @@ header > button {
     color:
       rgba(248, 241, 230, 0.68);
 
-    font-size: 11px;
+    font-size: 13px;
+    font-weight: 550;
+    letter-spacing: -0.015em;
   }
 
   /*
@@ -3250,12 +3378,14 @@ header > button {
     gap: 8px;
 
     align-self: end;
+
+    margin-bottom: 2px;
   }
 
   .mobileInfoButton {
     min-width: 0;
 
-    height: 76px;
+    height: 104px;
 
     position: relative;
 
@@ -3266,15 +3396,15 @@ header > button {
       rgba(217, 170, 84, 0.38);
 
     padding:
-      11px
-      12px;
+      16px
+      15px;
 
     display: grid;
 
     align-content: center;
     justify-items: start;
 
-    gap: 2px;
+    gap: 3px;
 
     background:
       linear-gradient(
@@ -3304,7 +3434,7 @@ header > button {
     color:
       rgba(217, 170, 84, 0.72);
 
-    font-size: 13px;
+    font-size: 18px;
 
     transform:
       translateY(-50%);
@@ -3313,10 +3443,10 @@ header > button {
   .mobileInfoButton span {
     color: $gold;
 
-    font-size: 8px;
+    font-size: 12px;
     font-weight: 700;
 
-    letter-spacing: 0.16em;
+    letter-spacing: 0.14em;
   }
 
   .mobileInfoButton strong {
@@ -3328,7 +3458,7 @@ header > button {
 
     color: $cream;
 
-    font-size: 13px;
+    font-size: 17px;
     font-weight: 750;
 
     line-height: 1.2;
@@ -3348,9 +3478,9 @@ header > button {
     color:
       rgba(248, 241, 230, 0.48);
 
-    font-size: 8px;
+    font-size: 12.5px;
 
-    line-height: 1.25;
+    line-height: 1.35;
 
     white-space: nowrap;
   }
@@ -4001,50 +4131,56 @@ header > button {
 
     padding-bottom:
       calc(
-        10px +
+        14px +
         env(safe-area-inset-bottom)
       );
   }
 
   .introCopy {
     padding-top: 2px;
+    transform: translateY(42px);
   }
 
   .intro h1 {
     font-size:
       clamp(
-        24px,
-        7.6vw,
-        30px
+        26px,
+        8vw,
+        32px
       );
   }
 
   .heroButton {
     width:
       min(
-        69vw,
-        260px
+        91vw,
+        350px
       );
   }
 
   .heroHint {
-    font-size: 9px;
+    font-size: 12px;
+    font-weight: 550;
   }
 
   .mobileInfoButton {
-    height: 61px;
+    height: 92px;
 
     padding:
-      8px
-      10px;
+      13px
+      12px;
+  }
+
+  .mobileInfoButton span {
+    font-size: 10.5px;
   }
 
   .mobileInfoButton strong {
-    font-size: 12px;
+    font-size: 15.5px;
   }
 
   .mobileInfoButton small {
-    font-size: 7px;
+    font-size: 11px;
   }
 
   .drawMachine {
@@ -4110,6 +4246,7 @@ header > button {
   .openCapsule,
   .noticePanel,
   .prizePanel,
+  .heroButton,
   .introMainPrize {
     animation-duration:
       0.01ms !important;

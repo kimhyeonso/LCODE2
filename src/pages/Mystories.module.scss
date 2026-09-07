@@ -214,6 +214,9 @@ h1 {
 .storyInfo footer a,
 .productCard footer a {
   display: grid;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
   border: 1px solid #ddd9d2;
   color: #77736c;
   font-family: $korean;
@@ -242,9 +245,9 @@ h1 {
   .storyInfo small { margin-top: 8px; font-size: 10px; }
   .storyInfo footer { grid-template-columns: .9fr 1.35fr; gap: 8px; margin-top: 17px; }
   .storyInfo footer a { height: 47px; font-size: 11px; }
-  .storyDots { display: flex; justify-content: center; gap: 3px; margin: 11px 0 27px; }
-  .storyDots i { width: 5px; height: 5px; border-radius: 50%; background: #d4d1cc; }
-  .storyDots i:first-child { background: #99948d; }
+  .storyDots { display: flex; justify-content: center; gap: 6px; margin: 11px 0 27px; }
+  .storyDots button { width: 6px; height: 6px; padding: 0; border: 0; border-radius: 50%; background: #d4d1cc; cursor: pointer; }
+  .storyDots .activeDot { background: #99948d; }
   .shopping { margin: 0; border-top: 1px solid #ddd9d1; padding-top: 17px; }
   .shopping h1, .shopping > p { display: none; }
   .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin: 0; }
@@ -324,11 +327,11 @@ h1 {
   .mystories { padding-top: 22px; padding-bottom: 72px; }
   .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
   .storyInfo footer a { align-self: stretch; height: 47px; margin-top: 0; }
-  .stories > :first-child,
+  .stories > :first-child { margin-right: 25px; margin-left: 25px; }
   .stories > .eyebrow,
   .stories > h1 {
-    margin-right: 25px;
-    margin-left: 25px;
+    margin-right: 0;
+    margin-left: 0;
     transform: none;
   }
   .stories > .eyebrow { font-size: 13px; letter-spacing: .16em !important; }

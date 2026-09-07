@@ -8,25 +8,27 @@
   color: $ink;
 }
 .back {
-  color: #777;
-  font-size: 13px;
-  letter-spacing: 1px;
+  display: inline-flex;
 }
 .eyebrow {
-  margin: 24px 0 18px 23px;
+  margin: 0 0 18px;
   color: #777;
   font-size: 13px;
   letter-spacing: .16em;
 }
 .page > h1 {
-  margin: 20px 0 18px 23px;
+  margin: 20px 0 18px;
   font-family: $serif;
   font-size: 38px;
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -.05em;
 }
-.description,
+.description {
+  margin-left: 0;
+  color: #aaa;
+  font-size: 13px;
+}
 .prompt {
   margin-left: 23px;
   color: #aaa;
@@ -161,5 +163,14 @@
   .feature {
     grid-column: 1 / -1;
     height: 180px;
+  }
+}
+
+@media (max-width: 640px) {
+  .eyebrow,
+  .page > h1,
+  .description {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
   }
 }

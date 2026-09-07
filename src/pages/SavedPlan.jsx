@@ -1,11 +1,18 @@
-import { useEffect, useMemo, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { deletePlan, getPlans } from "../services/firestoreService";
+import {
+  deleteFavoriteTrip,
+  getFavoriteTrips,
+  saveFavoriteTrip,
+} from "../services/firestoreService";
 import tripRoad from "../data/trip_road.json";
 import DesrinationThumnail from "../components/DesrinationThumnail";
+import MypageBackLink from "../components/MypageBackLink";
 import styles from "./SavedPlan.module.scss";
 import { resolveImageUrl as imageUrl } from "../utils/imageUtils";
+import { useManagedCollection } from "../hooks/useManagedCollection";
 
 const thumbnailModules = import.meta.glob(
   "../assets/images/Thumbnail/Thumbnail-image/**/*.{jpg,jpeg,png,webp}",
@@ -42,6 +49,26 @@ const cityEnglishNames = {
 };
 
 const cityEnglishName = (city) => cityEnglishNames[city] || city?.toUpperCase();
+const getFavoriteStorageKey = (userId) => `lcode-favorite-trips:${userId}`;
+
+const getStoredFavoriteTrips = (userId) => {
+  try {
+    const value = localStorage.getItem(getFavoriteStorageKey(userId));
+    if (value === null) return null;
+    const ids = JSON.parse(value);
+    return Array.isArray(ids) ? ids : null;
+  } catch {
+    return null;
+  }
+};
+
+const storeFavoriteTrips = (userId, ids) => {
+  try {
+    localStorage.setItem(getFavoriteStorageKey(userId), JSON.stringify(ids));
+  } catch {
+    // Firebase 동기화는 계속 시도합니다.
+  }
+};
 
 // Plan.jsx의 대표 썸네일(heroImage)과 동일하게 trip_road.json 썸네일을 최우선으로 사용한다.
 const planImage = (plan) =>
@@ -141,9 +168,10 @@ const getTrendingImage = (trip) => {
   return thumbnailModules[assetPath] || planImage(trip);
 };
 
-export default function SavedPlan() {
+export default function SavedPlan({ showBack = false }) {
   const { user } = useAuth();
-
+  const navigate = useNavigate();
+  const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const savedId = params.get("id");
 
@@ -154,6 +182,12 @@ export default function SavedPlan() {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [deleteError, setDeleteError] = useState("");
   const [deleting, setDeleting] = useState(false);
+  const [durationModal, setDurationModal] = useState(null);
+  const [selectedDurationId, setSelectedDurationId] = useState("");
+  const [favoriteTripIds, setFavoriteTripIds] = useState(
+    () => (user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : []),
+  );
+  const favoriteMutationRef = useRef(0);
 
   useEffect(() => {
     if (!user) return;
@@ -186,12 +220,81 @@ export default function SavedPlan() {
 
     return trendingCities
       .filter((city) => !savedCities.has(city))
-      .map((city) =>
-        tripRoad.trips.find((trip) => trip.city === city)
-      )
+      .map((city) => {
+        const variants = managedTrips
+          .filter((trip) => trip.city === city)
+          .sort((first, second) => first.days.length - second.days.length);
+        return variants.length ? { trip: variants[0], variants } : null;
+      })
       .filter(Boolean)
       .slice(0, 4);
-  }, [plans]);
+  }, [managedTrips, plans]);
+
+  const selectedDurationTrip = durationModal?.trips.find(
+    (trip) => trip.id === selectedDurationId,
+  ) || null;
+
+  const openDurationModal = (cityTrips) => {
+    setDurationModal({ city: cityTrips[0].city, trips: cityTrips });
+    setSelectedDurationId(cityTrips[0].id);
+  };
+
+  useEffect(() => {
+    if (!durationModal) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setDurationModal(null);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [durationModal]);
+
+  useEffect(() => {
+    if (!user?.uid) return undefined;
+
+    let active = true;
+    const mutationAtStart = favoriteMutationRef.current;
+    const storedIds = getStoredFavoriteTrips(user.uid);
+
+    getFavoriteTrips(user.uid)
+      .then((firebaseIds) => {
+        if (!active || favoriteMutationRef.current !== mutationAtStart) return;
+        const ids = storedIds ?? firebaseIds;
+        setFavoriteTripIds(ids);
+        storeFavoriteTrips(user.uid, ids);
+      })
+      .catch(() => {
+        if (active && storedIds !== null && favoriteMutationRef.current === mutationAtStart) {
+          setFavoriteTripIds(storedIds);
+        }
+      });
+
+    return () => { active = false; };
+  }, [user?.uid]);
+
+  const toggleFavoriteTrip = async (tripId) => {
+    if (!user?.uid) {
+      navigate("/login");
+      return;
+    }
+
+    const wasFavorite = favoriteTripIds.includes(tripId);
+    const nextIds = wasFavorite
+      ? favoriteTripIds.filter((id) => id !== tripId)
+      : [...favoriteTripIds, tripId];
+
+    favoriteMutationRef.current += 1;
+    setFavoriteTripIds(nextIds);
+    storeFavoriteTrips(user.uid, nextIds);
+
+    try {
+      if (wasFavorite) await deleteFavoriteTrip(user.uid, tripId);
+      else await saveFavoriteTrip(user.uid, tripId);
+      window.dispatchEvent(new Event("favorite-trips-changed"));
+    } catch {
+      setFavoriteTripIds(favoriteTripIds);
+      storeFavoriteTrips(user.uid, favoriteTripIds);
+    }
+  };
 
   const removeDraft = async () => {
     if (!deleteTarget || deleting) return;
@@ -224,16 +327,21 @@ export default function SavedPlan() {
 
   if (loading) {
     return (
-      <main className={styles.status}>
-        저장한 일정을 불러오고 있어요.
+      <main className={showBack ? styles.page : styles.status}>
+        {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+        <div className={showBack ? styles.status : ""}>
+          저장한 일정을 불러오고 있어요.
+        </div>
       </main>
     );
   }
 
   if (loadError) {
     return (
-      <main className={styles.status}>
-        <div>
+      <main className={showBack ? styles.page : styles.status}>
+        {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+        <div className={showBack ? styles.status : ""}>
+          <div>
           <strong>일정을 불러올 수 없어요.</strong>
 
           <p>{loadError}</p>
@@ -241,6 +349,7 @@ export default function SavedPlan() {
           <Link to="/search">
             일정 검색으로 이동 →
           </Link>
+          </div>
         </div>
       </main>
     );
@@ -248,8 +357,10 @@ export default function SavedPlan() {
 
   if (!saved) {
     return (
-      <main className={styles.status}>
-        <div>
+      <main className={showBack ? styles.page : styles.status}>
+        {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+        <div className={showBack ? styles.status : ""}>
+          <div>
           <strong>
             저장된 일정이 없습니다.
           </strong>
@@ -261,6 +372,7 @@ export default function SavedPlan() {
           <Link to="/search">
             새 일정 만들기 →
           </Link>
+          </div>
         </div>
       </main>
     );
@@ -268,6 +380,7 @@ export default function SavedPlan() {
 
   return (
     <main className={styles.page}>
+      {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
       <p className={styles.eyebrow}>
         MY PLAN
       </p>
@@ -508,9 +621,13 @@ export default function SavedPlan() {
           </header>
 
           <div>
-            {trending.map((trip, index) => {
+            {trending.map(({ trip, variants }, index) => {
               const firstPlace = getFirstPlace(trip);
               const category = themeNames[firstPlace?.category] || "TRAVEL PACKAGE";
+              const hasDurationOptions = variants.length > 1;
+              const scheduleSummary = hasDurationOptions
+                ? `${variants[0].duration} ~ ${variants[variants.length - 1].duration}까지 총 ${variants.length}개 일정`
+                : undefined;
 
               return (
                 <DesrinationThumnail
@@ -520,11 +637,69 @@ export default function SavedPlan() {
                   image={getTrendingImage(trip)}
                   category={category}
                   to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+                  isFavorite={favoriteTripIds.includes(trip.id)}
+                  onToggleFavorite={() => toggleFavoriteTrip(trip.id)}
+                  onTripClick={hasDurationOptions ? (event) => {
+                    event.preventDefault();
+                    openDurationModal(variants);
+                  } : undefined}
+                  actionLabel={hasDurationOptions ? "여행 일수 선택 >" : undefined}
+                  scheduleSummary={scheduleSummary}
                 />
               );
             })}
           </div>
         </section>
+      )}
+
+      {durationModal && (
+        <div
+          className={styles.durationBackdrop}
+          role="presentation"
+          onMouseDown={() => setDurationModal(null)}
+        >
+          <section
+            className={styles.durationModal}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="duration-modal-title"
+            onMouseDown={(event) => event.stopPropagation()}
+          >
+            <span className={styles.modalHandle} aria-hidden="true" />
+            <p className={styles.modalBrand}>L:CODE</p>
+            <h2 id="duration-modal-title">여행 일수를<br />선택해 주세요.</h2>
+            <p className={styles.modalMessage}>
+              {durationModal.city}에서 원하는 여행 기간을 골라보세요.
+            </p>
+            <div
+              className={styles.durationChoices}
+              role="radiogroup"
+              aria-label={`${durationModal.city} 여행 일수 선택`}
+            >
+              {durationModal.trips.map((trip) => (
+                <button
+                  key={trip.id}
+                  className={trip.id === selectedDurationId ? styles.durationChoiceActive : ""}
+                  type="button"
+                  role="radio"
+                  aria-checked={trip.id === selectedDurationId}
+                  onClick={() => setSelectedDurationId(trip.id)}
+                >
+                  <strong>{trip.duration}</strong>
+                  <span>{trip.days.length} DAYS · {trip.title}</span>
+                </button>
+              ))}
+            </div>
+            <div className={styles.modalActions}>
+              <button type="button" onClick={() => setDurationModal(null)}>닫기</button>
+              {selectedDurationTrip && (
+                <Link to={`/plan?trip=${encodeURIComponent(selectedDurationTrip.id)}`}>
+                  상세 일정 보기
+                </Link>
+              )}
+            </div>
+          </section>
+        </div>
       )}
 
       {/* 삭제 모달 */}

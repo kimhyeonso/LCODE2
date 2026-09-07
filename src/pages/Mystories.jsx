@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import products from "../data/products.json";
+import { myStoryTrips, shoppingReviewLimit } from "../data/myStoriesSummary";
 import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Mystories.module.scss";
@@ -12,21 +13,28 @@ const reviewStorageKey = "lcode-saved-reviews";
 const fallbackNames = ["여행용 키트", "멀티 어댑터", "트래블 파우치", "캐리어 커버"];
 
 // Products.jsx와 동일하게 products.json의 배열 순서에 맞는 대표 이미지를 연결합니다.
-// products[0] -> 1_1.png, products[1] -> 2_1.png ...
-const productImageModules = import.meta.glob("../assets/images/detail/*_1.png", {
+// products[0] -> 1_1.webp/png, products[1] -> 2_1.webp/png ...
+const productImageModules = import.meta.glob("../assets/images/detail/*_1.{webp,png,jpg,jpeg}", {
   eager: true,
   import: "default",
 });
 
-const categorizedProducts = products.map((product, index) => {
-  const imagePath = `../assets/images/detail/${index + 1}_1.png`;
+const getProductImage = (index) => {
+  const base = `../assets/images/detail/${index + 1}_1`;
+  return (
+    productImageModules[`${base}.webp`]
+    || productImageModules[`${base}.png`]
+    || productImageModules[`${base}.jpg`]
+    || productImageModules[`${base}.jpeg`]
+    || ""
+  );
+};
 
-  return {
-    ...product,
-    displayName: fallbackNames[index % fallbackNames.length],
-    displayImage: productImageModules[imagePath] || product.image || "",
-  };
-});
+const categorizedProducts = products.map((product, index) => ({
+  ...product,
+  displayName: fallbackNames[index % fallbackNames.length],
+  displayImage: getProductImage(index) || product.image || "",
+}));
 
 function StoryCard({ review }) {
   return <article className={styles.storyCard}>

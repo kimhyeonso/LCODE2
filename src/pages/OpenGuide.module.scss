@@ -227,6 +227,10 @@
   .openGuide { padding-top: 22px; padding-bottom: 72px; }
   .content { width: calc(100% - 40px); margin-inline: auto; }
   .articleHeader > :first-child { margin-bottom: 8px; }
+  .articleHeader > .category,
+  .articleHeader > h1,
+  .articleHeader > p,
+  .articleHeader > .divider { margin-right: -4px; margin-left: -4px; }
   .category { margin-top: 0; }
   .articleHeader h1 { margin-top: 10px; }
   .images { display: none; }

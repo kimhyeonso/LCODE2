@@ -224,6 +224,7 @@ export default function Review() {
         <header className={styles.heading}>
           <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
           <MypageBackLink to="/mystories" label="나의 리뷰로 돌아가기" />
+          <div><p>MY JOURNEY</p><h1>REVIEW</h1><p className={styles.description}>여행과 상품 이용 후기를 남겨보세요.</p></div>
         </header>
 
         <form onSubmit={submit}>

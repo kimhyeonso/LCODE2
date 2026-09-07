@@ -85,26 +85,19 @@
 // Limit the menu and its dividers to two-thirds of the profile area.
 .menuList { display: grid; width: 66.6667%; gap: 0; margin-top: 7.7rem; border-top: 1px solid #dedad3; }
 .menuList a, .menuList button { display: grid; grid-template-columns: .9rem 1fr auto; align-items: center; column-gap: .45rem; min-height: 1.75rem; border: 0; border-bottom: 1px solid #dedad3; background: transparent; color: #222; font: 400 .62rem $korean; text-align: left; text-decoration: none; }
-.menuList a::before, .menuList button::before { width: .7rem; height: .7rem; background: center / contain no-repeat; content: ""; }
-// Menu icons are sourced from public/Mypage-img and stay attached to their own menu row.
-.menuList a:nth-child(1)::before { background-image: url("/Mypage-img/mylist.svg"); }
-.menuList a:nth-child(2)::before { background-image: url("/Mypage-img/bag2.svg"); }
-.menuList a:nth-child(3)::before { background-image: url("/Mypage-img/pen.svg"); }
-.menuList a:nth-child(4)::before { background-image: url("/Mypage-img/heart.svg"); }
-.menuList a:nth-child(5)::before { background-image: url("/Mypage-img/ticket.svg"); }
-.menuList a:nth-child(6)::before { background-image: url("/Mypage-img/bell.svg"); }
-.menuList a:nth-child(7)::before { background-image: url("/Mypage-img/set.svg"); }
-.menuList button::before { background-image: url("/Mypage-img/out.svg"); }
+.menuList a::before, .menuList button::before { width: .7rem; height: .7rem; background: var(--menu-icon) center / contain no-repeat; content: ""; }
+.menuList button::before { background: url("/Mypage-img/out.svg") center / contain no-repeat; }
 .menuList span { color: #aaa49c; }
 .menuList button { color: #aaa49c; }
 
 .summary { grid-column: 1; grid-row: 1; display: grid; grid-template-columns: repeat(2, 1fr); width: 100%; }
 .summary article { position: relative; display: flex; aspect-ratio: 1; min-height: 0; flex-direction: column; justify-content: flex-end; padding: .75rem; border: 1px solid #dedad3; color: #77736c; }
-.cardLink { position: absolute; z-index: 2; inset: 0; }
+.cardLink { position: absolute; z-index: 3; inset: 0; cursor: pointer; }
 .summary small { position: absolute; top: .55rem; left: .55rem; color: #aaa49c; font: 400 .42rem $korean; letter-spacing: .12em; }
 .summary > article > span { color: #aaa49c; font: 400 .45rem $korean; letter-spacing: .14em; }
 .summary strong { font: 400 1.4rem/1 $display; }
-.upcoming {
+.upcoming,
+.recent {
   overflow: hidden;
   color: #f8f8f8 !important;
   background: #111;
@@ -120,7 +113,8 @@
   opacity: .38;
   pointer-events: none;
 }
-.upcoming::after {
+.upcoming::after,
+.recent::after {
   position: absolute;
   z-index: 0;
   inset: 0;
@@ -148,7 +142,11 @@
 .upcomingSlideshow .activeSlide { opacity: 1; }
 .upcoming > small,
 .upcoming > strong,
-.upcoming > span {
+.upcoming > span,
+.recent > small,
+.recent > span,
+.recent > h2,
+.recent > p {
   z-index: 1;
 }
 @media (prefers-reduced-motion: reduce) {
@@ -167,22 +165,13 @@
 .recent h2 { margin: .3rem 0; color: #f2f0eb; font: 400 2rem/.92 "DM Serif Display", "Noto Sans KR", sans-serif; }
 .recent h2 em { color: #777; font-style: normal; }
 .recent p { margin: 0; color: #777; font: 400 .42rem $korean; letter-spacing: .12em; }
-// Place the map behind the saved-place count, matching the reference card treatment.
 .saved {
-  background: #f2f0eb url("/Mypage-img/g.png") center bottom / 155% auto no-repeat;
-}
-
-.saved > * {
-  position: relative;
-  z-index: 1;
-}
-
-.saved small {
-  position: absolute;
+  background: #f2f0eb;
 }
 
 .saved strong { margin-top: .25rem; color: #1d2638; font-size: 2rem; }
 .stories strong { margin-top: .25rem; color: #66615a; font-size: .78rem; line-height: 1.1; font-size: 1.5rem;}
+.stories .stars { display: block; font: 400 1rem/1 $korean; letter-spacing: .14em; }
 
 @include tablet {
   .mypageUser {
@@ -320,8 +309,13 @@
 
 @include mobile {
   .mypageUser {
-    min-height: 100vh;
-    padding: 34px 16px 72px;
+    // Unified my-page footer spacing (see MyPageMain.module.scss): no bottom
+    // padding of our own, and pull up past .main's BottomNav clearance (58px)
+    // so the footer's common 80px top margin is the whole gap. The shared
+    // footer / .main rules stay untouched.
+    min-height: calc(100vh - 10rem);
+    margin-bottom: calc(-58px - env(safe-area-inset-bottom));
+    padding: 34px 16px 0;
   }
   .content {
     display: grid;
@@ -378,6 +372,6 @@
 }
 
 @media (max-width: 600px) {
-  .mypageUser { padding: 22px 0 72px; }
+  .mypageUser { min-height: calc(100dvh - 129px); padding: 22px 0 0; }
   .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
 }

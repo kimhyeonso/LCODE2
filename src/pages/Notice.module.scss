@@ -342,13 +342,13 @@
   .eyebrow { margin-top: 0; font-size: 13px; letter-spacing: .16em !important; }
   .title { margin-top: 10px; font-size: 38px; line-height: 1.08; }
   .description { font-size: 11px; }
-  .noticeList > :first-child,
+  .noticeList > :first-child { margin-right: 25px; margin-left: 25px; }
   .eyebrow,
   .title,
   .description,
   .divider {
-    margin-right: 25px;
-    margin-left: 25px;
+    margin-right: 0;
+    margin-left: 0;
   }
 }
 

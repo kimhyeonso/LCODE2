@@ -268,6 +268,13 @@
 }
 
 @media (max-width: 640px) {
+  // Match the shared my-page footer gap: no bottom padding of our own, pull up
+  // past .main's BottomNav clearance (58px) so only the footer's common top
+  // margin remains. Shared footer / .main rules stay untouched.
+  .page {
+    margin-bottom: calc(-58px - env(safe-area-inset-bottom));
+    padding-bottom: 0;
+  }
   .heroActions {
     right: 18px;
     bottom: 18px;
@@ -330,7 +337,7 @@
   margin-bottom: 22px;
 }
 
-.trending h2 {
+.trendingHeader > h2 {
   margin: 0;
 
   font-size: 30px;
@@ -353,16 +360,128 @@
 }
 
 .trending > div {
-  display: flex;
-
-  gap: 4px;
-
-  overflow-x: auto;
+  display: grid;
+  gap: 10px;
 }
 
 .trending > div > * {
-  flex: 0 0 160px;
+  min-width: 0;
   color: #222;
+}
+
+.durationBackdrop {
+  position: fixed;
+  z-index: 300;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.78);
+}
+
+.durationModal {
+  position: relative;
+  width: min(100%, 760px);
+  padding: 62px 20px calc(36px + env(safe-area-inset-bottom));
+  background: #fff;
+  color: $ink;
+  box-shadow: 0 -18px 50px rgba(0, 0, 0, 0.16);
+}
+
+.modalHandle {
+  position: absolute;
+  top: 27px;
+  left: 50%;
+  width: 36px;
+  height: 3px;
+  border-radius: 3px;
+  transform: translateX(-50%);
+  background: #d1cdc5;
+}
+
+.modalBrand {
+  margin: 0 0 22px 20px;
+  color: #aaa;
+  font-size: 13px;
+  letter-spacing: 2px;
+}
+
+.durationModal h2 {
+  margin: 0 20px;
+  font-size: 31px;
+  font-weight: 500;
+  letter-spacing: -1.5px;
+}
+
+.modalMessage {
+  margin: 20px 20px 24px;
+  color: #999;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.durationChoices {
+  display: grid;
+  gap: 8px;
+  margin: 0 20px 28px;
+}
+
+.durationChoices button {
+  min-height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 1px solid #dedbd6;
+  padding: 14px 16px;
+  background: #fff;
+  color: #777;
+  font-family: $sans;
+  text-align: left;
+  cursor: pointer;
+}
+
+.durationChoices strong {
+  color: $ink;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.durationChoices span {
+  color: #999;
+  font-size: 12px;
+  text-align: right;
+}
+
+.durationChoices button.durationChoiceActive {
+  border-color: $ink;
+  background: #f7f4ed;
+}
+
+.modalActions {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  padding-top: 24px;
+  border-top: 1px solid #dedbd6;
+}
+
+.modalActions button,
+.modalActions a {
+  height: 50px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #ddd;
+  background: #fff;
+  color: #777;
+  font: 500 14px/1 $sans;
+  cursor: pointer;
+}
+
+.modalActions a {
+  border-color: $ink;
+  background: $ink;
+  color: #fff;
 }
 
 /* =========================
@@ -527,6 +646,12 @@
    DESKTOP
 ========================= */
 
+@media (min-width: 641px) {
+  .trending > div {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 800px) {
   .heroCard {
     height: 520px;
@@ -578,21 +703,7 @@
   }
 
   .trending > div {
-    display: grid;
-
-    grid-template-columns:
-      repeat(
-        auto-fit,
-        minmax(160px, 1fr)
-      );
-
-    gap: 12px;
-
-    overflow: visible;
-  }
-
-  .trending > div > a {
-    min-width: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -621,5 +732,19 @@
     width: calc(100% - 220px);
 
     margin-left: 220px;
+  }
+
+  .trending > div small,
+  .trending > div p,
+  .trending > div strong,
+  .trending > div em {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .trending > div {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 20px;
   }
 }

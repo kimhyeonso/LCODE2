@@ -7,6 +7,7 @@ import {
 
 import { ShopContext } from "./shop-context";
 import { useAuth } from "../hooks/useAuth";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 import {
   getCartItems,
   getSavedProductIds,
@@ -79,35 +80,64 @@ function normalizeShop(savedShop) {
     return initial;
   }
 
-  const cart = Array.isArray(savedShop.cart)
-    ? savedShop.cart.map((item) => {
-        const option = normalizeOption(
-          item.option
-        );
+  const normalizedCart = Array.isArray(savedShop.cart)
+    ? savedShop.cart.map((item, index) => {
+        const product = enrichShopProduct(item);
+        const option = normalizeOption(item.option);
+
+        const variantKey =
+          item.variantKey ||
+          item.selectedVariant?.id ||
+          "default";
+
+        const productId =
+          product.id ||
+          item.productId ||
+          item.id ||
+          `legacy-${index}`;
 
         return {
-          ...item,
+          ...product,
+
+          id: productId,
+          productId,
 
           quantity: Number(
             item.quantity || 1
           ),
 
           option,
+          variantKey,
 
+          // 예전 lineId도 현재 상품 ID 기준으로 다시 정규화합니다.
           lineId:
-            item.lineId ||
-            `${item.id}__${
-              item.variantKey ||
-              item.selectedVariant?.id ||
-              "default"
-            }__${option.id}`,
+            `${productId}__${variantKey}__${option.id}`,
         };
       })
     : [];
 
-  const saved = Array.isArray(
-    savedShop.saved
-  )
+  // 예전 ID / 현재 ID가 섞여 같은 상품이 중복되면 한 줄로 합칩니다.
+  const cart = normalizedCart.reduce(
+    (result, item) => {
+      const existing = result.find(
+        (current) =>
+          current.lineId === item.lineId
+      );
+
+      if (existing) {
+        existing.quantity =
+          Number(existing.quantity || 0) +
+          Number(item.quantity || 0);
+        return result;
+      }
+
+      result.push({ ...item });
+      return result;
+    },
+    []
+  );
+
+  const saved = Array.isArray(savedShop.saved)
     ? savedShop.saved
     : [];
 
@@ -653,81 +683,88 @@ export function ShopProvider({
     quantity = 1,
     option = STANDARD_OPTION
   ) => {
-    const normalizedOption =
-      normalizeOption(
-        option
-      );
+    const normalizedProduct =
+      enrichShopProduct(product);
 
+    const normalizedOption =
+      normalizeOption(option);
+
+    const productId =
+      normalizedProduct.id ||
+      normalizedProduct.productId ||
+      product?.id ||
+      product?.productId;
+
+    if (!productId) {
+      console.error(
+        "장바구니에 담을 상품 ID가 없습니다.",
+        product
+      );
+      return;
+    }
 
     const variantKey =
-      product.variantKey ||
-      product.selectedVariant?.id ||
+      normalizedProduct.variantKey ||
+      normalizedProduct.selectedVariant?.id ||
       "default";
 
-
     const lineId =
-      `${product.id}__${variantKey}__${normalizedOption.id}`;
+      `${productId}__${variantKey}__${normalizedOption.id}`;
 
+    setShop((state) => {
+      const exists = state.cart.find(
+        (item) =>
+          item.lineId === lineId
+      );
 
-    setShop(
-      (state) => {
-        const exists =
-          state.cart.find(
-            (item) =>
-              item.lineId ===
-              lineId
-          );
-
-
-        if (exists) {
-          return {
-            ...state,
-
-            cart:
-              state.cart.map(
-                (item) =>
-                  item.lineId ===
-                  lineId
-                    ? {
-                        ...item,
-
-                        quantity:
-                          Number(
-                            item.quantity
-                          ) +
-                          Number(
-                            quantity
-                          ),
-                      }
-                    : item
-              ),
-          };
-        }
-
-
+      if (exists) {
         return {
           ...state,
 
-          cart: [
-            ...state.cart,
+          cart: state.cart.map(
+            (item) =>
+              item.lineId === lineId
+                ? {
+                    ...item,
+                    ...normalizedProduct,
 
-            {
-              ...product,
+                    id: productId,
+                    productId,
+                    variantKey,
+                    option: normalizedOption,
+                    lineId,
 
-              quantity:
-                Number(
-                  quantity || 1
-                ),
-
-              option:
-                normalizedOption,
-
-              lineId,
-            },
-          ],
+                    quantity:
+                      Number(item.quantity || 0) +
+                      Number(quantity || 1),
+                  }
+                : item
+          ),
         };
       }
-    );
+
+      return {
+        ...state,
+
+        cart: [
+          ...state.cart,
+          {
+            ...normalizedProduct,
+
+            id: productId,
+            productId,
+
+            quantity: Number(
+              quantity || 1
+            ),
+
+            option: normalizedOption,
+            variantKey,
+            lineId,
+          },
+        ],
+      };
+    });
   };
 
 

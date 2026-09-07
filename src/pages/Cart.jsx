@@ -10,6 +10,8 @@ import {
 } from "react-router-dom";
 
 import { useShop } from "../hooks/useShop";
+import { enrichShopProduct } from "../utils/shopProductResolver";
+import products from "../data/products.json";
 
 
 /* =========================================================
@@ -101,100 +103,49 @@ const PRODUCT_IMAGE_FILES =
 
 
 /* =========================================================
-   IMAGE PREFIX
+   PRODUCT CATALOG / IMAGE NUMBER
+
+   중요:
+   상세페이지(ProductDetailPage.jsx)와 똑같이
+   products.json의 "배열 순서"를 이미지 번호로 사용합니다.
+
+   예)
+   products[0] → 1_1.png
+   products[1] → 2_1.png
+   ...
+
+   상품 ID는 P006 다음 P009처럼 중간 번호가 비어 있기 때문에
+   P009 → 9_1.png 식으로 찾으면 이미지가 다른 상품과 엇갈립니다.
 ========================================================= */
 
-function getProductImagePrefixes(
-  productId
-) {
-  if (!productId) {
-    return [];
-  }
-
-
-  /*
-    P001 → 1
-    P002 → 2
-    P037 → 37
-  */
-
-  if (
-    productId.startsWith(
-      "P"
+const PRODUCT_CATALOG =
+  new Map(
+    products.map(
+      (
+        product,
+        index
+      ) => [
+        product.id,
+        {
+          ...product,
+          imageNumber:
+            index + 1,
+        },
+      ]
     )
-  ) {
-    const number =
-      Number(
-        productId.slice(1)
-      );
-
-
-    return [
-      String(number),
-
-      /*
-        혹시 P001_1.png 방식으로
-        저장해도 작동
-      */
-      productId,
-    ];
-  }
-
-
-  /*
-    S001 → S1
-
-    그리고 혹시
-    38_1.png 방식으로 이어서
-    저장해도 작동하도록 지원
-
-    P037 다음:
-    S001 → 38
-    S002 → 39
-    ...
-  */
-
-  if (
-    productId.startsWith(
-      "S"
-    )
-  ) {
-    const number =
-      Number(
-        productId.slice(1)
-      );
-
-
-    return [
-      `S${number}`,
-
-      productId,
-
-      String(
-        37 +
-        number
-      ),
-    ];
-  }
-
-
-  return [
-    productId,
-  ];
-}
+  );
 
 
 /* =========================================================
-   FILE FIND
+   IMAGE FILE FIND
 ========================================================= */
 
-function findProductImage(
-  productId
+function findImageFileByNumber(
+  imageNumber
 ) {
-  const prefixes =
-    getProductImagePrefixes(
-      productId
-    );
+  if (!imageNumber) {
+    return "";
+  }
 
 
   const extensions = [
@@ -205,53 +156,146 @@ function findProductImage(
   ];
 
 
-  /*
-    Cart 썸네일은
-    우선 _1 이미지 사용
-
-    없으면
-    _2
-
-    그것도 없으면
-    상세 이미지 n.png 사용
-  */
-
   for (
-    const prefix
-    of prefixes
+    const extension
+    of extensions
   ) {
+    const candidates = [
+      `${imageNumber}_1.${extension}`,
+      `${imageNumber}_2.${extension}`,
+      `${imageNumber}.${extension}`,
+    ];
+
+
     for (
-      const extension
-      of extensions
+      const fileName
+      of candidates
     ) {
-      const candidates = [
-        `${prefix}_1.${extension}`,
-        `${prefix}_2.${extension}`,
-        `${prefix}.${extension}`,
-      ];
-
-
-      for (
-        const fileName
-        of candidates
+      if (
+        PRODUCT_IMAGE_FILES[
+          fileName
+        ]
       ) {
-        if (
+        return (
           PRODUCT_IMAGE_FILES[
             fileName
           ]
-        ) {
-          return (
-            PRODUCT_IMAGE_FILES[
-              fileName
-            ]
-          );
-        }
+        );
       }
     }
   }
 
 
   return "";
+}
+
+
+function findProductImage(
+  productId
+) {
+  const catalogProduct =
+    PRODUCT_CATALOG.get(
+      productId
+    );
+
+
+  if (!catalogProduct) {
+    return "";
+  }
+
+
+  return findImageFileByNumber(
+    catalogProduct.imageNumber
+  );
+}
+
+
+/* =========================================================
+   CART ITEM NORMALIZE
+
+   장바구니가 localStorage 등에 오래 남아 있어도
+   현재 products.json의 상품명/카테고리/이미지를 다시 연결합니다.
+
+   단, 수량 / 선택 옵션 / 옵션별 가격 / 커스텀 정보처럼
+   실제 장바구니에서 선택한 값은 기존 item 값을 유지합니다.
+========================================================= */
+
+function normalizeCartItem(
+  item
+) {
+  const enriched =
+    enrichShopProduct(item);
+
+  const catalogProduct =
+    PRODUCT_CATALOG.get(
+      enriched?.id
+    ) || null;
+
+  const currentImage =
+    enriched?.thumbnail ||
+    enriched?.image ||
+    findProductImage(
+      enriched?.id
+    ) ||
+    item?.thumbnail ||
+    item?.image ||
+    catalogProduct?.image ||
+    "";
+
+  const currentPrice =
+    Number.isFinite(
+      Number(item?.price)
+    )
+      ? Number(item.price)
+      : Number(
+          enriched?.price ||
+          catalogProduct?.price ||
+          0
+        );
+
+  return {
+    ...(catalogProduct || {}),
+    ...enriched,
+    ...(item || {}),
+
+    id:
+      enriched?.id ||
+      item?.id ||
+      item?.productId ||
+      catalogProduct?.id ||
+      "",
+
+    productId:
+      enriched?.id ||
+      item?.productId ||
+      item?.id ||
+      catalogProduct?.id ||
+      "",
+
+    name:
+      enriched?.name ||
+      item?.name ||
+      item?.productName ||
+      item?.title ||
+      catalogProduct?.name ||
+      "상품",
+
+    category:
+      enriched?.category ||
+      item?.category ||
+      item?.productCategory ||
+      catalogProduct?.category ||
+      "",
+
+    price:
+      currentPrice,
+
+    image:
+      currentImage,
+
+    thumbnail:
+      currentImage,
+  };
 }
 
 
@@ -313,6 +357,23 @@ export default function Cart() {
     updateQuantity,
     removeFromCart,
   } = useShop();
+
+
+  /* =======================================================
+     NORMALIZED CART
+
+     현재 상품 데이터와 장바구니 저장 데이터를 매번 다시 연결해서
+     상품명 / 카테고리 / 이미지 누락을 막습니다.
+  ======================================================= */
+
+  const normalizedCart =
+    useMemo(
+      () =>
+        cart.map(
+          normalizeCartItem
+        ),
+      [cart]
+    );
 
 
   /* =======================================================
@@ -384,14 +445,14 @@ export default function Cart() {
   const chosen =
     useMemo(
       () =>
-        cart.filter(
+        normalizedCart.filter(
           (item) =>
             selected.includes(
               item.lineId
             )
         ),
       [
-        cart,
+        normalizedCart,
         selected,
       ]
     );
@@ -2866,7 +2927,7 @@ export default function Cart() {
             =============================================== */}
 
             <div className="lcode-cartList">
-              {cart.map(
+              {normalizedCart.map(
                 (item) => {
                   const isSelected =
                     selected.includes(
@@ -2885,10 +2946,11 @@ export default function Cart() {
 
 
                   const productImage =
+                    item.thumbnail ||
+                    item.image ||
                     findProductImage(
                       item.id
                     ) ||
-                    item.image ||
                     "";
 
 

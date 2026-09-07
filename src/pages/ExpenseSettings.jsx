@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import BudgetOptionCards from "../components/BudgetOptionCards";
 import ExpenseCategoryList from "../components/ExpenseCategoryList";
+import BackButton from "../components/BackButton";
 import styles from "./ExpenseSettings.module.scss";
 
 const currencyByCountry = {
@@ -34,7 +35,6 @@ export default function ExpenseSettings() {
       ? incomingBudget
       : 400000
   ));
-  const planLink = params.toString() ? `/plan?${params.toString()}` : "/plan";
 
   const trip = useMemo(() => {
     const tripId = params.get("trip");
@@ -63,7 +63,7 @@ export default function ExpenseSettings() {
   return (
     <main className={styles.expenseSettings}>
       <div className={styles.pageInner}>
-        <Link className={styles.backButton} to={planLink}>← BACK</Link>
+        <BackButton className={styles.backButton} />
         <header className={styles.pageHeader}>
           <span>TRAVEL BUDGET</span>
           <h1>여행 경비 설정</h1>
