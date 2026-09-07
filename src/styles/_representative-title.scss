@@ -98,6 +98,17 @@
       }
     }
   }
+
+  // Mobile: keep the shared footer a consistent, modest distance below every
+  // my-page screen. Drop the page's own bottom padding and pull up past
+  // .main's fixed-BottomNav clearance (58px) so the footer's common top margin
+  // is the whole gap. The shared footer / .main rules are left untouched.
+  @media (max-width: 640px) {
+    #{$page} {
+      margin-bottom: calc(-58px - env(safe-area-inset-bottom));
+      padding-bottom: 0;
+    }
+  }
 }
 
 // Shared desktop treatment based on the Saved Plan page title.
