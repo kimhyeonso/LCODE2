@@ -10,6 +10,7 @@ import {
 } from "react-router-dom";
 
 import { useShop } from "../hooks/useShop";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 import { decreaseProductStocks } from "../services/firestoreService";
 import styles from "./Shop.module.scss";
 
@@ -181,25 +182,41 @@ function normalizeCartItem(
   item,
   index
 ) {
+  const product = enrichShopProduct(item);
+
   const option =
     normalizeOption(
       item.option ||
         item.optionLabel
     );
 
-  return {
-    ...item,
+  const productId =
+    product.id ||
+    item.productId ||
+    item.id ||
+    `legacy-${index}`;
 
-    quantity:
-      Number(
-        item.quantity || 1
-      ),
+  const variantKey =
+    item.variantKey ||
+    item.selectedVariant?.id ||
+    "default";
+
+  return {
+    ...product,
+
+    id: productId,
+    productId,
+
+    quantity: Number(
+      item.quantity || 1
+    ),
 
     option,
+    variantKey,
 
     lineId:
       item.lineId ||
-      `${item.id}__${option.id}__${index}`,
+      `${productId}__${variantKey}__${option.id}`,
   };
 }
 
@@ -210,41 +227,67 @@ function buildCheckoutItems(
   cart
 ) {
   if (directPurchase) {
+    const directProduct =
+      enrichShopProduct({
+        ...directPurchase,
+        id:
+          directPurchase.id ||
+          directPurchase.productId,
+      });
+
     const option =
       normalizeOption(
         directPurchase.option
       );
 
+    const productId =
+      directProduct.id ||
+      directPurchase.productId ||
+      directPurchase.id;
+
     return [
       {
-        lineId:
-          `direct-${directPurchase.productId}`,
+        ...directProduct,
+        ...directPurchase,
 
-        id:
-          directPurchase.productId,
+        lineId:
+          `direct-${productId}`,
+
+        id: productId,
+        productId,
 
         name:
-          directPurchase.name,
+          directProduct.name ||
+          directPurchase.name ||
+          "상품",
 
         category:
+          directProduct.category ||
           directPurchase.category ||
           "TRAVEL ESSENTIALS",
 
         image:
+          directProduct.thumbnail ||
+          directProduct.image ||
           directPurchase.image ||
           "",
 
-        price:
-          Number(
-            directPurchase.price ||
-              0
-          ),
+        thumbnail:
+          directProduct.thumbnail ||
+          directProduct.image ||
+          directPurchase.image ||
+          "",
 
-        quantity:
-          Number(
-            directPurchase.quantity ||
-              1
-          ),
+        price: Number(
+          directPurchase.price ??
+          directProduct.price ??
+          0
+        ),
+
+        quantity: Number(
+          directPurchase.quantity ||
+          1
+        ),
 
         stock:
           directPurchase.stock,
@@ -254,17 +297,14 @@ function buildCheckoutItems(
     ];
   }
 
-
   if (
     checkoutSelection &&
-    checkoutSelection.length >
-      0
+    checkoutSelection.length > 0
   ) {
     return checkoutSelection.map(
       normalizeCartItem
     );
   }
-
 
   return cart.map(
     normalizeCartItem
