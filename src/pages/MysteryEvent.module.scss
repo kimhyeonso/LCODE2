@@ -4050,3 +4050,1605 @@ button {
     transition: none;
   }
 }
+/* =========================================================
+   2026-09-07 MYSTERY EVENT PATCH
+   기존 레이아웃/연출은 유지하고 최근 확정사항만 추가
+========================================================= */
+
+/* ---------------------------------------------------------
+   HOME / SKIP
+--------------------------------------------------------- */
+
+.desktopHomeButton,
+.skipChapterButton {
+  position: fixed;
+  z-index: 2147483150;
+  border: 0;
+  background: transparent;
+  color: rgba(245, 239, 232, 0.82);
+  font: inherit;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.desktopHomeButton {
+  top: 24px;
+  left: 36px;
+}
+
+.skipChapterButton {
+  top: 24px;
+  right: 36px;
+  color: rgba(214, 170, 97, 0.78);
+}
+
+.desktopHomeButton:hover,
+.skipChapterButton:hover {
+  color: $gold-light;
+  transform: translateY(-1px);
+}
+
+/* EventHeader 안의 기존 BACK은 숨기고 동일 자리에 HOME을 사용 */
+.desktopEventHeader button:first-of-type {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
+   CHAPTER TITLE
+   장면마다 바뀌지 않고 큰 사건 단위로만 표시
+--------------------------------------------------------- */
+
+.chapterBanner {
+  position: fixed;
+  top: 86px;
+  left: 36px;
+  z-index: 30;
+  width: min(520px, calc(100vw - 72px));
+  pointer-events: none;
+  text-shadow: 0 8px 26px rgba(0, 0, 0, 0.78);
+}
+
+.chapterBanner > span {
+  display: block;
+  margin-bottom: 5px;
+  color: $gold;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.chapterBanner > strong {
+  display: block;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(30px, 3.7vw, 56px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -1px;
+}
+
+.chapterBanner > small {
+  display: block;
+  margin-top: 8px;
+  color: rgba(245, 239, 232, 0.66);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+/* ---------------------------------------------------------
+   BACKGROUND FIT
+   첫 귀국 비행기 이미지는 화질을 희생하면서 확대하지 않음
+--------------------------------------------------------- */
+
+.backgroundNaturalFit {
+  object-fit: contain !important;
+  object-position: center center !important;
+  background: #05070c;
+  transform: none !important;
+}
+
+/* ---------------------------------------------------------
+   STORY SPEAKER
+   상단 이름 제거 → 대화창 내부 하단 UI로 이동
+--------------------------------------------------------- */
+
+.simpleStoryHeader {
+  justify-content: flex-end;
+}
+
+.dialogueSpeaker {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+
+.dialogueSpeaker small {
+  color: $gold;
+  font-size: 7px;
+  font-weight: 900;
+  letter-spacing: 2.5px;
+}
+
+.dialogueSpeaker strong {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: -0.2px;
+}
+
+/* 전신 컷에만 25px 하향. 프로필 컷에는 적용되지 않음 */
+.characterVisualFullBody {
+  transform: translateY(25px);
+}
+
+/* ---------------------------------------------------------
+   INVESTIGATION HUB
+--------------------------------------------------------- */
+
+.hubHeader {
+  text-align: center;
+}
+
+.hubHeader > span {
+  display: block;
+  font-size: 13px;
+  letter-spacing: 5.5px;
+}
+
+.hubHeader h2 {
+  margin: 8px auto 8px;
+  max-width: 900px;
+  font-size: clamp(42px, 4.3vw, 64px);
+  line-height: 1.02;
+}
+
+.hubHeader p {
+  max-width: 780px;
+  margin: 0 auto;
+  font-size: 18px;
+  line-height: 1.55;
+}
+
+/* 카드 자체의 기존 프레임은 유지하되 개인컷을 배경처럼 사용 */
+.suspectCard {
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 210px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  padding: 22px 20px 18px;
+  background: #090d17;
+}
+
+.suspectCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(4, 7, 13, 0.06) 0%, rgba(4, 7, 13, 0.34) 42%, rgba(4, 7, 13, 0.96) 100%),
+    linear-gradient(90deg, rgba(6, 9, 16, 0.26), rgba(6, 9, 16, 0.05));
+}
+
+.cardPortrait {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: block;
+}
+
+.cardPortrait img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center 18%;
+  opacity: 0.6;
+  transform: scale(1.08);
+  filter: saturate(0.88) contrast(1.04);
+}
+
+.cardCopy,
+.cardStatus {
+  position: relative;
+  z-index: 2;
+}
+
+.cardCopy strong {
+  font-size: 28px;
+}
+
+.cardCopy p {
+  max-width: 390px;
+  font-size: 13px;
+}
+
+/* ---------------------------------------------------------
+   WEB CASE PROGRESS HUD
+--------------------------------------------------------- */
+
+.caseProgressHud {
+  display: none;
+}
+
+@media (min-width: 1025px) {
+  .hubInner {
+    width: min(1030px, calc(100% - 330px));
+    margin-left: max(36px, calc((100vw - 1440px) / 2 + 36px));
+    margin-right: auto;
+  }
+
+  .hubProgress {
+    display: none;
+  }
+
+  .proceedButton {
+    display: none;
+  }
+
+  .caseProgressHud {
+    width: 205px;
+    min-height: 390px;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    z-index: 40;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 11px;
+    padding: 32px 24px 28px 31px;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%, 0 10%);
+    border-left: 1px solid rgba(214, 170, 97, 0.28);
+    background:
+      linear-gradient(145deg, rgba(16, 23, 38, 0.98), rgba(5, 8, 14, 0.99));
+    box-shadow: -22px 0 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .caseProgressHud::before {
+    content: "";
+    position: absolute;
+    inset: 8px 0 8px 8px;
+    pointer-events: none;
+    border-left: 1px solid rgba(214, 170, 97, 0.16);
+  }
+
+  .caseProgressRail {
+    position: absolute;
+    left: 14px;
+    top: 24px;
+    bottom: 24px;
+    width: 2px;
+    background: linear-gradient(180deg, transparent, rgba(214,170,97,.66), transparent);
+  }
+
+  .caseProgressHud > small {
+    color: $gold;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 3px;
+  }
+
+  .caseProgressHud > strong {
+    color: #fff;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 42px;
+    line-height: 1;
+  }
+
+  .caseProgressHud > strong i {
+    margin: 0 4px;
+    color: rgba(245,239,232,.25);
+    font-size: 18px;
+    font-style: normal;
+  }
+
+  .caseProgressHud > em {
+    color: rgba(245,239,232,.38);
+    font-size: 7px;
+    font-style: normal;
+    letter-spacing: 2.5px;
+  }
+
+  .caseProgressMeter {
+    width: 3px;
+    height: 88px;
+    position: relative;
+    overflow: hidden;
+    background: rgba(245,239,232,.08);
+  }
+
+  .caseProgressMeter > span {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: $gold;
+    transition: height .35s ease;
+  }
+
+  .caseProgressHud > b {
+    color: rgba(245,239,232,.36);
+    font-size: 7px;
+    line-height: 1.5;
+    letter-spacing: 1.5px;
+  }
+
+  .caseProgressHud > button {
+    width: 100%;
+    min-height: 44px;
+    margin-top: 4px;
+    border: 1px solid rgba(245,239,232,.1);
+    background: rgba(245,239,232,.05);
+    color: rgba(245,239,232,.28);
+    font: inherit;
+    font-size: 8px;
+    font-weight: 900;
+    letter-spacing: 1.8px;
+    cursor: default;
+  }
+
+  .caseProgressHudReady {
+    border-left-color: rgba(214,170,97,.78);
+    box-shadow: -24px 0 70px rgba(214,170,97,.08);
+  }
+
+  .caseProgressHudReady > b {
+    color: $gold-light;
+  }
+
+  .caseProgressHudReady > button {
+    border-color: rgba(214,170,97,.55);
+    background: linear-gradient(90deg, rgba(214,170,97,.96), rgba(239,202,133,.92));
+    color: #090b10;
+    cursor: pointer;
+    animation: caseHudReadyPulse 1.8s ease-in-out infinite;
+  }
+}
+
+@keyframes caseHudReadyPulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(214,170,97,0); }
+  50% { box-shadow: 0 0 22px rgba(214,170,97,.18); }
+}
+
+/* ---------------------------------------------------------
+   SUMMARY SCREEN
+--------------------------------------------------------- */
+
+.summaryScreen {
+  background: #060912;
+}
+
+.summaryShade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background:
+    linear-gradient(90deg, rgba(4,7,13,.96), rgba(4,7,13,.7) 56%, rgba(4,7,13,.88)),
+    linear-gradient(180deg, rgba(0,0,0,.1), rgba(0,0,0,.82));
+}
+
+.summaryInner {
+  width: min(1060px, calc(100% - 72px));
+  height: 100%;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  padding: 160px 0 44px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 22px;
+}
+
+.summaryHeader {
+  text-align: center;
+}
+
+.summaryHeader > span {
+  color: $gold;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 4px;
+}
+
+.summaryHeader h2 {
+  margin: 8px 0 7px;
+  color: #fff;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(36px, 4vw, 58px);
+}
+
+.summaryHeader p {
+  margin: 0;
+  color: rgba(245,239,232,.58);
+  font-size: 14px;
+}
+
+.summaryGrid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-content: center;
+}
+
+.summaryGrid article {
+  min-height: 130px;
+  position: relative;
+  padding: 20px 22px;
+  border: 1px solid rgba(245,239,232,.09);
+  background: linear-gradient(135deg, rgba(17,23,37,.92), rgba(7,11,19,.96));
+}
+
+.summaryGrid article::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: $gold;
+}
+
+.summaryGrid small {
+  color: rgba(214,170,97,.58);
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.summaryGrid strong {
+  display: block;
+  margin-top: 7px;
+  color: #fff;
+  font-size: 18px;
+}
+
+.summaryGrid p {
+  margin: 7px 0 0;
+  color: rgba(245,239,232,.6);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.summaryFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.summaryFooter > span {
+  color: rgba(245,239,232,.36);
+  font-size: 8px;
+  letter-spacing: 2px;
+}
+
+.summaryFooter > button {
+  min-width: 240px;
+  min-height: 48px;
+  border: 0;
+  background: $cream;
+  color: #070910;
+  font: inherit;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+/* 모달 의미 차이만 조금 더 명확하게 */
+.exitConfirmModal,
+.skipConfirmModal {
+  box-shadow: 0 24px 90px rgba(0,0,0,.5);
+}
+
+.exitConfirmModal > h2,
+.skipConfirmModal > h2 {
+  line-height: 1.22;
+}
+
+/* ---------------------------------------------------------
+   MOBILE / TABLET
+--------------------------------------------------------- */
+
+@media (max-width: 1024px) {
+  .desktopHomeButton {
+    display: none;
+  }
+
+  .skipChapterButton {
+    top: calc(14px + env(safe-area-inset-top));
+    right: 14px;
+    font-size: 9px;
+    letter-spacing: 2px;
+  }
+
+  .chapterBanner {
+    top: calc(54px + env(safe-area-inset-top));
+    left: 14px;
+    width: calc(100vw - 28px);
+  }
+
+  .chapterBanner > span {
+    margin-bottom: 3px;
+    font-size: 7px;
+    letter-spacing: 2.7px;
+  }
+
+  .chapterBanner > strong {
+    font-size: clamp(23px, 7.2vw, 31px);
+  }
+
+  .chapterBanner > small {
+    margin-top: 4px;
+    font-size: 9px;
+  }
+
+  .backgroundNaturalFit {
+    width: 100%;
+    height: 100%;
+    object-fit: contain !important;
+    object-position: center center !important;
+  }
+
+  .characterVisualFullBody {
+    transform: translateY(25px) !important;
+  }
+
+  .dialogueSpeaker {
+    margin-bottom: 6px;
+  }
+
+  .dialogueSpeaker strong {
+    font-size: 12px;
+  }
+
+  .hubHeader {
+    padding-top: 44px;
+    text-align: center;
+  }
+
+  .hubHeader > span {
+    font-size: 9px;
+    letter-spacing: 3px;
+  }
+
+  .hubHeader h2 {
+    margin: 5px auto;
+    font-size: clamp(30px, 8vw, 40px);
+  }
+
+  .hubHeader p {
+    max-width: 90%;
+    margin: 0 auto;
+    padding-right: 0;
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .hubProgress {
+    display: none;
+  }
+
+  .suspectCard {
+    min-height: 0;
+    padding: 12px 10px 10px;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: end;
+  }
+
+  .cardPortrait {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+  }
+
+  .cardPortrait img {
+    object-position: center 18%;
+    opacity: .6;
+    transform: scale(1.07);
+  }
+
+  .cardCopy strong {
+    font-size: 20px;
+  }
+
+  .cardCopy p {
+    font-size: 10px;
+  }
+
+  .cardStatus {
+    right: 8px;
+    bottom: 8px;
+  }
+
+  .caseProgressHud {
+    display: none !important;
+  }
+
+  /* 모바일에서는 원래 하단 CTA를 유지 */
+  .proceedButton {
+    display: flex;
+    position: relative;
+    z-index: 10;
+  }
+
+  .summaryInner {
+    width: 100%;
+    padding:
+      calc(112px + env(safe-area-inset-top))
+      14px
+      calc(16px + env(safe-area-inset-bottom));
+    gap: 13px;
+  }
+
+  .summaryHeader h2 {
+    font-size: 30px;
+  }
+
+  .summaryHeader p {
+    font-size: 12px;
+  }
+
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+  }
+
+  .summaryGrid article {
+    min-height: 112px;
+    padding: 14px 13px;
+  }
+
+  .summaryGrid strong {
+    font-size: 15px;
+  }
+
+  .summaryGrid p {
+    font-size: 10px;
+    line-height: 1.4;
+  }
+
+  .summaryFooter {
+    display: grid;
+  }
+
+  .summaryFooter > span {
+    display: none;
+  }
+
+  .summaryFooter > button {
+    width: 100%;
+    min-width: 0;
+    min-height: 46px;
+  }
+}
+
+@media (max-width: 420px) {
+  .summaryGrid {
+    grid-template-columns: 1fr;
+    overflow-y: auto;
+  }
+
+  .summaryGrid article {
+    min-height: 92px;
+  }
+}
+
+/* CSS module key retained for the existing StoryScreen state. */
+.explanationScreen {
+  position: relative;
+}
+
+/* =========================================================
+   MOBILE POLISH PASS · 2026-09-07
+   최근 모바일 피드백만 반영. 데스크톱 구조는 유지.
+========================================================= */
+
+/* 요약 카드 이미지는 모바일에서만 사용 */
+.summaryVisual {
+  display: none;
+}
+
+.summaryCardCopy {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 1024px) {
+  /* -------------------------------------------------------
+     GLOBAL MOBILE READABILITY
+  ------------------------------------------------------- */
+  .mobileBackButton,
+  .skipChapterButton {
+    font-size: 11px;
+    letter-spacing: 2.4px;
+  }
+
+  .simpleStoryHeader span {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+  }
+
+  .dialogueSpeaker {
+    margin-bottom: 7px;
+  }
+
+  .dialogueSpeaker strong {
+    color: $gold;
+    font-size: 16px;
+    line-height: 1.2;
+    letter-spacing: -0.2px;
+  }
+
+  .simpleDialogue p {
+    font-size: clamp(16px, 4.4vw, 18px);
+    line-height: 1.55;
+  }
+
+  .storyNav button {
+    font-size: 11px;
+    letter-spacing: 1.8px;
+  }
+
+  .chapterBanner > span {
+    font-size: 9px;
+  }
+
+  .chapterBanner > small {
+    font-size: 11px;
+  }
+
+  /* 죽어가는 장면의 어두워짐/흐려짐이 툭 끊기지 않게 */
+  .progressiveDarkness {
+    transition:
+      background 0.9s ease,
+      backdrop-filter 0.9s ease,
+      -webkit-backdrop-filter 0.9s ease;
+    -webkit-backdrop-filter: blur(var(--scene-blur));
+  }
+
+  /* -------------------------------------------------------
+     FOCUS PICK
+     모바일 집중 조사 화면에서는 중복 챕터 헤더를 숨김
+  ------------------------------------------------------- */
+  .mysteryExperience[data-phase="focus1"] .chapterBanner,
+  .mysteryExperience[data-phase="focus2"] .chapterBanner {
+    display: none;
+  }
+
+  .focusInner {
+    padding-top: calc(62px + env(safe-area-inset-top));
+  }
+
+  .focusHeader > span,
+  .focusHeader > small {
+    display: none;
+  }
+
+  .focusHeader h2 {
+    margin: 0 auto 7px;
+    font-size: clamp(31px, 8.8vw, 40px);
+    line-height: 1.08;
+    text-align: center;
+  }
+
+  .focusHeader p {
+    max-width: 92%;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .focusGrid small,
+  .focusGrid span {
+    display: none;
+  }
+
+  .focusGrid strong {
+    margin-top: 8px;
+    font-size: 21px;
+  }
+
+  /* -------------------------------------------------------
+     INVESTIGATION HUB
+     장식 텍스트 제거 + 중앙정렬 + 모바일 가독성 상향
+  ------------------------------------------------------- */
+  .hubHeader > span {
+    display: none;
+  }
+
+  .hubHeader {
+    padding-top: 48px;
+    text-align: center;
+  }
+
+  .hubHeader h2 {
+    max-width: 94%;
+    margin: 0 auto 8px;
+    font-size: clamp(34px, 9.3vw, 43px);
+    line-height: 1.08;
+    text-align: center;
+  }
+
+  .hubHeader p {
+    max-width: 94%;
+    margin: 0 auto;
+    padding-right: 0;
+    font-size: 14px;
+    line-height: 1.48;
+    text-align: center;
+  }
+
+  .suspectCard {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .cardCopy {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cardCopy small,
+  .cardStatus {
+    display: none;
+  }
+
+  .cardCopy strong {
+    font-size: 22px;
+    line-height: 1.15;
+  }
+
+  .cardCopy p {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+
+  /* 전소희(2번)는 현재 구도를 유지. 나머지 3명만 약 20% 더 가까이. */
+  .suspectCard:nth-child(1) .cardPortrait img,
+  .suspectCard:nth-child(3) .cardPortrait img,
+  .suspectCard:nth-child(4) .cardPortrait img {
+    transform: scale(1.27) translateY(4%);
+    transform-origin: center center;
+  }
+
+  .suspectCard:nth-child(2) .cardPortrait img {
+    transform: scale(1.07);
+  }
+
+  /* -------------------------------------------------------
+     CONFIRM MODALS
+     모바일에서는 짧고 넓게 + 버튼 가로 2개
+  ------------------------------------------------------- */
+  .exitConfirmModal,
+  .skipConfirmModal {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 8px;
+    row-gap: 0;
+    padding: 18px 16px 16px;
+    overflow: hidden;
+  }
+
+  .exitConfirmModal > span,
+  .exitConfirmModal > h2,
+  .exitConfirmModal > p,
+  .skipConfirmModal > span,
+  .skipConfirmModal > h2,
+  .skipConfirmModal > p {
+    grid-column: 1 / -1;
+  }
+
+  .exitConfirmModal > span,
+  .skipConfirmModal > span {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+  }
+
+  .exitConfirmModal > h2,
+  .skipConfirmModal > h2 {
+    margin: 9px 0 10px;
+    font-size: clamp(24px, 6.8vw, 29px);
+    line-height: 1.28;
+    letter-spacing: -0.035em;
+  }
+
+  .exitConfirmModal > p,
+  .skipConfirmModal > p {
+    margin-bottom: 14px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .exitConfirmModal > button,
+  .skipConfirmModal > button {
+    width: 100%;
+    min-height: 45px;
+    margin-top: 0 !important;
+    font-size: 12px;
+  }
+
+  /* -------------------------------------------------------
+     CHAPTER SUMMARY
+     텍스트 리스트 → 2x2 장면 보드. 불필요한 스크롤 방지.
+  ------------------------------------------------------- */
+  .summaryInner {
+    width: 100%;
+    height: 100%;
+    padding:
+      calc(108px + env(safe-area-inset-top))
+      14px
+      calc(14px + env(safe-area-inset-bottom));
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    gap: 10px;
+  }
+
+  .summaryHeader > span {
+    font-size: 10px;
+    letter-spacing: 3px;
+  }
+
+  .summaryHeader h2 {
+    margin: 6px 0 4px;
+    font-size: clamp(27px, 7.4vw, 34px);
+    line-height: 1.08;
+  }
+
+  .summaryHeader p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .summaryGrid {
+    min-height: 0;
+  }
+
+  .summaryGrid {
+    height: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    overflow: hidden;
+    align-content: stretch;
+  }
+
+  .summaryGrid article {
+    min-height: 0;
+    height: 100%;
+    padding: 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-rows: minmax(0, 1fr) auto;
+    background: rgba(7, 11, 19, 0.92);
+  }
+
+  .summaryGrid article::before {
+    width: 2px;
+    z-index: 3;
+  }
+
+  .summaryVisual {
+    min-height: 0;
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: #080b12;
+  }
+
+  .summaryVisual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 45%, rgba(5, 8, 14, 0.72));
+    pointer-events: none;
+  }
+
+  .summaryVisual img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.82;
+  }
+
+  .summaryCardCopy {
+    padding: 9px 10px 10px 12px;
+    text-align: left;
+  }
+
+  .summaryGrid small {
+    font-size: 8px;
+  }
+
+  .summaryGrid strong {
+    margin-top: 3px;
+    font-size: 14px;
+    line-height: 1.2;
+  }
+
+  .summaryGrid p {
+    margin-top: 4px;
+    font-size: 10.5px;
+    line-height: 1.38;
+  }
+
+  .summaryFooter {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 48px;
+  }
+
+  .summaryFooter > span {
+    display: none;
+  }
+
+  .summaryFooter > button {
+    width: auto;
+    min-width: 172px;
+    min-height: 46px;
+    position: relative;
+    padding: 0 18px 0 22px;
+    border: 1px solid rgba(214, 170, 97, 0.52);
+    clip-path: polygon(0 0, calc(100% - 13px) 0, 100% 13px, 100% 100%, 0 100%);
+    background:
+      linear-gradient(90deg, rgba(245, 239, 232, 0.98), rgba(229, 216, 194, 0.98));
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+    font-size: 10px;
+    letter-spacing: 1.7px;
+    text-align: right;
+  }
+
+  .summaryFooter > button::before {
+    content: "PROCEED";
+    position: absolute;
+    left: 10px;
+    top: 5px;
+    color: rgba(7, 9, 16, 0.45);
+    font-size: 6px;
+    letter-spacing: 1.4px;
+  }
+
+  .summaryFooter > button::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    position: absolute;
+    right: 12px;
+    bottom: 7px;
+    background: $gold;
+  }
+}
+
+@media (max-width: 420px) {
+  /* 기존 1열 요약 규칙을 덮어써 2x2를 유지 */
+  .summaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    overflow: hidden;
+  }
+
+  .summaryGrid article {
+    min-height: 0;
+  }
+
+  .summaryGrid strong {
+    font-size: 13px;
+  }
+
+  .summaryGrid p {
+    font-size: 10px;
+  }
+}
+
+/* =========================================================
+   WEB POLISH PASS · 2026-09-07
+   웹 피드백 반영: 기존 디자인 유지 + 위치/가독성만 정리
+========================================================= */
+
+@media (min-width: 1025px) {
+  /* -------------------------------------------------------
+     TOP NAV
+     중복 CASE 배지 제거, HOME / SKIP만 남김
+  ------------------------------------------------------- */
+  .desktopEventHeader {
+    display: none !important;
+  }
+
+  .desktopHomeButton {
+    top: 26px;
+    left: clamp(32px, 3vw, 56px);
+    font-size: 12px;
+    letter-spacing: 3.1px;
+  }
+
+  .skipChapterButton {
+    top: 24px;
+    right: clamp(32px, 3vw, 56px);
+    padding: 8px 2px;
+    font-size: 14px;
+    letter-spacing: 2.8px;
+    color: rgba(239, 202, 133, 0.92);
+  }
+
+  /* -------------------------------------------------------
+     CHAPTER TITLE
+     화면 밖으로 잘리지 않도록 안전한 좌측 영역에 고정
+  ------------------------------------------------------- */
+  .chapterBanner {
+    top: 78px;
+    left: clamp(48px, 4.4vw, 84px);
+    right: auto;
+    width: min(600px, calc(100vw - 180px));
+    transform: none !important;
+  }
+
+  .chapterBanner > span {
+    margin-bottom: 7px;
+    font-size: 10px;
+    letter-spacing: 4.1px;
+  }
+
+  .chapterBanner > strong {
+    max-width: 100%;
+    font-size: clamp(34px, 3.15vw, 54px);
+    line-height: 0.98;
+    overflow-wrap: normal;
+    white-space: normal;
+  }
+
+  .chapterBanner > small {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  /* 조사 대상 선택/집중 조사 화면에는 중복 챕터 제목을 표시하지 않음 */
+  .mysteryExperience[data-phase="round1Hub"] .chapterBanner,
+  .mysteryExperience[data-phase="focus1"] .chapterBanner,
+  .mysteryExperience[data-phase="focus2"] .chapterBanner {
+    display: none !important;
+  }
+
+  /* -------------------------------------------------------
+     FIRST FLIGHT BACKGROUND
+     모바일용 세로 원본을 가운데 좁은 띠로 두지 않고 웹 화면 폭에 맞춤
+  ------------------------------------------------------- */
+  .backgroundNaturalFit {
+    width: 100%;
+    height: 100%;
+    object-fit: cover !important;
+    object-position: center center !important;
+    transform: none !important;
+    background: #05070c;
+  }
+
+  /* -------------------------------------------------------
+     INVESTIGATION HUB
+     제목을 위쪽으로, 군더더기 라벨 없이 중앙 정렬
+  ------------------------------------------------------- */
+  .hubInner {
+    width: min(1080px, calc(100% - 330px));
+    margin-left: max(48px, calc((100vw - 1500px) / 2 + 48px));
+    margin-right: auto;
+    padding-top: 58px;
+    padding-bottom: 28px;
+    gap: 13px;
+  }
+
+  .hubHeader {
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding-top: 0;
+    text-align: center;
+  }
+
+  .hubHeader > span {
+    display: none !important;
+  }
+
+  .hubHeader h2 {
+    max-width: 820px;
+    margin: 0 auto 10px;
+    font-size: clamp(48px, 4.25vw, 68px);
+    line-height: 1.02;
+    text-align: center;
+  }
+
+  .hubHeader p {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0;
+    font-size: 17px;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .cardCopy small {
+    display: none !important;
+  }
+
+  .cardStatus b {
+    display: none !important;
+  }
+
+  .cardCopy {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cardCopy strong {
+    font-size: 30px;
+    line-height: 1.12;
+  }
+
+  .cardCopy p {
+    max-width: 100%;
+    margin: 8px auto 0;
+    font-size: 14px;
+    line-height: 1.45;
+    text-align: center;
+  }
+
+  /* 전소희(2번)는 유지. 유지영/최정은/김현수만 추가 10% 확대 + 얼굴이 보이도록 아래 이동. */
+  .suspectCard:nth-child(1) .cardPortrait img,
+  .suspectCard:nth-child(3) .cardPortrait img,
+  .suspectCard:nth-child(4) .cardPortrait img {
+    transform: translateY(20%) scale(1.38);
+    transform-origin: center center;
+    object-position: center 18%;
+  }
+
+  .suspectCard:nth-child(2) .cardPortrait img {
+    transform: scale(1.08);
+    object-position: center 18%;
+  }
+
+  /* -------------------------------------------------------
+     FOCUS PICK
+     중복 챕터/영문 장식 없이 선택 목적만 보이도록
+  ------------------------------------------------------- */
+  .focusInner {
+    padding-top: 74px;
+  }
+
+  .focusHeader > span {
+    display: none !important;
+  }
+
+  .focusHeader h2 {
+    margin-top: 0;
+  }
+
+  .focusGrid > button > small,
+  .focusGrid > button > span {
+    display: none !important;
+  }
+
+  /* -------------------------------------------------------
+     CHAPTER SUMMARY
+     화면 아래로 몰리지 않게 세로 중앙에 가까운 4-패널 보드
+  ------------------------------------------------------- */
+  .summaryInner {
+    width: min(1140px, calc(100% - 120px));
+    min-height: 100vh;
+    height: 100%;
+    padding: 112px 0 44px;
+    display: grid;
+    grid-template-rows: auto minmax(0, auto) auto;
+    align-content: center;
+    gap: 28px;
+  }
+
+  .summaryHeader {
+    padding-top: 4px;
+    text-align: center;
+  }
+
+  .summaryHeader > span {
+    display: block;
+    margin-bottom: 11px;
+    font-size: 10px;
+    letter-spacing: 4.2px;
+  }
+
+  .summaryHeader h2 {
+    margin: 0 0 12px;
+    font-size: clamp(42px, 4.1vw, 62px);
+    line-height: 1.12;
+  }
+
+  .summaryHeader p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.72;
+  }
+
+  .summaryGrid {
+    height: auto;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: repeat(2, minmax(210px, 1fr));
+    gap: 14px;
+    align-content: center;
+  }
+
+  .summaryGrid article {
+    min-height: 210px;
+    padding: 0;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 44% minmax(0, 1fr);
+    align-items: stretch;
+  }
+
+  .summaryVisual {
+    display: block;
+    min-width: 0;
+    min-height: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #080b12;
+  }
+
+  .summaryVisual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 55%, rgba(7, 11, 19, 0.7));
+    pointer-events: none;
+  }
+
+  .summaryVisual img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0.86;
+  }
+
+  .summaryCardCopy {
+    min-width: 0;
+    padding: 26px 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: left;
+  }
+
+  .summaryGrid small {
+    font-size: 9px;
+    letter-spacing: 2.2px;
+  }
+
+  .summaryGrid strong {
+    margin-top: 9px;
+    font-size: 21px;
+    line-height: 1.3;
+  }
+
+  .summaryGrid p {
+    margin-top: 10px;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+
+  .summaryFooter {
+    min-height: 58px;
+    justify-content: flex-end;
+  }
+
+  .summaryFooter > span {
+    display: none;
+  }
+
+  .summaryFooter > button {
+    min-width: 238px;
+    min-height: 54px;
+    position: relative;
+    padding: 0 25px 0 30px;
+    border: 1px solid rgba(214, 170, 97, 0.52);
+    clip-path: polygon(0 0, calc(100% - 15px) 0, 100% 15px, 100% 100%, 0 100%);
+    background: linear-gradient(90deg, rgba(245, 239, 232, 0.98), rgba(229, 216, 194, 0.98));
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
+    font-size: 11px;
+    letter-spacing: 2.2px;
+    text-align: right;
+  }
+
+  .summaryFooter > button::before {
+    content: "PROCEED";
+    position: absolute;
+    left: 13px;
+    top: 7px;
+    color: rgba(7, 9, 16, 0.42);
+    font-size: 7px;
+    letter-spacing: 1.6px;
+  }
+
+  .summaryFooter > button::after {
+    content: "";
+    width: 34px;
+    height: 1px;
+    position: absolute;
+    right: 14px;
+    bottom: 8px;
+    background: $gold;
+  }
+}
+
+/* =========================================================
+   CHARACTER STAGING PATCH · 2026-09-07
+   최근 피드백 반영:
+   - 기본/po1 장면 위치 통일
+   - 모든 일반 등장은 부드러운 스르륵 모션
+   - 초반 소희/정은/지영 쓰리샷
+   - 조사 카드 1/3/4번 얼굴 위치를 확실히 아래로
+   - 모바일 첫 비행기 배경은 좌우 여백 없이 가로 꽉 채움
+========================================================= */
+
+/* 기본/po1 모두 같은 기준점에서 보여주기 위해 전신만 별도로 내리던 오프셋 제거 */
+.characterVisualFullBody {
+  transform: none !important;
+}
+
+/* 모든 일반 인물 등장 = 부드럽게 스르륵 */
+.characterEnterSoft img {
+  animation: characterSoftIn 0.48s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+.characterEnterNone img {
+  animation: none !important;
+}
+
+.characterEnterQuickLeft img {
+  animation: characterQuickLeft 0.32s cubic-bezier(0.2, 0.92, 0.28, 1) both !important;
+}
+
+.characterEnterQuickRight img {
+  animation: characterQuickRight 0.32s cubic-bezier(0.2, 0.92, 0.28, 1) both !important;
+}
+
+@keyframes characterSoftIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes characterQuickLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-72px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes characterQuickRight {
+  from {
+    opacity: 0;
+    transform: translateX(72px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* 쓰리샷일 때만 각 인물을 3등분 슬롯에 안정적으로 배치 */
+.characterVisualGrouped {
+  width: 32%;
+  top: 118px;
+  bottom: 118px;
+}
+
+.characterVisualGrouped.characterVisualLeft {
+  left: 4%;
+  right: auto;
+  justify-content: center;
+}
+
+.characterVisualGrouped.characterVisualCenter {
+  left: 34%;
+  right: auto;
+  justify-content: center;
+}
+
+.characterVisualGrouped.characterVisualRight {
+  left: auto;
+  right: 4%;
+  justify-content: center;
+}
+
+/* 사망 직전 암전은 NEXT마다 자연스럽게 누적되도록 전환을 조금 길게 */
+.progressiveDarkness {
+  transition:
+    background 0.58s ease,
+    backdrop-filter 0.58s ease !important;
+}
+
+@media (max-width: 1024px) {
+  /* 모바일용 세로 원본은 화면 가로를 꽉 채우고 좌우 검정 여백 제거 */
+  .backgroundNaturalFit {
+    width: 100vw !important;
+    height: 100% !important;
+    max-width: none !important;
+    left: 0 !important;
+    right: 0 !important;
+    object-fit: cover !important;
+    object-position: center center !important;
+    transform: none !important;
+  }
+
+  /* 모바일 쓰리샷: 세 사람을 같은 높이 기준으로 한 화면에 유지 */
+  .characterVisualGrouped {
+    width: 38%;
+    top: calc(90px + env(safe-area-inset-top));
+    bottom: calc(178px + env(safe-area-inset-bottom));
+  }
+
+  .characterVisualGrouped.characterVisualLeft {
+    left: -1%;
+    right: auto;
+  }
+
+  .characterVisualGrouped.characterVisualCenter {
+    left: 31%;
+    right: auto;
+  }
+
+  .characterVisualGrouped.characterVisualRight {
+    left: auto;
+    right: -1%;
+  }
+
+  /*
+   * 조사 카드 인물 위치 보정
+   * 전소희(2번)는 그대로.
+   * 유지영/최정은/김현수는 기존 확대 비율을 유지하면서
+   * 이미지 자체를 카드 내부에서 확실히 20% 아래로 내려 얼굴 잘림을 해소.
+   */
+  .suspectCard:nth-child(1) .cardPortrait img,
+  .suspectCard:nth-child(3) .cardPortrait img,
+  .suspectCard:nth-child(4) .cardPortrait img {
+    position: relative;
+    top: 20% !important;
+    transform: scale(1.38) !important;
+    transform-origin: center center !important;
+    object-position: center top !important;
+  }
+
+  .suspectCard:nth-child(2) .cardPortrait img {
+    top: auto !important;
+    transform: scale(1.08) !important;
+    object-position: center 18% !important;
+  }
+}
