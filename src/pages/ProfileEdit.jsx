@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   updateEmail as updateAuthEmail,
   updatePassword,
@@ -13,6 +13,14 @@ import styles from "./ProfileEdit.module.scss";
 
 export default function ProfileEdit() {
   const { user } = useAuth();
+  const fieldRefs = {
+    nickname: useRef(null),
+    email: useRef(null),
+    password: useRef(null),
+    name: useRef(null),
+    phone: useRef(null),
+    themes: useRef(null),
+  };
   const [nickname, setNickname] = useState(user?.displayName || "");
   const [email, setEmail] = useState(user?.email || "");
   const [name, setName] = useState(user?.displayName || "");
@@ -78,7 +86,10 @@ export default function ProfileEdit() {
     }
   };
 
-  const startEditing = (field) => setEditing(field);
+  const startEditing = (field) => {
+    setEditing(field);
+    window.requestAnimationFrame(() => fieldRefs[field]?.current?.focus());
+  };
 
   return (
     <main className={styles.profileEdit}>
@@ -91,19 +102,19 @@ export default function ProfileEdit() {
           <form onSubmit={submit}>
             <div className={styles.fieldRow}>
               <label htmlFor="profile-nickname">닉네임</label>
-              <input id="profile-nickname" required type="text" placeholder="닉네임" value={nickname} readOnly={editing !== "nickname"} onChange={(event) => setNickname(event.target.value)} />
+              <input ref={fieldRefs.nickname} id="profile-nickname" required type="text" placeholder="닉네임" value={nickname} readOnly={editing !== "nickname"} onChange={(event) => setNickname(event.target.value)} />
               <button type="button" className={styles.rowButton} onClick={() => startEditing("nickname")}>수정</button>
             </div>
             <div className={styles.fieldRow}>
               <label htmlFor="profile-email">이메일</label>
-              <input id="profile-email" required type="email" value={email} readOnly={editing !== "email"} onChange={(event) => setEmail(event.target.value)} />
+              <input ref={fieldRefs.email} id="profile-email" required type="email" value={email} readOnly={editing !== "email"} onChange={(event) => setEmail(event.target.value)} />
               <button type="button" className={styles.rowButton} onClick={() => startEditing("email")}>수정</button>
             </div>
-            <div className={styles.fieldRow}><label htmlFor="profile-password">새 비밀번호</label><input id="profile-password" type="password" value={password} placeholder="변경할 경우에만 입력" readOnly={editing !== "password"} onChange={(event) => setPassword(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("password")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-password">새 비밀번호</label><input ref={fieldRefs.password} id="profile-password" type="password" value={password} placeholder="변경할 경우에만 입력" readOnly={editing !== "password"} onChange={(event) => setPassword(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("password")}>수정</button></div>
             <div className={styles.fieldRow}><label htmlFor="profile-password-confirm">비밀번호 확인</label><input id="profile-password-confirm" type="password" value={passwordConfirm} placeholder="새 비밀번호 확인" readOnly={editing !== "password"} onChange={(event) => setPasswordConfirm(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("password")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-name">이름</label><input id="profile-name" type="text" value={name} placeholder="이름" readOnly={editing !== "name"} onChange={(event) => setName(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("name")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-phone">휴대폰 번호</label><input id="profile-phone" type="tel" value={phone} placeholder="휴대폰 번호" readOnly={editing !== "phone"} onChange={(event) => setPhone(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("phone")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-themes">관심 여행 테마</label><input id="profile-themes" type="text" value={themes} placeholder="예: 도시, 건축, 미식" readOnly={editing !== "themes"} onChange={(event) => setThemes(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("themes")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-name">이름</label><input ref={fieldRefs.name} id="profile-name" type="text" value={name} placeholder="이름" readOnly={editing !== "name"} onChange={(event) => setName(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("name")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-phone">휴대폰 번호</label><input ref={fieldRefs.phone} id="profile-phone" type="tel" value={phone} placeholder="휴대폰 번호" readOnly={editing !== "phone"} onChange={(event) => setPhone(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("phone")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-themes">관심 여행 테마</label><input ref={fieldRefs.themes} id="profile-themes" type="text" value={themes} placeholder="예: 도시, 건축, 미식" readOnly={editing !== "themes"} onChange={(event) => setThemes(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("themes")}>수정</button></div>
             {status.error && <p className={styles.error}>{status.error}</p>}
             {status.saved && <p className={styles.saved}>{status.saved}</p>}
             <div className={styles.withdrawNotice}>

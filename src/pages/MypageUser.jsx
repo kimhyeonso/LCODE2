@@ -1,15 +1,21 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import products from "../data/products.json";
+import { getMyStoriesCount } from "../data/myStoriesSummary";
 import { useAuth } from "../hooks/useAuth";
-import { useShop } from "../hooks/useShop";
 import { getFavoriteTrips, getPlans } from "../services/firestoreService";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  ["상품 주문 내역", "/buy"],
-  ["내 일정", "/plan/saved"], ["나의 리뷰", "/mystories"],
-  ["찜한 상품", "/saved"], ["찜한 일정", "/wishlist"], ["찜한 장소", "/favorite-places"],
-  ["쿠폰함", "/coupon"], ["알림 설정", "/alarm"], ["고객센터", "/notice"],
+  { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
+  { label: "내 일정", to: "/plan/saved", icon: "/Mypage-img/calendar_month.svg" },
+  { label: "나의 리뷰", to: "/mystories", icon: "/Mypage-img/pen.svg" },
+  { label: "찜한 상품", to: "/saved", icon: "/Mypage-img/heart.svg" },
+  { label: "찜한 일정", to: "/wishlist", icon: "/Mypage-img/calendar_check.svg" },
+  { label: "찜한 장소", to: "/favorite-places", icon: "/Mypage-img/heart_plus.svg" },
+  { label: "쿠폰함", to: "/coupon", icon: "/Mypage-img/ticket.svg" },
+  { label: "알림 설정", to: "/alarm", icon: "/Mypage-img/bell.svg" },
+  { label: "고객센터", to: "/notice", icon: "/Mypage-img/headset.svg" },
 ];
 const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
 
@@ -30,10 +36,8 @@ const getDday = (startDate) => {
 
 export default function MypageUser() {
   const auth = useAuth();
-  const shop = useShop();
   const user = auth?.user;
   const logout = auth?.logout;
-  const savedProducts = Array.isArray(shop?.saved) ? shop.saved : [];
   const navigate = useNavigate();
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
   const [slideIndex, setSlideIndex] = useState(0);
@@ -84,6 +88,7 @@ export default function MypageUser() {
     : latestPlan
       ? `/plan?trip=${encodeURIComponent(latestPlan.tripId || "")}&saved=${encodeURIComponent(latestPlan.id)}`
       : "/search";
+  const myStoriesCount = String(getMyStoriesCount(products.length)).padStart(2, "0");
   const handleLogout = async () => {
     if (!logout) return;
     await logout();
@@ -117,25 +122,31 @@ export default function MypageUser() {
                 aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
             </article>
             <article className={styles.recent}>
+              <div className={styles.upcomingSlideshow} aria-hidden="true">
+                {slideshowImages.map((image, index) => (
+                  <img className={index === slideIndex ? styles.activeSlide : ""} key={`recent-${image}`}
+                    src={`/Mypage-img/${image}`} alt="" decoding="async" />
+                ))}
+              </div>
               <small>02</small><span>{latestPlan ? "RECENT PLAN" : "PLAN"}</span>
               <h2>{planTitle}</h2><p>{planPeriod}</p>
               <Link className={styles.cardLink} to={latestPlanLink}
                 aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
             </article>
             <article className={styles.saved}>
-              <small>03</small><span>PRODUCTS SAVED</span><strong>♥ {savedProducts.length}</strong>
-              <Link className={styles.cardLink} to="/saved" aria-label="찜한 상품 보기" />
+              <small>03</small><span>PLACES SAVED</span><strong>♥ {favoriteTripCount}</strong>
+              <Link className={styles.cardLink} to="/wishlist" aria-label="찜 목록 보기" />
             </article>
             <article className={styles.stories}>
-              <small>04</small><span>TRIPS SAVED</span><strong>♥ {favoriteTripCount}</strong>
-              <Link className={styles.cardLink} to="/wishlist" aria-label="찜한 일정 보기" />
+              <small>04</small><span>STORIES</span><strong><span className={styles.stars}>*****</span>{myStoriesCount}</strong>
+              <Link className={styles.cardLink} to="/mystories" aria-label="나의 리뷰 보기" />
             </article>
           </div>
         </section>
 
         <nav className={styles.menuList} aria-label="마이페이지 메뉴">
-          {menuItems.map(([label, to]) => (
-            <Link key={label} to={to}>{label}<span aria-hidden="true">→</span></Link>
+          {menuItems.map(({ label, to, icon }) => (
+            <Link key={label} to={to} style={{ "--menu-icon": `url("${icon}")` }}>{label}<span aria-hidden="true">→</span></Link>
           ))}
           <button type="button" onClick={handleLogout}>로그아웃</button>
         </nav>

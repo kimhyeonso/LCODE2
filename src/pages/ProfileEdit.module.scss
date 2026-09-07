@@ -156,3 +156,104 @@
 
 @include title.mypage-layout(".profileEdit", ".layout");
 @include title.mypage-heading(".formSection", ".eyebrow", ".hero", ".subtitle");
+
+.profileEdit {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  width: 100%;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 27px 16px;
+  place-items: center;
+  background: rgb(0 0 0 / 42%);
+  overflow: hidden;
+}
+
+.profileEdit .layout {
+  display: block;
+  width: min(720px, calc(100vw - 32px));
+  max-height: calc(100dvh - 54px);
+  margin: 0;
+  padding: 64px 20px 24px;
+  background: #fff;
+  overflow-y: auto;
+  box-shadow: 0 22px 55px rgb(0 0 0 / 22%);
+}
+
+.profileEdit .formSection {
+  position: relative;
+  width: 100%;
+  padding-top: 0;
+}
+
+.profileEdit .archive {
+  display: none;
+}
+
+.profileEdit [data-mypage-back] {
+  position: absolute;
+  z-index: 3;
+  top: -44px;
+  left: 0;
+  right: auto;
+  color: #171714;
+}
+
+.profileEdit .fieldRow {
+  position: relative;
+  z-index: 1;
+  grid-template-columns: 155px minmax(0, 1fr) 48px;
+}
+
+.profileEdit .fieldRow input:not([readonly]) {
+  background: rgb(23 23 20 / 4%);
+}
+
+.profileEdit .rowButton {
+  position: relative;
+  z-index: 2;
+  min-width: 36px;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+@media (min-width: 901px) {
+  .profileEdit {
+    width: 100%;
+    margin-left: 0;
+    padding: 27px 16px;
+  }
+
+  .profileEdit .layout {
+    width: min(720px, calc(100vw - 96px));
+    margin: 0;
+  }
+}
+
+@media (max-width: 600px) {
+  .profileEdit {
+    padding: 20px 10px;
+  }
+
+  .profileEdit .layout {
+    width: calc(100vw - 20px);
+    max-height: calc(100dvh - 40px);
+    padding: 56px 16px 20px;
+  }
+
+  .profileEdit [data-mypage-back] {
+    top: -38px;
+  }
+
+  .profileEdit .fieldRow {
+    grid-template-columns: 86px minmax(0, 1fr) 42px;
+    min-height: 52px;
+    font-size: 12px;
+  }
+
+  .profileEdit .rowButton {
+    font-size: 12px;
+  }
+}
