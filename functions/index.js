@@ -5,6 +5,8 @@ const { FieldValue, getFirestore } = require("firebase-admin/firestore");
 
 initializeApp();
 
+exports.remixPlan = require("./remix").remixPlan;
+
 exports.listDashboardUsers = onCall({ region: "asia-northeast3" }, async (request) => {
   if (!request.auth) throw new HttpsError("unauthenticated", "로그인이 필요합니다.");
 
