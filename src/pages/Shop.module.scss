@@ -833,14 +833,28 @@
   object-fit: cover;
   object-position: center;
 
+  opacity: 0;
+
   transition:
+    opacity 0.32s ease-out,
     transform 0.35s ease,
     filter 0.35s ease;
+}
+
+.productThumbLoaded {
+  opacity: 1;
 }
 
 .productVisual:hover .productThumb {
   transform: scale(1.035);
   filter: brightness(0.96);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .productThumb {
+    opacity: 1;
+    transition: none;
+  }
 }
 
 .quickVisual img {

@@ -466,7 +466,8 @@ export default function Products() {
         >
           {filtered.map(
             (
-              product
+              product,
+              productIndex
             ) => {
               const liked =
                 saved.includes(
@@ -551,7 +552,12 @@ export default function Products() {
                           alt={
                             product.name
                           }
-                          loading="lazy"
+                          loading={productIndex < 6 ? "eager" : "lazy"}
+                          fetchPriority={productIndex < 3 ? "high" : "auto"}
+                          decoding="async"
+                          onLoad={(event) => {
+                            event.currentTarget.classList.add(styles.productThumbLoaded);
+                          }}
                           onError={(event) => {
                             const fallback = getDetailImage(product.imageNumber, "_1");
                             if (fallback && event.currentTarget.dataset.fallbackApplied !== "true") {

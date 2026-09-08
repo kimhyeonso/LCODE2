@@ -1,0 +1,222 @@
+.intro {
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: #111;
+}
+
+.backgroundVideo,
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.backgroundVideo {
+  z-index: 0;
+  object-fit: cover;
+}
+
+.overlay {
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.introContent {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+  font-family: "DM Serif Display", serif;
+  text-align: center;
+}
+
+.topCopy,
+.bottomCopy {
+  margin: 0;
+  font-weight: 400;
+}
+
+.skipButton {
+  position: absolute;
+  z-index: 3;
+  right: clamp(36px, 5vw, 80px);
+  bottom: clamp(42px, 6vh, 72px);
+  padding: 12px 4px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.82);
+  font: 400 36px/1 "DM Serif Display", serif;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+.skipButton:hover {
+  border-color: #fff;
+  color: #fff;
+}
+
+.skipButton:focus-visible {
+  outline: 1px solid #fff;
+  outline-offset: 5px;
+}
+
+.topCopy {
+  margin-bottom: clamp(34px, 4.5vh, 54px);
+  font-size: clamp(39px, calc(2.8vw + 0.9rem), 56px);
+  line-height: 1.05;
+  animation: intro-copy-down 0.75s ease-out 0.12s both;
+}
+
+.logo {
+  position: relative;
+  display: block;
+  width: min(54%, 820px);
+  -webkit-animation: text-focus-in 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) 0.15s both;
+  animation: text-focus-in 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) 0.15s both;
+}
+
+.line {
+  width: 0;
+  height: 1px;
+  margin-top: clamp(28px, 4vh, 46px);
+  background: rgba(255, 255, 255, 0.36);
+  animation: intro-line-grow 0.85s ease-out 0.3s forwards;
+}
+
+.bottomCopy {
+  margin-top: clamp(24px, 3.5vh, 40px);
+  font-size: clamp(31px, calc(1.65vw + 0.9rem), 39px);
+  line-height: 1;
+  animation: intro-copy-up 0.75s ease-out 0.18s both;
+}
+
+.introClosing {
+  -webkit-mask-image:
+    linear-gradient(to right, #000 0 100%),
+    linear-gradient(to left, #000 0 100%);
+  mask-image:
+    linear-gradient(to right, #000 0 100%),
+    linear-gradient(to left, #000 0 100%);
+  -webkit-mask-position: left center, right center;
+  mask-position: left center, right center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  animation: intro-split-exit 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+@-webkit-keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+
+  100% {
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes text-focus-in {
+  0% {
+    -webkit-filter: blur(12px);
+    filter: blur(12px);
+    opacity: 0;
+  }
+
+  100% {
+    -webkit-filter: blur(0);
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes intro-copy-down {
+  from {
+    opacity: 0;
+    transform: translateY(-16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes intro-copy-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes intro-line-grow {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 100%;
+  }
+}
+
+@-webkit-keyframes intro-split-exit {
+  from {
+    -webkit-mask-size: 50.1% 100%, 50.1% 100%;
+    mask-size: 50.1% 100%, 50.1% 100%;
+  }
+
+  to {
+    -webkit-mask-size: 0 100%, 0 100%;
+    mask-size: 0 100%, 0 100%;
+  }
+}
+
+@keyframes intro-split-exit {
+  from {
+    -webkit-mask-size: 50.1% 100%, 50.1% 100%;
+    mask-size: 50.1% 100%, 50.1% 100%;
+  }
+
+  to {
+    -webkit-mask-size: 0 100%, 0 100%;
+    mask-size: 0 100%, 0 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backgroundVideo,
+  .logo,
+  .topCopy,
+  .bottomCopy,
+  .line,
+  .introClosing {
+    animation: none;
+    -webkit-animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .logo {
+    width: 78%;
+  }
+}

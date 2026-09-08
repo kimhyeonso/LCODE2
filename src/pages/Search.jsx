@@ -88,6 +88,7 @@ const getFirstPlace = (trip) => trip.days
   .find((item) => item.type === "place");
 
 export default function Search() {
+  const searchPageRef = useRef(null);
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const managedProducts = useManagedCollection("products", products);
   const { user } = useAuth();
@@ -150,6 +151,44 @@ export default function Search() {
   );
 
   const selectedDurationTrip = durationModal?.trips.find((trip) => trip.id === selectedDurationId) || null;
+
+  useEffect(() => {
+    const root = searchPageRef.current;
+    if (!root) return undefined;
+
+    const cards = Array.from(
+      root.querySelectorAll(`.${styles.results} > div > a`),
+      (link) => link.parentElement,
+    ).filter(Boolean);
+    cards.forEach((card, index) => {
+      card.classList.remove(styles.revealUp, styles.revealFromRight, styles.revealVisible);
+      card.classList.add(index < 3 ? styles.revealUp : styles.revealFromRight);
+    });
+
+    const observedCards = cards.slice(3);
+
+    if (!("IntersectionObserver" in window)) {
+      observedCards.forEach((card) => card.classList.add(styles.revealVisible));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(styles.revealVisible);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    observedCards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [cityCards]);
 
   const openDurationModal = (cityTrips) => {
     setDurationModal({ city: cityTrips[0].city, trips: cityTrips });
@@ -249,7 +288,7 @@ export default function Search() {
   );
 
   return (
-    <main className={styles.searchPage}>
+    <main ref={searchPageRef} className={styles.searchPage}>
       <section className={styles.searchIntro}>
         <form role="search" onSubmit={submitSearch}>
           <img src={searchIcon} alt="" aria-hidden="true" />

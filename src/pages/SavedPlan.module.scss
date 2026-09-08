@@ -41,6 +41,7 @@
 
 .heroCard {
   position: relative;
+  overflow: hidden;
   height: 362px;
   display: flex;
   flex-direction: column;
@@ -52,6 +53,41 @@
   background-size: cover;
 
   color: #fff;
+}
+
+.heroCard::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.78));
+  pointer-events: none;
+}
+
+.heroVideo {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.heroCard > :not(.heroVideo) {
+  z-index: 2;
+}
+
+.revealCard {
+  opacity: 0.2;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+
+.revealCard.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* 왼쪽 상단 삭제 아이콘 */
@@ -156,6 +192,7 @@
 
 .others > article {
   position: relative;
+  overflow: hidden;
   margin: 0 14px 16px;
 
   border: 1px solid #ddd;
@@ -167,6 +204,25 @@
   aspect-ratio: 4 / 3;
 
   background: #ddd center / cover;
+  transition: transform 0.5s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .others > article:hover > span {
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revealCard {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .others article > span {
+    transition: none;
+  }
 }
 
 .others article > div {
@@ -367,6 +423,33 @@
 .trending > div > * {
   min-width: 0;
   color: #222;
+}
+
+.trending > div > div > a > div:first-child {
+  position: relative;
+}
+
+.trending > div > div > a > div:first-child::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: inherit;
+  background-position: inherit;
+  background-repeat: inherit;
+  background-size: inherit;
+  transition: transform 0.45s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .trending > div > div:hover > a > div:first-child::before {
+    transform: scale(1.025);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trending > div > div > a > div:first-child::before {
+    transition: none;
+  }
 }
 
 .durationBackdrop {

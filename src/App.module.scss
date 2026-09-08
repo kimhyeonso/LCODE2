@@ -1,3 +1,7 @@
+::-webkit-scrollbar{
+  display: none;
+}
+//스크롤 지울게용
 .app :global(*) {
   box-sizing: border-box;
 }

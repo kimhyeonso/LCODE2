@@ -169,6 +169,7 @@ const getTrendingImage = (trip) => {
 };
 
 export default function SavedPlan({ showBack = false }) {
+  const pageRef = useRef(null);
   const { user } = useAuth();
   const navigate = useNavigate();
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
@@ -212,6 +213,32 @@ export default function SavedPlan({ showBack = false }) {
     plans.find((plan) => plan.id === savedId) || plans[0];
 
   const others = plans.filter((plan) => plan.id !== saved?.id);
+
+  useEffect(() => {
+    const root = pageRef.current;
+    if (!root) return undefined;
+
+    const targets = root.querySelectorAll(`.${styles.revealCard}`);
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add(styles.revealVisible));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(styles.revealVisible);
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.12, rootMargin: "0px 0px -10% 0px" },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, [others.length, saved?.id]);
 
   const trending = useMemo(() => {
     const savedCities = new Set(
@@ -379,7 +406,7 @@ export default function SavedPlan({ showBack = false }) {
   }
 
   return (
-    <main className={styles.page}>
+    <main ref={pageRef} className={styles.page}>
       {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
       <p className={styles.eyebrow}>
         MY PLAN
@@ -397,15 +424,18 @@ export default function SavedPlan({ showBack = false }) {
 
       {/* 메인 저장 일정 */}
       <article
-        className={styles.heroCard}
-        style={{
-          backgroundImage: `linear-gradient(
-            180deg,
-            transparent 30%,
-            rgba(0, 0, 0, 0.78)
-          ), url(${planImage(saved)})`,
-        }}
+        className={`${styles.heroCard} ${styles.revealCard}`}
       >
+        <video
+          className={styles.heroVideo}
+          src="/Mypage-img/sea01.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          aria-hidden="true"
+        />
         {/* 왼쪽 상단 삭제 아이콘 */}
         <button
           type="button"
@@ -498,7 +528,7 @@ export default function SavedPlan({ showBack = false }) {
           </p>
 
           {others.map((plan) => (
-            <article key={plan.id}>
+            <article className={styles.revealCard} key={plan.id}>
               <button
                 type="button"
                 className={styles.heroDelete}
