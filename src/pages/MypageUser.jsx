@@ -122,12 +122,6 @@ export default function MypageUser() {
                 aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
             </article>
             <article className={styles.recent}>
-              <div className={styles.upcomingSlideshow} aria-hidden="true">
-                {slideshowImages.map((image, index) => (
-                  <img className={index === slideIndex ? styles.activeSlide : ""} key={`recent-${image}`}
-                    src={`/Mypage-img/${image}`} alt="" decoding="async" />
-                ))}
-              </div>
               <small>02</small><span>{latestPlan ? "RECENT PLAN" : "PLAN"}</span>
               <h2>{planTitle}</h2><p>{planPeriod}</p>
               <Link className={styles.cardLink} to={latestPlanLink}

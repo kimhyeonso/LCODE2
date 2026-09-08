@@ -1,5 +1,5 @@
 import { Routes, Route, useLocation, useNavigationType } from "react-router-dom";
-import { useEffect, useLayoutEffect } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomNav from "./components/BottomNav";
@@ -46,6 +46,8 @@ import ExchangeRate from "./pages/ExchangeRate";
 import Balance from "./pages/Balance";
 import AIRemix from "./pages/AIRemix";
 import DesrinationAll from "./pages/DesrinationAll";
+import Intro from "./pages/Intro";
+import Popup from "./pages/Popup";
 import styles from "./App.module.scss";
 
 if (typeof window !== "undefined" && "scrollRestoration" in window.history) {
@@ -108,6 +110,7 @@ const enlargedPagePaths = new Set([
 ]);
 
 const immersivePagePaths = new Set([]);
+const INTRO_SESSION_KEY = "lcode-intro-seen";
 
 function PageSize() {
   const { pathname } = useLocation();
@@ -122,13 +125,23 @@ function PageSize() {
 }
 
 export default function App() {
+  const [showIntro, setShowIntro] = useState(
+    () => sessionStorage.getItem(INTRO_SESSION_KEY) !== "true",
+  );
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
   const isRemixPage = pathname === "/ai-remix" || pathname === "/remix";
+  const finishIntro = useCallback(() => setShowIntro(false), []);
+
+  useEffect(() => {
+    if (showIntro) sessionStorage.setItem(INTRO_SESSION_KEY, "true");
+  }, [showIntro]);
 
   return (
     <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
+      {showIntro && <Intro onComplete={finishIntro} />}
+      {!showIntro && <Popup />}
       <ScrollTop />
       <PageSize />
       {!isImmersivePage && <Header />}

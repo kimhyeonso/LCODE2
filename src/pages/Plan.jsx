@@ -98,6 +98,7 @@ function PlaceImage({ src, name }) {
 }
 
 export default function Plan() {
+  const planRef = useRef(null);
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
@@ -223,6 +224,35 @@ export default function Plan() {
     ?.image;
   const todayValue = new Date().toLocaleDateString("sv-SE");
   const tripLength = Math.max(1, selectedTrip.days.length);
+
+  useEffect(() => {
+    const root = planRef.current;
+    if (!root) return undefined;
+
+    const targets = root.querySelectorAll(`.${styles.revealBox}`);
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add(styles.revealVisible));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(styles.revealVisible);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -7% 0px",
+      },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, [activeDay, savedDetailState.loading, savedPlanLoading, selectedTrip.id]);
 
   const openDateStep = () => {
     if (!user) {
@@ -357,7 +387,7 @@ export default function Plan() {
   }
 
   return (
-    <main className={styles.plan}>
+    <main ref={planRef} className={styles.plan}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.7)), url(${heroImage})` } : undefined}>
         <BackButton className={styles.backButton} tone="light" />
         <div className={styles.heroTop}><span>TRAVEL PLAN</span><span>{selectedTrip.country.toUpperCase()} / ISSUE 01</span></div>
@@ -370,7 +400,7 @@ export default function Plan() {
         </p>
       </section>
 
-      <section className={styles.intro}>
+      <section className={`${styles.intro} ${styles.revealBox}`}>
         <h1>{selectedTrip.title.replace(" 일정", "").replace(", ", ",\n")}</h1>
         <p>맛집과 카페를 중심으로<br />천천히 걷는 여행</p>
         <dl className={styles.stats}>
@@ -380,7 +410,7 @@ export default function Plan() {
         </dl>
       </section>
 
-      <section className={styles.points}>
+      <section className={`${styles.points} ${styles.revealBox}`}>
         <h2>이 일정의 포인트</h2>
         <div>
           <p><img src={travelIcon} alt="" /><strong>공항 접근성</strong></p>
@@ -389,11 +419,11 @@ export default function Plan() {
         </div>
       </section>
 
-      <section className={styles.visualBreak} aria-label="여행 장소 지도">
+      <section className={`${styles.visualBreak} ${styles.revealBox}`} aria-label="여행 장소 지도">
         <PlaceMap places={allPlaces} fitToPlaces fallbackCenter={weather.location} requireLocation />
       </section>
 
-      <section className={styles.expense} aria-labelledby="estimated-expense-title">
+      <section className={`${styles.expense} ${styles.revealBox}`} aria-labelledby="estimated-expense-title">
         <p>ESTIMATED EXPENSE</p>
         <div className={styles.expenseSummary}>
           <span>{hasCustomBudget ? "설정한 여행 경비" : "예상 여행 경비"}</span>
@@ -436,7 +466,7 @@ export default function Plan() {
           const isOpen = activeDay === index;
 
           return (
-            <section className={styles.dayAccordion} key={day.day || index}>
+            <section className={`${styles.dayAccordion} ${styles.revealBox}`} key={day.day || index}>
               <button
                 type="button"
                 className={`${styles.dayHeader} ${isOpen ? styles.dayHeaderOpen : ""}`}

@@ -32,6 +32,7 @@ export default function ProductCard({
 
   const imageNumber = Number(String(product.id).replace(/\D/g, ""));
   const thumbnail = resolveImageUrl(product.image, "")
+    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.webp`, "") : "")
     || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.png`, "") : "");
 
 

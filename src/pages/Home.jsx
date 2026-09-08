@@ -50,6 +50,7 @@ const heroSlides = [
   {
     desktop: bannerPC1,
     mobile: bannerMO1,
+    video: "/Mypage-img/fukuoka.mp4",
     eyebrow: "RECOMMENDED PACKAGE",
     title: "FUKUOKA",
     subtitle: "후쿠오카 3박 4일",
@@ -61,6 +62,7 @@ const heroSlides = [
   {
     desktop: bannerPC2,
     mobile: bannerMO2,
+    video: "/Mypage-img/seoul.mp4",
     eyebrow: "RECOMMENDED PACKAGE",
     title: "SEOUL",
     subtitle: "서울 2박 3일",
@@ -165,6 +167,7 @@ export default function Home() {
   }));
   const [planState, setPlanState] = useState({ userId: null, plans: [] });
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+  const [heroTransitionEnabled, setHeroTransitionEnabled] = useState(true);
 
   useEffect(() => {
     const context = gsap.context(() => {
@@ -178,10 +181,41 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const root = page.current;
+    if (!root) return undefined;
+
+    const targets = root.querySelectorAll(
+      `.${styles.section}, .${styles.destinationList} > a`,
+    );
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add(styles.revealVisible));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(styles.revealVisible);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
     if (heroSlides.length < 2) return undefined;
 
     const timer = window.setInterval(() => {
-      setActiveHeroSlide((current) => (current + 1) % heroSlides.length);
+      setActiveHeroSlide((current) => current + 1);
     }, 5000);
 
     return () => window.clearInterval(timer);
@@ -258,9 +292,18 @@ export default function Home() {
 
     setActiveHeroSlide((current) => (
       startX > endX
-        ? (current + 1) % heroSlides.length
+        ? Math.min(current + 1, heroSlides.length)
         : (current - 1 + heroSlides.length) % heroSlides.length
     ));
+  };
+
+  const handleHeroTransitionEnd = () => {
+    if (activeHeroSlide !== heroSlides.length) return;
+    setHeroTransitionEnabled(false);
+    setActiveHeroSlide(0);
+    window.requestAnimationFrame(() => {
+      window.requestAnimationFrame(() => setHeroTransitionEnabled(true));
+    });
   };
 
   useEffect(() => {
@@ -317,42 +360,63 @@ export default function Home() {
         >
           <div
             className={styles.heroTrack}
-            style={{ transform: `translateX(-${activeHeroSlide * 100}%)` }}
+            style={{
+              transform: `translateX(-${activeHeroSlide * 100}%)`,
+              transition: heroTransitionEnabled ? undefined : "none",
+            }}
+            onTransitionEnd={handleHeroTransitionEnd}
           >
-            {heroSlides.map(({ desktop, mobile, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight }, index) => (
+            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight }, index) => {
+              const isClone = index === heroSlides.length;
+              return (
               <div
-                className={`${styles.heroSlide} ${dark ? styles.heroSlideDark : ""}`}
-                key={desktop}
-                aria-hidden={index !== activeHeroSlide}
+                className={`${styles.heroSlide} ${video ? styles.heroSlideVideo : ""} ${dark ? styles.heroSlideDark : ""}`}
+                key={`${desktop}-${index}`}
+                aria-hidden={index !== activeHeroSlide || isClone}
               >
-                <picture>
-                  <source media="(max-width: 640px)" srcSet={mobile} />
-                  <img
-                    src={desktop}
-                    alt=""
-                    loading={index === 0 ? "eager" : "lazy"}
-                    fetchPriority={index === 0 ? "high" : "auto"}
+                {video ? (
+                  <video
+                    className={styles.heroVideo}
+                    src={video}
+                    poster={desktop}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-hidden="true"
                   />
-                </picture>
+                ) : (
+                  <picture>
+                    <source media="(max-width: 640px)" srcSet={mobile} />
+                    <img
+                      src={desktop}
+                      alt=""
+                      loading={index === 0 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                    />
+                  </picture>
+                )}
                 <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>
                   {subtitle && <p className={styles.heroSubtitle}>{subtitle}</p>}
                   <p className={styles.heroDescription}>{description}</p>
-                  <Link className={styles.heroCta} to={to} tabIndex={index === activeHeroSlide ? 0 : -1}>
+                  <Link className={styles.heroCta} to={to} tabIndex={!isClone && index === activeHeroSlide ? 0 : -1}>
                     <span>{cta}</span>
                     <span aria-hidden="true">→</span>
                   </Link>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
           <div className={styles.heroDots} aria-label="배너 슬라이드 선택">
             {heroSlides.map(({ desktop }, index) => (
               <button
                 key={desktop}
                 type="button"
-                className={`${styles.heroDot} ${index === activeHeroSlide ? styles.heroDotActive : ""}`}
+                className={`${styles.heroDot} ${index === (activeHeroSlide % heroSlides.length) ? styles.heroDotActive : ""}`}
                 aria-label={`${index + 1}번 배너 보기`}
                 aria-current={index === activeHeroSlide ? "true" : undefined}
                 onClick={() => setActiveHeroSlide(index)}
