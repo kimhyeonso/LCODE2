@@ -12,6 +12,8 @@ import PlaceMap from "../components/PlaceMap";
 import BackButton from "../components/BackButton";
 import styles from "./Plan.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
+import { getPlaceImagePath } from "../utils/placeImageUtils";
+import PlaceImageCredits from "../components/PlaceImageCredits";
 
 const categoryNames = { airport: "AIRPORT", station: "STATION", hotel: "HOTEL", attraction: "SIGHTSEEING", restaurant: "RESTAURANT" };
 
@@ -71,10 +73,10 @@ const formatDate = (date, fallback) => {
   return `${month} ${String(value.getDate()).padStart(2, "0")} / ${weekday}`;
 };
 
-const getDayPlaces = (day) => day.items.reduce((result, item, index, items) => {
+const getDayPlaces = (day, city) => day.items.reduce((result, item, index, items) => {
   if (item.type !== "place") return result;
   const transport = items[index + 1]?.type === "transport" ? items[index + 1].transport : "";
-  result.push({ ...item, transport, imageUrl: getImageUrl(item.image) });
+  result.push({ ...item, transport, imageUrl: getImageUrl(getPlaceImagePath(item, city), "") });
   return result;
 }, []);
 
@@ -85,6 +87,15 @@ const addDays = (date, amount) => {
   value.setDate(value.getDate() + amount);
   return value.toLocaleDateString("sv-SE");
 };
+
+function PlaceImage({ src, name }) {
+  const [failed, setFailed] = useState(false);
+  return <span className={styles.placeImage}>
+    {src && !failed
+      ? <img src={src} alt={name} onError={() => setFailed(true)} />
+      : <span className={styles.noPlaceImage}>사진 없음</span>}
+  </span>;
+}
 
 export default function Plan() {
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
@@ -167,7 +178,7 @@ export default function Plan() {
     });
   }, [savedDetailState.plan]);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
-  const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
+  const allPlaces = selectedTrip.days.flatMap((day) => getDayPlaces(day, selectedTrip.city));
   const countryKey = String(selectedTrip.country || "").trim().toLowerCase();
   const normalizedCountry = countryAliases[countryKey] || countryKey;
   const thumbnailPath = tripRoad.thumbnailMap?.[normalizedCountry]?.[selectedTrip.city];
@@ -421,7 +432,7 @@ export default function Plan() {
 
       <section className={styles.itinerary}>
         {selectedTrip.days.map((day, index) => {
-          const dayPlaces = getDayPlaces(day);
+          const dayPlaces = getDayPlaces(day, selectedTrip.city);
           const isOpen = activeDay === index;
 
           return (
@@ -444,7 +455,7 @@ export default function Plan() {
                     <li key={`${place.place}-${placeIndex}`}>
                       <span className={styles.number}>{String(placeIndex + 1).padStart(2, "0")}</span>
                       <time>{place.time || "시간 미정"}</time>
-                      <span className={styles.placeImage}>{place.imageUrl && <img src={place.imageUrl} alt="" />}</span>
+                      <PlaceImage key={`${place.place}:${place.imageUrl}`} src={place.imageUrl} name={place.place} />
                       <div className={styles.placeCopy}>
                         <small>{categoryNames[place.category] || place.category}</small>
                         <strong>{place.place}</strong>
@@ -461,6 +472,7 @@ export default function Plan() {
         })}
       </section>
 
+      <PlaceImageCredits trip={selectedTrip} />
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
           {viewingSavedPlan ? (

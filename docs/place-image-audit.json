@@ -1,0 +1,320 @@
+{
+  "summary": {
+    "total": 937,
+    "withPhoto": 877,
+    "newImages": 31,
+    "brokenPaths": 0,
+    "missingEntries": 60,
+    "remainingNamed": [
+      "(일식꼬치및튀김전문점)",
+      "도쿄 디즈니랜드 or 도쿄 디즈니씨",
+      "파크 내",
+      "렌터카 픽업 (브랜드별공항점)",
+      "렌터카 반납 (후쿠오카공항점)",
+      "예약 셔틀 집합 장소",
+      "Ibis Harbin Central Avenue Airport Bus Station"
+    ]
+  },
+  "missing": [
+    {
+      "city": "오사카",
+      "place": "--- 식사",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "-",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "(일식꼬치및튀김전문점)",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 체크인 · 짐 보관",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 숙소 복귀",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 조식 후 출발",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 숙소 복귀",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 조식 후 출발",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 카페",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 조식 후 체크아웃 & 짐은 프런트 보관",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카",
+      "place": "--- 식사",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카·도쿄",
+      "place": "도쿄 디즈니랜드 or 도쿄 디즈니씨",
+      "isFreeMeal": false
+    },
+    {
+      "city": "오사카·도쿄",
+      "place": "파크 내",
+      "isFreeMeal": false
+    },
+    {
+      "city": "후쿠오카",
+      "place": "-",
+      "isFreeMeal": false
+    },
+    {
+      "city": "후쿠오카",
+      "place": "--- 카페",
+      "isFreeMeal": false
+    },
+    {
+      "city": "후쿠오카",
+      "place": "렌터카 픽업 (브랜드별공항점)",
+      "isFreeMeal": false
+    },
+    {
+      "city": "후쿠오카",
+      "place": "렌터카 반납 (후쿠오카공항점)",
+      "isFreeMeal": false
+    },
+    {
+      "city": "도쿄",
+      "place": "-",
+      "isFreeMeal": false
+    },
+    {
+      "city": "도쿄",
+      "place": "-",
+      "isFreeMeal": false
+    },
+    {
+      "city": "도쿄",
+      "place": "--- 쇼핑",
+      "isFreeMeal": false
+    },
+    {
+      "city": "상하이",
+      "place": "예원 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "상하이",
+      "place": "상하이 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "칭다오",
+      "place": "타이동 야시장 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "칭다오",
+      "place": "올림픽 요트센터 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "베이징",
+      "place": "스차하이 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "베이징",
+      "place": "왕푸징 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "베이징",
+      "place": "예약 셔틀 집합 장소",
+      "isFreeMeal": false
+    },
+    {
+      "city": "베이징",
+      "place": "구이제 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "베이징",
+      "place": "이화원 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "장가계",
+      "place": "시부제 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "장가계",
+      "place": "동문 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "장가계",
+      "place": "대협곡 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "장가계",
+      "place": "천문산 관광 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "청두",
+      "place": "춘시루 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "청두",
+      "place": "춘시루 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "청두",
+      "place": "춘시루 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "청두",
+      "place": "문수원 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "시안",
+      "place": "회민거리 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "시안",
+      "place": "대당불야성 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "시안",
+      "place": "종루 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "하얼빈",
+      "place": "Ibis Harbin Central Avenue Airport Bus Station",
+      "isFreeMeal": false
+    },
+    {
+      "city": "하얼빈",
+      "place": "스탈린공원·송화강 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "하얼빈",
+      "place": "Ibis Harbin Central Avenue Airport Bus Station",
+      "isFreeMeal": false
+    },
+    {
+      "city": "하얼빈",
+      "place": "Ibis Harbin Central Avenue Airport Bus Station",
+      "isFreeMeal": false
+    },
+    {
+      "city": "하얼빈",
+      "place": "빙설대세계 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "하얼빈",
+      "place": "Ibis Harbin Central Avenue Airport Bus Station",
+      "isFreeMeal": false
+    },
+    {
+      "city": "하얼빈",
+      "place": "Ibis Harbin Central Avenue Airport Bus Station",
+      "isFreeMeal": false
+    },
+    {
+      "city": "하얼빈",
+      "place": "중화 바로크 거리·노도외 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "다롄",
+      "place": "동방수성·동항 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "다롄",
+      "place": "어인부두 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "다롄",
+      "place": "톈진거리 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "충칭",
+      "place": "홍야동 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "충칭",
+      "place": "용문호 노가 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "충칭",
+      "place": "래플스시티 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "광저우",
+      "place": "대불고사 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "광저우",
+      "place": "광저우타워 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "광저우",
+      "place": "베이징루 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "항저우",
+      "place": "호빈인타이 IN77 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "항저우",
+      "place": "남송어가 주변 자유 식사",
+      "isFreeMeal": true
+    },
+    {
+      "city": "항저우",
+      "place": "롱샹차오·호빈인타이 주변 자유 식사",
+      "isFreeMeal": true
+    }
+  ]
+}

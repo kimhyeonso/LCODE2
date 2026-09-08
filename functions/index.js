@@ -37,6 +37,7 @@ exports.listDashboardUsers = onCall({ region: "asia-northeast3" }, async (reques
     const references = authUsers.map((user) => database.doc(`users/${user.uid}`));
     const profiles = references.length ? await database.getAll(...references) : [];
     const writer = database.bulkWriter();
+    const writes = [];
 
     authUsers.forEach((user, index) => {
       const profile = profiles[index]?.data() || {};
@@ -52,7 +53,7 @@ exports.listDashboardUsers = onCall({ region: "asia-northeast3" }, async (reques
         authSyncedAt: FieldValue.serverTimestamp(),
       };
       if (!profiles[index]?.exists) synchronized.createdAt = FieldValue.serverTimestamp();
-      writer.set(references[index], synchronized, { merge: true });
+      writes.push(writer.set(references[index], synchronized, { merge: true }));
       users.push({
         ...user,
         ...profile,
@@ -65,7 +66,10 @@ exports.listDashboardUsers = onCall({ region: "asia-northeast3" }, async (reques
       });
     });
 
-    if (references.length) await writer.close();
+    const results = await Promise.allSettled([...writes, writer.close()]);
+    if (results.some((result) => result.status === "rejected")) {
+      throw new HttpsError("unavailable", "회원 정보 동기화에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    }
     pageToken = page.pageToken;
   } while (pageToken);
 
