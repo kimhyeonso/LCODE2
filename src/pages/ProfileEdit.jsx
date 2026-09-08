@@ -7,12 +7,20 @@ import {
 import { useAuth } from "../hooks/useAuth";
 import MypageBackLink from "../components/MypageBackLink";
 import { createUserProfile, getUserProfile, updateUserProfile } from "../services/firestoreService";
-import kyotoImage from "../assets/images/japan.webp";
-import beijingImage from "../assets/images/beijing_china.jpg";
 import styles from "./ProfileEdit.module.scss";
+
+const editLabels = {
+  nickname: "닉네임",
+  email: "이메일",
+  password: "새 비밀번호",
+  name: "이름",
+  phone: "휴대폰 번호",
+  themes: "관심 여행 테마",
+};
 
 export default function ProfileEdit() {
   const { user } = useAuth();
+  const modalInputRef = useRef(null);
   const fieldRefs = {
     nickname: useRef(null),
     email: useRef(null),
@@ -28,7 +36,8 @@ export default function ProfileEdit() {
   const [themes, setThemes] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [editing, setEditing] = useState("");
+  const [activeEdit, setActiveEdit] = useState("");
+  const [draftEdit, setDraftEdit] = useState({ value: "", confirm: "" });
   const [status, setStatus] = useState({ loading: true, error: "", saved: "" });
 
   useEffect(() => {
@@ -74,7 +83,7 @@ export default function ProfileEdit() {
       await updateUserProfile(user.uid, { nickname, email, name, phone, themes });
       setPassword("");
       setPasswordConfirm("");
-      setEditing("");
+      setActiveEdit("");
       setStatus({ loading: false, error: "", saved: "저장되었습니다." });
     } catch (error) {
       const needsLogin = error?.code === "auth/requires-recent-login";
@@ -86,9 +95,40 @@ export default function ProfileEdit() {
     }
   };
 
+  const getFieldValue = (field) => ({
+    nickname,
+    email,
+    password,
+    name,
+    phone,
+    themes,
+  }[field] || "");
+
   const startEditing = (field) => {
-    setEditing(field);
-    window.requestAnimationFrame(() => fieldRefs[field]?.current?.focus());
+    setActiveEdit(field);
+    setDraftEdit({
+      value: getFieldValue(field),
+      confirm: field === "password" ? passwordConfirm : "",
+    });
+    window.requestAnimationFrame(() => modalInputRef.current?.focus());
+  };
+
+  const closeEditing = () => {
+    setActiveEdit("");
+    setDraftEdit({ value: "", confirm: "" });
+  };
+
+  const applyEditing = () => {
+    if (activeEdit === "nickname") setNickname(draftEdit.value);
+    if (activeEdit === "email") setEmail(draftEdit.value);
+    if (activeEdit === "password") {
+      setPassword(draftEdit.value);
+      setPasswordConfirm(draftEdit.confirm);
+    }
+    if (activeEdit === "name") setName(draftEdit.value);
+    if (activeEdit === "phone") setPhone(draftEdit.value);
+    if (activeEdit === "themes") setThemes(draftEdit.value);
+    closeEditing();
   };
 
   return (
@@ -102,19 +142,19 @@ export default function ProfileEdit() {
           <form onSubmit={submit}>
             <div className={styles.fieldRow}>
               <label htmlFor="profile-nickname">닉네임</label>
-              <input ref={fieldRefs.nickname} id="profile-nickname" required type="text" placeholder="닉네임" value={nickname} readOnly={editing !== "nickname"} onChange={(event) => setNickname(event.target.value)} />
+              <input ref={fieldRefs.nickname} id="profile-nickname" required type="text" placeholder="닉네임" value={nickname} readOnly />
               <button type="button" className={styles.rowButton} onClick={() => startEditing("nickname")}>수정</button>
             </div>
             <div className={styles.fieldRow}>
               <label htmlFor="profile-email">이메일</label>
-              <input ref={fieldRefs.email} id="profile-email" required type="email" value={email} readOnly={editing !== "email"} onChange={(event) => setEmail(event.target.value)} />
+              <input ref={fieldRefs.email} id="profile-email" required type="email" value={email} readOnly />
               <button type="button" className={styles.rowButton} onClick={() => startEditing("email")}>수정</button>
             </div>
-            <div className={styles.fieldRow}><label htmlFor="profile-password">새 비밀번호</label><input ref={fieldRefs.password} id="profile-password" type="password" value={password} placeholder="변경할 경우에만 입력" readOnly={editing !== "password"} onChange={(event) => setPassword(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("password")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-password-confirm">비밀번호 확인</label><input id="profile-password-confirm" type="password" value={passwordConfirm} placeholder="새 비밀번호 확인" readOnly={editing !== "password"} onChange={(event) => setPasswordConfirm(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("password")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-name">이름</label><input ref={fieldRefs.name} id="profile-name" type="text" value={name} placeholder="이름" readOnly={editing !== "name"} onChange={(event) => setName(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("name")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-phone">휴대폰 번호</label><input ref={fieldRefs.phone} id="profile-phone" type="tel" value={phone} placeholder="휴대폰 번호" readOnly={editing !== "phone"} onChange={(event) => setPhone(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("phone")}>수정</button></div>
-            <div className={styles.fieldRow}><label htmlFor="profile-themes">관심 여행 테마</label><input ref={fieldRefs.themes} id="profile-themes" type="text" value={themes} placeholder="예: 도시, 건축, 미식" readOnly={editing !== "themes"} onChange={(event) => setThemes(event.target.value)} /><button type="button" className={styles.rowButton} onClick={() => startEditing("themes")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-password">새 비밀번호</label><input ref={fieldRefs.password} id="profile-password" type="password" value={password} placeholder="변경할 경우에만 입력" readOnly /><button type="button" className={styles.rowButton} onClick={() => startEditing("password")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-password-confirm">비밀번호 확인</label><input id="profile-password-confirm" type="password" value={passwordConfirm} placeholder="새 비밀번호 확인" readOnly /></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-name">이름</label><input ref={fieldRefs.name} id="profile-name" type="text" value={name} placeholder="이름" readOnly /><button type="button" className={styles.rowButton} onClick={() => startEditing("name")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-phone">휴대폰 번호</label><input ref={fieldRefs.phone} id="profile-phone" type="tel" value={phone} placeholder="휴대폰 번호" readOnly /><button type="button" className={styles.rowButton} onClick={() => startEditing("phone")}>수정</button></div>
+            <div className={styles.fieldRow}><label htmlFor="profile-themes">관심 여행 테마</label><input ref={fieldRefs.themes} id="profile-themes" type="text" value={themes} placeholder="예: 도시, 건축, 미식" readOnly /><button type="button" className={styles.rowButton} onClick={() => startEditing("themes")}>수정</button></div>
             {status.error && <p className={styles.error}>{status.error}</p>}
             {status.saved && <p className={styles.saved}>{status.saved}</p>}
             <div className={styles.withdrawNotice}>
@@ -126,10 +166,51 @@ export default function ProfileEdit() {
           </form>
         </section>
 
-        <section className={styles.archive} aria-label="여행 아카이브 미리보기">
-          <figure><img src={kyotoImage} alt="교토의 거리 풍경" /><figcaption><span>KYOTO · JAPAN</span><i /><span>L:CODE JOURNAL</span></figcaption></figure>
-          <figure><img src={beijingImage} alt="베이징의 거리 풍경" /><figcaption><span>BEIJING · CHINA</span><i /><span>JOURNEY IN STYLE</span></figcaption></figure>
-        </section>
+        {activeEdit && (
+          <div className={styles.editModalBackdrop} role="presentation" onMouseDown={closeEditing}>
+            <section
+              className={styles.editModal}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="profile-edit-modal-title"
+              onMouseDown={(event) => event.stopPropagation()}
+            >
+              <div className={styles.editModalTop}>
+                <button type="button" aria-label="뒤로가기" onClick={closeEditing}>←</button>
+                <button type="button" aria-label="닫기" onClick={closeEditing}>×</button>
+              </div>
+              <p className={styles.modalEyebrow}>PROFILE EDIT</p>
+              <h2 id="profile-edit-modal-title">{editLabels[activeEdit]}</h2>
+              <label className={styles.modalField} htmlFor="profile-edit-modal-input">
+                <span>{editLabels[activeEdit]}</span>
+                <input
+                  ref={modalInputRef}
+                  id="profile-edit-modal-input"
+                  type={activeEdit === "password" ? "password" : activeEdit === "email" ? "email" : activeEdit === "phone" ? "tel" : "text"}
+                  value={draftEdit.value}
+                  placeholder={editLabels[activeEdit]}
+                  onChange={(event) => setDraftEdit((current) => ({ ...current, value: event.target.value }))}
+                />
+              </label>
+              {activeEdit === "password" && (
+                <label className={styles.modalField} htmlFor="profile-edit-modal-confirm">
+                  <span>비밀번호 확인</span>
+                  <input
+                    id="profile-edit-modal-confirm"
+                    type="password"
+                    value={draftEdit.confirm}
+                    placeholder="새 비밀번호 확인"
+                    onChange={(event) => setDraftEdit((current) => ({ ...current, confirm: event.target.value }))}
+                  />
+                </label>
+              )}
+              <div className={styles.editModalActions}>
+                <button type="button" onClick={closeEditing}>취소</button>
+                <button type="button" onClick={applyEditing}>적용</button>
+              </div>
+            </section>
+          </div>
+        )}
       </div>
     </main>
   );

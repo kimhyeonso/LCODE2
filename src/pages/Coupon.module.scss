@@ -120,19 +120,19 @@ h1 {
 }
 // 첫 쿠폰과 쿠폰 등록 버튼 영역입니다.
 // The SVGs provide the full ticket frame; text and scissors stay as HTML inside it.
-.ticket:not(.used) {
+.ticket:not(.eventTicket) {
   display: grid;
   grid-template-rows: 1fr auto;
   aspect-ratio: 329.05 / 116.15;
   background: url("/Mypage-img/coupon1.svg") center / 100% 100% no-repeat;
 }
 
-.ticket:not(.used) .ticketBody {
+.ticket:not(.eventTicket) .ticketBody {
   min-height: 0;
   border-bottom: 0;
 }
 
-.ticket:not(.used) .ticketBody::after {
+.ticket:not(.eventTicket) .ticketBody::after {
   border-left: 0;
 }
 
@@ -222,40 +222,28 @@ h1 {
 
 .eventTicket .cut { display: none; }
 
+// 사용 완료 쿠폰도 위아래 일반 쿠폰과 같은 카드 프레임(.ticket:not(.eventTicket))을 씁니다.
+// 구분은 오른쪽 존의 USED 배지 + 제목 색을 흐리게 하는 것으로 대신합니다.
 .used {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  aspect-ratio: 330 / 151;
-  background: url("/Mypage-img/222.png") center / 100% 100% no-repeat;
-  color: #fff;
+  position: relative;
 }
 
-.used .ticketBody {
-  min-height: 0;
-  border-bottom: 0;
-}
-
-.used .ticketType,
-.used .ticketDescription,
-.used footer,
 .used h2,
 .used h2 small {
-  color: #eee;
-}
-
-.used .ticketBody::after {
-  border-left: 0;
+  color: #97918a;
 }
 
 .usedLabel {
   position: absolute;
-  top: 1.15rem;
-  right: .6rem;
-  border: 1px solid #aaa;
-  padding: .25rem .4rem;
-  color: #ddd;
-  font: 400 .45rem $korean;
-  letter-spacing: .1em;
+  z-index: 2;
+  top: 50%;
+  right: 2.3rem;
+  transform: translate(50%, -50%);
+  border: 1px solid #c4bdb1;
+  padding: .24rem .42rem;
+  color: #8f8a80;
+  font: 400 .42rem $korean;
+  letter-spacing: .12em;
 }
 
 .cut {
@@ -448,10 +436,10 @@ h1 {
     font-size: 38px;
   }
 
-  // 모바일 사용 완료 쿠폰 오른쪽 위의 "USED" 표시 위치
+  // 모바일 사용 완료 쿠폰의 "USED" 배지 위치 (일반 쿠폰의 ✂ USE COUPON 자리)
   .usedLabel {
-    top: 25px;
-    right: 12px;
+    top: 50%;
+    right: 26px;
     font-size: 10px;
   }
 
@@ -465,19 +453,13 @@ h1 {
     font-size: 10px;
   }
 
-  .ticket:not(.used) { height: 175px; aspect-ratio: auto; }
-  .ticket:not(.used) .ticketBody { overflow: hidden; transform: none; }
-  // 모바일 사용 완료 쿠폰의 전체 높이
-  .used { height: 205px; aspect-ratio: auto; }
+  .ticket:not(.eventTicket) { height: 175px; aspect-ratio: auto; }
+  .ticket:not(.eventTicket) .ticketBody { overflow: hidden; transform: none; }
 
-  // 사용 완료 쿠폰 안의 SPECIAL EVENT / 제목 / 설명 묶음 위치
-  // padding-top 값을 키우면 글자 묶음이 아래로, 줄이면 위로 이동합니다.
-  .used .ticketBody { padding-top: 34px; }
+  // 사용 완료 쿠폰의 큰 제목(PACK & WIN)은 한 줄로 유지되도록 조금 줄입니다.
+  .used h2 { font-size: 26px; white-space: nowrap; }
 
-  // 사용 완료 쿠폰의 큰 제목(PACK & WIN)
-  .used h2 { color: #f8f8f8; font-size: 29px; }
-
-  // 사용 완료 쿠폰의 상단 작은 글자(SPECIAL EVENT)
+  // 쿠폰 상단 작은 글자(L:CODE / SPECIAL EVENT)
   .ticketType { font-size: 10px; }
 }
 
@@ -514,7 +496,7 @@ h1 {
   .couponList .ticket:nth-child(1) { order: 5; margin-top: 12px; }
   .couponList .ticket:nth-child(3) { order: 6; margin-top: 12px; }
 
-  .ticket:not(.used) {
+  .ticket:not(.eventTicket) {
     position: relative;
     display: block;
     height: 145px;
@@ -522,7 +504,7 @@ h1 {
     background: #fbf9f4;
     overflow: visible;
   }
-  .ticket:not(.used) .ticketBody {
+  .ticket:not(.eventTicket) .ticketBody {
     position: absolute;
     inset: 0 0 28px;
     min-height: 0;
@@ -530,15 +512,15 @@ h1 {
     padding: 20px 20px 0;
     overflow: hidden;
   }
-  .ticket:not(.used) .ticketBody::after {
+  .ticket:not(.eventTicket) .ticketBody::after {
     top: 0;
     right: 72px;
     bottom: 0;
     display: block;
     border-left: 1px dashed #ddd8d0;
   }
-  .ticket:not(.used)::before,
-  .ticket:not(.used)::after {
+  .ticket:not(.eventTicket)::before,
+  .ticket:not(.eventTicket)::after {
     position: absolute;
     z-index: 2;
     top: 65px;
@@ -548,13 +530,13 @@ h1 {
     background: $paper;
     content: "";
   }
-  .ticket:not(.used)::before { left: -7px; }
-  .ticket:not(.used)::after { right: -7px; }
-  .ticket:not(.used) h2 { margin-top: 8px; font-size: 32px; line-height: .9; }
-  .ticket:not(.used) .ticketDescription { margin-top: 7px; }
-  .ticket:not(.used) .cut { top: 42px; right: 24px; }
-  // 미사용 쿠폰의 코드와 사용기한 영역을 카드 바닥에 고정
-  .ticket:not(.used) footer {
+  .ticket:not(.eventTicket)::before { left: -7px; }
+  .ticket:not(.eventTicket)::after { right: -7px; }
+  .ticket:not(.eventTicket) h2 { margin-top: 8px; font-size: 32px; line-height: .9; }
+  .ticket:not(.eventTicket) .ticketDescription { margin-top: 7px; }
+  .ticket:not(.eventTicket) .cut { top: 42px; right: 24px; }
+  // 쿠폰의 코드와 사용기한 영역을 카드 바닥에 고정
+  .ticket:not(.eventTicket) footer {
     position: absolute;
     right: 0;
     bottom: 0;
@@ -564,7 +546,6 @@ h1 {
     padding: 8px 20px 0;
   }
 
-  .used { order: 5; height: 174px; }
   .archive > .register {
     display: grid;
     position: static;
