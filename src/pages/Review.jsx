@@ -85,8 +85,13 @@ export default function Review() {
     }).finally(() => { if (active) setTripsLoading(false); });
     return () => { active = false; };
   }, [user.uid, productName, editingReview]);
+  useEffect(() => {
+    if (!productName && !editingReview && !tripId && trips.length) {
+      setTripId(trips[0].id);
+    }
+  }, [productName, editingReview, tripId, trips]);
   const selectedTrip = trips.find((trip) => trip.id === tripId);
-  const tripTitle = selectedTrip?.title || selectedTrip?.city || state?.tripTitle || editingReview?.tripTitle || (productName ? "후쿠오카 3박 4일" : "나의 여행");
+  const tripTitle = selectedTrip?.title || selectedTrip?.city || state?.tripTitle || editingReview?.tripTitle || (productName ? productName : "나의 여행");
 
   const allTags = useMemo(() => [...baseTags, ...customTags], [customTags]);
   const toggleTag = (tag) => setTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag]);
@@ -222,13 +227,12 @@ export default function Review() {
     <main className={styles.review}>
       <div className={styles.page}>
         <header className={styles.heading}>
-          <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
           <MypageBackLink to="/mystories" label="나의 리뷰로 돌아가기" />
-          <div><p>MY JOURNEY</p><h1>REVIEW</h1><p className={styles.description}>여행과 상품 이용 후기를 남겨보세요.</p></div>
+          <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
         </header>
 
         <form onSubmit={submit}>
-          {!productName && !editingReview && <section className={styles.tripPicker}>
+          {false && !productName && !editingReview && <section className={styles.tripPicker}>
             <label htmlFor="review-trip">리뷰를 작성할 여행</label>
             <p>종료일 기준 최근 30일 이내의 저장된 여행을 선택해 주세요.</p>
             {tripsError ? <p role="alert">{tripsError}</p> : tripsLoading ? <p role="status">여행을 불러오고 있어요.</p> : trips.length ?

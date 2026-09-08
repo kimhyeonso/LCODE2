@@ -2542,20 +2542,30 @@
     width: calc(100% - 32px);
 
     padding-top: 38px;
+    // 하단 여백 제거 → 풋터 간격은 공통 규칙(풋터 margin-top)에 맡깁니다.
+    padding-bottom: 0;
   }
 
 
+  // 가로 스크롤 대신 5칸 그리드로 감싸 2줄로 배치합니다.
   .categoryBar {
-    flex-wrap: nowrap;
-
-    overflow-x: auto;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 6px;
+    overflow-x: visible;
   }
 
 
   .categoryBar button {
-    flex: 0 0 auto;
-
-    padding: 10px 12px;
+    flex: none;
+    min-width: 0;
+    padding: 8px 2px;
+    font-size: 10.5px;
+    letter-spacing: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
   }
 
 

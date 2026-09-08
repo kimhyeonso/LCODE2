@@ -387,6 +387,8 @@ $black: #000;
 
 @media (max-width: 640px) {
   .listHeader { padding: 22px 16px 0; }
+  // 모바일: 제목 밑선 제거.
+  .listHeader h1 { padding-bottom: 0; border-bottom: 0; }
 }
 
 @media (min-width: 641px) and (max-width: 900px) {
