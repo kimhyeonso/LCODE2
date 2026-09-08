@@ -1,0 +1,127 @@
+.backdrop {
+  position: fixed;
+  z-index: 9000;
+  inset: 0;
+  display: grid;
+  place-items: start;
+  padding: 40px 32px 32px 252px;
+  overflow-y: auto;
+  background: rgba(0, 0, 0, 0.5);
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 400;
+  animation: popup-backdrop-in 0.25s ease-out both;
+}
+
+.popupGroup {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 3.5rem;
+  width: 100%;
+}
+
+.popupCard {
+  width: min(22vw, calc((100vh - 120px) * 0.707), 340px);
+  min-width: 0;
+  background: #fff;
+  animation: popup-card-in 0.32s ease-out both;
+}
+
+.popupCard:nth-child(2) {
+  animation-delay: 0.04s;
+}
+
+.popupCard > img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.popupCard footer {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 22px;
+  background: #fff;
+  color: #111;
+  font-size: 15px;
+}
+
+.popupCard label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.popupCard input {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: #111;
+}
+
+.popupCard button {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@keyframes popup-backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popup-card-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .popupCard {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .backdrop {
+    place-items: start center;
+    padding: 24px 16px;
+  }
+
+  .popupGroup {
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .popupCard {
+    width: min(100%, 480px);
+  }
+
+}
+
+@media (max-width: 480px) {
+  .popupCard footer {
+    min-height: 46px;
+    padding-inline: 14px;
+    font-size: 13px;
+  }
+}

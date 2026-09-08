@@ -13,14 +13,24 @@
 .faq { margin-top: 42px; }
 .faq h2 { margin: 0 0 8px; padding-bottom: 12px; color: #aaa; font: 400 13px "DM Serif Display", serif; letter-spacing: .16em; }
 .faqList { border-top: 1px solid #d8d8d8; }
-.faqList details { border-bottom: 1px solid #d8d8d8; }
-.faqList summary { display: flex; min-height: 54px; align-items: center; justify-content: space-between; padding: 0 14px 0 28px; cursor: pointer; font-family: "Noto Sans KR", sans-serif; font-size: 17px; list-style: none; }
-.faqList summary::-webkit-details-marker { display: none; }
-.faqList summary i { position: relative; width: 18px; height: 18px; flex: none; }
-.faqList summary i::before, .faqList summary i::after { position: absolute; top: 50%; left: 50%; width: 12px; height: 1px; background: #292723; content: ""; transform: translate(-50%, -50%); }
-.faqList summary i::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .2s ease; }
-.faqList details[open] summary i::after { transform: translate(-50%, -50%) rotate(0); }
-.faqList details > p { margin: 0; padding: 0 56px 18px 28px; color: #77716a; font-family: "Noto Sans KR", sans-serif; font-size: 14px; line-height: 1.7; }
+.faqItem { border-bottom: 1px solid #d8d8d8; }
+.faqSummary { width: 100%; display: flex; min-height: 54px; align-items: center; justify-content: space-between; border: 0; padding: 0 14px 0 28px; background: transparent; color: inherit; cursor: pointer; font-family: "Noto Sans KR", sans-serif; font-size: 17px; text-align: left; }
+.faqSummary i { position: relative; width: 18px; height: 18px; flex: none; }
+.faqSummary i::before, .faqSummary i::after { position: absolute; top: 50%; left: 50%; width: 12px; height: 1px; background: #292723; content: ""; transform: translate(-50%, -50%); }
+.faqSummary i::after { transform: translate(-50%, -50%) rotate(90deg); transition: transform .3s ease; }
+.faqItemOpen .faqSummary i::after { transform: translate(-50%, -50%) rotate(0); }
+.faqAnswer { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .35s ease, opacity .3s ease; }
+.faqAnswer > p { min-height: 0; margin: 0; overflow: hidden; padding: 0 56px 0 28px; color: #77716a; font-family: "Noto Sans KR", sans-serif; font-size: 14px; line-height: 1.7; transition: padding-bottom .35s ease; }
+.faqItemOpen .faqAnswer { grid-template-rows: 1fr; opacity: 1; }
+.faqItemOpen .faqAnswer > p { padding-bottom: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .faqAnswer,
+  .faqAnswer > p,
+  .faqSummary i::after {
+    transition: none;
+  }
+}
 .tape{
   position: absolute;
   z-index: 88;
@@ -63,8 +73,9 @@
   .eyebrow { font-family: $sans; font-size: 13px; font-weight: 400; letter-spacing: .16em; }
   .intro h1 { margin-top: 16px; font-size: 38px; }
   .faq { margin-top: 30px; }
-  .faqList summary { min-height: 50px; padding: 0 8px; font-size: 14px; }
-  .faqList details > p { padding: 0 30px 16px 8px; font-size: 12px; }
+  .faqSummary { min-height: 50px; padding: 0 8px; font-size: 14px; }
+  .faqAnswer > p { padding-inline: 8px 30px; font-size: 12px; }
+  .faqItemOpen .faqAnswer > p { padding-bottom: 16px; }
   .visual { order: 2; }
   .photoFrame { height: 360px; }
   .helpBox { order: 3; grid-template-columns: 62px 1fr; gap: 14px; padding: 22px 18px; }
@@ -128,10 +139,10 @@
   .visual {
     display: flex;
     flex-direction: column;
-    align-self: stretch;
+    align-self: start;
     margin-top: var(--contact-body-offset);
   }
-  .photoFrame { flex: 1; height: auto; }
+  .photoFrame { flex: none; width: 100%; height: auto; aspect-ratio: 370 / 590; }
   .photoFrame img {
     position: absolute;
     top: 14px;

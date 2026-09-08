@@ -82,13 +82,6 @@
   font: 500 13px/1.45 $sans;
   letter-spacing: -0.025em;
   text-align: center;
-  transition: background-color 180ms ease, transform 180ms ease;
-}
-
-.balanceGameCta:hover,
-.balanceGameCta:focus-visible {
-  background: #333;
-  transform: translateY(-2px);
 }
 
 .controls {
@@ -120,6 +113,84 @@
 .results {
   display: grid;
   gap: 10px;
+}
+
+.results > div {
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+
+@keyframes search-card-rise {
+  from {
+    opacity: 0.2;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.results > div.revealUp {
+  animation: search-card-rise 0.75s ease-out both;
+}
+
+.results > div.revealFromRight {
+  opacity: 0.2;
+  transform: translateX(24px);
+}
+
+.results > div.revealVisible {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.results > div > a {
+  overflow: hidden;
+}
+
+.results > div > a > div:first-child {
+  transition: transform 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .results > div:hover > a > div:first-child {
+    transform: scale(1.025);
+  }
+
+  .results > div > button:hover {
+    transform: none;
+  }
+
+  .results > div > button svg {
+    transition:
+      fill 160ms ease,
+      transform 160ms ease;
+  }
+
+  .results > div > button:hover svg {
+    transform: scale(1.12);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .results > div,
+  .results > div.revealUp,
+  .results > div.revealFromRight {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .results > div.revealUp {
+    animation: none;
+  }
+
+  .results > div > a > div:first-child {
+    transition: none;
+  }
 }
 .empty {
   padding: 60px 20px;
@@ -267,7 +338,9 @@
   background: #fff;
 }
 .filterPanel > header {
-  position: absolute;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   width: 100%;
   height: 54px;
   display: flex;
@@ -474,7 +547,7 @@
   .filterPanel {
     position: relative;
     width: min(calc(100% - 80px), 720px);
-    padding: 54px 0 0;
+    padding: 0;
   }
   .filterPanel > header {
     top: 0;

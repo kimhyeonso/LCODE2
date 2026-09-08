@@ -70,6 +70,19 @@ $plan-muted: #8b8780;
   right: 16px;
   font-weight: 400;
 }
+
+.revealBox {
+  opacity: 0.25;
+  transform: translateY(12px);
+  transition:
+    opacity 0.65s ease-out,
+    transform 0.65s ease-out;
+}
+
+.revealBox.revealVisible {
+  opacity: 1;
+  transform: translateY(0);
+}
 .hero {
   position: relative;
   height: 510px;
@@ -388,6 +401,35 @@ $plan-muted: #8b8780;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .placeImage:hover img {
+    transform: scale(1.04);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .revealBox {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .placeImage img {
+    transition: none;
+  }
+}
+.noPlaceImage {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+  font-size: 10px;
+  white-space: nowrap;
 }
 .placeCopy {
   min-width: 0;

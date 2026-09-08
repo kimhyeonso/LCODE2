@@ -42,7 +42,9 @@ export default function Event() {
                   type="button"
                   onClick={() => setStep("gacha")}
                 >
-                  <img src={asset.eventBanner} alt="" />
+                  <div className={styles.cardVisual}>
+                    <img src={asset.eventBanner} alt="" />
+                  </div>
                   <div className={styles.cardText}>
                     <h2>여행 운세 뽑기</h2>
                     <p>오늘의 여행 운세와 랜덤 쿠폰을 뽑아보세요.</p>
@@ -58,7 +60,9 @@ export default function Event() {
                   type="button"
                   onClick={() => setStep("mystery")}
                 >
-                  <img src={asset.mysteryBanner} alt="" />
+                  <div className={styles.cardVisual}>
+                    <img src={asset.mysteryBanner} alt="" />
+                  </div>
                   <div className={styles.cardText}>
                     <h2>비행기 살인사건</h2>
                     <p>기내에서 벌어진 사건의 범인을 찾아보세요.</p>
@@ -74,7 +78,9 @@ export default function Event() {
                   type="button"
                   onClick={() => setStep("magazine")}
                 >
-                  <div className={styles.magazineCardVisual} />
+                  <div className={styles.cardVisual}>
+                    <img src="/event/event04/magazinebanne.png" alt="" />
+                  </div>
                   <div className={styles.cardText}>
                     <h2>리뷰쓰고 잡지 받자!</h2>
                     <p>여행의 기록을 한 권의 매거진으로 남겨보세요</p>

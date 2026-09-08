@@ -88,6 +88,7 @@ const getFirstPlace = (trip) => trip.days
   .find((item) => item.type === "place");
 
 export default function Search() {
+  const searchPageRef = useRef(null);
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const managedProducts = useManagedCollection("products", products);
   const { user } = useAuth();
@@ -104,6 +105,7 @@ export default function Search() {
     () => user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : [],
   );
   const favoriteMutationRef = useRef(0);
+  const favoriteLock = useRef(false);
   const [filters, setFilters] = useState({ duration: "all", companion: "all", styles: [], pace: "all", season: "all" });
 
   const trips = useMemo(() => {
@@ -151,6 +153,44 @@ export default function Search() {
 
   const selectedDurationTrip = durationModal?.trips.find((trip) => trip.id === selectedDurationId) || null;
 
+  useEffect(() => {
+    const root = searchPageRef.current;
+    if (!root) return undefined;
+
+    const cards = Array.from(
+      root.querySelectorAll(`.${styles.results} > div > a`),
+      (link) => link.parentElement,
+    ).filter(Boolean);
+    cards.forEach((card, index) => {
+      card.classList.remove(styles.revealUp, styles.revealFromRight, styles.revealVisible);
+      card.classList.add(index < 3 ? styles.revealUp : styles.revealFromRight);
+    });
+
+    const observedCards = cards.slice(3);
+
+    if (!("IntersectionObserver" in window)) {
+      observedCards.forEach((card) => card.classList.add(styles.revealVisible));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(styles.revealVisible);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: "0px 0px -8% 0px",
+      },
+    );
+
+    observedCards.forEach((card) => observer.observe(card));
+    return () => observer.disconnect();
+  }, [cityCards]);
+
   const openDurationModal = (cityTrips) => {
     setDurationModal({ city: cityTrips[0].city, trips: cityTrips });
     setSelectedDurationId(cityTrips[0].id);
@@ -176,16 +216,10 @@ export default function Search() {
     getFavoriteTrips(user.uid)
       .then((firebaseIds) => {
         if (!active || favoriteMutationRef.current !== mutationAtStart) return;
-        const ids = storedIds ?? firebaseIds;
+        const ids = firebaseIds;
         setFavoriteTripIds(ids);
         storeFavoriteTrips(user.uid, ids);
 
-        if (storedIds !== null) {
-          storedIds.filter((id) => !firebaseIds.includes(id))
-            .forEach((id) => saveFavoriteTrip(user.uid, id).catch(() => {}));
-          firebaseIds.filter((id) => !storedIds.includes(id))
-            .forEach((id) => deleteFavoriteTrip(user.uid, id).catch(() => {}));
-        }
       })
       .catch((error) => {
         if (active && storedIds !== null && favoriteMutationRef.current === mutationAtStart) {
@@ -218,6 +252,8 @@ export default function Search() {
       return;
     }
 
+    if (favoriteLock.current) return;
+    favoriteLock.current = true;
     const wasFavorite = favoriteTripIds.includes(tripId);
     favoriteMutationRef.current += 1;
     const nextIds = wasFavorite
@@ -233,7 +269,12 @@ export default function Search() {
       else await saveFavoriteTrip(user.uid, tripId);
       window.dispatchEvent(new Event("favorite-trips-changed"));
     } catch (error) {
+      setFavoriteTripIds(favoriteTripIds);
+      storeFavoriteTrips(user.uid, favoriteTripIds);
+      window.alert("일정 찜을 저장하지 못했습니다. 다시 시도해 주세요.");
       console.error("일정 찜 상태를 저장하지 못했습니다.", error);
+    } finally {
+      favoriteLock.current = false;
     }
   };
 
@@ -249,7 +290,7 @@ export default function Search() {
   );
 
   return (
-    <main className={styles.searchPage}>
+    <main ref={searchPageRef} className={styles.searchPage}>
       <section className={styles.searchIntro}>
         <form role="search" onSubmit={submitSearch}>
           <img src={searchIcon} alt="" aria-hidden="true" />

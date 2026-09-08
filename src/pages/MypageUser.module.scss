@@ -28,12 +28,21 @@
   height: 34%;
   min-height: 0;
   overflow: hidden;
+  background: #111;
+}
+.heroVisual::before {
+  position: absolute;
+  inset: -4px;
   background:
     linear-gradient(180deg, rgb(0 0 0 / 4%), rgb(0 0 0 / 24%)),
     url("/Mypage-img/trv.png") center 72% / cover no-repeat;
+  content: "";
+  filter: blur(2px);
+  transform: scale(1.01);
 }
 .heroVisual p {
   position: absolute;
+  z-index: 1;
   right: 1.4rem;
   bottom: 4.35rem;
   margin: 0;

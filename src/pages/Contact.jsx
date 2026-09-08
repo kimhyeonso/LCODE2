@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styles from "./Contact.module.scss";
 
 const faqs = [
@@ -9,6 +10,17 @@ const faqs = [
 ];
 
 export default function Contact() {
+  const [openFaqs, setOpenFaqs] = useState(() => new Set());
+
+  const toggleFaq = (index) => {
+    setOpenFaqs((current) => {
+      const next = new Set(current);
+      if (next.has(index)) next.delete(index);
+      else next.add(index);
+      return next;
+    });
+  };
+
   return (
     <main className={styles.contactPage}>
       <div className={styles.content}>
@@ -22,11 +34,21 @@ export default function Contact() {
           <section className={styles.faq} aria-labelledby="faq-title">
             <h2 id="faq-title">FREQUENTLY ASKED</h2>
             <div className={styles.faqList}>
-              {faqs.map(({ question, answer }) => (
-                <details key={question}>
-                  <summary><span>{question}</span><i aria-hidden="true" /></summary>
-                  <p>{answer}</p>
-                </details>
+              {faqs.map(({ question, answer }, index) => (
+                <div className={`${styles.faqItem} ${openFaqs.has(index) ? styles.faqItemOpen : ""}`} key={question}>
+                  <button
+                    className={styles.faqSummary}
+                    type="button"
+                    aria-expanded={openFaqs.has(index)}
+                    aria-controls={`faq-answer-${index}`}
+                    onClick={() => toggleFaq(index)}
+                  >
+                    <span>{question}</span><i aria-hidden="true" />
+                  </button>
+                  <div className={styles.faqAnswer} id={`faq-answer-${index}`}>
+                    <p>{answer}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </section>

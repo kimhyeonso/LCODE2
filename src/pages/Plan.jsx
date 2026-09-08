@@ -12,6 +12,8 @@ import PlaceMap from "../components/PlaceMap";
 import BackButton from "../components/BackButton";
 import styles from "./Plan.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
+import { getPlaceImagePath } from "../utils/placeImageUtils";
+import PlaceImageCredits from "../components/PlaceImageCredits";
 
 const categoryNames = { airport: "AIRPORT", station: "STATION", hotel: "HOTEL", attraction: "SIGHTSEEING", restaurant: "RESTAURANT" };
 
@@ -71,10 +73,10 @@ const formatDate = (date, fallback) => {
   return `${month} ${String(value.getDate()).padStart(2, "0")} / ${weekday}`;
 };
 
-const getDayPlaces = (day) => day.items.reduce((result, item, index, items) => {
+const getDayPlaces = (day, city) => day.items.reduce((result, item, index, items) => {
   if (item.type !== "place") return result;
   const transport = items[index + 1]?.type === "transport" ? items[index + 1].transport : "";
-  result.push({ ...item, transport, imageUrl: getImageUrl(item.image) });
+  result.push({ ...item, transport, imageUrl: getImageUrl(getPlaceImagePath(item, city), "") });
   return result;
 }, []);
 
@@ -86,7 +88,17 @@ const addDays = (date, amount) => {
   return value.toLocaleDateString("sv-SE");
 };
 
+function PlaceImage({ src, name }) {
+  const [failed, setFailed] = useState(false);
+  return <span className={styles.placeImage}>
+    {src && !failed
+      ? <img src={src} alt={name} onError={() => setFailed(true)} />
+      : <span className={styles.noPlaceImage}>사진 없음</span>}
+  </span>;
+}
+
 export default function Plan() {
+  const planRef = useRef(null);
   const managedTrips = useManagedCollection("packages", tripRoad.trips);
   const [params] = useSearchParams();
   const { user, loading: authLoading } = useAuth();
@@ -167,7 +179,7 @@ export default function Plan() {
     });
   }, [savedDetailState.plan]);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
-  const allPlaces = selectedTrip.days.flatMap(getDayPlaces);
+  const allPlaces = selectedTrip.days.flatMap((day) => getDayPlaces(day, selectedTrip.city));
   const countryKey = String(selectedTrip.country || "").trim().toLowerCase();
   const normalizedCountry = countryAliases[countryKey] || countryKey;
   const thumbnailPath = tripRoad.thumbnailMap?.[normalizedCountry]?.[selectedTrip.city];
@@ -212,6 +224,35 @@ export default function Plan() {
     ?.image;
   const todayValue = new Date().toLocaleDateString("sv-SE");
   const tripLength = Math.max(1, selectedTrip.days.length);
+
+  useEffect(() => {
+    const root = planRef.current;
+    if (!root) return undefined;
+
+    const targets = root.querySelectorAll(`.${styles.revealBox}`);
+
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach((target) => target.classList.add(styles.revealVisible));
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add(styles.revealVisible);
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -7% 0px",
+      },
+    );
+
+    targets.forEach((target) => observer.observe(target));
+    return () => observer.disconnect();
+  }, [activeDay, savedDetailState.loading, savedPlanLoading, selectedTrip.id]);
 
   const openDateStep = () => {
     if (!user) {
@@ -346,7 +387,7 @@ export default function Plan() {
   }
 
   return (
-    <main className={styles.plan}>
+    <main ref={planRef} className={styles.plan}>
       <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.7)), url(${heroImage})` } : undefined}>
         <BackButton className={styles.backButton} tone="light" />
         <div className={styles.heroTop}><span>TRAVEL PLAN</span><span>{selectedTrip.country.toUpperCase()} / ISSUE 01</span></div>
@@ -359,7 +400,7 @@ export default function Plan() {
         </p>
       </section>
 
-      <section className={styles.intro}>
+      <section className={`${styles.intro} ${styles.revealBox}`}>
         <h1>{selectedTrip.title.replace(" 일정", "").replace(", ", ",\n")}</h1>
         <p>맛집과 카페를 중심으로<br />천천히 걷는 여행</p>
         <dl className={styles.stats}>
@@ -369,7 +410,7 @@ export default function Plan() {
         </dl>
       </section>
 
-      <section className={styles.points}>
+      <section className={`${styles.points} ${styles.revealBox}`}>
         <h2>이 일정의 포인트</h2>
         <div>
           <p><img src={travelIcon} alt="" /><strong>공항 접근성</strong></p>
@@ -378,11 +419,11 @@ export default function Plan() {
         </div>
       </section>
 
-      <section className={styles.visualBreak} aria-label="여행 장소 지도">
+      <section className={`${styles.visualBreak} ${styles.revealBox}`} aria-label="여행 장소 지도">
         <PlaceMap places={allPlaces} fitToPlaces fallbackCenter={weather.location} requireLocation />
       </section>
 
-      <section className={styles.expense} aria-labelledby="estimated-expense-title">
+      <section className={`${styles.expense} ${styles.revealBox}`} aria-labelledby="estimated-expense-title">
         <p>ESTIMATED EXPENSE</p>
         <div className={styles.expenseSummary}>
           <span>{hasCustomBudget ? "설정한 여행 경비" : "예상 여행 경비"}</span>
@@ -421,11 +462,11 @@ export default function Plan() {
 
       <section className={styles.itinerary}>
         {selectedTrip.days.map((day, index) => {
-          const dayPlaces = getDayPlaces(day);
+          const dayPlaces = getDayPlaces(day, selectedTrip.city);
           const isOpen = activeDay === index;
 
           return (
-            <section className={styles.dayAccordion} key={day.day || index}>
+            <section className={`${styles.dayAccordion} ${styles.revealBox}`} key={day.day || index}>
               <button
                 type="button"
                 className={`${styles.dayHeader} ${isOpen ? styles.dayHeaderOpen : ""}`}
@@ -444,7 +485,7 @@ export default function Plan() {
                     <li key={`${place.place}-${placeIndex}`}>
                       <span className={styles.number}>{String(placeIndex + 1).padStart(2, "0")}</span>
                       <time>{place.time || "시간 미정"}</time>
-                      <span className={styles.placeImage}>{place.imageUrl && <img src={place.imageUrl} alt="" />}</span>
+                      <PlaceImage key={`${place.place}:${place.imageUrl}`} src={place.imageUrl} name={place.place} />
                       <div className={styles.placeCopy}>
                         <small>{categoryNames[place.category] || place.category}</small>
                         <strong>{place.place}</strong>
@@ -461,6 +502,7 @@ export default function Plan() {
         })}
       </section>
 
+      <PlaceImageCredits trip={selectedTrip} />
       {hasRequestedTrip && (
         <div className={styles.saveArea}>
           {viewingSavedPlan ? (

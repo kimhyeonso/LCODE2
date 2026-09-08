@@ -6,16 +6,19 @@ export function AuthProvider({ children }) {
   const [state, setState] = useState({ user: null, profile: null, loading: true });
   useEffect(() => {
     let active = true;
+    let authVersion = 0;
     const unsubscribe = observeAuth(async (user) => {
+      const version = ++authVersion;
       if (!user) {
         if (active) setState({ user: null, profile: null, loading: false });
         return;
       }
+      if (active) setState({ user: null, profile: null, loading: true });
       try {
         const profile = await getUserProfile(user.uid);
-        if (active) setState({ user, profile, loading: false });
+        if (active && version === authVersion) setState({ user, profile, loading: false });
       } catch {
-        if (active) setState({ user, profile: null, loading: false });
+        if (active && version === authVersion) setState({ user, profile: null, loading: false });
       }
     });
     return () => {

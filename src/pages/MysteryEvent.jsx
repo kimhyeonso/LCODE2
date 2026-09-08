@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./MysteryEvent.module.scss";
-import { EventHeader } from "./Event";
 
 /* =========================================================
    ASSETS
@@ -55,7 +54,7 @@ const suspects = [
       "사진 촬영 이후 자신의 자리에서 영화를 보고 있었다.",
 
     secondSummary:
-      "피해자 자리 방향으로 이동한 사실을 숨겼다. 다만 사건 핵심 시간대에는 좌석 기록이 남아 있다.",
+      "피해자 자리 방향으로 이동한 사실을 숨겼다. 다만 커피가 전달될 무렵에는 좌석 기록이 남아 있다.",
   },
 
   {
@@ -69,10 +68,10 @@ const suspects = [
     firstMotive: "가족 사이의 오래된 갈등",
 
     claimedAlibi:
-      "사건 추정 시간에는 기내 뒤쪽 화장실 부근에 있었다.",
+      "커피가 전달될 무렵에는 기내 뒤쪽 화장실 부근에 있었다.",
 
     secondSummary:
-      "피해자와 말다툼한 사실을 숨겼다. 문제의 커피가 전달된 시각의 위치는 확인됐다.",
+      "피해자와 말다툼한 사실을 숨겼다. 다만 커피가 전달될 무렵의 위치는 확인됐다.",
   },
 
   {
@@ -86,10 +85,10 @@ const suspects = [
     firstMotive: "촬영용 액세서리 분실",
 
     claimedAlibi:
-      "사건 시간대 승무원에게 따뜻한 물을 받고 있었다.",
+      "커피가 전달될 무렵 승무원에게 따뜻한 물을 받고 있었다.",
 
     secondSummary:
-      "피해자의 컵을 만진 사실을 숨겼다. 그러나 커피 전달 시각에는 승무원과 함께 있었다.",
+      "피해자의 컵을 만진 사실을 숨겼다. 그러나 커피가 전달될 무렵에는 승무원과 함께 있었다.",
   },
 
   {
@@ -116,6 +115,133 @@ const suspectMap = Object.fromEntries(
 
 const CORRECT_ID = "hyeonsu";
 
+
+const chapterMeta = {
+  prologue: {
+    code: "CHAPTER 01",
+    title: "RETURN FLIGHT",
+    ko: "돌아오는 비행기",
+  },
+  round1: {
+    code: "CHAPTER 02",
+    title: "FIRST INVESTIGATION",
+    ko: "첫 번째 조사",
+  },
+  round2: {
+    code: "CHAPTER 03",
+    title: "SECOND INVESTIGATION",
+    ko: "두 번째 조사",
+  },
+  reconstruction: {
+    code: "CHAPTER 04",
+    title: "RECONSTRUCTION",
+    ko: "사건 재구성",
+  },
+  truth: {
+    code: "CHAPTER 05",
+    title: "THE TRUTH",
+    ko: "사건의 진실",
+  },
+};
+
+const chapterSummaries = {
+  prologue: {
+    eyebrow: "FLIGHT LOG",
+    title: "비행기에서 일어난 일",
+    copy: "사건의 흐름을 장면 순서대로 다시 확인하세요.",
+    items: [
+      {
+        label: "마지막 단체사진",
+        text: "다섯 사람은 귀국 직전 기내에서 마지막 사진을 남겼다.",
+        image: asset.groupPhoto,
+      },
+      {
+        label: "누군가 건넨 커피",
+        text: "어두운 기내에서 누군가 승근에게 커피를 건넸다.",
+        image: asset.starbucks,
+      },
+      {
+        label: "승근이 쓰러짐",
+        text: "커피를 마신 뒤 승근은 이상 증세를 보이다 쓰러졌다.",
+        image: asset.evidence,
+      },
+      {
+        label: "뒤늦게 발견된 단서",
+        text: "주변 사람들이 뒤늦게 상황을 알아챘고, 승근은 마지막 단서를 남겼다.",
+        image: asset.dyingMessage,
+      },
+    ],
+  },
+  round1: {
+    eyebrow: "INVESTIGATION NOTES",
+    title: "첫 번째 조사 정리",
+    copy: "네 사람의 첫 진술에서 확인된 핵심만 정리했습니다.",
+    items: [
+      { label: "유지영", text: "여행비 정산 문제와 쌓인 불만이 있었다.", image: asset.jiyoungProfile },
+      { label: "전소희", text: "가족 사이 오래된 갈등과 사건 전 말다툼이 있었다.", image: asset.soheeProfile },
+      { label: "최정은", text: "촬영용 액세서리 문제로 승근에게 불만이 있었다.", image: asset.jeongeunProfile },
+      { label: "김현수", text: "피날레 메인 모델 자리를 두고 승근과 경쟁했다.", image: asset.hyeonsuProfile },
+    ],
+  },
+  round2: {
+    eyebrow: "CONTRADICTION FILE",
+    title: "추가 조사 정리",
+    copy: "숨긴 사실과 사건 순간의 실제 위치를 비교했습니다.",
+    items: [
+      { label: "유지영", text: "피해자 쪽에 다녀왔지만 핵심 순간에는 좌석에 있었다.", image: asset.jiyoungProfile },
+      { label: "전소희", text: "말다툼을 숨겼지만 핵심 순간에는 뒤쪽에 있었다.", image: asset.soheeProfile },
+      { label: "최정은", text: "컵을 만졌지만 문제의 커피가 전달될 때는 승무원과 함께 있었다.", image: asset.jeongeunProfile },
+      { label: "김현수", text: "팔찌 시점이 사진과 맞지 않고 핵심 순간의 동선도 비어 있다.", image: asset.hyeonsuProfile },
+    ],
+  },
+};
+
+const fullBodyAssets = new Set([
+  asset.hyeonsu,
+  asset.jeongeun,
+  asset.jiyoung,
+  asset.seunggeun,
+  asset.sohee,
+]);
+
+function getChapterForPhase(phase, hiddenContext, summaryKey) {
+  if (phase === "summary") {
+    return chapterMeta[summaryKey] ?? chapterMeta.prologue;
+  }
+
+  if (phase === "prologue") return chapterMeta.prologue;
+
+  if (
+    phase === "caseOpen" ||
+    phase === "round1Hub" ||
+    phase === "round1Story" ||
+    phase === "focus1" ||
+    (phase === "hiddenStory" && hiddenContext === "first")
+  ) {
+    return chapterMeta.round1;
+  }
+
+  if (
+    phase === "round2Intro" ||
+    phase === "round2Hub" ||
+    phase === "round2Story" ||
+    phase === "focus2" ||
+    (phase === "hiddenStory" && hiddenContext === "second")
+  ) {
+    return chapterMeta.round2;
+  }
+
+  if (
+    phase === "reconstruction" ||
+    phase === "finalChoice" ||
+    phase === "wrong"
+  ) {
+    return chapterMeta.reconstruction;
+  }
+
+  return chapterMeta.truth;
+}
+
 /* =========================================================
    PROLOGUE
 ========================================================= */
@@ -133,8 +259,14 @@ const prologueScenes = [
     speaker: "전소희",
     background: asset.cabin,
 
-    character: asset.sohee,
-    position: "right",
+    characters: [
+      {
+        id: "sohee",
+        src: asset.sohee,
+        slot: "center",
+        animation: "soft",
+      },
+    ],
 
     text: "드디어 한국 간다.",
   },
@@ -143,8 +275,15 @@ const prologueScenes = [
     speaker: "전소희",
     background: asset.cabin,
 
-    character: asset.soheeProfile,
-    position: "right",
+    // 같은 대화 흐름에서는 po1으로 바꾸지 않고 기존 전신 컷 유지
+    characters: [
+      {
+        id: "sohee",
+        src: asset.sohee,
+        slot: "center",
+        animation: "none",
+      },
+    ],
 
     text:
       "나 진짜 빨리 집 가서 씻고 누워 있고 싶어.",
@@ -154,8 +293,21 @@ const prologueScenes = [
     speaker: "최정은",
     background: asset.cabin,
 
-    character: asset.jeongeun,
-    position: "left",
+    // 전소희는 그대로, 최정은만 왼쪽에서 빠르게 합류
+    characters: [
+      {
+        id: "sohee",
+        src: asset.sohee,
+        slot: "center",
+        animation: "none",
+      },
+      {
+        id: "jeongeun",
+        src: asset.jeongeun,
+        slot: "left",
+        animation: "quickLeft",
+      },
+    ],
 
     text:
       "어제 일 때문에 다들 좀 예민해진 것 같긴 해.",
@@ -165,8 +317,27 @@ const prologueScenes = [
     speaker: "유지영",
     background: asset.cabin,
 
-    character: asset.jiyoung,
-    position: "right",
+    // 유지영이 오른쪽에서 합류해 잠깐 쓰리샷을 완성
+    characters: [
+      {
+        id: "jeongeun",
+        src: asset.jeongeun,
+        slot: "left",
+        animation: "none",
+      },
+      {
+        id: "sohee",
+        src: asset.sohee,
+        slot: "center",
+        animation: "none",
+      },
+      {
+        id: "jiyoung",
+        src: asset.jiyoung,
+        slot: "right",
+        animation: "quickRight",
+      },
+    ],
 
     text:
       "우리 사진 한 장 더 찍자. 이번엔 좀 제대로.",
@@ -213,7 +384,7 @@ const prologueScenes = [
     background: asset.cabin,
 
     character: asset.hyeonsu,
-    position: "right",
+    animation: "soft",
 
     text:
       "잘 나왔다. 이따 단톡에 올려줘.",
@@ -224,7 +395,8 @@ const prologueScenes = [
     background: asset.cabin,
 
     character: asset.jiyoungProfile,
-    position: "left",
+    fixedPosition: "left",
+    animation: "soft",
 
     text:
       "근데 사진 속 승근이 표정, 뭔가 이상하지 않아?",
@@ -260,9 +432,6 @@ const prologueScenes = [
   {
     speaker: "???",
     background: asset.cabinAlt,
-
-    character: asset.seunggeunProfile,
-    position: "right",
 
     text:
       "승근아, 네 거 여기.",
@@ -360,20 +529,23 @@ const prologueScenes = [
 
   {
     speaker: "전승근",
-    blackout: true,
+    background: asset.ending,
 
     text: "우리 모두...",
 
-    darkness: 0.92,
+    // 이 장면부터 NEXT를 누를 때마다 시야가 조금씩 더 흐려짐
+    darkness: 0.62,
+    blur: 1.45,
   },
 
   {
     speaker: "전승근",
-    blackout: true,
+    background: asset.ending,
 
     text: "...같았는데.",
 
-    darkness: 1,
+    darkness: 0.84,
+    blur: 2.25,
   },
 ];
 
@@ -796,7 +968,7 @@ const secondInterviews = {
         "기내 엔터테인먼트 기록을 확인한 결과, 지영이 '영화'라고 말한 콘텐츠는 영화 카테고리에 등록된 영상이 아니었다.",
 
       note:
-        "재생 기록은 21시 57분부터 22시 04분까지 한 차례 멈춰 있었다.",
+        "재생 기록은 사건 직전 한 차례 멈춰 있었다.",
     },
 
     {
@@ -804,7 +976,7 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "21시 59분경, 지영이 피해자의 좌석 방향에서 돌아오는 모습을 봤다는 증언이 나왔다.",
+        "사건 전, 지영이 피해자의 좌석 방향에서 돌아오는 모습을 봤다는 증언이 나왔다.",
     },
 
     {
@@ -840,10 +1012,10 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "22시 04분 이후 영상은 다시 재생됐다.",
+        "지영이 자리로 돌아온 뒤 영상은 다시 재생됐다.",
 
       note:
-        "22시 08분과 22시 11분에는 자막과 음량을 조작한 기록도 남아 있었다.",
+        "이후 자막과 음량을 조작한 기록도 남아 있어, 커피가 전달될 무렵 지영이 좌석에 있었다는 정황이 된다.",
     },
 
     {
@@ -880,7 +1052,7 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "담당 승무원은 22시 07분부터 22시 16분 사이 소희가 기내 뒤쪽 화장실을 기다리고 있던 것을 기억했다.",
+        "담당 승무원은 커피가 전달되기 전부터 소희가 기내 뒤쪽 화장실을 기다리고 있던 것을 기억했다.",
     },
 
     {
@@ -888,10 +1060,10 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "피해자에게 문제의 커피가 전달된 것으로 추정되는 시각은 약 22시 08분.",
+        "문제의 커피가 전달될 무렵에도 소희는 뒤쪽에 있었다.",
 
       note:
-        "해당 시각 소희의 위치는 승무원의 증언과 일치한다.",
+        "소희의 위치는 승무원의 증언과 일치한다.",
     },
   ],
 
@@ -947,10 +1119,10 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "22시 07분부터 22시 12분까지 정은은 기내 뒤쪽에서 승무원에게 따뜻한 물을 요청하고 기다렸다.",
+        "커피가 전달될 무렵 정은은 기내 뒤쪽에서 승무원에게 따뜻한 물을 요청하고 기다렸다.",
 
       note:
-        "문제의 커피가 전달된 22시 08분경 정은의 위치는 승무원이 직접 확인했다.",
+        "그 순간 정은의 위치는 승무원이 직접 확인했다.",
     },
   ],
 
@@ -974,7 +1146,7 @@ const secondInterviews = {
       propType: "photoFocus",
 
       text:
-        "하지만 21시 46분 단체사진에서 현수의 팔목에는 이미 팔찌가 보이지 않는다.",
+        "하지만 마지막 단체사진에서 현수의 팔목에는 이미 팔찌가 보이지 않는다.",
     },
 
     {
@@ -990,7 +1162,7 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "22시 06분부터 22시 12분 사이, 현수가 자신의 좌석에 있었다는 기록이나 독립적인 목격 증언은 확인되지 않았다.",
+        "커피가 전달되던 핵심 순간, 현수가 자신의 좌석에 있었다는 기록이나 독립적인 목격 증언은 확인되지 않았다.",
     },
 
     {
@@ -1009,7 +1181,7 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "그러나 같은 시각 소희는 기내 뒤쪽 화장실 앞에 있었음이 이미 확인됐다.",
+        "반면 소희는 그 순간 기내 뒤쪽 화장실 앞에 있었음이 이미 확인됐다.",
 
       note:
         "남은 가능성은 크게 좁혀졌다.",
@@ -1085,7 +1257,7 @@ const truthScenes = [
     position: "right",
 
     text:
-      "그 시간대 자신의 위치를 설명하지 못한 사람은 현수였다.",
+      "그 핵심 순간 자신의 위치를 설명하지 못한 사람은 현수였다.",
 
     note:
       "근처 승객의 목소리 기억 역시 현수를 가리켰다.",
@@ -1126,21 +1298,21 @@ const wrongCopy = {
     title: "유지영은 범인이 아니다.",
 
     body:
-      "지영은 피해자의 자리로 이동한 사실을 숨겼다. 하지만 문제의 커피가 전달된 시각에는 좌석에서 화면을 조작한 기록과 목격 증언이 남아 있다.",
+      "지영은 피해자의 자리로 이동한 사실을 숨겼다. 하지만 커피가 전달될 무렵에는 좌석에서 화면을 조작한 기록과 목격 증언이 남아 있다.",
   },
 
   sohee: {
     title: "전소희는 범인이 아니다.",
 
     body:
-      "소희는 피해자와 말다툼한 사실을 숨겼다. 그러나 커피가 전달된 시각에는 기내 뒤쪽 화장실 부근에 있었음이 확인됐다.",
+      "소희는 피해자와 말다툼한 사실을 숨겼다. 그러나 커피가 전달될 무렵에는 기내 뒤쪽 화장실 부근에 있었음이 확인됐다.",
   },
 
   jeongeun: {
     title: "최정은은 범인이 아니다.",
 
     body:
-      "정은의 지문이 피해자의 컵에서 발견됐지만 컵을 옮긴 시점과 문제의 커피가 전달된 시각은 달랐다. 당시 정은은 승무원과 함께 있었다.",
+      "정은의 지문이 피해자의 컵에서 발견됐지만 컵을 옮긴 순간과 문제의 커피가 전달된 순간은 달랐다. 당시 정은은 승무원과 함께 있었다.",
   },
 };
 
@@ -1260,6 +1432,18 @@ export default function MysteryEvent({ onExit }) {
   const [warning, setWarning] =
     useState(null);
 
+  const [homeConfirm, setHomeConfirm] =
+    useState(false);
+
+  const [skipConfirm, setSkipConfirm] =
+    useState(false);
+
+  const [summaryKey, setSummaryKey] =
+    useState(null);
+
+  const [summaryNextPhase, setSummaryNextPhase] =
+    useState(null);
+
   const hiddenUnlocked = useMemo(
     () =>
       [firstFocus, secondFocus].filter(
@@ -1319,6 +1503,74 @@ export default function MysteryEvent({ onExit }) {
     setWrongSuspect(null);
 
     setWarning(null);
+
+    setHomeConfirm(false);
+    setSkipConfirm(false);
+    setSummaryKey(null);
+    setSummaryNextPhase(null);
+  };
+
+  const currentChapter = getChapterForPhase(
+    phase,
+    hiddenContext,
+    summaryKey
+  );
+
+  const openSummary = (key, nextPhase) => {
+    setSummaryKey(key);
+    setSummaryNextPhase(nextPhase);
+    setStoryIndex(0);
+    setActiveSuspect(null);
+    setPhase("summary");
+  };
+
+  const continueFromSummary = () => {
+    const next = summaryNextPhase ?? "caseOpen";
+    setSummaryKey(null);
+    setSummaryNextPhase(null);
+    setPhase(next);
+  };
+
+  const canSkipChapter = [
+    "prologue",
+    "round1Hub",
+    "round1Story",
+    "round2Intro",
+    "round2Hub",
+    "round2Story",
+  ].includes(phase);
+
+  const confirmSkipChapter = () => {
+    setSkipConfirm(false);
+
+    if (phase === "prologue") {
+      openSummary("prologue", "caseOpen");
+      return;
+    }
+
+    if (phase === "round1Hub" || phase === "round1Story") {
+      setVisitedRound1(suspects.map((suspect) => suspect.id));
+      openSummary("round1", "round2Intro");
+      return;
+    }
+
+    if (
+      phase === "round2Intro" ||
+      phase === "round2Hub" ||
+      phase === "round2Story"
+    ) {
+      setVisitedRound2(suspects.map((suspect) => suspect.id));
+      openSummary("round2", "reconstruction");
+    }
+  };
+
+  const requestHome = () => {
+    setHomeConfirm(true);
+  };
+
+  const leaveToEventHome = () => {
+    setHomeConfirm(false);
+    onExit?.();
   };
 
   /* =======================================================
@@ -1436,9 +1688,7 @@ export default function MysteryEvent({ onExit }) {
     }
 
     if (phase === "prologue") {
-      setStoryIndex(0);
-      setPhase("caseOpen");
-
+      openSummary("prologue", "caseOpen");
       return;
     }
 
@@ -1480,12 +1730,10 @@ export default function MysteryEvent({ onExit }) {
 
       if (hiddenContext === "first") {
         setHiddenContext(null);
-
-        setPhase("round2Intro");
+        openSummary("round1", "round2Intro");
       } else {
         setHiddenContext(null);
-
-        setPhase("reconstruction");
+        openSummary("round2", "reconstruction");
       }
 
       return;
@@ -1840,34 +2088,38 @@ export default function MysteryEvent({ onExit }) {
       }
       data-phase={phase}
     >
-      <div
-        className={
-          styles.desktopEventHeader
-        }
-      >
-        <EventHeader
-          label={
-            phase === "cover"
-              ? "RETURN FLIGHT · 21:40"
-              : "CASE 01 · INVESTIGATION"
-          }
-          onBack={
-            handleChapterBack
-          }
-        />
-      </div>
-
       <button
         className={
           styles.mobileBackButton
         }
         type="button"
-        onClick={
-          handleChapterBack
-        }
+        onClick={requestHome}
       >
-        ← BACK
+        ← HOME
       </button>
+
+      <button
+        className={styles.desktopHomeButton}
+        type="button"
+        onClick={requestHome}
+      >
+        ← HOME
+      </button>
+
+      {phase !== "cover" &&
+        !["round1Hub", "focus1", "focus2"].includes(phase) && (
+          <ChapterBanner chapter={currentChapter} />
+        )}
+
+      {canSkipChapter && (
+        <button
+          className={styles.skipChapterButton}
+          type="button"
+          onClick={() => setSkipConfirm(true)}
+        >
+          SKIP ↗
+        </button>
+      )}
 
       {phase === "cover" && (
         <CoverScreen
@@ -1897,9 +2149,16 @@ export default function MysteryEvent({ onExit }) {
           onPrev={
             handleStoryPrev
           }
-          onNext={
-            handleStoryNext
-          }
+          onNext={handleStoryNext}
+        />
+      )}
+
+
+      {phase === "summary" && summaryKey && (
+        <ChapterSummary
+          chapter={chapterMeta[summaryKey]}
+          summary={chapterSummaries[summaryKey]}
+          onNext={continueFromSummary}
         />
       )}
 
@@ -2117,6 +2376,21 @@ export default function MysteryEvent({ onExit }) {
         />
       )}
 
+
+      {homeConfirm && (
+        <HomeConfirmModal
+          onCancel={() => setHomeConfirm(false)}
+          onConfirm={leaveToEventHome}
+        />
+      )}
+
+      {skipConfirm && (
+        <SkipConfirmModal
+          onCancel={() => setSkipConfirm(false)}
+          onConfirm={confirmSkipChapter}
+        />
+      )}
+
       {warning && (
         <ConfirmModal
           warning={warning}
@@ -2209,14 +2483,26 @@ function StoryScreen({
   onPrev,
   onNext,
 }) {
-  const hasCharacter =
-    Boolean(scene.character);
+  const sceneCharacters =
+    Array.isArray(scene.characters)
+      ? scene.characters
+      : scene.character
+        ? [
+            {
+              id: scene.character,
+              src: scene.character,
+              // 좌우 배치를 장면마다 바꾸던 기존 규칙은 폐기.
+              // 명시적으로 fixedPosition이 있는 장면만 예외 처리합니다.
+              slot: scene.fixedPosition ?? "center",
+              animation: scene.animation ?? "soft",
+            },
+          ]
+        : [];
 
-  const dialogueSide =
-    hasCharacter &&
-    scene.position === "left"
-      ? "right"
-      : "left";
+  const hasCharacter =
+    sceneCharacters.length > 0;
+
+  const dialogueSide = "left";
 
   return (
     <section
@@ -2258,14 +2544,16 @@ function StoryScreen({
         }
       />
 
-      {scene.character && (
+      {sceneCharacters.map((item) => (
         <CharacterVisual
-          src={scene.character}
-          position={
-            scene.position
-          }
+          key={item.id ?? item.src}
+          src={item.src}
+          position={item.slot ?? "center"}
+          animation={item.animation ?? "soft"}
+          grouped={sceneCharacters.length > 1}
+          fullBody={fullBodyAssets.has(item.src)}
         />
-      )}
+      ))}
 
       {scene.prop && (
         <PropVisual
@@ -2287,10 +2575,6 @@ function StoryScreen({
           styles.simpleStoryHeader
         }
       >
-        <strong>
-          {scene.speaker}
-        </strong>
-
         <span>
           {String(
             current
@@ -2314,6 +2598,10 @@ function StoryScreen({
             : ""
         }`}
       >
+        <div className={styles.dialogueSpeaker}>
+          <strong>{scene.speaker}</strong>
+        </div>
+
         <p>
           {scene.text}
         </p>
@@ -2333,18 +2621,32 @@ function StoryScreen({
 
 function CharacterVisual({
   src,
-  position = "right",
+  position = "center",
+  animation = "soft",
+  grouped = false,
+  fullBody = false,
 }) {
+  const positionClass =
+    position === "left"
+      ? styles.characterVisualLeft
+      : position === "right"
+        ? styles.characterVisualRight
+        : styles.characterVisualCenter;
+
+  const animationClass =
+    animation === "quickLeft"
+      ? styles.characterEnterQuickLeft
+      : animation === "quickRight"
+        ? styles.characterEnterQuickRight
+        : animation === "none"
+          ? styles.characterEnterNone
+          : styles.characterEnterSoft;
+
   return (
     <div
-      className={`${styles.characterVisual} ${
-        position === "left"
-          ? styles.characterVisualLeft
-          : position ===
-              "center"
-            ? styles.characterVisualCenter
-            : styles.characterVisualRight
-      }`}
+      className={`${styles.characterVisual} ${positionClass} ${
+        grouped ? styles.characterVisualGrouped : ""
+      } ${fullBody ? styles.characterVisualFullBody : ""} ${animationClass}`}
     >
       <img
         src={src}
@@ -2412,7 +2714,7 @@ function CaseOpen({
         }
       >
         <span>
-          INCIDENT · 22:18
+          INCIDENT DETECTED
         </span>
 
         <h2>
@@ -2470,11 +2772,6 @@ function InvestigationHub({
             styles.hubHeader
           }
         >
-          <span>
-            INVESTIGATION ·{" "}
-            {round}
-          </span>
-
           <h2>{title}</h2>
 
           <p>
@@ -2538,7 +2835,7 @@ function InvestigationHub({
                   >
                     <img
                       src={
-                        suspect.image
+                        suspect.profile
                       }
                       alt=""
                     />
@@ -2549,13 +2846,6 @@ function InvestigationHub({
                       styles.cardCopy
                     }
                   >
-                    <small>
-                      SUSPECT{" "}
-                      {
-                        suspect.number
-                      }
-                    </small>
-
                     <strong>
                       {
                         suspect.name
@@ -2588,11 +2878,6 @@ function InvestigationHub({
                       </em>
                     )}
 
-                    <b>
-                      {checked
-                        ? "CHECKED ✓"
-                        : "VIEW →"}
-                    </b>
                   </div>
                 </button>
               );
@@ -2602,26 +2887,52 @@ function InvestigationHub({
 
         <button
           className={`${styles.proceedButton} ${
-            !proceedEnabled
-              ? styles.proceedDisabled
-              : ""
+            !proceedEnabled ? styles.proceedDisabled : ""
           }`}
           type="button"
-          disabled={
-            !proceedEnabled
-          }
-          onClick={
-            onProceed
-          }
+          disabled={!proceedEnabled}
+          onClick={onProceed}
         >
           <span>
             {proceedEnabled
               ? proceedLabel
               : "2명 이상 조사하면 진행할 수 있습니다"}
           </span>
-
           <b>→</b>
         </button>
+
+        <aside
+          className={`${styles.caseProgressHud} ${
+            proceedEnabled ? styles.caseProgressHudReady : ""
+          }`}
+          aria-label="조사 진행 상황"
+        >
+          <span className={styles.caseProgressRail} />
+          <small>CASE PROGRESS</small>
+          <strong>
+            {String(visited.length).padStart(2, "0")}
+            <i>/</i>
+            {String(suspects.length).padStart(2, "0")}
+          </strong>
+          <em>INVESTIGATED</em>
+          <div className={styles.caseProgressMeter}>
+            <span
+              style={{
+                height: `${Math.max(8, (visited.length / suspects.length) * 100)}%`,
+              }}
+            />
+          </div>
+          <b>
+            {proceedEnabled ? "REQUIREMENT CLEARED" : "LOCKED · 2명 이상 조사"}
+          </b>
+          <button
+            type="button"
+            disabled={!proceedEnabled}
+            onClick={onProceed}
+          >
+            NEXT PHASE →
+          </button>
+        </aside>
       </div>
     </section>
   );
@@ -2653,10 +2964,6 @@ function FocusPick({
             styles.focusHeader
           }
         >
-          <span>
-            FOCUS · {round}
-          </span>
-
           <h2>{title}</h2>
 
           <p>
@@ -2706,22 +3013,12 @@ function FocusPick({
                   />
                 </div>
 
-                <small>
-                  SUSPECT{" "}
-                  {
-                    suspect.number
-                  }
-                </small>
-
                 <strong>
                   {
                     suspect.name
                   }
                 </strong>
 
-                <span>
-                  HIDDEN FILE →
-                </span>
               </button>
             )
           )}
@@ -2752,10 +3049,11 @@ function RoundTwoIntro({
           SECOND INVESTIGATION
         </span>
 
-        <small>
-          FOCUS 01 ·{" "}
-          {firstFocus?.name}
-        </small>
+        {firstFocus && (
+          <small>
+            FOCUS 01 · {firstFocus.name}
+          </small>
+        )}
 
         <h2>
           진술과 기록이
@@ -3011,13 +3309,6 @@ function FinalChoice({
                     alt=""
                   />
                 </div>
-
-                <small>
-                  SUSPECT{" "}
-                  {
-                    suspect.number
-                  }
-                </small>
 
                 <strong>
                   {
@@ -3328,6 +3619,111 @@ function RewardScreen({
 }
 
 /* =========================================================
+   CHAPTER UI / SUMMARY
+========================================================= */
+
+function ChapterBanner({ chapter }) {
+  if (!chapter) return null;
+
+  return (
+    <div className={styles.chapterBanner} aria-hidden="true">
+      <span>{chapter.code}</span>
+      <strong>{chapter.title}</strong>
+      <small>{chapter.ko}</small>
+    </div>
+  );
+}
+
+function ChapterSummary({ chapter, summary, onNext }) {
+  if (!summary) return null;
+
+  return (
+    <section className={`${styles.scene} ${styles.summaryScreen}`}>
+      <Background src={asset.cabinAlt} />
+      <div className={styles.summaryShade} />
+
+      <div className={styles.summaryInner}>
+        <header className={styles.summaryHeader}>
+          <span>{summary.eyebrow}</span>
+          <h2>{summary.title}</h2>
+          <p>{summary.copy}</p>
+        </header>
+
+        <div className={styles.summaryGrid}>
+          {summary.items.map((item, index) => (
+            <article key={`${item.label}-${index}`}>
+              {item.image && (
+                <div className={styles.summaryVisual}>
+                  <img src={item.image} alt="" />
+                </div>
+              )}
+              <div className={styles.summaryCardCopy}>
+                <small>{String(index + 1).padStart(2, "0")}</small>
+                <strong>{item.label}</strong>
+                <p>{item.text}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div className={styles.summaryFooter}>
+          <span>
+            {chapter?.code} · {chapter?.title}
+          </span>
+          <button type="button" onClick={onNext}>
+            NEXT CHAPTER →
+          </button>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HomeConfirmModal({ onCancel, onConfirm }) {
+  return (
+    <div className={styles.modalOverlay} onMouseDown={onCancel}>
+      <section
+        className={`${styles.confirmModal} ${styles.exitConfirmModal}`}
+        role="dialog"
+        aria-modal="true"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <span>LEAVE INVESTIGATION</span>
+        <h2>이벤트 홈으로 돌아가시겠습니까?</h2>
+        <p>
+          현재까지 진행한 조사 내용은 저장되지 않습니다.<br />
+          이벤트에서 나가면 처음부터 다시 시작해야 합니다.
+        </p>
+        <button type="button" onClick={onCancel}>계속 조사하기</button>
+        <button type="button" onClick={onConfirm}>홈으로 나가기</button>
+      </section>
+    </div>
+  );
+}
+
+function SkipConfirmModal({ onCancel, onConfirm }) {
+  return (
+    <div className={styles.modalOverlay} onMouseDown={onCancel}>
+      <section
+        className={`${styles.confirmModal} ${styles.skipConfirmModal}`}
+        role="dialog"
+        aria-modal="true"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <span>SKIP</span>
+        <h2>이 챕터를 건너뛸까요?</h2>
+        <p>
+          남은 대사와 조사는 건너뛰고 핵심 내용 정리 화면으로 이동합니다.<br />
+          중요한 단서는 정리 화면에서 다시 확인할 수 있습니다.
+        </p>
+        <button type="button" onClick={onConfirm}>스킵하기</button>
+        <button type="button" onClick={onCancel}>취소</button>
+      </section>
+    </div>
+  );
+}
+
+/* =========================================================
    WARNING MODAL
 ========================================================= */
 
@@ -3446,9 +3842,9 @@ function StoryNavigation({
 function Background({ src }) {
   return (
     <img
-      className={
-        styles.background
-      }
+      className={`${styles.background} ${
+        src === asset.flight ? styles.backgroundNaturalFit : ""
+      }`}
       src={src}
       alt=""
       aria-hidden="true"
