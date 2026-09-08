@@ -1,16 +1,44 @@
 import { useEffect, useMemo, useState } from "react";
 import styles from "./MysteryEvent.module.scss";
 
+// REVISION 2026-09-08 / WEB-PASS-03
+// 누적 피드백 실제 반영본: 조사 상태/모바일 헤더/판정 연출/RECONSTRUCTION/스토리 위치 보정
+
 /* =========================================================
    ASSETS
 ========================================================= */
 
 const asset = {
   cover: "/event/event03/background1.png",
-  flight: "/event/event03/background2.png",
-  cabin: "/event/event03/SCENE1.png",
-  evidence: "/event/event03/SCENE2_picture.png",
-  cabinAlt: "/event/event03/SCENE%204.png",
+
+  // PC에서는 새 가로 이미지를 사용하고, Background 컴포넌트가
+  // 1024px 이하에서 기존 세로 원본으로 자동 전환한다.
+  flight: "/event/event03/background2-web.png",
+  flightMobile: "/event/event03/background2.png",
+  cabin: "/event/event03/SCENE1-web.png",
+  cabinMobile: "/event/event03/SCENE1.png",
+
+  // 일반 대화용 보조 배경은 더 이상 커피 클로즈업을 반복 사용하지 않는다.
+  cabinAlt: "/event/event03/SCENE1-web.png",
+
+  // 사건 장면
+  groupScene: "/event/event03/SCENE2_picture-web.png",
+  groupSceneMobile: "/event/event03/SCENE2_picture.png",
+  airportScene: "/event/event03/SCENE3_picture.png",
+  coffeeCloseup: "/event/event03/SCENE%204.png",
+  drowsyScene: "/event/event03/SCENE4_picture.png",
+  collapseScene: "/event/event03/SCENE5_picture-web.png",
+  collapseSceneMobile: "/event/event03/SCENE5_picture.png",
+  messageScene: "/event/event03/SCENE6_picture.png",
+
+  // 조사 진입 전환 화면은 1차/2차를 분리한다.
+  caseOpenFirstDesktop: "/event/event03/SCENE5_picture-web.png",
+  caseOpenFirstMobile: "/event/event03/SCENE5_picture.png",
+  caseOpenSecondDesktop: "/event/event03/SCENE6_picture.png",
+  caseOpenSecondMobile: "/event/event03/SCENE6_picture-mob.png",
+
+  // 기존 코드 호환용 별칭
+  evidence: "/event/event03/SCENE%204.png",
   ending: "/event/event03/SCENE5_picture.png",
 
   groupPhoto: "/event/event03/picture.png",
@@ -18,21 +46,34 @@ const asset = {
   dyingMessageNote: "/event/event03/dyingmessage.png",
 
   starbucks: "/event/event03/Starbucks.png",
+  criminal: "/event/event03/criminal.png",
+  criminalWeb: "/event/event03/criminal-web.png",
 
   hyeonsu: "/event/event03/hyeonsu.png",
   hyeonsuProfile: "/event/event03/hyeonsu-po1.png",
+  hyeonsuPose2: "/event/event03/hyeonsu-po2.png",
+  hyeonsuFace: "/event/event03/hyeonsu-face.png",
 
   jeongeun: "/event/event03/jeongeun.png",
   jeongeunProfile: "/event/event03/jeongeun-po1.png",
+  jeongeunPose2: "/event/event03/jeongeun-po2.png",
+  jeongeunFace: "/event/event03/jeongeun-face.png",
 
   jiyoung: "/event/event03/jiyoung.png",
   jiyoungProfile: "/event/event03/jiyoung-po1.png",
+  jiyoungPose2: "/event/event03/jiyoung-po2.png",
+  jiyoungFace: "/event/event03/jiyoung-face.png",
 
   seunggeun: "/event/event03/seunggeun.png",
   seunggeunProfile: "/event/event03/seunggeun-po1.png",
+  seunggeunProfileAlt1: "/event/event03/seunggeun-po1-1.png",
+  seunggeunProfileAlt2: "/event/event03/seunggeun-po1-2.png",
 
   sohee: "/event/event03/sohee.png",
   soheeProfile: "/event/event03/sohee-po1.png",
+  soheePose2: "/event/event03/sohee-po2.png",
+  soheeFace: "/event/event03/sohee-face.png",
+  soheePose3: "/event/event03/sohee-po3.png",
 };
 
 /* =========================================================
@@ -47,6 +88,8 @@ const suspects = [
 
     image: asset.jiyoung,
     profile: asset.jiyoungProfile,
+    pose2: asset.jiyoungPose2,
+    face: asset.jiyoungFace,
 
     firstMotive: "여행비 정산 문제",
 
@@ -54,7 +97,7 @@ const suspects = [
       "사진 촬영 이후 자신의 자리에서 영화를 보고 있었다.",
 
     secondSummary:
-      "피해자 자리 방향으로 이동한 사실을 숨겼다. 다만 커피가 전달될 무렵에는 좌석 기록이 남아 있다.",
+      "단체사진 뒤 자신의 자리로 돌아갔다고 진술했다. 기내 화면의 재생 기록과 주변 증언을 함께 확인할 필요가 있다.",
   },
 
   {
@@ -64,14 +107,16 @@ const suspects = [
 
     image: asset.sohee,
     profile: asset.soheeProfile,
+    pose2: asset.soheePose2,
+    face: asset.soheeFace,
 
     firstMotive: "가족 사이의 오래된 갈등",
 
     claimedAlibi:
-      "커피가 전달될 무렵에는 기내 뒤쪽 화장실 부근에 있었다.",
+      "화장실을 다녀오던 중 평소보다 조용한 승근에게 말을 걸었고, 그때 처음 이상을 알아챘다.",
 
     secondSummary:
-      "피해자와 말다툼한 사실을 숨겼다. 다만 커피가 전달될 무렵의 위치는 확인됐다.",
+      "피해자와 말다툼한 사실을 숨겼다. 사건 전후 기내 뒤쪽으로 이동한 정황과 정확한 시각을 대조할 필요가 있다.",
   },
 
   {
@@ -81,6 +126,8 @@ const suspects = [
 
     image: asset.jeongeun,
     profile: asset.jeongeunProfile,
+    pose2: asset.jeongeunPose2,
+    face: asset.jeongeunFace,
 
     firstMotive: "촬영용 액세서리 분실",
 
@@ -88,7 +135,7 @@ const suspects = [
       "커피가 전달될 무렵 승무원에게 따뜻한 물을 받고 있었다.",
 
     secondSummary:
-      "피해자의 컵을 만진 사실을 숨겼다. 그러나 커피가 전달될 무렵에는 승무원과 함께 있었다.",
+      "피해자의 컵을 만진 사실을 숨겼다. 컵을 만진 시점과 따뜻한 물을 요청한 시각을 따로 비교해야 한다.",
   },
 
   {
@@ -98,6 +145,8 @@ const suspects = [
 
     image: asset.hyeonsu,
     profile: asset.hyeonsuProfile,
+    pose2: asset.hyeonsuPose2,
+    face: asset.hyeonsuFace,
 
     firstMotive: "피날레 메인 모델 경쟁",
 
@@ -105,7 +154,7 @@ const suspects = [
       "사진 촬영 이후 자신의 자리에서 쉬었으며 피해자 쪽에는 가지 않았다.",
 
     secondSummary:
-      "팔찌 제거 시점과 피해자 접근 여부, 사건 당일 행동에 관한 두 진술이 모두 기록과 충돌한다.",
+      "팔찌 제거 시점과 피해자 접근 여부에 관한 진술이 일부 기록과 맞지 않는다. 정확한 동선 대조가 필요하다.",
   },
 ];
 
@@ -145,42 +194,15 @@ const chapterMeta = {
 };
 
 const chapterSummaries = {
-  prologue: {
-    eyebrow: "FLIGHT LOG",
-    title: "비행기에서 일어난 일",
-    copy: "사건의 흐름을 장면 순서대로 다시 확인하세요.",
-    items: [
-      {
-        label: "마지막 단체사진",
-        text: "다섯 사람은 귀국 직전 기내에서 마지막 사진을 남겼다.",
-        image: asset.groupPhoto,
-      },
-      {
-        label: "누군가 건넨 커피",
-        text: "어두운 기내에서 누군가 승근에게 커피를 건넸다.",
-        image: asset.starbucks,
-      },
-      {
-        label: "승근이 쓰러짐",
-        text: "커피를 마신 뒤 승근은 이상 증세를 보이다 쓰러졌다.",
-        image: asset.evidence,
-      },
-      {
-        label: "뒤늦게 발견된 단서",
-        text: "주변 사람들이 뒤늦게 상황을 알아챘고, 승근은 마지막 단서를 남겼다.",
-        image: asset.dyingMessage,
-      },
-    ],
-  },
   round1: {
     eyebrow: "INVESTIGATION NOTES",
     title: "첫 번째 조사 정리",
     copy: "네 사람의 첫 진술에서 확인된 핵심만 정리했습니다.",
     items: [
-      { label: "유지영", text: "여행비 정산 문제와 쌓인 불만이 있었다.", image: asset.jiyoungProfile },
-      { label: "전소희", text: "가족 사이 오래된 갈등과 사건 전 말다툼이 있었다.", image: asset.soheeProfile },
-      { label: "최정은", text: "촬영용 액세서리 문제로 승근에게 불만이 있었다.", image: asset.jeongeunProfile },
-      { label: "김현수", text: "피날레 메인 모델 자리를 두고 승근과 경쟁했다.", image: asset.hyeonsuProfile },
+      { label: "유지영", text: "여행비 정산 문제와 쌓인 불만이 있었다.", image: asset.jiyoungPose2 },
+      { label: "전소희", text: "가족 사이 오래된 갈등과 사건 전 말다툼이 있었다.", image: asset.soheePose2 },
+      { label: "최정은", text: "촬영용 액세서리 문제로 승근에게 불만이 있었다.", image: asset.jeongeunPose2 },
+      { label: "김현수", text: "피날레 메인 모델 자리를 두고 승근과 경쟁했다.", image: asset.hyeonsuPose2 },
     ],
   },
   round2: {
@@ -188,10 +210,10 @@ const chapterSummaries = {
     title: "추가 조사 정리",
     copy: "숨긴 사실과 사건 순간의 실제 위치를 비교했습니다.",
     items: [
-      { label: "유지영", text: "피해자 쪽에 다녀왔지만 핵심 순간에는 좌석에 있었다.", image: asset.jiyoungProfile },
-      { label: "전소희", text: "말다툼을 숨겼지만 핵심 순간에는 뒤쪽에 있었다.", image: asset.soheeProfile },
-      { label: "최정은", text: "컵을 만졌지만 문제의 커피가 전달될 때는 승무원과 함께 있었다.", image: asset.jeongeunProfile },
-      { label: "김현수", text: "팔찌 시점이 사진과 맞지 않고 핵심 순간의 동선도 비어 있다.", image: asset.hyeonsuProfile },
+      { label: "유지영", text: "단체사진 뒤 좌석으로 돌아갔다고 진술했다. 재생 기록의 시간대를 확인해야 한다.", image: asset.jiyoungPose2 },
+      { label: "전소희", text: "말다툼을 숨겼고 사건 전후 기내 뒤쪽으로 이동한 정황이 있다.", image: asset.soheePose2 },
+      { label: "최정은", text: "컵을 만진 사실을 숨겼다. 컵과 따뜻한 물 기록의 시각을 비교해야 한다.", image: asset.jeongeunPose2 },
+      { label: "김현수", text: "팔찌 제거 시점과 피해자 접근 여부에 관한 진술에 모순이 남아 있다.", image: asset.hyeonsuPose2 },
     ],
   },
 };
@@ -202,6 +224,23 @@ const fullBodyAssets = new Set([
   asset.jiyoung,
   asset.seunggeun,
   asset.sohee,
+]);
+
+// 일반 스토리에서는 기본 일러스트를 중심으로 유지하고,
+// po1은 각 조사 흐름의 핵심 대사에서만 emphasis로 허용한다.
+const storyProfileToBase = new Map([
+  [asset.hyeonsuProfile, asset.hyeonsu],
+  [asset.jeongeunProfile, asset.jeongeun],
+  [asset.jiyoungProfile, asset.jiyoung],
+  [asset.soheeProfile, asset.sohee],
+]);
+
+// po1의 원본 캔버스 높이가 기본 일러스트와 달라 보이는 캐릭터만
+// 스토리 화면에서 약간 아래로 보정한다. 소희는 예외.
+const loweredStoryProfiles = new Set([
+  asset.hyeonsuProfile,
+  asset.jeongeunProfile,
+  asset.jiyoungProfile,
 ]);
 
 function getChapterForPhase(phase, hiddenContext, summaryKey) {
@@ -250,302 +289,174 @@ const prologueScenes = [
   {
     speaker: "내레이션",
     background: asset.flight,
-
-    text:
-      "학기말 프로젝트와 종강 여행을 끝낸 다섯 명은 한국으로 돌아가는 비행기에 올랐다.",
+    text: "종강 여행을 마친 다섯 명은 한국으로 돌아가는 비행기에 올랐다.",
   },
 
   {
-    speaker: "전소희",
+    speaker: "내레이션",
     background: asset.cabin,
-
-    characters: [
-      {
-        id: "sohee",
-        src: asset.sohee,
-        slot: "center",
-        animation: "soft",
-      },
-    ],
-
-    text: "드디어 한국 간다.",
+    text: "긴 일정이 끝났다는 안도감에 기내에는 평소 같은 대화가 이어졌다.",
   },
 
+  // 초반 합류 연출: 소희 단독 → 정은 단독 → 정은+지영 2인 구도
   {
     speaker: "전소희",
     background: asset.cabin,
-
-    // 같은 대화 흐름에서는 po1으로 바꾸지 않고 기존 전신 컷 유지
-    characters: [
-      {
-        id: "sohee",
-        src: asset.sohee,
-        slot: "center",
-        animation: "none",
-      },
-    ],
-
-    text:
-      "나 진짜 빨리 집 가서 씻고 누워 있고 싶어.",
+    character: asset.soheePose2,
+    fixedPosition: "center",
+    animation: "soft",
+    soheePose2Intro: true,
+    text: "와, 진짜 끝났다. 한국 도착하면 바로 누울 거야.",
   },
 
   {
     speaker: "최정은",
     background: asset.cabin,
-
-    // 전소희는 그대로, 최정은만 왼쪽에서 빠르게 합류
-    characters: [
-      {
-        id: "sohee",
-        src: asset.sohee,
-        slot: "center",
-        animation: "none",
-      },
-      {
-        id: "jeongeun",
-        src: asset.jeongeun,
-        slot: "left",
-        animation: "quickLeft",
-      },
-    ],
-
-    text:
-      "어제 일 때문에 다들 좀 예민해진 것 같긴 해.",
+    character: asset.jeongeun,
+    fixedPosition: "left",
+    animation: "quickLeft",
+    text: "사진부터 정리해야 돼.",
   },
 
   {
     speaker: "유지영",
     background: asset.cabin,
-
-    // 유지영이 오른쪽에서 합류해 잠깐 쓰리샷을 완성
     characters: [
-      {
-        id: "jeongeun",
-        src: asset.jeongeun,
-        slot: "left",
-        animation: "none",
-      },
-      {
-        id: "sohee",
-        src: asset.sohee,
-        slot: "center",
-        animation: "none",
-      },
-      {
-        id: "jiyoung",
-        src: asset.jiyoung,
-        slot: "right",
-        animation: "quickRight",
-      },
+      { id: "jeongeun", src: asset.jeongeun, slot: "left", animation: "none" },
+      { id: "jiyoung", src: asset.jiyoung, slot: "right", animation: "quickRight" },
     ],
-
-    text:
-      "우리 사진 한 장 더 찍자. 이번엔 좀 제대로.",
+    text: "그래도 이번 여행, 다들 고생하긴 했다.",
   },
 
-  {
-    speaker: "내레이션",
-    background: asset.cabin,
-
-    prop: asset.groupPhoto,
-    propType: "photo",
-
-    text:
-      "한국으로 돌아가기 전, 다섯 명은 마지막 단체사진을 남겼다.",
-  },
-
+  // 평소라면 현수가 먼저 사진을 제안했을 법하지만, 이날은 승근이 먼저 운을 뗀다.
   {
     speaker: "전승근",
     background: asset.cabin,
-
     character: asset.seunggeun,
-    position: "left",
-
-    text:
-      "오, 생각보다 잘 나왔는데? 우리 아직도 팔찌 다 차고 있네.",
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.cabin,
-
-    prop: asset.groupPhoto,
-    propType: "photoFocus",
-
-    text:
-      "여행 첫날, 다섯 명은 같은 기념 팔찌를 하나씩 맞춰 찼다.",
-
-    note:
-      "여행이 끝나는 날까지 모두 같은 팔찌를 차고 있는 것처럼 보였다.",
+    fixedPosition: "center",
+    animation: "soft",
+    text: "야, 우리 사진 한 장 더 찍자. 이번엔 좀 제대로.",
   },
 
   {
     speaker: "김현수",
     background: asset.cabin,
-
     character: asset.hyeonsu,
+    fixedPosition: "right",
     animation: "soft",
+    text: "그래, 찍자.",
+  },
 
-    text:
-      "잘 나왔다. 이따 단톡에 올려줘.",
+  {
+    speaker: "내레이션",
+    background: asset.groupScene,
+    selfieFlash: true,
+    text: "그렇게 다섯은 귀국길의 마지막 단체사진을 남겼다.",
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.cabin,
+    text: "비행기가 출발하고 얼마 지나지 않아, 화장실에서 돌아오던 소희가 승근이 유난히 조용한 걸 알아챘다.",
+  },
+
+  {
+    speaker: "전소희",
+    background: asset.cabin,
+    character: asset.sohee,
+    fixedPosition: "center",
+    animation: "soft",
+    text: "근데 승근이 왜 이렇게 조용해? 승근아?",
+  },
+
+  {
+    speaker: "전소희",
+    background: asset.cabin,
+    character: asset.sohee,
+    fixedPosition: "center",
+    animation: "none",
+    text: "야, 전승근. 자?",
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.drowsyScene,
+    deathDiscovery: true,
+    darkness: 0.18,
+    text: "소희가 가까이 다가가 승근의 상태를 확인했다.",
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.drowsyScene,
+    text: "승근은 숨을 쉬지 않고 있었다.",
+    darkness: 0.22,
+  },
+
+  {
+    speaker: "전소희",
+    background: asset.drowsyScene,
+    character: asset.soheeProfile,
+    fixedPosition: "center",
+    animation: "soft",
+    emphasis: true,
+    text: "승근아!!",
+    darkness: 0.24,
   },
 
   {
     speaker: "유지영",
-    background: asset.cabin,
-
-    character: asset.jiyoungProfile,
-    fixedPosition: "left",
+    background: asset.drowsyScene,
+    character: asset.jiyoung,
+    fixedPosition: "right",
     animation: "soft",
+    text: "잠깐... 어떡해. 우리 어떡해...?",
+    darkness: 0.24,
+  },
 
-    text:
-      "근데 사진 속 승근이 표정, 뭔가 이상하지 않아?",
+  {
+    speaker: "내레이션",
+    background: asset.drowsyScene,
+    text: "모두가 얼어붙은 사이, 승근의 손 근처에서 작은 메모가 발견됐다.",
+    darkness: 0.25,
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.drowsyScene,
+    text: "급히 남긴 듯 흐트러진 글씨. 죽기 전 남긴 마지막 메시지였다.",
+    darkness: 0.25,
+  },
+
+  {
+    speaker: "",
+    background: asset.cabin,
+    prop: asset.dyingMessageNote,
+    propType: "note",
+    text: "",
+    imageOnly: true,
+    dyingMessageReveal: true,
+    darkness: 0.25,
   },
 
   {
     speaker: "내레이션",
     background: asset.cabin,
-
-    text:
-      "그 말은 별 의미 없는 농담처럼 지나갔다.",
+    prop: asset.dyingMessageNote,
+    propType: "note",
+    dyingMessageHold: true,
+    text: "메모에는 이렇게 쓰여 있었다.",
+    darkness: 0.25,
   },
 
   {
     speaker: "내레이션",
-    background: asset.cabinAlt,
-
-    text:
-      "잠시 뒤 기내 조명이 낮아졌고, 다섯 명은 각자의 자리에서 시간을 보내기 시작했다.",
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.cabinAlt,
-
-    text:
-      "음료 서비스가 시작됐다. 다섯 명은 모두 커피를 주문했다.",
-
-    note:
-      "같은 비행기, 같은 일행, 같은 종이컵.",
-  },
-
-  {
-    speaker: "???",
-    background: asset.cabinAlt,
-
-    text:
-      "승근아, 네 거 여기.",
-
-    note:
-      "승근은 휴대폰을 보고 있어 누가 커피를 건넸는지 제대로 확인하지 못했다.",
-  },
-
-  {
-    speaker: "전승근",
-    background: asset.cabinAlt,
-
-    character: asset.seunggeunProfile,
-    position: "left",
-
-    text: "어, 고마워.",
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.cabinAlt,
-
-    text:
-      "주변의 모두가 비슷한 종이컵을 들고 있었다. 이상하게 생각할 이유는 없었다.",
-  },
-
-  {
-    speaker: "전승근",
-    background: asset.cabinAlt,
-
-    character: asset.seunggeunProfile,
-    position: "right",
-
-    text: "음...",
-
-    darkness: 0.06,
-  },
-
-  {
-    speaker: "전승근",
-    background: asset.cabinAlt,
-
-    character: asset.seunggeunProfile,
-    position: "right",
-
-    text: "어...?",
-
-    note:
-      "손끝에 힘이 잘 들어가지 않았다.",
-
-    darkness: 0.16,
-    blur: 0.25,
-  },
-
-  {
-    speaker: "전승근",
-    background: asset.cabinAlt,
-
-    character: asset.seunggeunProfile,
-    position: "left",
-
-    text: "잠깐...",
-
-    note:
-      "기내의 목소리가 조금씩 멀어지는 것 같았다.",
-
-    darkness: 0.27,
-    blur: 0.45,
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.ending,
-
-    text:
-      "승근의 휴대폰 화면에는 조금 전 찍은 단체사진이 그대로 열려 있었다.",
-
-    darkness: 0.38,
-    blur: 0.7,
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.ending,
-
-    prop: asset.groupPhoto,
-    propType: "blurPhoto",
-
-    text:
-      "흐릿해지는 시야 속에서 승근은 사진을 바라봤다.",
-
-    darkness: 0.5,
-    blur: 1,
-  },
-
-  {
-    speaker: "전승근",
-    background: asset.ending,
-
-    text: "우리 모두...",
-
-    // 이 장면부터 NEXT를 누를 때마다 시야가 조금씩 더 흐려짐
-    darkness: 0.62,
-    blur: 1.45,
-  },
-
-  {
-    speaker: "전승근",
-    background: asset.ending,
-
-    text: "...같았는데.",
-
-    darkness: 0.84,
-    blur: 2.25,
+    background: asset.cabin,
+    prop: asset.dyingMessageNote,
+    propType: "note",
+    dyingMessageHold: true,
+    text: "“우리 모두 같았는데.”",
+    darkness: 0.28,
   },
 ];
 
@@ -575,6 +486,23 @@ const firstInterviews = {
 
       text:
         "그래도 그게 끝이야. 사진 찍고 나서는 계속 자리에서 영화 보고 있었고.",
+    },
+
+    {
+      speaker: "유지영",
+      background: asset.cabin,
+      character: asset.jiyoungProfile,
+      fixedPosition: "left",
+      emphasis: true,
+      text: "아, 마지막 단체사진. 그때 승근이 표정이 평소랑 조금 달랐어.",
+    },
+
+    {
+      speaker: "내레이션",
+      background: asset.cabin,
+      prop: asset.groupPhoto,
+      propType: "photoFocus",
+      text: "사진을 다시 확인하자, 승근의 표정은 다른 사람들과 미묘하게 달라 보였다.",
     },
 
     {
@@ -614,13 +542,16 @@ const firstInterviews = {
 
     {
       speaker: "전소희",
-      background: asset.cabinAlt,
+      background: asset.collapseScene,
+      text: "화장실 다녀오다가 승근이가 너무 조용해서 말을 걸었어.",
+      darkness: 0.34,
+    },
 
-      character: asset.sohee,
-      position: "left",
-
-      text:
-        "사건 시간에는 화장실 쪽에 있었어. 나오다가 승근아, 하고 불렀는데 반응이 없어서 이상한 걸 알았고.",
+    {
+      speaker: "전소희",
+      background: asset.collapseScene,
+      text: "아무 대답이 없어서 그때 처음 이상하다는 걸 알았어.",
+      darkness: 0.38,
     },
   ],
 
@@ -628,34 +559,26 @@ const firstInterviews = {
     {
       speaker: "최정은",
       background: asset.cabin,
-
       character: asset.jeongeun,
       position: "right",
-
-      text:
-        "촬영용으로 가져온 액세서리를 빌려줬다가 잃어버린 적이 있어. 그때는 정말 화났지.",
+      text: "액세서리 하나를 빌려줬다가 잃어버린 적은 있어.",
     },
 
     {
       speaker: "최정은",
       background: asset.cabin,
-
       character: asset.jeongeunProfile,
       position: "left",
-
-      text:
-        "사진 찍고 난 뒤에는 따뜻한 물 받으러 갔어.",
+      emphasis: true,
+      text: "사진 찍고 난 뒤엔 따뜻한 물 받으러 갔어.",
     },
 
     {
       speaker: "최정은",
       background: asset.cabinAlt,
-
       character: asset.jeongeun,
       position: "right",
-
-      text:
-        "피해자 컵은 따로 만진 적 없어. 사건 나기 전까지 신경도 안 썼고.",
+      text: "승근이 컵은 안 만졌어.",
     },
   ],
 
@@ -704,59 +627,48 @@ const hiddenFiles = {
     {
       speaker: "유지영",
       background: asset.cabin,
-
       character: asset.jiyoung,
       position: "right",
-
-      text:
-        "사실... 보고 있던 건 뿌이뿌이 모루카였어.",
+      text: "사실... 내가 영화 보고 있었다고 했잖아.",
     },
-
     {
       speaker: "유지영",
       background: asset.cabin,
-
-      character: asset.jiyoungProfile,
-      position: "left",
-
-      text:
-        "기니피그가 자동차가 되는 건데. 아니, 그 설명을 왜 하고 있지.",
+      character: asset.jiyoung,
+      position: "right",
+      animation: "none",
+      text: "그게 뭐였냐면...",
     },
-
     {
       speaker: "유지영",
       background: asset.cabin,
-
       character: asset.jiyoung,
       position: "right",
-
-      text:
-        "내가 원래 인형이나 키링 같은 걸 좋아해.",
+      animation: "none",
+      text: "......",
     },
-
     {
       speaker: "유지영",
-      background: asset.cabinAlt,
-
+      background: asset.cabin,
       character: asset.jiyoungProfile,
       position: "left",
-
-      text:
-        "그래서 승근이도 맨날 내 인형 가지고 장난쳤어. 가져가고, 숨기고, 바로 안 돌려주고.",
+      emphasis: true,
+      text: "뿌이뿌이 모루카였어.",
     },
-
+    {
+      speaker: "유지영",
+      background: asset.cabin,
+      character: asset.jiyoung,
+      position: "right",
+      text: "기니피그가 자동차가 되는 건데... 아니, 왜 설명하고 있지.",
+    },
     {
       speaker: "유지영",
       background: asset.cabinAlt,
-
-      character: asset.jiyoungProfile,
+      character: asset.jiyoung,
       position: "right",
-
-      text:
-        "걔는 그냥 웃겼나 본데 나는 진짜 싫었거든.",
-
-      note:
-        "돈 문제 말고도 오래 쌓인 불만이 있었다.",
+      text: "승근이가 내 인형 가져가서 장난치는 것도 진짜 싫었어.",
+      note: "돈 문제 말고도 오래 쌓인 불만이 있었다.",
     },
   ],
 
@@ -821,56 +733,31 @@ const hiddenFiles = {
     {
       speaker: "최정은",
       background: asset.cabin,
-
       character: asset.jeongeun,
       position: "right",
-
-      text:
-        "예전에 패션 화보 기획 프로젝트를 같이 한 적이 있어.",
+      text: "승근이는 자기 의견이 센 편이었어.",
     },
-
     {
       speaker: "최정은",
       background: asset.cabin,
-
-      character: asset.jeongeunProfile,
-      position: "left",
-
-      text:
-        "그때 내가 팀장이었는데, 솔직히 팀장 입장에서는 꽤 힘들었어.",
-    },
-
-    {
-      speaker: "최정은",
-      background: asset.cabinAlt,
-
       character: asset.jeongeun,
       position: "right",
-
-      text:
-        "포즈 레퍼런스는 늦고, 피팅 끝나고 다른 룩 얘기 나오고, 촬영 당일에는 동선 다시 바꾸자고 하고.",
+      text: "조율할 때 부딪힌 적은 있었고.",
     },
-
     {
       speaker: "최정은",
       background: asset.cabinAlt,
-
       character: asset.jeongeunProfile,
       position: "left",
-
-      text:
-        "그때는 진짜 속 많이 썩었지.",
+      emphasis: true,
+      text: "그래도 내가 팀장이니까 정리해야 했지.",
     },
-
     {
       speaker: "최정은",
       background: asset.cabin,
-
       character: asset.jeongeun,
       position: "right",
-
-      text:
-        "그래도 결과는 잘 나왔고 교수님 피드백도 좋았어. 과제 때문에 예민했던 거지, 끝나고까지 싸우고 그런 사이는 아니었어.",
+      text: "승근이도 결국 양보했고. 그 마음은 알고 있었어.",
     },
   ],
 
@@ -949,7 +836,7 @@ const hiddenFiles = {
         "커피가 전달되던 무렵, 피해자 근처 좌석에서는 '승근아, 네 거 여기'라는 말이 들렸다.",
 
       note:
-        "목격자는 그 목소리가 김현수의 목소리와 비슷했다고 기억했다.",
+        "목소리가 들렸다는 사실만 확인됐고, 정확한 화자는 특정되지 않았다.",
     },
   ],
 };
@@ -961,69 +848,35 @@ const hiddenFiles = {
 const secondInterviews = {
   jiyoung: [
     {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-
-      text:
-        "기내 엔터테인먼트 기록을 확인한 결과, 지영이 '영화'라고 말한 콘텐츠는 영화 카테고리에 등록된 영상이 아니었다.",
-
-      note:
-        "재생 기록은 사건 직전 한 차례 멈춰 있었다.",
-    },
-
-    {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-
-      text:
-        "사건 전, 지영이 피해자의 좌석 방향에서 돌아오는 모습을 봤다는 증언이 나왔다.",
-    },
-
-    {
       speaker: "유지영",
       background: asset.cabin,
-
-      character: asset.jiyoungProfile,
-      position: "right",
-
-      text:
-        "...한 번 간 건 맞아. 개인적으로 돌려받을 게 있었어.",
-
-      note:
-        "1차 진술의 '거의 자리에서 움직이지 않았다'는 말은 사실이 아니었다.",
-    },
-
-    {
-      speaker: "유지영",
-      background: asset.cabin,
-
       character: asset.jiyoung,
       position: "left",
-
-      text:
-        "돈 문제만 있었던 것도 아니야. 내가 밀가루 잘 못 먹는 거 알면서 학교에 있는 과자 가져와서 바로 옆에서 먹고 그랬거든.",
-
-      note:
-        "사소해 보이는 행동들이 반복되며 불만이 쌓여 있었다.",
+      text: "단체사진 찍고 바로 자리로 돌아갔어.",
     },
-
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "지영이 자리로 돌아온 뒤 영상은 다시 재생됐다.",
-
-      note:
-        "이후 자막과 음량을 조작한 기록도 남아 있어, 커피가 전달될 무렵 지영이 좌석에 있었다는 정황이 된다.",
+      text: "단체사진 직후 지영의 좌석 화면에서 영상 재생이 다시 시작됐다.",
     },
-
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "인근 승객 역시 해당 시각 지영이 자신의 좌석에 있었다고 기억했다.",
+      text: "이후 자막과 음량을 조작한 기록이 일정한 간격으로 남아 있다.",
+      note: "재생 기록은 지영의 진술과 시간대를 대조할 수 있는 자료다.",
+    },
+    {
+      speaker: "유지영",
+      background: asset.cabin,
+      character: asset.jiyoungProfile,
+      fixedPosition: "right",
+      emphasis: true,
+      text: "사진 뒤에는 계속 내 자리였어. 재생 기록 시간도 확인해 봐.",
+    },
+    {
+      speaker: "사건 기록",
+      background: asset.cabinAlt,
+      text: "좌석 화면의 재생·조작 기록은 지영의 진술과 대체로 이어진다. 다만 기록만으로 모든 순간의 위치를 단정할 수는 없다.",
     },
   ],
 
@@ -1041,7 +894,8 @@ const secondInterviews = {
       background: asset.cabin,
 
       character: asset.soheeProfile,
-      position: "right",
+      fixedPosition: "right",
+      emphasis: true,
 
       text:
         "...잠깐 말다툼한 건 맞아. 괜히 이런 상황에서 더 의심받기 싫어서 말 안 했어.",
@@ -1050,27 +904,21 @@ const secondInterviews = {
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "담당 승무원은 커피가 전달되기 전부터 소희가 기내 뒤쪽 화장실을 기다리고 있던 것을 기억했다.",
+      text: "사건 전후 소희가 기내 뒤쪽으로 이동하는 모습이 승무원에게 목격됐다.",
     },
 
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "문제의 커피가 전달될 무렵에도 소희는 뒤쪽에 있었다.",
-
-      note:
-        "소희의 위치는 승무원의 증언과 일치한다.",
+      text: "화장실 대기 기록과 승무원 기억에 소희의 이동 흔적이 남아 있다.",
+      note: "기록마다 시각에 차이가 있어 다른 진술과 직접 대조해야 한다.",
     },
   ],
 
   jeongeun: [
     {
       speaker: "사건 기록",
-      background: asset.evidence,
+      background: asset.coffeeCloseup,
 
       text:
         "피해자가 마신 종이컵에서 최정은의 지문이 발견됐다.",
@@ -1095,7 +943,7 @@ const secondInterviews = {
       background: asset.cabin,
 
       character: asset.jeongeunProfile,
-      position: "right",
+      fixedPosition: "right",
 
       text: "...",
     },
@@ -1162,7 +1010,7 @@ const secondInterviews = {
       background: asset.cabinAlt,
 
       text:
-        "커피가 전달되던 핵심 순간, 현수가 자신의 좌석에 있었다는 기록이나 독립적인 목격 증언은 확인되지 않았다.",
+        "커피가 전달되던 순간, 현수의 좌석 기록은 없었다. 그를 봤다는 독립적인 증언도 없었다.",
     },
 
     {
@@ -1173,18 +1021,7 @@ const secondInterviews = {
         "피해자 근처 좌석의 승객은 커피가 전달되던 순간 '승근아, 네 거 여기'라는 말을 들었다고 기억했다.",
 
       note:
-        "평소 승근에게 이런 식으로 이름을 부르는 사람은 소희와 현수였다.",
-    },
-
-    {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-
-      text:
-        "반면 소희는 그 순간 기내 뒤쪽 화장실 앞에 있었음이 이미 확인됐다.",
-
-      note:
-        "남은 가능성은 크게 좁혀졌다.",
+        "이름을 부르는 방식만으로 특정 인물을 단정할 수는 없다.",
     },
 
     {
@@ -1192,7 +1029,8 @@ const secondInterviews = {
       background: asset.cabin,
 
       character: asset.hyeonsuProfile,
-      position: "left",
+      fixedPosition: "left",
+      emphasis: true,
 
       text:
         "난 사진 이후 승근이 자리 쪽으로 안 갔어.",
@@ -1209,83 +1047,205 @@ const secondInterviews = {
 
 const truthScenes = [
   {
-    speaker: "내레이션",
+    speaker: "사건 기록",
     background: asset.cabinAlt,
 
     text:
-      "지영도, 소희도, 정은도, 현수도 처음부터 모든 사실을 말하지 않았다.",
+      "최종 지목이 끝났다. 이제 흩어진 진술과 기록을 실제 시간순으로 다시 놓아본다.",
   },
 
   {
     speaker: "내레이션",
-    background: asset.cabinAlt,
+    background: asset.airportScene,
+    text: "김현수는 비행기가 출발하기 전부터 전승근을 죽일 계획을 세우고 있었다.",
+    darkness: 0.28,
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.airportScene,
+    text: "모두에게는 평범한 귀국 일정이었지만, 현수에게는 이미 계획된 범행의 시작이었다.",
+    darkness: 0.32,
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.cabin,
+    character: asset.hyeonsuProfile,
+    fixedPosition: "right",
 
     text:
-      "다른 세 사람이 숨긴 것은 의심받을 만한 감정이나 행동이었다.",
+      "지영, 소희, 정은이 숨긴 것은 의심받을 만한 감정이나 행동이었다. 현수가 숨긴 것은 사건 당일의 시간과 동선이었다.",
+  },
+
+  {
+    speaker: "사건 기록",
+    background: asset.cabin,
+    prop: asset.groupPhoto,
+    propType: "photoFocus",
+
+    text:
+      "마지막 단체사진에서 현수의 팔목에는 이미 모두가 맞춰 찬 기념 팔찌가 없었다.",
 
     note:
-      "현수가 숨긴 것은 사건 당일의 시간과 행동이었다.",
+      "'사진을 찍은 뒤 팔찌를 뺐다'는 현수의 진술은 사진 기록과 일치하지 않는다.",
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.coffeeCloseup,
+
+    text:
+      "음료 서비스가 시작된 뒤, 현수는 승근에게 전달될 커피에 손을 댔다.",
+  },
+
+  {
+    speaker: "김현수",
+    background: asset.coffeeCloseup,
+    character: asset.hyeonsuProfile,
+    fixedPosition: "right",
+    emphasis: true,
+
+    text:
+      "승근아, 네 거 여기.",
+
+    note:
+      "승근은 휴대폰을 보고 있어 커피를 건넨 사람의 손목을 제대로 확인하지 못했다.",
+  },
+
+  {
+    speaker: "전승근",
+    background: asset.coffeeCloseup,
+    character: asset.seunggeunProfile,
+    fixedPosition: "left",
+
+    text:
+      "어, 고마워.",
   },
 
   {
     speaker: "내레이션",
     background: asset.cabin,
 
+    text:
+      "커피를 마신 뒤에도 당장은 아무 일도 일어나지 않았다. 평소라면 먼저 사진을 찍자고 했을 현수도 그날은 조용했다.",
+  },
+
+  {
+    speaker: "전승근",
+    background: asset.cabin,
+    character: asset.seunggeunProfile,
+    fixedPosition: "center",
+
+    text:
+      "근데 우리 사진 한 장도 안 찍었네. 가기 전에 하나 찍자.",
+  },
+
+  {
+    speaker: "김현수",
+    background: asset.cabin,
+    character: asset.hyeonsuProfile,
+    fixedPosition: "right",
+
+    text:
+      "어, 그래. 찍자.",
+  },
+
+  {
+    speaker: "내레이션",
+    background: asset.groupScene,
+
+    text:
+      "그렇게 남은 것이 다섯 사람의 마지막 단체사진이었다. 사진을 찍을 때 승근은 이미 독이 든 커피를 마신 뒤였다.",
+  },
+
+  {
+    speaker: "유지영",
+    background: asset.cabin,
     prop: asset.groupPhoto,
     propType: "photoFocus",
-
-    text:
-      "마지막 단체사진을 찍을 당시 현수의 팔목에는 이미 기념 팔찌가 없었다.",
+    text: "여기 봐. 승근이 표정 좀 이상하지 않아?",
   },
 
   {
-    speaker: "???",
-    background: asset.cabinAlt,
-
-    text:
-      "승근아, 네 거 여기.",
-
-    note:
-      "피해자는 휴대폰을 보고 있어 커피를 건넨 사람을 제대로 확인하지 않았다.",
+    speaker: "김현수",
+    background: asset.cabin,
+    prop: asset.groupPhoto,
+    propType: "photoFocus",
+    text: "피곤해서 그런 거겠지. 신경 쓰지 마.",
   },
 
   {
-    speaker: "내레이션",
-    background: asset.cabinAlt,
-
-    character: asset.hyeonsu,
-    position: "right",
-
-    text:
-      "그 핵심 순간 자신의 위치를 설명하지 못한 사람은 현수였다.",
-
-    note:
-      "근처 승객의 목소리 기억 역시 현수를 가리켰다.",
+    speaker: "유지영",
+    background: asset.cabin,
+    prop: asset.groupPhoto,
+    propType: "photoFocus",
+    text: "…그런가?",
   },
 
   {
     speaker: "내레이션",
-    background: asset.ending,
+    background: asset.cabin,
+    prop: asset.groupPhoto,
+    propType: "photoFocus",
+    text: "당시에는 누구도 그 표정의 의미를 알지 못했다.",
+    note: "사진은 승근이 커피를 마신 뒤, 이상 증세가 나타나기 직전에 촬영됐다.",
+  },
 
-    character: asset.hyeonsuProfile,
-    position: "left",
+  {
+    speaker: "전승근",
+    background: asset.cabin,
+    character: asset.seunggeunProfileAlt1,
+    fixedPosition: "center",
+    animation: "soft",
 
-    text:
-      "현수는 팔찌를 뺀 시점과 피해자의 자리로 간 사실을 모두 숨겼다.",
+    text: "어...?",
+
+    darkness: 0.12,
+    blur: 0.2,
+  },
+
+  {
+    speaker: "전승근",
+    background: asset.cabin,
+    character: asset.seunggeunProfileAlt2,
+    fixedPosition: "center",
+    animation: "soft",
+
+    text: "잠깐...",
+
+    darkness: 0.3,
+    blur: 0.45,
   },
 
   {
     speaker: "내레이션",
-    background: asset.ending,
+    background: asset.drowsyScene,
+    text: "승근의 몸에서 힘이 빠지기 시작했다.",
+    darkness: 0.36,
+    blur: 0.5,
+  },
 
-    prop: asset.dyingMessageNote,
-    propType: "note",
+  {
+    speaker: "내레이션",
+    background: asset.drowsyScene,
+    text: "결국 승근은 더 이상 몸을 버티지 못했다.",
+    darkness: 0.42,
+    blur: 0.65,
+  },
+
+  {
+    speaker: "전승근",
+    background: asset.drowsyScene,
 
     text:
-      "승근이 마지막 순간 떠올린 것은 모두에게 있어야 했던 팔찌, 그리고 커피를 건넨 사람의 비어 있던 손목이었다.",
+      "우리 모두... 같았는데.",
 
     note:
-      "다섯 명 중 그 시점에 이미 팔찌가 없던 사람은 김현수였다.",
+      "마지막 순간 승근이 떠올린 것은 모두에게 있어야 했던 팔찌와, 커피를 건넨 사람의 비어 있던 손목이었다.",
+
+    darkness: 0.58,
+    blur: 0.8,
   },
 ];
 
@@ -1296,23 +1256,26 @@ const truthScenes = [
 const wrongCopy = {
   jiyoung: {
     title: "유지영은 범인이 아니다.",
+    reaction: ["아니, 내가 왜 범인이야?", "나 진짜 아니라고."],
 
     body:
-      "지영은 피해자의 자리로 이동한 사실을 숨겼다. 하지만 커피가 전달될 무렵에는 좌석에서 화면을 조작한 기록과 목격 증언이 남아 있다.",
+      "지영의 진술에는 숨긴 부분이 있었지만, 좌석 화면 기록과 주변 진술까지 함께 놓으면 그것만으로 범행을 설명하기 어렵다.",
   },
 
   sohee: {
     title: "전소희는 범인이 아니다.",
+    reaction: ["뭐?", "나를 범인으로 찍었다고?"],
 
     body:
-      "소희는 피해자와 말다툼한 사실을 숨겼다. 그러나 커피가 전달될 무렵에는 기내 뒤쪽 화장실 부근에 있었음이 확인됐다.",
+      "소희가 숨긴 말다툼과 기내 뒤쪽 이동만으로는 문제의 커피 전달까지 설명되지 않는다.",
   },
 
   jeongeun: {
     title: "최정은은 범인이 아니다.",
+    reaction: ["…진심이야?", "기분 나쁘네."],
 
     body:
-      "정은의 지문이 피해자의 컵에서 발견됐지만 컵을 옮긴 순간과 문제의 커피가 전달된 순간은 달랐다. 당시 정은은 승무원과 함께 있었다.",
+      "정은의 지문은 중요한 단서였지만, 컵을 만진 시점과 커피가 전달된 시점을 따로 대조하면 하나의 결론으로 바로 이어지지 않는다.",
   },
 };
 
@@ -1356,50 +1319,119 @@ function addUnique(list, value) {
  * note가 있으면 NEXT 한 장을 추가해서
  * 설명을 별도 화면으로 분리합니다.
  */
+function splitStoryText(text = "", maxLength = 42) {
+  const normalized = String(text ?? "").trim();
+
+  if (!normalized) {
+    return [""];
+  }
+
+  /*
+   * 글자 수를 맞추기 위해 문장 한가운데를 자르지 않는다.
+   * "하지 / 않는다", "가능성이 / 있다", 인용문 중간 분할 같은
+   * 기계적인 끊김은 금지.
+   *
+   * 여러 개의 완결된 문장이 있을 때만 NEXT 단위로 나누며,
+   * 한 문장이 길더라도 그 문장은 한 화면에 유지한다.
+   */
+  const sentences =
+    normalized.match(/[^.!?…]+(?:[.!?]+|…+|$)/g)?.map((part) => part.trim()).filter(Boolean) ??
+    [normalized];
+
+  if (sentences.length <= 1) {
+    return [normalized];
+  }
+
+  const chunks = [];
+  let current = "";
+
+  sentences.forEach((sentence) => {
+    const candidate = current ? `${current} ${sentence}` : sentence;
+
+    if (current && candidate.length > maxLength) {
+      chunks.push(current);
+      current = sentence;
+    } else {
+      current = candidate;
+    }
+  });
+
+  if (current) {
+    chunks.push(current);
+  }
+
+  return chunks.length ? chunks : [normalized];
+}
+
+function normalizeStoryScene(scene) {
+  if (
+    scene?.character &&
+    storyProfileToBase.has(scene.character) &&
+    !scene.emphasis
+  ) {
+    return {
+      ...scene,
+      character: storyProfileToBase.get(scene.character),
+    };
+  }
+
+  return scene;
+}
+
 function expandStoryScenes(scenes = []) {
-  return scenes.flatMap((scene) => {
-    if (!scene.note) {
-      return [scene];
+  return scenes.flatMap((originalScene) => {
+    const scene = normalizeStoryScene(originalScene);
+    const { note } = scene;
+    const dialogueChunks = splitStoryText(scene.text);
+
+    const dialogueScenes = dialogueChunks.map((text, index) => ({
+      ...scene,
+      note: undefined,
+      text,
+      animation: index === 0 ? scene.animation : "none",
+      deathDiscovery: index === 0 ? scene.deathDiscovery : false,
+    }));
+
+    if (!note) {
+      return dialogueScenes;
     }
 
     const {
-      note,
       character,
       position,
+      fixedPosition,
+      characters,
+      emphasis,
       ...rest
     } = scene;
 
-    return [
-      {
-        ...scene,
-        note: undefined,
-      },
+    const explanationScenes = splitStoryText(note).map((text) => ({
+      ...rest,
+      note: undefined,
+      speaker: "내레이션",
+      text,
+      character: undefined,
+      characters: undefined,
+      position: undefined,
+      fixedPosition: undefined,
+      emphasis: undefined,
+      animation: "none",
+      deathDiscovery: false,
+      prop: scene.prop,
+      propType: scene.propType,
+      explanation: true,
+    }));
 
-      {
-        ...rest,
-
-        speaker: "내레이션",
-        text: note,
-
-        character: undefined,
-        position: undefined,
-
-        /*
-         * 사진/증거 장면이라면
-         * 설명 페이지에서도 같은 사진만 유지.
-         */
-        prop: scene.prop,
-        propType: scene.propType,
-
-        explanation: true,
-      },
-    ];
+    return [...dialogueScenes, ...explanationScenes];
   });
 }
 
 /* =========================================================
    MAIN
 ========================================================= */
+
+const MIN_INVESTIGATED = 2;
+const canEnterFocus = (visited) => visited.length >= MIN_INVESTIGATED;
 
 export default function MysteryEvent({ onExit }) {
   const isMobile = useMysteryMobile();
@@ -1427,6 +1459,15 @@ export default function MysteryEvent({ onExit }) {
     useState(null);
 
   const [wrongSuspect, setWrongSuspect] =
+    useState(null);
+
+  const [pendingCulprit, setPendingCulprit] =
+    useState(null);
+
+  const [pendingSelection, setPendingSelection] =
+    useState(null);
+
+  const [verdictSuspect, setVerdictSuspect] =
     useState(null);
 
   const [warning, setWarning] =
@@ -1501,6 +1542,9 @@ export default function MysteryEvent({ onExit }) {
     setHiddenContext(null);
 
     setWrongSuspect(null);
+    setPendingCulprit(null);
+    setPendingSelection(null);
+    setVerdictSuspect(null);
 
     setWarning(null);
 
@@ -1544,7 +1588,8 @@ export default function MysteryEvent({ onExit }) {
     setSkipConfirm(false);
 
     if (phase === "prologue") {
-      openSummary("prologue", "caseOpen");
+      setStoryIndex(0);
+      setPhase("caseOpen");
       return;
     }
 
@@ -1663,7 +1708,11 @@ export default function MysteryEvent({ onExit }) {
     }
 
     if (phase === "truth") {
-      setPhase("finalChoice");
+      if (verdictSuspect) {
+        setPhase("verdict");
+      } else {
+        setPhase("finalChoice");
+      }
     }
   };
 
@@ -1688,7 +1737,8 @@ export default function MysteryEvent({ onExit }) {
     }
 
     if (phase === "prologue") {
-      openSummary("prologue", "caseOpen");
+      setStoryIndex(0);
+      setPhase("caseOpen");
       return;
     }
 
@@ -1891,22 +1941,28 @@ export default function MysteryEvent({ onExit }) {
     }
 
     /*
-     * WRONG
+     * VERDICT / WRONG
      * -> FINAL ACCUSATION
      */
-    if (phase === "wrong") {
+    if (phase === "verdict" || phase === "wrong") {
+      setPendingCulprit(null);
+      setVerdictSuspect(null);
       setPhase("finalChoice");
       return;
     }
 
     /*
      * THE TRUTH
-     * -> FINAL ACCUSATION
+     * -> 정답 판정 화면
      */
     if (phase === "truth") {
       setStoryIndex(0);
 
-      setPhase("finalChoice");
+      if (verdictSuspect) {
+        setPhase("verdict");
+      } else {
+        setPhase("finalChoice");
+      }
 
       return;
     }
@@ -1935,6 +1991,58 @@ export default function MysteryEvent({ onExit }) {
   };
 
   /* =======================================================
+     INVESTIGATION / FOCUS CONFIRMATION
+  ======================================================= */
+
+  const requestSelection = (kind, id) => {
+    // 일반 1차/2차 조사는 카드 클릭 즉시 진입한다.
+    // "한 번 지정하면 변경 불가" 확인창은 집중 조사에만 사용한다.
+    if (kind === "round1") {
+      openRound1(id);
+      return;
+    }
+
+    if (kind === "round2") {
+      openRound2(id);
+      return;
+    }
+
+    if (kind === "focus1" || kind === "focus2") {
+      setPendingSelection({ kind, id });
+    }
+  };
+
+  const cancelSelection = () => {
+    setPendingSelection(null);
+  };
+
+  const confirmSelection = () => {
+    if (!pendingSelection) return;
+
+    const { kind, id } = pendingSelection;
+    setPendingSelection(null);
+
+    if (kind === "round1") {
+      openRound1(id);
+      return;
+    }
+
+    if (kind === "round2") {
+      openRound2(id);
+      return;
+    }
+
+    if (kind === "focus1") {
+      chooseFirstFocus(id);
+      return;
+    }
+
+    if (kind === "focus2") {
+      chooseSecondFocus(id);
+    }
+  };
+
+  /* =======================================================
      ROUND 1
   ======================================================= */
 
@@ -1946,28 +2054,15 @@ export default function MysteryEvent({ onExit }) {
   };
 
   const requestFocus1 = () => {
-    if (visitedRound1.length < 2) {
+    // 2명 이상 조사하면 즉시 집중 조사 대상 선택 단계로 진행한다.
+    // 미조사 인물은 focus 화면에서 "정보 없음"으로 표시되므로
+    // 별도의 중간 경고가 진행을 막지 않게 한다.
+    if (!canEnterFocus(visitedRound1)) {
       return;
     }
 
-    if (
-      visitedRound1.length <
-      suspects.length
-    ) {
-      setWarning({
-        type: "round1",
-
-        missing: suspects.filter(
-          (suspect) =>
-            !visitedRound1.includes(
-              suspect.id
-            )
-        ),
-      });
-
-      return;
-    }
-
+    setWarning(null);
+    setPendingSelection(null);
     setPhase("focus1");
   };
 
@@ -1996,28 +2091,13 @@ export default function MysteryEvent({ onExit }) {
   };
 
   const requestFocus2 = () => {
-    if (visitedRound2.length < 2) {
+    // 2명 이상 확인하면 즉시 두 번째 집중 조사 대상 선택 단계로 진행한다.
+    if (!canEnterFocus(visitedRound2)) {
       return;
     }
 
-    if (
-      visitedRound2.length <
-      suspects.length
-    ) {
-      setWarning({
-        type: "round2",
-
-        missing: suspects.filter(
-          (suspect) =>
-            !visitedRound2.includes(
-              suspect.id
-            )
-        ),
-      });
-
-      return;
-    }
-
+    setWarning(null);
+    setPendingSelection(null);
     setPhase("focus2");
   };
 
@@ -2062,19 +2142,30 @@ export default function MysteryEvent({ onExit }) {
   ======================================================= */
 
   const chooseCulprit = (id) => {
-    if (id === CORRECT_ID) {
-      setWrongSuspect(null);
+    setPendingCulprit(id);
+  };
 
-      setStoryIndex(0);
+  const cancelCulpritConfirmation = () => {
+    setPendingCulprit(null);
+  };
 
-      setPhase("truth");
-
+  const confirmCulpritChoice = () => {
+    if (!pendingCulprit) {
       return;
     }
 
-    setWrongSuspect(id);
+    setWrongSuspect(
+      pendingCulprit === CORRECT_ID ? null : pendingCulprit
+    );
+    setVerdictSuspect(pendingCulprit);
+    setPendingCulprit(null);
+    setStoryIndex(0);
+    setPhase("verdict");
+  };
 
-    setPhase("wrong");
+  const continueFromCorrectVerdict = () => {
+    setStoryIndex(0);
+    setPhase("truth");
   };
 
   /* =======================================================
@@ -2107,7 +2198,7 @@ export default function MysteryEvent({ onExit }) {
       </button>
 
       {phase !== "cover" &&
-        !["round1Hub", "focus1", "focus2"].includes(phase) && (
+        !["verdict", "culprit", "reward", "wrong"].includes(phase) && (
           <ChapterBanner chapter={currentChapter} />
         )}
 
@@ -2195,11 +2286,10 @@ export default function MysteryEvent({ onExit }) {
           visited={
             visitedRound1
           }
-          onOpen={openRound1}
+          onOpen={(id) => requestSelection("round1", id)}
           proceedLabel="1차 집중 대상 선정"
           proceedEnabled={
-            visitedRound1.length >=
-            2
+            canEnterFocus(visitedRound1)
           }
           onProceed={
             requestFocus1
@@ -2217,16 +2307,12 @@ export default function MysteryEvent({ onExit }) {
         <FocusPick
           round="01"
           title="첫 번째 집중 조사 대상"
-          description="지금까지 본 사람 중 더 자세히 알고 싶은 한 명을 선택하세요."
-          candidates={suspects.filter(
-            (suspect) =>
-              visitedRound1.includes(
-                suspect.id
-              )
-          )}
-          onPick={
-            chooseFirstFocus
-          }
+          description="조사 기록이 충분한 인물만 집중 조사할 수 있습니다."
+          suspects={suspects}
+          visited={visitedRound1}
+          selectedFocus={firstFocus}
+          onPick={(id) => requestSelection("focus1", id)}
+          onBack={() => setPhase("round1Hub")}
         />
       )}
 
@@ -2255,11 +2341,10 @@ export default function MysteryEvent({ onExit }) {
           visited={
             visitedRound2
           }
-          onOpen={openRound2}
+          onOpen={(id) => requestSelection("round2", id)}
           proceedLabel="2차 집중 대상 선정"
           proceedEnabled={
-            visitedRound2.length >=
-            2
+            canEnterFocus(visitedRound2)
           }
           onProceed={
             requestFocus2
@@ -2277,21 +2362,13 @@ export default function MysteryEvent({ onExit }) {
         <FocusPick
           round="02"
           title="두 번째 집중 조사 대상"
-          description="첫 번째 집중 대상과 다른 한 명을 선택하세요. 이 인물의 숨겨진 이야기도 확인할 수 있습니다."
-          candidates={suspects.filter(
-            (suspect) =>
-              visitedRound2.includes(
-                suspect.id
-              ) &&
-              suspect.id !==
-                firstFocus
-          )}
-          firstFocus={
-            firstFocus
-          }
-          onPick={
-            chooseSecondFocus
-          }
+          description="첫 번째 집중 대상과 다른 인물을 선택하세요."
+          suspects={suspects}
+          visited={visitedRound2}
+          firstFocus={firstFocus}
+          selectedFocus={secondFocus}
+          onPick={(id) => requestSelection("focus2", id)}
+          onBack={() => setPhase("round2Hub")}
         />
       )}
 
@@ -2341,6 +2418,16 @@ export default function MysteryEvent({ onExit }) {
         />
       )}
 
+      {phase === "verdict" && verdictSuspect && (
+        <VerdictScreen
+          suspect={suspectMap[verdictSuspect]}
+          correct={verdictSuspect === CORRECT_ID}
+          onCorrectNext={continueFromCorrectVerdict}
+          onRestart={restart}
+          onExit={onExit}
+        />
+      )}
+
       {phase === "wrong" && (
         <WrongResult
           suspect={
@@ -2376,6 +2463,24 @@ export default function MysteryEvent({ onExit }) {
         />
       )}
 
+
+      {pendingSelection &&
+        (pendingSelection.kind === "focus1" || pendingSelection.kind === "focus2") && (
+        <SelectionConfirmModal
+          selection={pendingSelection}
+          suspect={suspectMap[pendingSelection.id]}
+          onCancel={cancelSelection}
+          onConfirm={confirmSelection}
+        />
+      )}
+
+      {pendingCulprit && (
+        <CulpritConfirmModal
+          suspect={suspectMap[pendingCulprit]}
+          onCancel={cancelCulpritConfirmation}
+          onConfirm={confirmCulpritChoice}
+        />
+      )}
 
       {homeConfirm && (
         <HomeConfirmModal
@@ -2483,6 +2588,21 @@ function StoryScreen({
   onPrev,
   onNext,
 }) {
+  const isMobile = useMysteryMobile();
+  const [deathLocked, setDeathLocked] = useState(Boolean(scene.deathDiscovery));
+
+  useEffect(() => {
+    if (!scene.deathDiscovery) {
+      setDeathLocked(false);
+      return undefined;
+    }
+
+    setDeathLocked(true);
+    const timer = window.setTimeout(() => setDeathLocked(false), 2700);
+
+    return () => window.clearTimeout(timer);
+  }, [scene.deathDiscovery]);
+
   const sceneCharacters =
     Array.isArray(scene.characters)
       ? scene.characters
@@ -2514,6 +2634,26 @@ function StoryScreen({
         scene.explanation
           ? styles.explanationScreen
           : ""
+      } ${
+        scene.deathDiscovery
+          ? styles.deathDiscoveryScreen
+          : ""
+      } ${
+        scene.selfieFlash
+          ? styles.selfieMomentScreen
+          : ""
+      } ${
+        scene.dyingMessageReveal
+          ? styles.dyingMessageRevealScreen
+          : ""
+      } ${
+        scene.dyingMessageHold
+          ? styles.dyingMessageHoldScreen
+          : ""
+      } ${
+        scene.soheePose2Intro
+          ? styles.soheePose2IntroScene
+          : ""
       }`}
       style={{
         "--scene-darkness":
@@ -2521,6 +2661,11 @@ function StoryScreen({
 
         "--scene-blur":
           `${scene.blur ?? 0}px`,
+      }}
+      onClick={(event) => {
+        if (!isMobile || deathLocked) return;
+        if (event.target.closest("button, a, input, textarea, select, [role='button']")) return;
+        onNext?.();
       }}
     >
       {!scene.blackout &&
@@ -2544,6 +2689,25 @@ function StoryScreen({
         }
       />
 
+      {scene.selfieFlash && (
+        <div className={styles.selfieMomentFx} aria-hidden="true">
+          <span />
+          <b />
+        </div>
+      )}
+
+      {scene.deathDiscovery && (
+        <div className={styles.deathDiscoveryFx} aria-hidden="true">
+          <div className={styles.deathDiscoveryNoise} />
+          <div className={styles.deathDiscoveryFlash} />
+          <div className={styles.deathDiscoveryStamp}>
+            <span>INCIDENT DETECTED</span>
+            <strong>DEATH<br />CONFIRMED</strong>
+            <small>VICTIM · JEON SEUNGGEUN</small>
+          </div>
+        </div>
+      )}
+
       {sceneCharacters.map((item) => (
         <CharacterVisual
           key={item.id ?? item.src}
@@ -2552,6 +2716,8 @@ function StoryScreen({
           animation={item.animation ?? "soft"}
           grouped={sceneCharacters.length > 1}
           fullBody={fullBodyAssets.has(item.src)}
+          profilePose={loweredStoryProfiles.has(item.src)}
+          characterId={item.id}
         />
       ))}
 
@@ -2586,30 +2752,28 @@ function StoryScreen({
         </span>
       </header>
 
-      <div
-        className={`${styles.simpleDialogue} ${
-          dialogueSide ===
-          "right"
-            ? styles.simpleDialogueRight
-            : styles.simpleDialogueLeft
-        } ${
-          scene.explanation
-            ? styles.explanationDialogue
-            : ""
-        }`}
-      >
-        <div className={styles.dialogueSpeaker}>
-          <strong>{scene.speaker}</strong>
-        </div>
+      {!scene.imageOnly && (
+        <div
+          className={`${styles.simpleDialogue} ${
+            dialogueSide === "right"
+              ? styles.simpleDialogueRight
+              : styles.simpleDialogueLeft
+          } ${scene.explanation ? styles.explanationDialogue : ""}`}
+        >
+          {scene.speaker && (
+            <div className={styles.dialogueSpeaker}>
+              <strong>{scene.speaker}</strong>
+            </div>
+          )}
 
-        <p>
-          {scene.text}
-        </p>
-      </div>
+          <p>{scene.text}</p>
+        </div>
+      )}
 
       <StoryNavigation
         onPrev={onPrev}
         onNext={onNext}
+        disabled={deathLocked}
       />
     </section>
   );
@@ -2625,6 +2789,8 @@ function CharacterVisual({
   animation = "soft",
   grouped = false,
   fullBody = false,
+  profilePose = false,
+  characterId,
 }) {
   const positionClass =
     position === "left"
@@ -2644,9 +2810,12 @@ function CharacterVisual({
 
   return (
     <div
+      data-character={characterId ?? undefined}
       className={`${styles.characterVisual} ${positionClass} ${
         grouped ? styles.characterVisualGrouped : ""
-      } ${fullBody ? styles.characterVisualFullBody : ""} ${animationClass}`}
+      } ${fullBody ? styles.characterVisualFullBody : ""} ${
+        profilePose ? styles.characterVisualProfilePose : ""
+      } ${animationClass}`}
     >
       <img
         src={src}
@@ -2694,49 +2863,33 @@ function CaseOpen({
   onPrev,
   onNext,
 }) {
+  const isMobile = useMysteryMobile();
+
   return (
     <section
       className={`${styles.scene} ${styles.caseOpenScreen}`}
+      onClick={(event) => {
+        if (!isMobile) return;
+        if (event.target.closest("button, a, input, textarea, select, [role='button']")) return;
+        onNext?.();
+      }}
     >
-      <Background
-        src={asset.ending}
-      />
+      <Background src={asset.caseOpenFirstDesktop} />
 
-      <div
-        className={
-          styles.caseOpenShade
-        }
-      />
+      <div className={styles.caseOpenShade} />
 
-      <div
-        className={
-          styles.caseOpenContent
-        }
-      >
-        <span>
-          INCIDENT DETECTED
-        </span>
-
-        <h2>
-          CASE
-          <br />
-          OPEN
-        </h2>
-
+      <div className={styles.caseOpenContent}>
+        <span>INCIDENT DETECTED</span>
+        <h2>CASE<br />OPEN</h2>
         <i />
-
         <p>
-          네 명의 진술과 기록
-          속에서
+          네 명의 진술과 기록 속에서
           <br />
           사건의 진실을 찾아라.
         </p>
       </div>
 
-      <StoryNavigation
-        onPrev={onPrev}
-        onNext={onNext}
-      />
+      <StoryNavigation onPrev={onPrev} onNext={onNext} />
     </section>
   );
 }
@@ -2758,9 +2911,12 @@ function InvestigationHub({
   firstFocus,
   hiddenUnlocked = [],
 }) {
+  const isMobile = useMysteryMobile();
+
   return (
     <section
       className={`${styles.scene} ${styles.hubScreen}`}
+      data-round={round}
     >
       <div
         className={
@@ -2822,6 +2978,7 @@ function InvestigationHub({
                     suspect.id
                   }
                   type="button"
+                  data-suspect={suspect.id}
                   onClick={() =>
                     onOpen(
                       suspect.id
@@ -2835,11 +2992,23 @@ function InvestigationHub({
                   >
                     <img
                       src={
-                        suspect.profile
+                        round === "02" && suspect.pose2
+                          ? suspect.pose2
+                          : suspect.profile
                       }
                       alt=""
                     />
                   </div>
+
+                  {checked && (
+                    <div
+                      className={styles.investigationCompleteStamp}
+                      aria-label={round === "01" ? "조사 완료" : "확인 완료"}
+                    >
+                      <span>{round === "01" ? "조사" : "확인"}</span>
+                      <strong>완료</strong>
+                    </div>
+                  )}
 
                   <div
                     className={
@@ -2885,7 +3054,7 @@ function InvestigationHub({
           )}
         </div>
 
-        <button
+        {isMobile && <button
           className={`${styles.proceedButton} ${
             !proceedEnabled ? styles.proceedDisabled : ""
           }`}
@@ -2894,12 +3063,12 @@ function InvestigationHub({
           onClick={onProceed}
         >
           <span>
-            {proceedEnabled
-              ? proceedLabel
-              : "2명 이상 조사하면 진행할 수 있습니다"}
+            {isMobile
+              ? (proceedEnabled ? proceedLabel : "2명 이상 조사하면 진행할 수 있습니다")
+              : (proceedEnabled ? "NEXT →" : "2명 이상 조사하면 진행할 수 있습니다")}
           </span>
           <b>→</b>
-        </button>
+        </button>}
 
         <aside
           className={`${styles.caseProgressHud} ${
@@ -2925,15 +3094,19 @@ function InvestigationHub({
           <b>
             {proceedEnabled ? "REQUIREMENT CLEARED" : "LOCKED · 2명 이상 조사"}
           </b>
-          <button
-            type="button"
-            disabled={!proceedEnabled}
-            onClick={onProceed}
-          >
-            NEXT PHASE →
-          </button>
+
         </aside>
       </div>
+      {!isMobile && proceedEnabled && (
+        <button
+          className={styles.nextPhaseButton}
+          type="button"
+          aria-label={proceedLabel}
+          onClick={onProceed}
+        >
+          <span>NEXT PHASE</span><b aria-hidden="true">→</b>
+        </button>
+      )}
     </section>
   );
 }
@@ -2946,83 +3119,96 @@ function FocusPick({
   round,
   title,
   description,
-  candidates,
+  suspects,
+  visited = [],
   firstFocus,
+  selectedFocus,
   onPick,
+  onBack,
 }) {
+  const [notice, setNotice] = useState("");
+  const roundLabel = round === "01" ? "1차 조사 완료" : "2차 조사 완료";
+
+  const handleLockedPick = () => {
+    setNotice("이미 집중조사 대상이 지정되었습니다. 이번 조사에서는 변경할 수 없습니다.");
+  };
+
   return (
-    <section
-      className={`${styles.scene} ${styles.focusScreen}`}
-    >
-      <div
-        className={
-          styles.focusInner
-        }
-      >
-        <header
-          className={
-            styles.focusHeader
-          }
-        >
+    <section className={`${styles.scene} ${styles.focusScreen}`}>
+      <div className={styles.focusInner}>
+        <header className={styles.focusHeader}>
           <h2>{title}</h2>
-
-          <p>
-            {description}
-          </p>
-
-          {firstFocus && (
-            <small>
-              FOCUS 01 ·{" "}
-              {
-                suspectMap[
-                  firstFocus
-                ]?.name
-              }
-            </small>
-          )}
+          <p>{description}</p>
         </header>
 
-        <div
-          className={
-            styles.focusGrid
-          }
-        >
-          {candidates.map(
-            (suspect) => (
+        {notice && (
+          <p className={styles.focusLockNotice} role="status">
+            {notice}
+          </p>
+        )}
+
+        <div className={styles.focusGrid}>
+          {suspects.map((suspect) => {
+            const hasInfo = visited.includes(suspect.id);
+            const alreadyFocused = round === "02" && firstFocus === suspect.id;
+            const isSelected = selectedFocus === suspect.id;
+            const lockedBySelection = Boolean(selectedFocus) && !isSelected;
+            const selectable = hasInfo && !alreadyFocused && !lockedBySelection;
+
+            const stampText = !hasInfo
+              ? "정보 없음"
+              : alreadyFocused
+                ? "집중 조사 완료"
+                : isSelected
+                  ? "집중 조사 고정"
+                  : roundLabel;
+
+            const handleClick = () => {
+              if (!hasInfo || alreadyFocused) return;
+              if (lockedBySelection) {
+                handleLockedPick();
+                return;
+              }
+              setNotice("");
+              onPick(suspect.id);
+            };
+
+            return (
               <button
-                key={
-                  suspect.id
-                }
+                key={suspect.id}
                 type="button"
-                onClick={() =>
-                  onPick(
-                    suspect.id
-                  )
-                }
+                aria-disabled={!selectable && !lockedBySelection}
+                className={`${styles.focusCard} ${
+                  selectable || isSelected ? styles.focusCardReady : styles.focusCardLocked
+                } ${isSelected ? styles.focusCardSelected : ""}`}
+                data-suspect={suspect.id}
+                onClick={handleClick}
               >
-                <div
-                  className={
-                    styles.focusPortrait
-                  }
-                >
-                  <img
-                    src={
-                      suspect.image
-                    }
-                    alt=""
-                  />
+                <div className={styles.focusPortrait}>
+                  <img src={suspect.pose2 ?? suspect.image} alt="" />
                 </div>
 
-                <strong>
-                  {
-                    suspect.name
-                  }
-                </strong>
+                <strong>{suspect.name}</strong>
 
+                <div
+                  className={`${styles.focusStamp} ${
+                    hasInfo ? styles.focusStampRed : styles.focusStampGray
+                  }`}
+                >
+                  {stampText}
+                </div>
               </button>
-            )
-          )}
+            );
+          })}
         </div>
+
+        <button
+          className={styles.focusPrevButton}
+          type="button"
+          onClick={onBack}
+        >
+          ← PREV
+        </button>
       </div>
     </section>
   );
@@ -3036,49 +3222,48 @@ function RoundTwoIntro({
   firstFocus,
   onNext,
 }) {
+  const isMobile = useMysteryMobile();
+
   return (
     <section
-      className={`${styles.scene} ${styles.roundTwoIntro}`}
+      className={`${styles.scene} ${styles.caseOpenScreen} ${styles.roundTwoCaseOpen}`}
+      onClick={(event) => {
+        if (!isMobile) return;
+        if (event.target.closest("button, a, input, textarea, select, [role='button']")) return;
+        onNext?.();
+      }}
     >
-      <div
-        className={
-          styles.roundTwoCopy
-        }
-      >
-        <span>
-          SECOND INVESTIGATION
-        </span>
+      <Background src={asset.caseOpenSecondDesktop} />
+      <div className={styles.caseOpenShade} />
 
-        {firstFocus && (
-          <small>
-            FOCUS 01 · {firstFocus.name}
-          </small>
-        )}
-
-        <h2>
-          진술과 기록이
-          <br />
-          맞지 않는다.
-        </h2>
-
+      <div className={styles.caseOpenContent}>
+        <span>STATEMENT REVIEW</span>
+        <h2>CASE<br />REOPEN</h2>
+        <i />
         <p>
-          이제부터는 과거의 관계가
-          아니라
-          <br />
-          사건 당일의 시간과 행동을
-          확인합니다.
+          진술과 기록을 다시 확인하라.
+          {firstFocus ? <><br />FOCUS 01 · {firstFocus.name}</> : null}
         </p>
-
-        <button
-          type="button"
-          onClick={onNext}
-        >
-          2차 조사 시작 →
-        </button>
       </div>
+
+      <StoryNavigation onPrev={undefined} onNext={onNext} />
     </section>
   );
 }
+
+const reconstructionSummaries = {
+  jiyoung: "단체사진 뒤 자리로 돌아갔다. 재생 기록이 남아 있다.",
+  sohee: "사건 전후 기내 뒤쪽으로 이동했다. 정확한 시각은 불분명하다.",
+  jeongeun: "피해자의 컵을 만진 사실을 숨겼다.",
+  hyeonsu: "팔찌 제거 시점과 동선에 모순이 남아 있다.",
+};
+
+const reconstructionWebSummaries = {
+  jiyoung: "단체사진 촬영 후 자신의 자리로 돌아갔다고 진술했다. 기내 화면의 재생 기록은 사건 핵심 시간대까지 이어져 있다. 다만 사진 촬영 직후의 이동 시각은 다른 기록과 함께 확인할 필요가 있다.",
+  sohee: "사건 전후 기내 뒤쪽으로 이동한 정황이 있다. 화장실에서 돌아오다 평소보다 조용한 승근에게 말을 걸었다고 진술했다. 승근을 확인한 시점과 이동 시간은 주변 진술과 대조해야 한다.",
+  jeongeun: "피해자의 컵을 만진 사실은 인정했다. 다만 컵을 만진 시점과 따뜻한 물을 요청한 시각은 서로 다른 행동이라고 진술했다. 컵의 이동 경로와 주변 승객의 기억을 다시 확인할 필요가 있다.",
+  hyeonsu: "팔찌 제거 시점과 피해자 접근 여부에 관한 진술에 일부 모순이 남아 있다. 커피 전달 과정과 관련된 기록 역시 완전히 일치하지 않는다. 사건 핵심 시간대의 동선을 다른 인물의 진술과 직접 대조해야 한다.",
+};
 
 /* =========================================================
    RECONSTRUCTION
@@ -3091,147 +3276,59 @@ function Reconstruction({
   onBack,
   onNext,
 }) {
-  const checked =
-    suspects.filter(
-      (suspect) =>
-        visitedRound2.includes(
-          suspect.id
-        )
-    );
+  const isMobile = useMysteryMobile();
 
   return (
-    <section
-      className={`${styles.scene} ${styles.reconstructionScreen}`}
-    >
-      <div
-        className={
-          styles.reconstructionInner
-        }
-      >
-        <header
-          className={
-            styles.reconstructionHeader
-          }
-        >
-          <span>
-            FINAL RECONSTRUCTION
-          </span>
-
-          <h2>
-            모두가 거짓말했다.
-          </h2>
-
-          <p>
-            하지만 모두가 같은 것을
-            숨긴 것은 아니었다.
-          </p>
+    <section className={`${styles.scene} ${styles.reconstructionScreen}`}>
+      <div className={styles.reconstructionInner}>
+        <header className={styles.reconstructionHeader}>
+          <span>FINAL RECONSTRUCTION</span>
+          <h2>모두가 거짓말했다.</h2>
+          <p>하지만 모두가 같은 것을 숨긴 것은 아니었다.</p>
         </header>
 
-        <div
-          className={
-            styles.reconstructionList
-          }
-        >
-          {checked.map(
-            (suspect) => (
+        <div className={styles.reconstructionList}>
+          {suspects.map((suspect) => {
+            const confirmed = visitedRound2.includes(suspect.id);
+            return (
               <article
-                key={
-                  suspect.id
-                }
+                key={suspect.id}
+                data-suspect={suspect.id}
+                className={`${!confirmed ? styles.reconstructionMissing : ""} ${!isMobile ? styles.reconstructionWebCard : ""}`}
               >
-                <div>
-                  <small>
-                    SUSPECT{" "}
-                    {
-                      suspect.number
-                    }
-                  </small>
+                <div className={styles.reconstructionFace}>
+                  <img
+                    src={suspect.face}
+                    alt={`${suspect.name} 얼굴`}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = suspect.pose2 ?? suspect.image;
+                    }}
+                  />
+                </div>
 
-                  <strong>
-                    {
-                      suspect.name
-                    }
-                  </strong>
+                <div className={styles.reconstructionCardHead}>
+                  <strong>{suspect.name}</strong>
                 </div>
 
                 <p>
-                  {
-                    suspect.secondSummary
-                  }
+                  {confirmed
+                    ? (isMobile ? reconstructionSummaries[suspect.id] : reconstructionWebSummaries[suspect.id])
+                    : "2차 진술이 아직 확인되지 않았다."}
                 </p>
 
-                {(firstFocus ===
-                  suspect.id ||
-                  secondFocus ===
-                    suspect.id) && (
-                  <span>
-                    FOCUS
-                  </span>
+                {(firstFocus === suspect.id || secondFocus === suspect.id) && (
+                  <span>FOCUS</span>
                 )}
               </article>
-            )
-          )}
-
-          {checked.length <
-            4 && (
-            <article
-              className={
-                styles.reconstructionMissing
-              }
-            >
-              <div>
-                <small>
-                  WARNING
-                </small>
-
-                <strong>
-                  미확인 진술
-                </strong>
-              </div>
-
-              <p>
-                아직 확인하지 않은
-                2차 진술이 있습니다.
-              </p>
-            </article>
-          )}
+            );
+          })}
         </div>
 
-        <div
-          className={
-            styles.reconstructionQuote
-          }
-        >
-          <span>
-            KEY QUESTION
-          </span>
 
-          <strong>
-            누가 감정을 숨겼고,
-            <br />
-            누가 사건 당일의 행동을
-            숨겼는가?
-          </strong>
-        </div>
-
-        <nav
-          className={
-            styles.bottomActions
-          }
-        >
-          <button
-            type="button"
-            onClick={onBack}
-          >
-            ← PREV
-          </button>
-
-          <button
-            type="button"
-            onClick={onNext}
-          >
-            최종 지목 →
-          </button>
+        <nav className={styles.bottomActions}>
+          <button type="button" onClick={onBack}>← PREV</button>
+          <button type="button" onClick={onNext}>최종 지목 →</button>
         </nav>
       </div>
     </section>
@@ -3249,6 +3346,8 @@ function FinalChoice({
   onChoose,
   onBack,
 }) {
+  const isMobile = useMysteryMobile();
+
   return (
     <section
       className={`${styles.scene} ${styles.finalScreen}`}
@@ -3273,10 +3372,6 @@ function FinalChoice({
             SEUNGGEUN?
           </h2>
 
-          <p>
-            네 명 모두 다시 선택할 수
-            있습니다.
-          </p>
         </header>
 
         <div
@@ -3291,6 +3386,7 @@ function FinalChoice({
                   suspect.id
                 }
                 type="button"
+                data-suspect={suspect.id}
                 onClick={() =>
                   onChoose(
                     suspect.id
@@ -3303,10 +3399,12 @@ function FinalChoice({
                   }
                 >
                   <img
-                    src={
-                      suspect.image
-                    }
-                    alt=""
+                    src={isMobile ? suspect.face : (suspect.pose2 ?? suspect.face)}
+                    alt={`${suspect.name} ${isMobile ? "얼굴" : "집중 조사 포즈"}`}
+                    onError={(event) => {
+                      event.currentTarget.onerror = null;
+                      event.currentTarget.src = suspect.pose2 ?? suspect.image;
+                    }}
                   />
                 </div>
 
@@ -3336,13 +3434,12 @@ function FinalChoice({
                   )}
                 </div>
 
-                <b>
-                  범인으로 지목 →
-                </b>
               </button>
             )
           )}
         </div>
+
+        <p className={styles.finalPrompt}>범인을 지목해주세요.</p>
 
         <button
           className={
@@ -3359,7 +3456,164 @@ function FinalChoice({
 }
 
 /* =========================================================
-   WRONG
+   FINAL ACCUSATION CONFIRM / VERDICT
+========================================================= */
+
+function SelectionConfirmModal({ selection, suspect, onCancel, onConfirm }) {
+  if (!selection || !suspect) return null;
+
+  const isSecond = selection.kind === "focus2";
+  const label = `${isSecond ? "두 번째" : "첫 번째"} 집중 조사`;
+
+  return (
+    <div className={styles.modalOverlay} onMouseDown={onCancel}>
+      <section
+        className={`${styles.confirmModal} ${styles.selectionConfirmModal}`}
+        role="dialog"
+        aria-modal="true"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <span>{label.toUpperCase()}</span>
+        <h2>{suspect.name}님을 집중 조사 대상으로 지정하시겠습니까?</h2>
+        <p>
+          한 번 지정한 대상은 이번 집중 조사에서는 변경할 수 없습니다.
+        </p>
+        <button type="button" onClick={onConfirm}>집중 조사 시작</button>
+        <button type="button" onClick={onCancel}>취소</button>
+      </section>
+    </div>
+  );
+}
+
+function CulpritConfirmModal({ suspect, onCancel, onConfirm }) {
+  if (!suspect) return null;
+
+  return (
+    <div className={styles.modalOverlay} onMouseDown={onCancel}>
+      <section
+        className={`${styles.confirmModal} ${styles.culpritConfirmModal}`}
+        role="dialog"
+        aria-modal="true"
+        onMouseDown={(event) => event.stopPropagation()}
+      >
+        <span>FINAL ACCUSATION</span>
+        <h2>정말 {suspect.name}님을 범인으로 지목하시겠습니까?</h2>
+        <p>
+          최종 지목입니다. 오답일 경우 이번 조사는 실패 처리되며
+          처음부터 다시 도전해야 합니다.
+        </p>
+        <button type="button" onClick={onConfirm}>범인 지목 확정</button>
+        <button type="button" onClick={onCancel}>취소</button>
+      </section>
+    </div>
+  );
+}
+
+function VerdictScreen({
+  suspect,
+  correct,
+  onCorrectNext,
+  onRestart,
+  onExit,
+}) {
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    setRevealed(false);
+    const timer = window.setTimeout(() => setRevealed(true), 3000);
+    return () => window.clearTimeout(timer);
+  }, [suspect?.id, correct]);
+
+  if (!suspect) return null;
+
+  const copy = wrongCopy[suspect.id];
+  const verdictLetters = correct
+    ? ["맞", "습", "니", "다."]
+    : ["아", "니", "었", "습", "니", "다."];
+
+  return (
+    <section
+      className={`${styles.scene} ${styles.verdictScreen} ${
+        correct ? styles.verdictCorrect : styles.verdictWrong
+      } ${revealed ? styles.verdictRevealed : styles.verdictJudging}`}
+    >
+      <Background src={asset.cabinAlt} />
+      <div className={styles.verdictShade} />
+
+      {!revealed && (
+        <div className={styles.verdictFx} aria-hidden="true">
+          <div className={styles.verdictNoise} />
+          <div className={styles.verdictFlash} />
+          <div className={styles.verdictCloseups}>
+            {["eyes", "mouth", "hands", "silhouette"].map((part, index) => (
+              <div
+                key={part}
+                className={`${styles.verdictCloseup} ${styles[`verdictCloseup${index + 1}`]}`}
+              >
+                <img src={suspect.pose2 ?? suspect.image} alt="" />
+              </div>
+            ))}
+          </div>
+          <div className={styles.verdictTarget}>
+            <span>FINAL ACCUSATION</span>
+            <strong>{suspect.name}님은</strong>
+            <small>THE CULPRIT?</small>
+          </div>
+        </div>
+      )}
+
+      {revealed && (
+        <div className={styles.verdictResult}>
+          <div className={styles.verdictHeadline}>
+            <span>{correct ? "FINAL VERDICT · CULPRIT CONFIRMED" : "FINAL VERDICT · ACCUSATION FAILED"}</span>
+            <h2 className={correct ? styles.verdictCorrectTitle : styles.verdictWrongTitle}>
+              <b>범인이</b>
+              <i className={styles.verdictLetterRun}>
+                {verdictLetters.map((letter, index) => (
+                  <em key={`${letter}-${index}`} style={{ "--letter-index": index }}>
+                    {letter}
+                  </em>
+                ))}
+              </i>
+            </h2>
+          </div>
+
+          <div className={styles.verdictPortrait}>
+            <img src={suspect.pose2 ?? suspect.image} alt="" />
+          </div>
+
+          {!correct && copy?.reaction && (
+            <div className={styles.verdictReaction}>
+              <strong>{suspect.name}</strong>
+              {copy.reaction.map((line) => (
+                <p key={line}>{line}</p>
+              ))}
+            </div>
+          )}
+
+          {correct ? (
+            <button
+              className={styles.verdictNext}
+              type="button"
+              onClick={onCorrectNext}
+            >
+              진실 확인하기
+            </button>
+          ) : (
+            <div className={styles.verdictFailActions}>
+              <p>잘못된 최종 지목입니다. 이번 조사는 여기서 종료됩니다.</p>
+              <button type="button" onClick={onRestart}>처음부터</button>
+              <button type="button" onClick={onExit}>나가기</button>
+            </div>
+          )}
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* =========================================================
+   WRONG · LEGACY FALLBACK
 ========================================================= */
 
 function WrongResult({
@@ -3459,68 +3713,36 @@ function WrongResult({
    CULPRIT
 ========================================================= */
 
-function CulpritScreen({
-  onNext,
-}) {
+function CulpritScreen({ onNext }) {
   return (
-    <section
-      className={`${styles.scene} ${styles.culpritScreen}`}
-    >
-      <div
-        className={
-          styles.culpritGlow
-        }
+    <section className={`${styles.scene} ${styles.culpritScreen} ${styles.criminalRevealScreen}`}>
+      <picture>
+        <source media="(min-width: 1025px)" srcSet={asset.criminalWeb} />
+      <img
+        className={styles.criminalBackdrop}
+        src={asset.criminal}
+        alt="김현수 범인 공개"
+        onError={(event) => {
+          event.currentTarget.onerror = null;
+          event.currentTarget.src = asset.hyeonsuProfile;
+        }}
       />
+      </picture>
+      <div className={styles.criminalNoise} aria-hidden="true" />
+      <div className={styles.criminalSlash} aria-hidden="true" />
 
-      <div
-        className={
-          styles.culpritInner
-        }
-      >
-        <span>
-          CULPRIT FOUND
-        </span>
-
-        <div
-          className={
-            styles.culpritPortrait
-          }
-        >
-          <img
-            src={
-              asset.hyeonsu
-            }
-            alt=""
-          />
-        </div>
-
-        <small>
-          SUSPECT 04
-        </small>
-
-        <h2>
-          김현수
-        </h2>
-
+      <div className={styles.culpritInner}>
+        <span>THE CULPRIT</span>
+        <small>CASE 01 · CRIMINAL REVEAL</small>
+        <h2>김현수</h2>
         <i />
-
         <p>
-          과거의 감정을 숨긴 사람은
-          네 명 모두였다.
-          <br />
-          그러나 사건 당일 자신의
-          행동을 숨긴 사람은 단 한
-          명이었다.
+          흩어진 진술과 기록이 마지막에 가리킨 한 사람.<br />
+          승근에게 문제의 커피를 건넨 사람은 김현수였다.
         </p>
       </div>
 
-      <button
-        className={
-          styles.culpritNext
-        }
-        type="button"
-        onClick={onNext}
-      >
+      <button className={styles.culpritNext} type="button" onClick={onNext}>
         사건 해결 보상 보기 →
       </button>
     </section>
@@ -3811,16 +4033,19 @@ function ConfirmModal({
 function StoryNavigation({
   onPrev,
   onNext,
+  disabled = false,
 }) {
   return (
     <nav
       className={
         styles.storyNav
       }
+      onClick={(event) => event.stopPropagation()}
     >
       <button
         type="button"
         onClick={onPrev}
+        disabled={disabled}
       >
         ← PREV
       </button>
@@ -3828,6 +4053,7 @@ function StoryNavigation({
       <button
         type="button"
         onClick={onNext}
+        disabled={disabled}
       >
         NEXT →
       </button>
@@ -3840,7 +4066,22 @@ function StoryNavigation({
 ========================================================= */
 
 function Background({ src }) {
-  return (
+  const mobileSrc =
+    src === asset.flight
+      ? asset.flightMobile
+      : src === asset.cabin || src === asset.cabinAlt
+        ? asset.cabinMobile
+        : src === asset.groupScene
+          ? asset.groupSceneMobile
+          : src === asset.collapseScene
+            ? asset.collapseSceneMobile
+            : src === asset.caseOpenFirstDesktop
+          ? asset.caseOpenFirstMobile
+          : src === asset.caseOpenSecondDesktop
+            ? asset.caseOpenSecondMobile
+            : null;
+
+  const image = (
     <img
       className={`${styles.background} ${
         src === asset.flight ? styles.backgroundNaturalFit : ""
@@ -3850,4 +4091,16 @@ function Background({ src }) {
       aria-hidden="true"
     />
   );
+
+  if (!mobileSrc) {
+    return image;
+  }
+
+  return (
+    <picture>
+      <source media="(max-width: 1024px)" srcSet={mobileSrc} />
+      {image}
+    </picture>
+  );
 }
+// WEB-PASS-01: mobile visuals frozen; web layout, progress HUD, reconstruction, accusation and selection confirmations revised.
