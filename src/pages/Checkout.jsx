@@ -947,31 +947,25 @@ export default function Checkout() {
       } catch {
         window.alert("주문 이력을 저장하지 못했습니다. 주문번호를 보관하고 고객센터에 문의해 주세요.");
       }
-      sessionStorage.setItem(
-        "lastOrder",
-        JSON.stringify(
-          orderData
-        )
-      );
+      try {
+        sessionStorage.setItem("lastOrder", JSON.stringify(orderData));
+      } catch { /* The completion page also receives the order through navigation. */ }
 
 
       paymentTimer.current =
         window.setTimeout(
           () => {
-            sessionStorage.removeItem(
-              "directPurchase"
-            );
-
-            sessionStorage.removeItem(
-              "checkoutSelection"
-            );
+            try {
+              sessionStorage.removeItem("directPurchase");
+              sessionStorage.removeItem("checkoutSelection");
+            } catch { /* Continue completing the order if storage is unavailable. */ }
 
             removePurchasedItems(
               checkoutItems
             );
 
             navigate(
-              "/order-complete"
+              "/order-complete", { state: { order: orderData } }
             );
           },
           1800

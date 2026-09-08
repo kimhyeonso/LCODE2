@@ -21,7 +21,7 @@ export default function FavoritePlaces() {
   const remove = async (place) => {
     try {
       await deleteFavoritePlace(user.uid, place.id);
-      setState((current) => ({ ...current, places: current.places.filter((item) => item.id !== place.id) }));
+      setState((current) => ({ ...current, error: "", places: current.places.filter((item) => item.id !== place.id) }));
       window.dispatchEvent(new Event("favorite-places-changed"));
     } catch {
       setState((current) => ({ ...current, error: "찜한 장소를 삭제하지 못했습니다." }));
@@ -37,7 +37,7 @@ export default function FavoritePlaces() {
       <div className={styles.divider} />
       {state.loading && <p className={styles.empty}>불러오는 중…</p>}
       {state.error && <p className={styles.error} role="alert">{state.error}</p>}
-      {!state.loading && !state.places.length && <div className={styles.emptyState}><strong>아직 찜한 장소가 없어요!</strong><Link to="/search">여행지 둘러보기 <span aria-hidden="true">→</span></Link></div>}
+      {!state.loading && !state.error && !state.places.length && <div className={styles.emptyState}><strong>아직 찜한 장소가 없어요!</strong><Link to="/search">여행지 둘러보기 <span aria-hidden="true">→</span></Link></div>}
       <section className={styles.grid}>
         {state.places.map((place) => (
           <article key={place.id}>

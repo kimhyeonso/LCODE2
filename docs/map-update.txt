@@ -1,0 +1,49 @@
+무료 지도 및 한국어 기본 표시 변경 내역
+
+1. 변경 목적
+일본과 중국 지역을 포함한 지도에서 한국어 지명을 우선 표시하면서,
+별도 API 키나 결제 계정 없이 지도 배경을 사용할 수 있도록 변경했습니다.
+
+2. 적용 내용
+- 기존 Leaflet 지도에 MapLibre GL을 연결했습니다.
+- 기본 배경은 OpenFreeMap의 Liberty 벡터 지도를 사용합니다.
+- 한국어 이름(name:ko)이 있으면 한국어로 표시합니다.
+- 한국어 이름이 없으면 현지 이름을 표시하고, 그마저 없으면 로마자/영어 이름을 사용합니다.
+- 도로 번호 등 이름이 아닌 표시는 유지합니다.
+- 기존 일정 마커, 선택 강조, 팝업, 확대·축소 및 장소 범위 맞춤 기능을 유지합니다.
+- 좌표가 없으면 세계 지도를 표시하는 기존 동작을 유지합니다.
+- 벡터 지도 초기 로딩 중에는 기존 OpenStreetMap 배경을 표시합니다.
+- 초기 로딩이 15초를 넘거나 지도 오류/WebGL 오류가 발생하면 기존 배경으로 돌아갑니다.
+  이 대체 배경은 현지 언어로 표시되며 한국어 변환을 지원하지 않습니다.
+- 지도 하단에 OpenFreeMap, OpenMapTiles, OpenStreetMap 출처를 표시합니다.
+- MapLibre 코드는 지도를 사용할 때 불러오도록 분리했습니다.
+
+3. 비용 및 범위
+OpenFreeMap 공개 서버는 현재 무료이며 API 키와 회원가입이 필요하지 않습니다.
+상업적 사용이 허용됩니다. 별도 유료 API 연결 및 결제 설정은 추가하지 않았습니다.
+이번 변경은 지도 배경과 지명 표시입니다. 장소 검색, 길찾기, 누락 좌표 보완은 포함하지 않습니다.
+한국어 번역이 없는 장소까지 모두 한글로 표시되는 것은 아닙니다.
+OpenFreeMap은 서비스 가동률 보장(SLA)을 제공하지 않습니다.
+
+4. 수정 파일
+- src/components/PlaceMap.jsx: 새 배경 연결 및 지도 이동·확대 범위 설정
+- src/components/KoreanMapLayer.jsx: 무료 벡터 지도 로딩, 출처, 오류 시 대체 배경
+- src/utils/mapStyle.js: 한국어 우선 지명 스타일 변환
+- package.json / package-lock.json: MapLibre 및 Leaflet 연결 패키지 추가
+- scripts/check-korean-map.mjs: 지도 스타일과 외부 지도 리소스 검증
+
+5. 검증 결과
+- npm run build 통과 (번들 크기 경고 있음)
+- 변경 소스 oxlint 검사 통과
+- MapLibre 지도 스타일 유효성 검증 통과
+- 한국어 우선 표시 / 현지 이름 대체 / 도로 번호 유지 로직 검증 통과
+- 도쿄·베이징 벡터 타일 HTTP 200 응답 확인
+- 한국어 지명 필드와 한글 글꼴 엔드포인트 HTTP 200 응답 확인
+- 실제 브라우저 렌더링 및 클릭·모바일 동작 검증은 브라우저 연결 불가로 미실시
+- 서버 배포는 하지 않았으며 프로젝트 코드에 반영했습니다.
+
+공식 참고 자료
+https://openfreemap.org/
+https://openfreemap.org/quick_start/
+https://openmaptiles.org/languages/
+https://github.com/maplibre/maplibre-gl-leaflet

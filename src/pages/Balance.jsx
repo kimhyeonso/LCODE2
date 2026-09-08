@@ -355,13 +355,13 @@ const Result = ({ result, onPlan }) => (
 const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
   const [primary, ...more] = recommendations;
   const defaultExchange = exchangeByCountry[primary?.country] || exchangeByCountry.korea;
-  const [exchange, setExchange] = useState(defaultExchange);
+  const [loadedExchange, setExchange] = useState(null);
+  const exchange = loadedExchange?.code === defaultExchange.code ? loadedExchange : defaultExchange;
 
   useEffect(() => {
     let active = true;
 
     if (defaultExchange.code === "KRW") {
-      setExchange(defaultExchange);
       return () => { active = false; };
     }
 
@@ -375,7 +375,7 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
       });
 
     return () => { active = false; };
-  }, [defaultExchange.code]);
+  }, [defaultExchange]);
 
   if (!primary) return null;
 

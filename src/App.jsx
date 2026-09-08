@@ -156,7 +156,7 @@ export default function App() {
           <Route path="/travel-planner" element={<TravelPlanner />} />
           <Route path="/login" element={<Login />} />
           <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-          <Route path="/buy" element={<Buy />} />
+          <Route path="/buy" element={<ProtectedRoute><Buy /></ProtectedRoute>} />
           <Route path="/paking" element={<Paking />} />
           <Route path="/wishlist" element={<ProtectedRoute><Wishlist /></ProtectedRoute>} />
           <Route path="/mystories" element={<ProtectedRoute><Mystories /></ProtectedRoute>} />

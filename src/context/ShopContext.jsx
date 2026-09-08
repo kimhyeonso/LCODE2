@@ -531,10 +531,11 @@ export function ShopProvider({
   ======================================================= */
 
   useEffect(() => {
-    localStorage.setItem(
-      "lcode-shop",
-      JSON.stringify(shop)
-    );
+    try {
+      localStorage.setItem("lcode-shop", JSON.stringify(shop));
+    } catch {
+      // Keep the shop usable when browser storage is full or unavailable.
+    }
   }, [shop]);
 
 
@@ -557,12 +558,11 @@ export function ShopProvider({
       .then((items) => {
         if (!active) return;
 
-        if (items.length) {
-          setShop((state) => ({
-            ...state,
-            cart: normalizeShop({ cart: items }).cart,
-          }));
-        }
+        // An empty server cart is authoritative too; never upload a previous account's cart.
+        setShop((state) => ({
+          ...state,
+          cart: normalizeShop({ cart: items }).cart,
+        }));
 
         setCartSyncUserId(user.uid);
       })

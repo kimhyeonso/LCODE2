@@ -57,3 +57,34 @@ test("checkout records server time and retries keep original date", async () => 
   await app.recordShopOrder(request);
   assert.equal(app.records.get("users/u1/shop/purchaseHistory").orders[0].orderedAt, first.orderedAt);
 });
+
+test("malformed checkout items return invalid-argument without writing", async () => {
+  for (const item of [null, {}, { id: "P001", name: " " },
+    { id: "P001", name: "Product", price: "Infinity" },
+    { id: "P001", name: "Product", quantity: {} },
+    { id: "P001", name: "Product", option: { extraPrice: "1e999" } }]) {
+    const app = setup();
+    await assert.rejects(app.recordShopOrder({ auth: { uid: "u1" }, data: { orderNumber: "o1", items: [item] } }), { code: "invalid-argument" });
+    assert.equal(app.records.size, 0);
+  }
+});
+
+test("null review photos return invalid-argument", async () => {
+  await assert.rejects(setup().saveProductReview({ auth: { uid: "u1" }, data: { ...data, photos: [null] } }), { code: "invalid-argument" });
+});
+
+test("malformed stored history is rejected instead of overwritten", async () => {
+  const app = setup({ "users/u1/shop/purchaseHistory": { orders: {} } });
+  await assert.rejects(app.recordShopOrder({ auth: { uid: "u1" }, data: { orderNumber: "o1", items: [{ id: "P001", name: "Product" }] } }), { code: "failed-precondition" });
+  await assert.rejects(app.saveProductReview({ auth: { uid: "u1" }, data }), { code: "failed-precondition" });
+  assert.deepEqual(app.records.get("users/u1/shop/purchaseHistory"), { orders: {} });
+});
+
+test("review eligibility skips malformed historical entries", async () => {
+  const saved = history(1);
+  saved.orders.unshift(null, { ...saved.orders[0], items: {} });
+  saved.orders[2].items.unshift(null);
+  const app = setup({ "users/u1/shop/purchaseHistory": saved });
+  const review = await app.saveProductReview({ auth: { uid: "u1" }, data });
+  assert.equal(review.productName, "Product");
+});

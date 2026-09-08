@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import MypageBackLink from "../components/MypageBackLink";
 import DesrinationThumnail from "../components/DesrinationThumnail";
@@ -69,6 +69,9 @@ export default function Wishlist() {
     }, new Map()).values(),
   );
   const { user } = useAuth();
+  const mutationVersion = useRef(0);
+  const deleteLock = useRef(false);
+  const [error, setError] = useState("");
   const [favoriteIds, setFavoriteIds] = useState(
     () => user?.uid ? (getStoredFavorites(user.uid) ?? []) : [],
   );
@@ -76,11 +79,19 @@ export default function Wishlist() {
   useEffect(() => {
     if (!user?.uid) return undefined;
     let active = true;
+    const version = mutationVersion.current;
     const storedIds = getStoredFavorites(user.uid);
     getFavoriteTrips(user.uid)
-      .then((ids) => active && setFavoriteIds(storedIds ?? ids))
+      .then((ids) => {
+        if (!active || version !== mutationVersion.current) return;
+        setFavoriteIds(ids);
+        storeFavorites(user.uid, ids);
+      })
       .catch((error) => {
-        if (active && storedIds !== null) setFavoriteIds(storedIds);
+        if (active && version === mutationVersion.current) {
+          if (storedIds !== null) setFavoriteIds(storedIds);
+          setError("찜한 일정을 불러오지 못했습니다. 다시 시도해 주세요.");
+        }
         console.error("찜한 일정을 불러오지 못했습니다.", error);
       });
     return () => { active = false; };
@@ -91,7 +102,10 @@ export default function Wishlist() {
     .filter(Boolean);
 
   const removeFavorite = async (tripId) => {
-    if (!user?.uid) return;
+    if (!user?.uid || deleteLock.current) return;
+    deleteLock.current = true;
+    mutationVersion.current += 1;
+    setError("");
     const nextIds = favoriteIds.filter((id) => id !== tripId);
     setFavoriteIds(nextIds);
     storeFavorites(user.uid, nextIds);
@@ -99,7 +113,12 @@ export default function Wishlist() {
       await deleteFavoriteTrip(user.uid, tripId);
       window.dispatchEvent(new Event("favorite-trips-changed"));
     } catch (error) {
+      setFavoriteIds(favoriteIds);
+      storeFavorites(user.uid, favoriteIds);
+      setError("일정 찜을 삭제하지 못했습니다. 다시 시도해 주세요.");
       console.error("일정 찜을 삭제하지 못했습니다.", error);
+    } finally {
+      deleteLock.current = false;
     }
   };
 
@@ -111,6 +130,7 @@ export default function Wishlist() {
         <h1 id="wish-list-title">WISH LIST</h1>
         <p className={styles.description}>다음 여행을 위해 저장해둔 일정</p>
         <div className={styles.divider} />
+        {error && <p role="alert">{error}</p>}
 
         {favoriteTrips.length ? (
           <div className={styles.placeGrid}>

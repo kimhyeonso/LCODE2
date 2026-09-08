@@ -68,7 +68,7 @@
     "city": "강릉",
     "place": "강릉짬뽕순두부 동화가든 본점",
     "category": "restaurant",
-    "image": null,
+    "image": "img/gangleung/gangleung/GangneungJjamppongSundubuDonghwa Garden.jpg",
     "indoor": false
   },
   {
@@ -324,7 +324,7 @@
     "city": "서울",
     "place": "인사동",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/6dea675dbf5c5ff0.jpg",
     "indoor": false
   },
   {
@@ -468,7 +468,7 @@
     "city": "여수",
     "place": "여수낭만포차거리",
     "category": "restaurant",
-    "image": null,
+    "image": "img/yeosu/yeosu/다운로드.jpg",
     "indoor": false
   },
   {
@@ -596,7 +596,7 @@
     "city": "오사카",
     "place": "글리코상",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/GlicoSign.jpg",
     "indoor": false
   },
   {
@@ -604,7 +604,7 @@
     "city": "오사카",
     "place": "에비스바시 다리 - 관광지",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/EbisuBridge.jpg",
     "indoor": false
   },
   {
@@ -612,7 +612,7 @@
     "city": "오사카",
     "place": "킨류라멘 도톤보리점(라면전문식당)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KinryuRamenDotonboriBranch.jpg",
     "indoor": false
   },
   {
@@ -620,7 +620,7 @@
     "city": "오사카",
     "place": "도톤보리 대관람차 에비스 타워",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/DotonboriFerrisWheelEbisuTower.jpg",
     "indoor": false
   },
   {
@@ -628,7 +628,7 @@
     "city": "오사카",
     "place": "돈키호테 도톤보리점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/DonQuijoteDotonboriStore.jpg",
     "indoor": false
   },
   {
@@ -636,7 +636,7 @@
     "city": "오사카",
     "place": "크로스 호텔 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/CrossHotelOsaka.jpg",
     "indoor": false
   },
   {
@@ -644,7 +644,7 @@
     "city": "오사카",
     "place": "호젠지",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/hozenji.jpg",
     "indoor": false
   },
   {
@@ -652,7 +652,7 @@
     "city": "오사카",
     "place": "구로몬 시장(성게,참치,와규,꼬치)",
     "category": "restaurant",
-    "image": null,
+    "image": "img/osaka/osaka/KuromonMarket.jpg",
     "indoor": false
   },
   {
@@ -796,7 +796,7 @@
     "city": "제주도",
     "place": "애월 한담해변",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/HandamBeach.jpg",
     "indoor": false
   },
   {
@@ -804,7 +804,7 @@
     "city": "제주도",
     "place": "미포집 제주 애월점(간장게장·해물장)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/MipojipJejuAewol.jpg",
     "indoor": false
   },
   {
@@ -812,7 +812,7 @@
     "city": "제주도",
     "place": "제주당",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/Jejudang.jpg",
     "indoor": false
   },
   {
@@ -820,7 +820,7 @@
     "city": "제주도",
     "place": "세도나 중문 풀빌라",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/SedonaJungmunPoolVilla.jpg",
     "indoor": false
   },
   {
@@ -828,7 +828,7 @@
     "city": "제주도",
     "place": "천지연폭포",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/CheonjiyeonFalls.jpg",
     "indoor": false
   },
   {
@@ -836,7 +836,7 @@
     "city": "제주도",
     "place": "서귀포매일올레시장",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/SeogwipoMaeilOlleMarket.jpg",
     "indoor": false
   },
   {
@@ -844,7 +844,7 @@
     "city": "제주도",
     "place": "순대이야기",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/Sundae.jpg",
     "indoor": false
   },
   {
@@ -852,7 +852,7 @@
     "city": "제주도",
     "place": "요리바카 제주",
     "category": "attraction",
-    "image": null,
+    "image": "img/Jeju/Jeju/YolibakaJeju.jpg",
     "indoor": false
   },
   {
@@ -860,7 +860,7 @@
     "city": "오사카",
     "place": "간사이국제공항",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KansaiInternationalAirport.jpg",
     "indoor": false
   },
   {
@@ -868,7 +868,7 @@
     "city": "오사카",
     "place": "난바역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NambaStation.jpg",
     "indoor": false
   },
   {
@@ -876,7 +876,7 @@
     "city": "오사카",
     "place": "난바 오리엔탈 호텔",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NambaOrientalHotel.jpg",
     "indoor": false
   },
   {
@@ -884,7 +884,7 @@
     "city": "오사카",
     "place": "아지노야 오코노미야끼",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/AjinoyaOkonomiyaki.jpg",
     "indoor": false
   },
   {
@@ -900,7 +900,7 @@
     "city": "오사카",
     "place": "신사이바시스지 상점가",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/ShinsaibashisujiShoppingStreet.jpg",
     "indoor": false
   },
   {
@@ -908,7 +908,7 @@
     "city": "오사카",
     "place": "도톤보리강 크루즈(야경)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TomboriRiverCruise.jpg",
     "indoor": false
   },
   {
@@ -916,7 +916,7 @@
     "city": "오사카",
     "place": "오사카성",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/OsakaCastle.jpg",
     "indoor": false
   },
   {
@@ -924,7 +924,7 @@
     "city": "오사카",
     "place": "니시노마루 정원",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NishinomaruGarden.jpg",
     "indoor": false
   },
   {
@@ -932,7 +932,7 @@
     "city": "오사카",
     "place": "츠텐카쿠 전망대 & 신세카이",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TsutenkakuTower.jpg",
     "indoor": false
   },
   {
@@ -940,7 +940,7 @@
     "city": "오사카",
     "place": "쿠시카츠 다루마 신세카이 총본점(일식꼬치및튀김전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/DarumaShinsekaiSohonten.jpg",
     "indoor": false
   },
   {
@@ -948,7 +948,7 @@
     "city": "오사카",
     "place": "하루카스 300(전망대,야경)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Harukas300.jpg",
     "indoor": false
   },
   {
@@ -956,7 +956,7 @@
     "city": "오사카",
     "place": "카니도라쿠 도톤보리 본점(게요리)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KaniDorakuDotonbori.jpg",
     "indoor": false
   },
   {
@@ -964,7 +964,7 @@
     "city": "오사카",
     "place": "우메다 스카이빌딩 공중정원 전망대",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UmedaSkyBuildingFloatingGardenObservatory.jpg",
     "indoor": false
   },
   {
@@ -972,7 +972,7 @@
     "city": "오사카",
     "place": "헵파이브(HEP FIVE)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HEPFIVEFerrisWheel.jpg",
     "indoor": false
   },
   {
@@ -980,7 +980,7 @@
     "city": "오사카",
     "place": "야마모토 네기야키(오코노미야끼전문식당)-- 식사",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NegiyakiYamamoto.jpg",
     "indoor": false
   },
   {
@@ -988,7 +988,7 @@
     "city": "오사카",
     "place": "스위소텔 난카이 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/SwissôtelNankaiOsaka.jpg",
     "indoor": false
   },
   {
@@ -996,7 +996,7 @@
     "city": "오사카",
     "place": "이치란 라멘 도톤보리점 별관",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/IchiranDotonboriAnnex.jpg",
     "indoor": false
   },
   {
@@ -1004,7 +1004,7 @@
     "city": "오사카",
     "place": "gashacoco 난바 에비스바시스지（가챠샵）",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/gashacocoNambaEbisuBashiSuji.jpg",
     "indoor": false
   },
   {
@@ -1012,7 +1012,7 @@
     "city": "오사카",
     "place": "돈키호테 난바센니치마에점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/DonQuijoteNambaSennichimaeStore.jpg",
     "indoor": false
   },
   {
@@ -1020,7 +1020,7 @@
     "city": "오사카",
     "place": "유니버설 스튜디오 재팬(USJ)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UniversalStudiosJapan.jpg",
     "indoor": false
   },
   {
@@ -1028,7 +1028,7 @@
     "city": "오사카",
     "place": "유니버설 스튜디오 재팬",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UniversalStudiosJapan.jpg",
     "indoor": false
   },
   {
@@ -1036,7 +1036,7 @@
     "city": "오사카",
     "place": "우메다 스카이빌딩 공중정원 전망대(야경)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UmedaSkyBuildingFloatingGardenObservatory.jpg",
     "indoor": false
   },
   {
@@ -1044,7 +1044,7 @@
     "city": "오사카",
     "place": "그랜드 프론트 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/GrandFrontOsaka.jpg",
     "indoor": false
   },
   {
@@ -1052,7 +1052,7 @@
     "city": "오사카",
     "place": "신세카이 & 츠텐카쿠",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TsutenkakuTower.jpg",
     "indoor": false
   },
   {
@@ -1068,7 +1068,7 @@
     "city": "오사카",
     "place": "잇토쿠 총본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Ittoku.jpg",
     "indoor": false
   },
   {
@@ -1084,7 +1084,7 @@
     "city": "오사카",
     "place": "호텔 몬토레 그라스미아 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HotelMontereyGrasmereOsaka.jpg",
     "indoor": false
   },
   {
@@ -1100,7 +1100,7 @@
     "city": "오사카",
     "place": "＃C-pla+ 大阪心斎橋筋店",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/C-pla.jpg",
     "indoor": false
   },
   {
@@ -1124,7 +1124,7 @@
     "city": "오사카",
     "place": "교토역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KyotoStation.jpg",
     "indoor": false
   },
   {
@@ -1132,7 +1132,7 @@
     "city": "오사카",
     "place": "기요미즈데라",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Kiyomizudera.jpg",
     "indoor": false
   },
   {
@@ -1140,7 +1140,7 @@
     "city": "오사카",
     "place": "산넨자카 & 니넨자카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Sannenzaka.jpg",
     "indoor": false
   },
   {
@@ -1148,7 +1148,7 @@
     "city": "오사카",
     "place": "스타벅스 니넨자카 야사카차야점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/StarbucksCoffeeKyotoNinenzakaYasakaChaya.jpg",
     "indoor": false
   },
   {
@@ -1164,7 +1164,7 @@
     "city": "오사카",
     "place": "후시미이나리 신사",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/FushimiInariTaisha.jpg",
     "indoor": false
   },
   {
@@ -1172,7 +1172,7 @@
     "city": "오사카",
     "place": "규카츠 교토가츠규 후시미이나리 신(돈까스전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/GyukatsuKyotoKatsugyuFushimiInari.jpg",
     "indoor": false
   },
   {
@@ -1180,7 +1180,7 @@
     "city": "오사카",
     "place": "교토 역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KyotoStation.jpg",
     "indoor": false
   },
   {
@@ -1188,7 +1188,7 @@
     "city": "오사카",
     "place": "호텔 몬테레이 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/7f445da0c7aba7ea.jpg",
     "indoor": false
   },
   {
@@ -1196,7 +1196,7 @@
     "city": "오사카",
     "place": "구로몬 시장",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KuromonMarket.jpg",
     "indoor": false
   },
   {
@@ -1212,7 +1212,7 @@
     "city": "오사카",
     "place": "신세카이 츠텐카쿠 & 잔잔요코초",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/JanjanYokocho.jpg",
     "indoor": false
   },
   {
@@ -1220,7 +1220,7 @@
     "city": "오사카",
     "place": "쓰케카모우동 가모킨 에비스점(우동전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TsukeKamoUdonKamoKinEbisuten.jpg",
     "indoor": false
   },
   {
@@ -1228,7 +1228,7 @@
     "city": "오사카",
     "place": "오사카역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/OsakaStation.jpg",
     "indoor": false
   },
   {
@@ -1236,7 +1236,7 @@
     "city": "오사카",
     "place": "호텔 그랑비아 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HotelGranviaOsaka.jpg",
     "indoor": false
   },
   {
@@ -1244,7 +1244,7 @@
     "city": "오사카",
     "place": "글리코사인",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/GlicoSign.jpg",
     "indoor": false
   },
   {
@@ -1252,7 +1252,7 @@
     "city": "오사카",
     "place": "와규 이다텐(고기)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/WagyuIdaten.jpg",
     "indoor": false
   },
   {
@@ -1260,7 +1260,7 @@
     "city": "오사카",
     "place": "유니버설시티역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UniversalCityStation.jpg",
     "indoor": false
   },
   {
@@ -1268,7 +1268,7 @@
     "city": "오사카",
     "place": "유니버셜시티역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UniversalCityStation.jpg",
     "indoor": false
   },
   {
@@ -1276,7 +1276,7 @@
     "city": "오사카",
     "place": "나라역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NaraStation.jpg",
     "indoor": false
   },
   {
@@ -1284,7 +1284,7 @@
     "city": "오사카",
     "place": "나라공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NaraPark.jpg",
     "indoor": false
   },
   {
@@ -1292,7 +1292,7 @@
     "city": "오사카",
     "place": "도다이지",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TodaijiTemple.jpg",
     "indoor": false
   },
   {
@@ -1300,7 +1300,7 @@
     "city": "오사카",
     "place": "나카타니도우",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Nakatanidou.jpg",
     "indoor": false
   },
   {
@@ -1308,7 +1308,7 @@
     "city": "오사카",
     "place": "와카쿠사 카레 본점(일본식카레전문식당)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/WakakusaCurry Honpo.jpg",
     "indoor": false
   },
   {
@@ -1316,7 +1316,7 @@
     "city": "오사카",
     "place": "고베산노미야역",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/5db7117d433341b0.jpg",
     "indoor": false
   },
   {
@@ -1324,7 +1324,7 @@
     "city": "오사카",
     "place": "기타노이진칸",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KitanoIjinkangai.jpg",
     "indoor": false
   },
   {
@@ -1332,7 +1332,7 @@
     "city": "오사카",
     "place": "고베 하버랜드",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KobeHarborland.jpg",
     "indoor": false
   },
   {
@@ -1340,7 +1340,7 @@
     "city": "오사카",
     "place": "고베 크루즈 콘체르토",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/THEKOBECRUISEConcerto.jpg",
     "indoor": false
   },
   {
@@ -1348,7 +1348,7 @@
     "city": "오사카",
     "place": "고베역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KobeStation.jpg",
     "indoor": false
   },
   {
@@ -1356,7 +1356,7 @@
     "city": "오사카",
     "place": "야키니쿠 고리짱 우메다 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/YakinikuGorichanUmedaHonten.jpg",
     "indoor": false
   },
   {
@@ -1364,7 +1364,7 @@
     "city": "오사카",
     "place": "헵파이브 관람차",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HEPFIVEFerrisWheel.jpg",
     "indoor": false
   },
   {
@@ -1372,7 +1372,7 @@
     "city": "오사카",
     "place": "니혼바시 마루에이",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NihonbashiMaruEi.jpg",
     "indoor": false
   },
   {
@@ -1380,7 +1380,7 @@
     "city": "오사카·도쿄",
     "place": "간사이국제공항",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KansaiInternationalAirport.jpg",
     "indoor": false
   },
   {
@@ -1388,7 +1388,7 @@
     "city": "오사카·도쿄",
     "place": "호텔 한큐 레스파이어 오사카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HotelHankyuRespireOsaka.jpg",
     "indoor": false
   },
   {
@@ -1396,7 +1396,7 @@
     "city": "오사카·도쿄",
     "place": "글리코상",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/GlicoSign.jpg",
     "indoor": false
   },
   {
@@ -1404,7 +1404,7 @@
     "city": "오사카·도쿄",
     "place": "홋쿄쿠세이 신사이바시 본점(오므라이스)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HokkyokuseiShinsaibashi.jpg",
     "indoor": false
   },
   {
@@ -1412,7 +1412,7 @@
     "city": "오사카·도쿄",
     "place": "신사이바시스지 상점가",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/ShinsaibashisujiShoppingStreet.jpg",
     "indoor": false
   },
   {
@@ -1420,7 +1420,7 @@
     "city": "오사카·도쿄",
     "place": "오사카성",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/OsakaCastle.jpg",
     "indoor": false
   },
   {
@@ -1428,7 +1428,7 @@
     "city": "오사카·도쿄",
     "place": "니시노마루 정원",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NishinomaruGarden.jpg",
     "indoor": false
   },
   {
@@ -1436,7 +1436,7 @@
     "city": "오사카·도쿄",
     "place": "신세카이",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Shinsekai.jpg",
     "indoor": false
   },
   {
@@ -1444,7 +1444,7 @@
     "city": "오사카·도쿄",
     "place": "츠텐카쿠(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TsutenkakuTower.jpg",
     "indoor": false
   },
   {
@@ -1452,7 +1452,7 @@
     "city": "오사카·도쿄",
     "place": "로쿠센 스시(초밥)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/RokusenSushi.png",
     "indoor": false
   },
   {
@@ -1460,7 +1460,7 @@
     "city": "오사카·도쿄",
     "place": "메가돈키호테 신세카이점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/MEGADonQuijoteShinseka.jpg",
     "indoor": false
   },
   {
@@ -1468,7 +1468,7 @@
     "city": "오사카·도쿄",
     "place": "교토역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KyotoStation.jpg",
     "indoor": false
   },
   {
@@ -1476,7 +1476,7 @@
     "city": "오사카·도쿄",
     "place": "산넨자카·니넨자카",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Sannenzaka.jpg",
     "indoor": false
   },
   {
@@ -1484,7 +1484,7 @@
     "city": "오사카·도쿄",
     "place": "기요미즈데라",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Kiyomizudera.jpg",
     "indoor": false
   },
   {
@@ -1492,7 +1492,7 @@
     "city": "오사카·도쿄",
     "place": "니시키 시장",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NishikiMarket.jpg",
     "indoor": false
   },
   {
@@ -1500,7 +1500,7 @@
     "city": "오사카·도쿄",
     "place": "후시미이나리 신사",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/FushimiInariTaisha.jpg",
     "indoor": false
   },
   {
@@ -1508,7 +1508,7 @@
     "city": "오사카·도쿄",
     "place": "이나리역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/InariStation.jpg",
     "indoor": false
   },
   {
@@ -1516,7 +1516,7 @@
     "city": "오사카·도쿄",
     "place": "오사카역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/OsakaStation.jpg",
     "indoor": false
   },
   {
@@ -1524,7 +1524,7 @@
     "city": "오사카·도쿄",
     "place": "헵파이브 관람차",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/HEPFIVEFerrisWheel.jpg",
     "indoor": false
   },
   {
@@ -1532,7 +1532,7 @@
     "city": "오사카·도쿄",
     "place": "이즈모 루쿠아",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/UnagiKushiyoriIzumo.jpg",
     "indoor": false
   },
   {
@@ -1540,7 +1540,7 @@
     "city": "오사카·도쿄",
     "place": "JR 오사카역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/OsakaStation.jpg",
     "indoor": false
   },
   {
@@ -1548,7 +1548,7 @@
     "city": "오사카·도쿄",
     "place": "신오사카역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/ShinOsakaStation.jpg",
     "indoor": false
   },
   {
@@ -1556,7 +1556,7 @@
     "city": "오사카·도쿄",
     "place": "도쿄역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TokyoStation.jpg",
     "indoor": false
   },
   {
@@ -1564,7 +1564,7 @@
     "city": "오사카·도쿄",
     "place": "도쿄 스테이션 호텔",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TheTokyoStationHotel.jpg",
     "indoor": false
   },
   {
@@ -1572,7 +1572,7 @@
     "city": "오사카·도쿄",
     "place": "시부야 스카이(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/SHIBUYASKY.jpg",
     "indoor": false
   },
   {
@@ -1580,7 +1580,7 @@
     "city": "오사카·도쿄",
     "place": "규카츠 모토무라 시부야점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/GyukatsuMotomuraShibuya.jpg",
     "indoor": false
   },
   {
@@ -1588,7 +1588,7 @@
     "city": "오사카·도쿄",
     "place": "마이하마역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/MaihamaStation.jpg",
     "indoor": false
   },
   {
@@ -1612,7 +1612,7 @@
     "city": "오사카·도쿄",
     "place": "아사쿠사 센소지 & 나카미세도리",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/SensojiTemple.jpg",
     "indoor": false
   },
   {
@@ -1620,7 +1620,7 @@
     "city": "오사카·도쿄",
     "place": "다이코쿠야 텐푸라 아사쿠사 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/Daikokuya.jpg",
     "indoor": false
   },
   {
@@ -1628,7 +1628,7 @@
     "city": "오사카·도쿄",
     "place": "도쿄타워(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TokyoTower.jpg",
     "indoor": false
   },
   {
@@ -1636,7 +1636,7 @@
     "city": "오사카·도쿄",
     "place": "킷테 마루노우치",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/KITTEMarunouchi.jpg",
     "indoor": false
   },
   {
@@ -1644,7 +1644,7 @@
     "city": "오사카·도쿄",
     "place": "나리타공항",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NaritaInternationalAirport.jpg",
     "indoor": false
   },
   {
@@ -1668,7 +1668,7 @@
     "city": "후쿠오카",
     "place": "미야코 호텔 하카타",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/MiyakoHotelHakata.jpg",
     "indoor": false
   },
   {
@@ -1676,7 +1676,7 @@
     "city": "후쿠오카",
     "place": "AMU 플라자 하카타 시티",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/AmuPlazaHakata.jpg",
     "indoor": false
   },
   {
@@ -1684,7 +1684,7 @@
     "city": "후쿠오카",
     "place": "모츠나베 이치후지 텐진 니시도리점(모츠나베)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/MOTSUNABEICHIFUJI.jpg",
     "indoor": false
   },
   {
@@ -1692,7 +1692,7 @@
     "city": "후쿠오카",
     "place": "돈키호테 후쿠오카 텐진 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/DonQuijoteFukuokaTenjinHonten.jpg",
     "indoor": false
   },
   {
@@ -1700,7 +1700,7 @@
     "city": "후쿠오카",
     "place": "오호리공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/OhoriPark.jpg",
     "indoor": false
   },
   {
@@ -1708,7 +1708,7 @@
     "city": "후쿠오카",
     "place": "후쿠오카성터",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/FukuokaCastleRuins.jpg",
     "indoor": false
   },
   {
@@ -1716,7 +1716,7 @@
     "city": "후쿠오카",
     "place": "시나리(우동전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/SanukiUdonShinari.jpg",
     "indoor": false
   },
   {
@@ -1724,7 +1724,7 @@
     "city": "후쿠오카",
     "place": "후쿠오카타워",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/FukuokaTower.jpg",
     "indoor": false
   },
   {
@@ -1732,7 +1732,7 @@
     "city": "후쿠오카",
     "place": "모모치 시사이드 파크",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/MomochiSeasidePark.jpg",
     "indoor": false
   },
   {
@@ -1748,7 +1748,7 @@
     "city": "후쿠오카",
     "place": "후지우나ㅡ장어덮밥",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/Unadon.jpg",
     "indoor": false
   },
   {
@@ -1756,7 +1756,7 @@
     "city": "후쿠오카",
     "place": "후글렌 후쿠오카",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/FuglenFukuoka.jpg",
     "indoor": false
   },
   {
@@ -1772,7 +1772,7 @@
     "city": "후쿠오카",
     "place": "하카타 라멘 신신 하카타 데이토스점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/ShinShin akata eitos.jpg",
     "indoor": false
   },
   {
@@ -1780,7 +1780,7 @@
     "city": "후쿠오카",
     "place": "그랜드 하얏트 후쿠오카",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/d72ad46e6b31a9b3.jpg",
     "indoor": false
   },
   {
@@ -1788,7 +1788,7 @@
     "city": "후쿠오카",
     "place": "야나기바시 렌고 시장",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/ddf2ce17ab95217e.jpg",
     "indoor": false
   },
   {
@@ -1796,7 +1796,7 @@
     "city": "후쿠오카",
     "place": "나카스 포장마차거리",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/NakasuYataiStreet.jpg",
     "indoor": false
   },
   {
@@ -1804,7 +1804,7 @@
     "city": "후쿠오카",
     "place": "00:00] 오호리공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/OhoriPark.jpg",
     "indoor": false
   },
   {
@@ -1812,7 +1812,7 @@
     "city": "후쿠오카",
     "place": "신지다이 텐진점(이자카야)",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/dfa258796cd2f979.jpg",
     "indoor": false
   },
   {
@@ -1820,7 +1820,7 @@
     "city": "후쿠오카",
     "place": "다이마루 후쿠오카텐진점",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/c3c792194eb5396f.jpg",
     "indoor": false
   },
   {
@@ -1828,7 +1828,7 @@
     "city": "후쿠오카",
     "place": "후쿠오카타워(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/FukuokaTower.jpg",
     "indoor": false
   },
   {
@@ -1836,7 +1836,7 @@
     "city": "후쿠오카",
     "place": "모모치 시사이드파크(인공해변공원)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/MomochiSeasidePark.jpg",
     "indoor": false
   },
   {
@@ -1844,7 +1844,7 @@
     "city": "후쿠오카",
     "place": "다자이후텐만구",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/DazaifuTenmanguShrine.jpg",
     "indoor": false
   },
   {
@@ -1852,7 +1852,7 @@
     "city": "후쿠오카",
     "place": "카사노야 다자이후 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/2e699e11d04c6e1e.jpg",
     "indoor": false
   },
   {
@@ -1860,7 +1860,7 @@
     "city": "후쿠오카",
     "place": "규슈국립박물관",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/17d789607dc98c8d.jpg",
     "indoor": true
   },
   {
@@ -1868,7 +1868,7 @@
     "city": "후쿠오카",
     "place": "요도바시 하카타",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/8a9f66c33d6ccf88.jpg",
     "indoor": false
   },
   {
@@ -1876,7 +1876,7 @@
     "city": "후쿠오카",
     "place": "아뮤플라자 하카타",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/AmuPlazaHakata.jpg",
     "indoor": false
   },
   {
@@ -1884,7 +1884,7 @@
     "city": "후쿠오카",
     "place": "하카타",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/HakataStation.jpg",
     "indoor": false
   },
   {
@@ -1892,7 +1892,7 @@
     "city": "후쿠오카",
     "place": "JR 큐슈 호텔 블라섬 하카타 센트럴",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/JRKyushuHotelBlossomHakataCentral.jpg",
     "indoor": false
   },
   {
@@ -1900,7 +1900,7 @@
     "city": "후쿠오카",
     "place": "멘야 타이손",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/MenyaTaison.jpg",
     "indoor": false
   },
   {
@@ -1908,7 +1908,7 @@
     "city": "후쿠오카",
     "place": "나카스 포장마차 거리",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/NakasuYataiStreet.jpg",
     "indoor": false
   },
   {
@@ -1916,7 +1916,7 @@
     "city": "후쿠오카",
     "place": "유후인역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufuinStation.jpg",
     "indoor": false
   },
   {
@@ -1924,7 +1924,7 @@
     "city": "후쿠오카",
     "place": "유후인노쇼 사이가쿠칸 (由布院庄 彩岳館)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufunogoSaigakukan.png",
     "indoor": false
   },
   {
@@ -1932,7 +1932,7 @@
     "city": "후쿠오카",
     "place": "긴린코 호수",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/KinrinkoLake.jpg",
     "indoor": false
   },
   {
@@ -1940,7 +1940,7 @@
     "city": "후쿠오카",
     "place": "유노타케안(가정식)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/Yunotakean.jpg",
     "indoor": false
   },
   {
@@ -1948,7 +1948,7 @@
     "city": "후쿠오카",
     "place": "유후인노쇼 사이가쿠칸",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufunogoSaigakukan.png",
     "indoor": false
   },
   {
@@ -1956,7 +1956,7 @@
     "city": "후쿠오카",
     "place": "유노츠보 거리",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YunotsuboKaidoStreet.jpg",
     "indoor": false
   },
   {
@@ -1964,7 +1964,7 @@
     "city": "후쿠오카",
     "place": "벳푸 지옥순례",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/TheHellsofBeppu.jpg",
     "indoor": false
   },
   {
@@ -1972,7 +1972,7 @@
     "city": "후쿠오카",
     "place": "벳푸 스기노이 호텔",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/BeppuSuginoiHotel.jpg",
     "indoor": false
   },
   {
@@ -1980,7 +1980,7 @@
     "city": "후쿠오카",
     "place": "Shunkoen(야키니쿠)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/Shunkoen.jpg",
     "indoor": false
   },
   {
@@ -1988,7 +1988,7 @@
     "city": "후쿠오카",
     "place": "다카사키야마 자연동물원(야생원숭이)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/TakasakiyamaMonkeyPark.jpg",
     "indoor": false
   },
   {
@@ -1996,7 +1996,7 @@
     "city": "후쿠오카",
     "place": "벳푸 카이힌 스나유 (모래찜질,온천)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/BeppuBeachSandBath.jpg",
     "indoor": false
   },
   {
@@ -2004,7 +2004,7 @@
     "city": "후쿠오카",
     "place": "토요츠네 본점(이자카야)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/ToyotsuneHonten.jpg",
     "indoor": false
   },
   {
@@ -2012,7 +2012,7 @@
     "city": "후쿠오카",
     "place": "스시사카바 사시스 킷테하카타점(스시)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/SushiSakabaSashisuKITTEHakata.jpg",
     "indoor": false
   },
   {
@@ -2028,7 +2028,7 @@
     "city": "후쿠오카",
     "place": "하카타 엑셀 호텔 도큐",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/HakataExcelHotelTokyu.jpg",
     "indoor": false
   },
   {
@@ -2036,7 +2036,7 @@
     "city": "후쿠오카",
     "place": "이치란 라멘 하카타 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/ICHIRANSouhonten.jpg",
     "indoor": false
   },
   {
@@ -2044,7 +2044,7 @@
     "city": "후쿠오카",
     "place": "오호리공원 & 후쿠오카성터",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/FukuokaCastleRuins.jpg",
     "indoor": false
   },
   {
@@ -2052,7 +2052,7 @@
     "city": "후쿠오카",
     "place": "츠키시마 몬자 타마토야 텐진(몬자야키)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/TsukishimaMonjaTamatoyaTenjin.jpg",
     "indoor": false
   },
   {
@@ -2060,7 +2060,7 @@
     "city": "후쿠오카",
     "place": "모모치해변",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/MomochiSeasidePark.jpg",
     "indoor": false
   },
   {
@@ -2068,7 +2068,7 @@
     "city": "후쿠오카",
     "place": "야나가와 도항 뱃놀이 유람",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YanagawaRiverCruise.jpg",
     "indoor": false
   },
   {
@@ -2076,7 +2076,7 @@
     "city": "후쿠오카",
     "place": "모토요시야 우나기 본점(장어덮밥)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/GansoMotoyoshiya.jpg",
     "indoor": false
   },
   {
@@ -2084,7 +2084,7 @@
     "city": "후쿠오카",
     "place": "다자이후 참도 상점가",
     "category": "attraction",
-    "image": null,
+    "image": "img/sourced/647fa8e424c8019e.jpg",
     "indoor": false
   },
   {
@@ -2092,7 +2092,7 @@
     "city": "후쿠오카",
     "place": "바이엔 가든 리조트",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufuinBaienGardenResort.jpg",
     "indoor": false
   },
   {
@@ -2100,7 +2100,7 @@
     "city": "후쿠오카",
     "place": "유후인 바이엔 조식 후 출발",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufuinBaienGardenResort.jpg",
     "indoor": false
   },
   {
@@ -2108,7 +2108,7 @@
     "city": "후쿠오카",
     "place": "유후인 플로럴 빌리지",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufuinFloralVillage.jpg",
     "indoor": false
   },
   {
@@ -2116,7 +2116,7 @@
     "city": "후쿠오카",
     "place": "유후인 바이엔",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/YufuinBaienGardenResort.jpg",
     "indoor": false
   },
   {
@@ -2124,7 +2124,7 @@
     "city": "후쿠오카",
     "place": "코게츠",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/Kogetsu.jpg",
     "indoor": false
   },
   {
@@ -2132,7 +2132,7 @@
     "city": "후쿠오카",
     "place": "카메노이 호텔 벳푸",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/KAMENOIHOTELBEPPU.png",
     "indoor": false
   },
   {
@@ -2140,7 +2140,7 @@
     "city": "후쿠오카",
     "place": "벳푸 로프웨이 & 쓰루미다케 전망대",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/BeppuRopeway.jpg",
     "indoor": false
   },
   {
@@ -2148,7 +2148,7 @@
     "city": "후쿠오카",
     "place": "효탄온천",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/HyotanOnsen.jpg",
     "indoor": false
   },
   {
@@ -2156,7 +2156,7 @@
     "city": "후쿠오카",
     "place": "신하카타(초밥)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/ShinHakata.jpg",
     "indoor": false
   },
   {
@@ -2164,7 +2164,7 @@
     "city": "후쿠오카",
     "place": "하카타 도착",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/HakataStation.jpg",
     "indoor": false
   },
   {
@@ -2172,7 +2172,7 @@
     "city": "후쿠오카",
     "place": "하카타 나카스 워싱턴 호텔 플라자",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/HakataNakasuWashingtonHotelPlaza.jpg",
     "indoor": false
   },
   {
@@ -2180,7 +2180,7 @@
     "city": "후쿠오카",
     "place": "키스이마루 하카타점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Fukuoka/Fukuoka/KisuimaruHakata.jpg",
     "indoor": false
   },
   {
@@ -2196,7 +2196,7 @@
     "city": "도쿄",
     "place": "나리타공항 - 도착",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NaritaInternationalAirport.jpg",
     "indoor": false
   },
   {
@@ -2204,7 +2204,7 @@
     "city": "도쿄",
     "place": "츠지한 아크 힐즈점(해산물 돈부리 전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TsujihanArkHills.jpg",
     "indoor": false
   },
   {
@@ -2212,7 +2212,7 @@
     "city": "도쿄",
     "place": "렘 롯폰기(3성급 호텔)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/remmRoppongi.jpg",
     "indoor": false
   },
   {
@@ -2220,7 +2220,7 @@
     "city": "도쿄",
     "place": "벌브 커피 로스터즈 롯폰기",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/VERVECOFFEEROASTERSRoppongi.jpg",
     "indoor": false
   },
   {
@@ -2228,7 +2228,7 @@
     "city": "도쿄",
     "place": "도쿄 타워",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TokyoTower.jpg",
     "indoor": false
   },
   {
@@ -2236,7 +2236,7 @@
     "city": "도쿄",
     "place": "시바 공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShibaPark.jpg",
     "indoor": false
   },
   {
@@ -2244,7 +2244,7 @@
     "city": "도쿄",
     "place": "Sanshuu-ya(이자카야)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/Sanshuuya.jpg",
     "indoor": false
   },
   {
@@ -2252,7 +2252,7 @@
     "city": "도쿄",
     "place": "렘 롯폰기",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/remmRoppongi.jpg",
     "indoor": false
   },
   {
@@ -2260,7 +2260,7 @@
     "city": "도쿄",
     "place": "센소지 & 나카미세도리",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/SensojiTemple.jpg",
     "indoor": false
   },
   {
@@ -2268,7 +2268,7 @@
     "city": "도쿄",
     "place": "Tempura Asakusa SAKURA(튀김전문식당)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TempuraAsakusaSAKURA.jpg",
     "indoor": false
   },
   {
@@ -2276,7 +2276,7 @@
     "city": "도쿄",
     "place": "도쿄 스카이트리",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TokyoSkytree.jpg",
     "indoor": false
   },
   {
@@ -2284,7 +2284,7 @@
     "city": "도쿄",
     "place": "스시노미도리 긴자점(스시초밥집)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/UmegaokaSushinoMidoriSohontenGinza.jpg",
     "indoor": false
   },
   {
@@ -2292,7 +2292,7 @@
     "city": "도쿄",
     "place": "렘 롯폰기 숙소 복귀",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/remmRoppongi.jpg",
     "indoor": false
   },
   {
@@ -2300,7 +2300,7 @@
     "city": "도쿄",
     "place": "시부야스카이",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/SHIBUYASKY.jpg",
     "indoor": false
   },
   {
@@ -2308,7 +2308,7 @@
     "city": "도쿄",
     "place": "goodNess渋谷 - 브런치/카페",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/goodNessShibuya.jpg",
     "indoor": false
   },
   {
@@ -2316,7 +2316,7 @@
     "city": "도쿄",
     "place": "오모이데요코초(이자카야먹자골목)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OmoideYokocho.jpg",
     "indoor": false
   },
   {
@@ -2324,7 +2324,7 @@
     "city": "도쿄",
     "place": "나리타공항",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NaritaInternationalAirport.jpg",
     "indoor": false
   },
   {
@@ -2340,7 +2340,7 @@
     "city": "도쿄",
     "place": "아사쿠사역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AsakusaStation.jpg",
     "indoor": false
   },
   {
@@ -2348,7 +2348,7 @@
     "city": "도쿄",
     "place": "아사쿠사 몬자 카노야 하나레(몬자야키전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AsakusaMonjaKanoyaHanare.jpg",
     "indoor": false
   },
   {
@@ -2356,7 +2356,7 @@
     "city": "도쿄",
     "place": "신주쿠 워싱턴 호텔",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuWashingtonHotel.jpg",
     "indoor": false
   },
   {
@@ -2364,7 +2364,7 @@
     "city": "도쿄",
     "place": "신주쿠 골든가이(이자카야골목)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuGoldenGai.jpg",
     "indoor": false
   },
   {
@@ -2372,7 +2372,7 @@
     "city": "도쿄",
     "place": "마이하마역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/MaihamaStation.jpg",
     "indoor": false
   },
   {
@@ -2380,7 +2380,7 @@
     "city": "도쿄",
     "place": "도쿄 디즈니씨",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/Tokyo DisneySea.jpg",
     "indoor": false
   },
   {
@@ -2388,7 +2388,7 @@
     "city": "도쿄",
     "place": "메이지 신궁 신사",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/Meiji Jingu .jpg",
     "indoor": false
   },
   {
@@ -2396,7 +2396,7 @@
     "city": "도쿄",
     "place": "하라주쿠 다케시타도리",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TakeshitaSt.jpg",
     "indoor": false
   },
   {
@@ -2404,7 +2404,7 @@
     "city": "도쿄",
     "place": "시부야 스크램블 교차로 & 시부야 스카이",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShibuyaCrossing.webp",
     "indoor": false
   },
   {
@@ -2412,7 +2412,7 @@
     "city": "도쿄",
     "place": "신지다이 시부야도겐자카점(이자카야)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjidaiShibuyaDogenzaka.jpg",
     "indoor": false
   },
   {
@@ -2420,7 +2420,7 @@
     "city": "도쿄",
     "place": "메가 돈키호테 시부야 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/MEGADon QuijoteShibuyaHonten.jpg",
     "indoor": false
   },
   {
@@ -2428,7 +2428,7 @@
     "city": "도쿄",
     "place": "신주쿠 교엔",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuGyoen.jpg",
     "indoor": false
   },
   {
@@ -2436,7 +2436,7 @@
     "city": "도쿄",
     "place": "신주쿠 다카시마야",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuTakashimaya.jpg",
     "indoor": false
   },
   {
@@ -2444,7 +2444,7 @@
     "city": "도쿄",
     "place": "[00:00 신주쿠역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuStation.jpg",
     "indoor": false
   },
   {
@@ -2452,7 +2452,7 @@
     "city": "도쿄",
     "place": "나리타국제공항",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/NaritaInternationalAirport.jpg",
     "indoor": false
   },
   {
@@ -2460,7 +2460,7 @@
     "city": "도쿄",
     "place": "텐푸라 아사쿠사 SAKURA(튀김전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TempuraAsakusaSAKURA.jpg",
     "indoor": false
   },
   {
@@ -2468,7 +2468,7 @@
     "city": "도쿄",
     "place": "아사쿠사 실크푸딩 본점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AsakusaSilkPudding.jpg",
     "indoor": false
   },
   {
@@ -2476,7 +2476,7 @@
     "city": "도쿄",
     "place": "하얏트 리젠시 도쿄",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HyattRegencyTokyo.jpg",
     "indoor": false
   },
   {
@@ -2484,7 +2484,7 @@
     "city": "도쿄",
     "place": "아키하바라역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AkihabaraStation.jpg",
     "indoor": false
   },
   {
@@ -2492,7 +2492,7 @@
     "city": "도쿄",
     "place": "만다라케 콤플렉스(피규어/굿즈)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/MandarakeComplex.jpg",
     "indoor": false
   },
   {
@@ -2500,7 +2500,7 @@
     "city": "도쿄",
     "place": "아키하바라 라디오회관",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AkihabaraRadioKaikan.jpg",
     "indoor": false
   },
   {
@@ -2508,7 +2508,7 @@
     "city": "도쿄",
     "place": "규카츠 모토무라 아키하바라점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/GyukatsuMotomuraAkihabara.jpg",
     "indoor": false
   },
   {
@@ -2516,7 +2516,7 @@
     "city": "도쿄",
     "place": "우에노 공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/UenoPark.jpg",
     "indoor": false
   },
   {
@@ -2524,7 +2524,7 @@
     "city": "도쿄",
     "place": "우에노 아메요코 상점가",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/UenoAmeyokoShoppingStreet.jpg",
     "indoor": false
   },
   {
@@ -2532,7 +2532,7 @@
     "city": "도쿄",
     "place": "신주쿠역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuStation.jpg",
     "indoor": false
   },
   {
@@ -2540,7 +2540,7 @@
     "city": "도쿄",
     "place": "오모이데요코초(이자카야골목)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OmoideYokocho.jpg",
     "indoor": false
   },
   {
@@ -2548,7 +2548,7 @@
     "city": "도쿄",
     "place": "버스타 신주쿠 버스 정류장",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuExpresswayBusTerminal.jpg",
     "indoor": false
   },
   {
@@ -2556,7 +2556,7 @@
     "city": "도쿄",
     "place": "카와구치코역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/KawaguchikoStation.jpg",
     "indoor": false
   },
   {
@@ -2564,7 +2564,7 @@
     "city": "도쿄",
     "place": "오이시공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OishiPark.jpg",
     "indoor": false
   },
   {
@@ -2572,7 +2572,7 @@
     "city": "도쿄",
     "place": "오이시 공원 카페",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OishiParkCafé.jpg",
     "indoor": false
   },
   {
@@ -2580,7 +2580,7 @@
     "city": "도쿄",
     "place": "호토우 후도(명물)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HoutouFudou.jpg",
     "indoor": false
   },
   {
@@ -2588,7 +2588,7 @@
     "city": "도쿄",
     "place": "버스타 신주쿠",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShinjukuExpresswayBusTerminal.jpg",
     "indoor": false
   },
   {
@@ -2596,7 +2596,7 @@
     "city": "도쿄",
     "place": "시부야스카이(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/SHIBUYASKY.jpg",
     "indoor": false
   },
   {
@@ -2604,7 +2604,7 @@
     "city": "도쿄",
     "place": "시부야 스크램블 교차로",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShibuyaCrossing.webp",
     "indoor": false
   },
   {
@@ -2612,7 +2612,7 @@
     "city": "도쿄",
     "place": "C-pla Harajuku Takeshita Street(가챠샵)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/C-plaHarajukuTakeshitaStreet.jpg",
     "indoor": false
   },
   {
@@ -2628,7 +2628,7 @@
     "city": "도쿄",
     "place": "로스트 비프 오노 하라주쿠점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/RoastBeefOhnoHarajuku.jpg",
     "indoor": false
   },
   {
@@ -2636,7 +2636,7 @@
     "city": "도쿄",
     "place": "도쿄도청 북쪽 전망대",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/NorthObservationDeck.jpg",
     "indoor": false
   },
   {
@@ -2644,7 +2644,7 @@
     "city": "도쿄",
     "place": "아부라소바 니시신주쿠구미",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TokyoAburagumiSohontenNishiShinjukugumi.jpg",
     "indoor": false
   },
   {
@@ -2652,7 +2652,7 @@
     "city": "도쿄",
     "place": "도쿄역",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TokyoStation.jpg",
     "indoor": false
   },
   {
@@ -2660,7 +2660,7 @@
     "city": "도쿄",
     "place": "신바시역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/ShimbashiStation.png",
     "indoor": false
   },
   {
@@ -2668,7 +2668,7 @@
     "city": "도쿄",
     "place": "호텔빌라퐁텐도쿄-시오도메",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HotelVillaFontaineGrandTokyoShiodome.jpg",
     "indoor": false
   },
   {
@@ -2676,7 +2676,7 @@
     "city": "도쿄",
     "place": "반테츠(철판구이전문식당)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/banquette.jpg",
     "indoor": false
   },
   {
@@ -2684,7 +2684,7 @@
     "city": "도쿄",
     "place": "하마리큐 은사정원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HamarikyuGardens.jpg",
     "indoor": false
   },
   {
@@ -2692,7 +2692,7 @@
     "city": "도쿄",
     "place": "Nakajima Tea House",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/NakajimaTeaHouse.jpg",
     "indoor": false
   },
   {
@@ -2700,7 +2700,7 @@
     "city": "도쿄",
     "place": "호텔 빌라 폰테인 그랜드 도쿄-시오도메",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HotelVillaFontaineGrandTokyoShiodome.jpg",
     "indoor": false
   },
   {
@@ -2708,7 +2708,7 @@
     "city": "도쿄",
     "place": "롯폰기역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/RoppongiStation.jpg",
     "indoor": false
   },
   {
@@ -2716,7 +2716,7 @@
     "city": "도쿄",
     "place": "모리타워 전망대 &모리미술관",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/MoriTower.jpg",
     "indoor": true
   },
   {
@@ -2724,7 +2724,7 @@
     "city": "도쿄",
     "place": "아후리 롯폰기힐즈",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AFURIRoppongiHills.jpg",
     "indoor": false
   },
   {
@@ -2732,7 +2732,7 @@
     "city": "도쿄",
     "place": "도쿄 미드타운",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/TokyoMidtown.jpg",
     "indoor": false
   },
   {
@@ -2740,7 +2740,7 @@
     "city": "도쿄",
     "place": "곤파치 니시아자부(이자카야)-- 식사",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/GonpachiNishiazabu.jpg",
     "indoor": false
   },
   {
@@ -2748,7 +2748,7 @@
     "city": "도쿄",
     "place": "오다이바카이힌코엔역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OdaibakaihinkōenStation.jpg",
     "indoor": false
   },
   {
@@ -2756,7 +2756,7 @@
     "city": "도쿄",
     "place": "오다이바 해변공원",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OdaibaMarinePark.jpg",
     "indoor": false
   },
   {
@@ -2764,7 +2764,7 @@
     "city": "도쿄",
     "place": "다이버시티 도쿄 플라자",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/DiverCityTokyoPlaza.jpg",
     "indoor": false
   },
   {
@@ -2772,7 +2772,7 @@
     "city": "도쿄",
     "place": "규카츠 교토가츠규 오다이바 DiverCity Tokyo Plaza점",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/GyukatsuKyotoKatsugyuDiverCityTokyoPlaza.png",
     "indoor": false
   },
   {
@@ -2780,7 +2780,7 @@
     "city": "도쿄",
     "place": "아쿠아시티 오다이바",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/AquaCityOdaiba.jpg",
     "indoor": false
   },
   {
@@ -2788,7 +2788,7 @@
     "city": "도쿄",
     "place": "구체전망실 하치타마(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HACHITAMA.jpg",
     "indoor": false
   },
   {
@@ -2796,7 +2796,7 @@
     "city": "도쿄",
     "place": "도쿄역(야에스 남쪽출구)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TokyoStation.jpg",
     "indoor": false
   },
   {
@@ -2804,7 +2804,7 @@
     "city": "도쿄",
     "place": "오이시 공원 카페 -- 카페",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OishiParkCafé.jpg",
     "indoor": false
   },
   {
@@ -2812,7 +2812,7 @@
     "city": "도쿄",
     "place": "호토우 후도(명물)-- 식사",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/HoutouFudou.jpg",
     "indoor": false
   },
   {
@@ -2820,7 +2820,7 @@
     "city": "도쿄",
     "place": "가마쿠라코코마에 역",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/KamakuraKokoMaeStation.jpg",
     "indoor": false
   },
   {
@@ -2828,7 +2828,7 @@
     "city": "도쿄",
     "place": "고토쿠인",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/KotokuinTemple.jpg",
     "indoor": false
   },
   {
@@ -2836,7 +2836,7 @@
     "city": "도쿄",
     "place": "에노시마",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/Enoshima.jpg",
     "indoor": false
   },
   {
@@ -2844,7 +2844,7 @@
     "city": "도쿄",
     "place": "시라스야(해산물요리전문식당)-- 식사",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/Shirasuya.jpg",
     "indoor": false
   },
   {
@@ -2852,7 +2852,7 @@
     "city": "도쿄",
     "place": "코마치도리 거리",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/KomachiStreet.jpg",
     "indoor": false
   },
   {
@@ -2860,7 +2860,7 @@
     "city": "도쿄",
     "place": "도쿄타워(전망대)",
     "category": "attraction",
-    "image": null,
+    "image": "img/osaka/osaka/TokyoTower.jpg",
     "indoor": false
   },
   {
@@ -2868,7 +2868,7 @@
     "city": "도쿄",
     "place": "헤케룬",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/Heckeln.jpg",
     "indoor": false
   },
   {
@@ -2876,7 +2876,7 @@
     "city": "도쿄",
     "place": "우동 오니얀마 신바시점(우동전문점)",
     "category": "attraction",
-    "image": null,
+    "image": "img/Tokyo/Tokyo/OniyanmaShinbashi.jpg",
     "indoor": false
   },
   {
@@ -3020,7 +3020,7 @@
     "city": "베이징",
     "place": "옹화궁",
     "category": "attraction",
-    "image": "img/Beijing/gm_001.jpg",
+    "image": "img/sourced/2d2c416a0afc627e.jpg",
     "indoor": false
   },
   {
@@ -3028,7 +3028,7 @@
     "city": "베이징",
     "place": "국자감·공묘",
     "category": "attraction",
-    "image": "img/Beijing/gm_017.jpg",
+    "image": "img/sourced/1a0d0d25ffa9fdeb.jpg",
     "indoor": false
   },
   {
@@ -3036,7 +3036,7 @@
     "city": "베이징",
     "place": "난뤄구샹",
     "category": "attraction",
-    "image": "img/Beijing/gm_004.jpg",
+    "image": "img/sourced/7c514328c2417fdb.jpg",
     "indoor": false
   },
   {
@@ -3044,7 +3044,7 @@
     "city": "베이징",
     "place": "스차하이",
     "category": "attraction",
-    "image": "img/Beijing/gm_005.jpg",
+    "image": "img/sourced/4a3a557218d129bb.jpg",
     "indoor": false
   },
   {
@@ -3060,7 +3060,7 @@
     "city": "베이징",
     "place": "천안문광장",
     "category": "attraction",
-    "image": "img/Beijing/gm_006.jpg",
+    "image": "img/sourced/dbded859a0325b2f.jpg",
     "indoor": false
   },
   {
@@ -3068,7 +3068,7 @@
     "city": "베이징",
     "place": "자금성",
     "category": "attraction",
-    "image": "img/Beijing/gm_007.jpg",
+    "image": "img/sourced/433db1c33484b554.jpg",
     "indoor": false
   },
   {
@@ -3076,7 +3076,7 @@
     "city": "베이징",
     "place": "경산공원",
     "category": "attraction",
-    "image": "img/Beijing/gm_008.jpg",
+    "image": "img/sourced/544f99582cecae69.jpg",
     "indoor": false
   },
   {
@@ -3084,7 +3084,7 @@
     "city": "베이징",
     "place": "왕푸징",
     "category": "attraction",
-    "image": "img/Beijing/gm_009.jpg",
+    "image": "img/sourced/d9ba521dfe5eddd7.jpg",
     "indoor": false
   },
   {
@@ -3100,7 +3100,7 @@
     "city": "베이징",
     "place": "무톈위 만리장성",
     "category": "attraction",
-    "image": "img/Beijing/gm_010.jpg",
+    "image": "img/sourced/d72986ad8ad44cd1.jpg",
     "indoor": false
   },
   {
@@ -3108,7 +3108,7 @@
     "city": "베이징",
     "place": "무톈위",
     "category": "attraction",
-    "image": "img/Beijing/gm_010.jpg",
+    "image": "img/sourced/d72986ad8ad44cd1.jpg",
     "indoor": false
   },
   {
@@ -3116,7 +3116,7 @@
     "city": "베이징",
     "place": "베이징 시내",
     "category": "attraction",
-    "image": "img/Beijing/road_gm_007.jpg",
+    "image": "img/sourced/65bb46ed07b2bbf1.jpg",
     "indoor": false
   },
   {
@@ -3124,7 +3124,7 @@
     "city": "베이징",
     "place": "구이제",
     "category": "restaurant",
-    "image": "img/Beijing/gm_011.jpg",
+    "image": "img/sourced/37b150d2f028ef13.jpg",
     "indoor": false
   },
   {
@@ -3140,7 +3140,7 @@
     "city": "베이징",
     "place": "이화원",
     "category": "attraction",
-    "image": "img/Beijing/gm_012.jpg",
+    "image": "img/sourced/cc062ab34dadf8e4.jpg",
     "indoor": false
   },
   {

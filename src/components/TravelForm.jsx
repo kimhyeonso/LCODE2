@@ -21,6 +21,7 @@ import backIcon from "../assets/icons/arrow_back.svg";
 import heartIcon from "../assets/icons/heart.svg";
 import addIcon from "../assets/icons/menu_bar/03add.svg";
 import { resolveImageUrl as getImageUrl, useImageFallback } from "../utils/imageUtils";
+import { getPlaceImagePath } from "../utils/placeImageUtils";
 
 const categoryNames = {
   airport: "공항",
@@ -215,8 +216,8 @@ const createStops = (trip) =>
         type: categoryNames[item.category] || item.category,
         note: item.recommendation || "",
         travel: nextTransport?.transport || "",
-        image: getImageUrl(item.image),
-        imagePath: item.image || "",
+        image: getImageUrl(getPlaceImagePath(item, trip.city), ""),
+        imagePath: getPlaceImagePath(item, trip.city),
         category: item.category,
         dayLabel: day.label || `DAY ${String(day.day).padStart(2, "0")}`,
         recommendation: item.recommendation || "",
@@ -362,7 +363,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const favoriteKey = (place) => encodeURIComponent(`${selectedTrip.city}::${place.name || place.place}`);
 
   const toggleFavorite = async (place) => {
-    if (!user || favoriteState.saving) {
+    if (!user || favoriteState.loading || favoriteState.saving) {
       if (!user) setFavoriteState((current) => ({ ...current, error: "로그인 후 장소를 찜할 수 있습니다." }));
       return;
     }
@@ -682,16 +683,16 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       : dayStops));
   };
 
-  const wishlistPlaces = savedPlaces
+  const availableWishlistPlaces = savedPlaces
     .map((item) => ({ ...item, place: item.name, image: item.image || "" }))
-    .filter((item) => !stops.some((stop) => stop.name === item.place))
-    .filter((item) => wishlistCategory === "all" || item.category === wishlistCategory)
-    .slice(0, 12);
+    .filter((item) => !stops.some((stop) => stop.name === item.place));
+  const wishlistPlaces = availableWishlistPlaces
+    .filter((item) => wishlistCategory === "all" || item.category === wishlistCategory);
 
   const toggleWishlistSelection = (place) => {
-    setWishlistSelections((current) => current.includes(place.place)
-      ? current.filter((name) => name !== place.place)
-      : [...current, place.place]);
+    setWishlistSelections((current) => current.includes(place.id)
+      ? current.filter((id) => id !== place.id)
+      : [...current, place.id]);
   };
 
   const openWishlist = async () => {
@@ -717,7 +718,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   };
 
   const addWishlistPlaces = () => {
-    const selectedItems = wishlistPlaces.filter((place) => wishlistSelections.includes(place.place));
+    const selectedItems = availableWishlistPlaces.filter((place) => wishlistSelections.includes(place.id));
     if (!selectedItems.length) return;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
       ? resequenceStopTimes(sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
@@ -1087,7 +1088,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               <PlaceMap
                 places={wishlistPlaces}
                 fallbackPlaces={selectedTrip.days.flatMap((day) => day.items)}
-                selectedPlace={wishlistPlaces.find((place) => wishlistSelections.includes(place.place)) || null}
+                selectedPlace={wishlistPlaces.find((place) => wishlistSelections.includes(place.id)) || null}
                 onSelect={toggleWishlistSelection}
               />
               <span className={styles.savedCount}>♡ 저장된 장소 {wishlistPlaces.length}곳</span>
@@ -1104,9 +1105,9 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               {!favoriteState.loading && !favoriteState.error && !wishlistPlaces.length && <p className={styles.noPlaces}>일정에 추가할 찜한 장소가 없습니다.</p>}
               <div>
                 {!favoriteState.loading && wishlistPlaces.map((place, index) => {
-                  const selected = wishlistSelections.includes(place.place);
+                  const selected = wishlistSelections.includes(place.id);
                   return (
-                    <article key={place.place}>
+                    <article key={place.id}>
                       <span className={styles.resultNumber}>{index + 1}</span>
                       <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                       <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
@@ -1278,7 +1279,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <button type="button" onClick={() => setSelectedStop(null)}>일정 추가</button>
             <button
               type="button"
-              disabled={favoriteState.saving}
+              disabled={favoriteState.loading || favoriteState.saving}
               onClick={() => toggleFavorite(selectedStop)}
             >
               {savedPlaces.some((place) => place.id === favoriteKey(selectedStop) || place.key === favoriteKey(selectedStop)) ? "찜 취소" : "장소 찜하기"}
