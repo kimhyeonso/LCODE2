@@ -511,9 +511,6 @@ export default function SavedPlan({ showBack = false }) {
             </Link>
           ) : (
             <>
-              <Link to={`/plan?trip=${encodeURIComponent(saved.tripId)}&saved=${encodeURIComponent(saved.id)}`}>
-                일정 확인
-              </Link>
               <Link to={`/travel-planner?plan=${encodeURIComponent(saved.id)}`}>
                 수정하기 →
               </Link>
@@ -534,7 +531,7 @@ export default function SavedPlan({ showBack = false }) {
           </p>
 
           {others.map((plan) => (
-            <article className={styles.revealCard} key={plan.id}>
+            <article data-shop-reveal key={plan.id}>
               <button
                 type="button"
                 className={styles.heroDelete}
@@ -597,16 +594,6 @@ export default function SavedPlan({ showBack = false }) {
                     </>
                   ) : (
                     <>
-                      <Link
-                        to={`/plan?trip=${encodeURIComponent(
-                          plan.tripId
-                        )}&saved=${encodeURIComponent(
-                          plan.id
-                        )}`}
-                      >
-                        일정 확인
-                      </Link>
-
                       <Link
                         to={`/travel-planner?plan=${encodeURIComponent(
                           plan.id
