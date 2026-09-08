@@ -39,7 +39,19 @@ export default function NoticeDetail() {
         <h1>{notice.title}</h1>
         <p className={styles.meta}>{formatDate(notice.updatedAt || notice.createdAt)}</p>
         <div className={styles.divider} />
-        <div className={styles.body}>{notice.content || "등록된 공지 내용이 없습니다."}</div>
+        <div className={styles.body}>
+          {notice.introductions?.length || notice.sections?.length ? (
+            <>
+              {notice.introductions?.map((text) => <p key={text}>{text}</p>)}
+              {notice.sections?.map((section) => (
+                <section key={section.title}>
+                  <h2>{section.title}</h2>
+                  <p>{section.content}</p>
+                </section>
+              ))}
+            </>
+          ) : (notice.content || "등록된 공지 내용이 없습니다.")}
+        </div>
         <footer><Link to="/notice">목록으로</Link></footer>
       </article>
     </main>

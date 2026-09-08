@@ -8,7 +8,7 @@ import styles from "./MypageUser.module.scss";
 
 const menuItems = [
   { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
-  { label: "내 일정", to: "/plan/saved", icon: "/Mypage-img/calendar_month.svg" },
+  { label: "내 일정", to: "/my/plans", icon: "/Mypage-img/calendar_month.svg" },
   { label: "나의 리뷰", to: "/mystories", icon: "/Mypage-img/pen.svg" },
   { label: "찜한 상품", to: "/saved", icon: "/Mypage-img/heart.svg" },
   { label: "찜한 일정", to: "/wishlist", icon: "/Mypage-img/calendar_check.svg" },
