@@ -33,6 +33,14 @@ export default function Paking() {
   const [showStampModal, setShowStampModal] = useState(false);
 
   useEffect(() => {
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(checkedItems));
+    } catch {
+      // Checking items remains usable when storage is unavailable or full.
+    }
+  }, [checkedItems]);
+
+  useEffect(() => {
     if (allItems.every((item) => checkedItems.includes(item))) {
       setShowStampModal(true);
     }
@@ -43,7 +51,6 @@ export default function Paking() {
       const next = current.includes(item)
         ? current.filter((savedItem) => savedItem !== item)
         : [...current, item];
-      localStorage.setItem(storageKey, JSON.stringify(next));
       return next;
     });
   };

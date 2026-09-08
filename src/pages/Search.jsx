@@ -105,6 +105,7 @@ export default function Search() {
     () => user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : [],
   );
   const favoriteMutationRef = useRef(0);
+  const favoriteLock = useRef(false);
   const [filters, setFilters] = useState({ duration: "all", companion: "all", styles: [], pace: "all", season: "all" });
 
   const trips = useMemo(() => {
@@ -215,16 +216,10 @@ export default function Search() {
     getFavoriteTrips(user.uid)
       .then((firebaseIds) => {
         if (!active || favoriteMutationRef.current !== mutationAtStart) return;
-        const ids = storedIds ?? firebaseIds;
+        const ids = firebaseIds;
         setFavoriteTripIds(ids);
         storeFavoriteTrips(user.uid, ids);
 
-        if (storedIds !== null) {
-          storedIds.filter((id) => !firebaseIds.includes(id))
-            .forEach((id) => saveFavoriteTrip(user.uid, id).catch(() => {}));
-          firebaseIds.filter((id) => !storedIds.includes(id))
-            .forEach((id) => deleteFavoriteTrip(user.uid, id).catch(() => {}));
-        }
       })
       .catch((error) => {
         if (active && storedIds !== null && favoriteMutationRef.current === mutationAtStart) {
@@ -257,6 +252,8 @@ export default function Search() {
       return;
     }
 
+    if (favoriteLock.current) return;
+    favoriteLock.current = true;
     const wasFavorite = favoriteTripIds.includes(tripId);
     favoriteMutationRef.current += 1;
     const nextIds = wasFavorite
@@ -272,7 +269,12 @@ export default function Search() {
       else await saveFavoriteTrip(user.uid, tripId);
       window.dispatchEvent(new Event("favorite-trips-changed"));
     } catch (error) {
+      setFavoriteTripIds(favoriteTripIds);
+      storeFavoriteTrips(user.uid, favoriteTripIds);
+      window.alert("일정 찜을 저장하지 못했습니다. 다시 시도해 주세요.");
       console.error("일정 찜 상태를 저장하지 못했습니다.", error);
+    } finally {
+      favoriteLock.current = false;
     }
   };
 

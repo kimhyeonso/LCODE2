@@ -38,7 +38,7 @@ export default function FavoritePlaces() {
   const remove = async (place) => {
     try {
       await deleteFavoritePlace(user.uid, place.id);
-      setState((current) => ({ ...current, places: current.places.filter((item) => item.id !== place.id) }));
+      setState((current) => ({ ...current, error: "", places: current.places.filter((item) => item.id !== place.id) }));
       window.dispatchEvent(new Event("favorite-places-changed"));
     } catch {
       setState((current) => ({ ...current, error: "찜한 장소를 삭제하지 못했습니다." }));

@@ -1,16 +1,32 @@
 import { useEffect } from "react";
-import { CircleMarker, MapContainer, Popup, TileLayer, useMap } from "react-leaflet";
+import { CircleMarker, MapContainer, Popup, useMap } from "react-leaflet";
+import KoreanMapLayer from "./KoreanMapLayer";
 import "leaflet/dist/leaflet.css";
 import styles from "./PlaceMap.module.scss";
 import { control } from "leaflet";
 
-const FUKUOKA_CENTER = [33.5902, 130.4017];
+const WORLD_CENTER = [20, 0];
 
-function MoveMap({ center, places, fitToPlaces }) {
+function MoveMap({ center, places, fitToPlaces, zoom }) {
   const map = useMap();
   useEffect(() => {
     const zoom = control.zoom({ zoomInTitle: "지도 확대", zoomOutTitle: "지도 축소" }).addTo(map);
     return () => zoom.remove();
+  }, [map]);
+
+  useEffect(() => {
+    let frame;
+    const resize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => map.invalidateSize({ pan: false, debounceMoveend: true }));
+    };
+    const observer = new ResizeObserver(resize);
+    observer.observe(map.getContainer());
+    resize();
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+    };
   }, [map]);
 
   useEffect(() => {
@@ -22,8 +38,8 @@ function MoveMap({ center, places, fitToPlaces }) {
       return;
     }
 
-    map.setView(center, 13, { animate: true });
-  }, [center, fitToPlaces, map, places]);
+    map.setView(center, zoom, { animate: true });
+  }, [center, fitToPlaces, map, places, zoom]);
 
   return null;
 }
@@ -46,29 +62,28 @@ export default function PlaceMap({
   const fallbackPlace = fallbackPlaces.find(
     (place) => Number.isFinite(place.latitude) && Number.isFinite(place.longitude),
   );
+  const hasFallbackCenter = Array.isArray(fallbackCenter) && fallbackCenter.length === 2
+    && fallbackCenter.every(Number.isFinite);
+  const hasLocation = Boolean(selectedHasCoordinates || availablePlaces.length || fallbackPlace || hasFallbackCenter);
+  const zoom = hasLocation ? 13 : 2;
   const center = selectedHasCoordinates
     ? [selectedPlace.latitude, selectedPlace.longitude]
     : availablePlaces.length
       ? [availablePlaces[0].latitude, availablePlaces[0].longitude]
       : fallbackPlace
         ? [fallbackPlace.latitude, fallbackPlace.longitude]
-        : fallbackCenter || FUKUOKA_CENTER;
-
-  if (requireLocation && !availablePlaces.length && !fallbackPlace && !fallbackCenter) {
-    return <div className={styles.mapNotice} role="status">지도에 표시할 위치 정보를 확인할 수 없어요.</div>;
-  }
+        : hasFallbackCenter ? fallbackCenter : WORLD_CENTER;
 
   return (
-    <div lang="ko">
-    {requireLocation && availablePlaces.length < places.length && <p className={styles.mapNotice}>위치 정보가 있는 장소 {availablePlaces.length}개를 표시합니다. 좌표가 없는 장소는 지도에 표시되지 않습니다.</p>}
-    <MapContainer className={styles.map} center={center} zoom={13} zoomControl={false} scrollWheelZoom={false}>
-      <MoveMap center={center} places={availablePlaces} fitToPlaces={fitToPlaces} />
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
+    <div className={styles.root} lang="ko">
+    {requireLocation && availablePlaces.length < places.length && <p className={styles.mapNotice} role="status">위치 정보가 있는 장소 {availablePlaces.length}개를 표시합니다. 좌표가 없는 장소는 지도에 표시되지 않습니다.</p>}
+    <MapContainer className={styles.map} center={center} zoom={zoom} minZoom={1} maxZoom={19} maxBounds={[[-85, -Infinity], [85, Infinity]]} maxBoundsViscosity={1} zoomControl={false} scrollWheelZoom={false}>
+      <MoveMap center={center} places={availablePlaces} fitToPlaces={fitToPlaces} zoom={zoom} />
+      <KoreanMapLayer />
       {availablePlaces.map((place, index) => {
-        const selected = selectedPlace?.place === place.place;
+        const selected = selectedPlace != null && (place.id != null
+          ? selectedPlace.id === place.id
+          : selectedPlace.place === place.place);
         return (
           <CircleMarker
             key={`${place.place}-${index}`}

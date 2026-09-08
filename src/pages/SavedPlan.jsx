@@ -189,6 +189,7 @@ export default function SavedPlan({ showBack = false }) {
     () => (user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : []),
   );
   const favoriteMutationRef = useRef(0);
+  const favoriteLock = useRef(false);
 
   useEffect(() => {
     if (!user) return;
@@ -285,7 +286,7 @@ export default function SavedPlan({ showBack = false }) {
     getFavoriteTrips(user.uid)
       .then((firebaseIds) => {
         if (!active || favoriteMutationRef.current !== mutationAtStart) return;
-        const ids = storedIds ?? firebaseIds;
+        const ids = firebaseIds;
         setFavoriteTripIds(ids);
         storeFavoriteTrips(user.uid, ids);
       })
@@ -304,6 +305,8 @@ export default function SavedPlan({ showBack = false }) {
       return;
     }
 
+    if (favoriteLock.current) return;
+    favoriteLock.current = true;
     const wasFavorite = favoriteTripIds.includes(tripId);
     const nextIds = wasFavorite
       ? favoriteTripIds.filter((id) => id !== tripId)
@@ -320,6 +323,9 @@ export default function SavedPlan({ showBack = false }) {
     } catch {
       setFavoriteTripIds(favoriteTripIds);
       storeFavoriteTrips(user.uid, favoriteTripIds);
+      window.alert("일정 찜을 저장하지 못했습니다. 다시 시도해 주세요.");
+    } finally {
+      favoriteLock.current = false;
     }
   };
 
