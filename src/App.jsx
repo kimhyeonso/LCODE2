@@ -131,7 +131,6 @@ export default function App() {
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
-  const isRemixPage = pathname === "/ai-remix" || pathname === "/remix";
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
   useEffect(() => {
@@ -228,7 +227,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {!isImmersivePage && !isRemixPage && <Footer />}
+      {!isImmersivePage && <Footer />}
       {!isImmersivePage && <BottomNav />}
       <TopButton />
     </div>

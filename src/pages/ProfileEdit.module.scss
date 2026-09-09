@@ -157,50 +157,6 @@
 @include title.mypage-layout(".profileEdit", ".layout");
 @include title.mypage-heading(".formSection", ".eyebrow", ".hero", ".subtitle");
 
-.profileEdit {
-  position: fixed;
-  z-index: 1000;
-  inset: 0;
-  display: grid;
-  width: 100%;
-  min-height: 100dvh;
-  margin: 0;
-  padding: 27px 16px;
-  place-items: center;
-  background: rgb(0 0 0 / 42%);
-  overflow: hidden;
-}
-
-.profileEdit .layout {
-  display: block;
-  width: min(720px, calc(100vw - 32px));
-  max-height: calc(100dvh - 54px);
-  margin: 0;
-  padding: 64px 20px 24px;
-  background: #fff;
-  overflow-y: auto;
-  box-shadow: 0 22px 55px rgb(0 0 0 / 22%);
-}
-
-.profileEdit .formSection {
-  position: relative;
-  width: 100%;
-  padding-top: 0;
-}
-
-.profileEdit .archive {
-  display: none;
-}
-
-.profileEdit [data-mypage-back] {
-  position: absolute;
-  z-index: 3;
-  top: -44px;
-  left: 0;
-  right: auto;
-  color: #171714;
-}
-
 .profileEdit .fieldRow {
   position: relative;
   z-index: 1;
@@ -219,41 +175,163 @@
   pointer-events: auto;
 }
 
-@media (min-width: 901px) {
-  .profileEdit {
+.editModalBackdrop {
+  position: fixed;
+  z-index: 1010;
+  inset: 0;
+  display: grid;
+  padding: 27px 16px;
+  place-items: center;
+  background: rgb(0 0 0 / 42%);
+}
+
+.editModal {
+  display: flex;
+  flex-direction: column;
+  width: min(720px, calc(100vw - 96px));
+  max-height: calc(100dvh - 54px);
+  min-height: 430px;
+  padding: 20px;
+  background: #fff;
+  color: $ink;
+  overflow-y: auto;
+  box-shadow: 0 22px 55px rgb(0 0 0 / 22%);
+}
+
+.editModalTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 42px;
+
+  button {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    place-items: center;
+    border: 0;
+    background: transparent;
+    color: $ink;
+    cursor: pointer;
+    font: 400 28px/1 $sans;
+  }
+}
+
+.modalEyebrow {
+  margin: 0 0 12px;
+  color: rgba($ink, .55);
+  font-size: 13px;
+  letter-spacing: .16em;
+}
+
+.editModal h2 {
+  margin: 0 0 34px;
+  font-family: $display;
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.modalField {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 22px;
+  font-size: 14px;
+
+  span { font-weight: 600; }
+
+  input {
     width: 100%;
-    margin-left: 0;
-    padding: 27px 16px;
+    height: 54px;
+    padding: 0 16px;
+    border: 1px solid rgba($ink, .18);
+    outline: 0;
+    background: #fff;
+    color: $ink;
+    font: 400 15px/1 $sans;
   }
 
-  .profileEdit .layout {
-    width: min(720px, calc(100vw - 96px));
-    margin: 0;
+  input:focus {
+    border-color: rgba($ink, .55);
+  }
+}
+
+.editModalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 26px;
+
+  button {
+    height: 50px;
+    border: 1px solid rgba($ink, .15);
+    background: #fff;
+    color: $ink;
+    cursor: pointer;
+    font: 600 14px/1 $sans;
+  }
+
+  button:last-child {
+    border-color: #171714;
+    background: #171714;
+    color: #fff;
   }
 }
 
 @media (max-width: 600px) {
-  .profileEdit {
+  .editModalBackdrop {
     padding: 20px 10px;
   }
 
-  .profileEdit .layout {
+  .editModal {
     width: calc(100vw - 20px);
     max-height: calc(100dvh - 40px);
-    padding: 56px 16px 20px;
+    min-height: 360px;
+    padding: 18px 16px;
   }
 
-  .profileEdit [data-mypage-back] {
-    top: -38px;
+  .editModalTop {
+    margin-bottom: 28px;
   }
 
+  .editModal h2 {
+    margin-bottom: 26px;
+    font-size: 34px;
+  }
+
+  .editModalActions {
+    grid-template-columns: 1fr;
+  }
+}
+
+.archive {
+  display: none;
+}
+
+@media (min-width: 901px) {
+  // 폼이 좌측에 몰리지 않도록 콘텐츠 영역을 채우고 가운데 정렬합니다.
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    width: min(920px, calc(100% - 112px));
+    margin-inline: auto;
+  }
+  // 라벨 열을 조금 넓혀 넓은 폭에서도 균형을 맞춥니다.
+  .fieldRow { grid-template-columns: 200px minmax(0, 1fr) 56px; }
+  .profileEdit .fieldRow { grid-template-columns: 200px minmax(0, 1fr) 56px; }
+}
+
+@media (max-width: 600px) {
   .profileEdit .fieldRow {
-    grid-template-columns: 86px minmax(0, 1fr) 42px;
-    min-height: 52px;
-    font-size: 12px;
+    grid-template-columns: 6.8rem minmax(0, 1fr) 44px;
   }
 
   .profileEdit .rowButton {
-    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 44px;
+    border-bottom: 0;
+    padding-bottom: 0;
   }
 }

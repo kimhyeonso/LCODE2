@@ -57,7 +57,7 @@ const heroSlides = [
     description: "맛집과 감성을 담은 시티 트립",
     cta: "VIEW PACKAGE",
     to: "/plan?city=FUKUOKA",
-    mobileShiftRight: true,
+    mobileIvory: true,
   },
   {
     desktop: bannerPC2,
@@ -69,6 +69,7 @@ const heroSlides = [
     description: "도시의 감성과 로컬 스팟을 담은 여행",
     cta: "VIEW PACKAGE",
     to: "/plan?city=SEOUL",
+    mobileLightText: true,
   },
   {
     desktop: bannerPC3,
@@ -90,6 +91,8 @@ const heroSlides = [
     cta: "JOIN EVENT",
     to: "/event",
     compactTitle: true,
+    mobileBottomLeft: true,
+    mobileIvory: true,
   },
   {
     desktop: bannerPC5,
@@ -366,11 +369,11 @@ export default function Home() {
             }}
             onTransitionEnd={handleHeroTransitionEnd}
           >
-            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight }, index) => {
+            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText }, index) => {
               const isClone = index === heroSlides.length;
               return (
               <div
-                className={`${styles.heroSlide} ${video ? styles.heroSlideVideo : ""} ${dark ? styles.heroSlideDark : ""}`}
+                className={`${styles.heroSlide} ${video ? styles.heroSlideVideo : ""} ${dark ? styles.heroSlideDark : ""} ${mobileIvory ? styles.heroSlideMobileIvory : ""} ${mobileLightText ? styles.heroSlideMobileLightText : ""}`}
                 key={`${desktop}-${index}`}
                 aria-hidden={index !== activeHeroSlide || isClone}
               >
@@ -397,7 +400,7 @@ export default function Home() {
                     />
                   </picture>
                 )}
-                <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""}`}>
+                <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""} ${mobileBottomLeft ? styles.heroCopyMobileBottomLeft : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>
                   {subtitle && <p className={styles.heroSubtitle}>{subtitle}</p>}
@@ -436,12 +439,15 @@ export default function Home() {
         {planLoading ? (
           <div className={styles.upcomingLoading}>일정을 확인하고 있어요.</div>
         ) : upcomingPlan ? (
-          <Link to="/plan" className={styles.upcomingCard}>
+          <article className={styles.upcomingCard}>
             <div className={styles.upcomingMain}>
               <div>
                 <strong>{dDay === null ? "DATE TBD" : dDay > 0 ? `D−${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</strong>
-                <h2>{upcomingPlan.city?.toUpperCase()}</h2>
+                <h2><Link to="/plan">{upcomingPlan.city?.toUpperCase()}</Link></h2>
                 <p>{upcomingPlan.title}</p>
+                <Link className={styles.remixButton} to={`/ai-remix?planId=${encodeURIComponent(upcomingPlan.id)}`}>
+                  <span>AI REMIX</span><b>AI로 일정 다시 짜기</b>
+                </Link>
               </div>
               <div
                 className={styles.upcomingImage}
@@ -453,7 +459,7 @@ export default function Home() {
               <div><dt>DAYS</dt><dd>{String(dayCount).padStart(2, "0")} DAYS</dd></div>
               <div><dt>SPOTS</dt><dd>{String(scheduleCount).padStart(2, "0")} SPOTS</dd></div>
             </dl>
-          </Link>
+          </article>
         ) : (
           <div className={styles.upcomingEmpty}>
             <span>NO TRIP YET</span>

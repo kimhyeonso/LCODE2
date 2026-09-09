@@ -17,9 +17,13 @@
 }
 
 .page > h1 {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
   margin: 20px 0 18px;
   padding-bottom: 18px;
-  border-bottom: 1px solid #cec7bb;
+  // 밑선을 heroCard 이미지와 같은 폭(.page 콘텐츠 폭)으로, 잘 보이는 색으로.
+  border-bottom: 2px solid #c9c0b2;
   font-family: $serif;
   font-size: 38px;
   font-weight: 400;
@@ -192,8 +196,7 @@
 
 .others > article {
   position: relative;
-  overflow: hidden;
-  margin: 0 14px 16px;
+  margin: 0 0 16px;
 
   border: 1px solid #ddd;
 }
@@ -331,6 +334,11 @@
     margin-bottom: calc(-58px - env(safe-area-inset-bottom));
     padding-bottom: 0;
   }
+  // 모바일에서는 SAVED PLAN 제목 밑줄 제거.
+  .page > h1 {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
   .heroActions {
     right: 18px;
     bottom: 18px;
@@ -379,7 +387,9 @@
 .trending {
   margin: 68px 0 0;
 
-  overflow: visible;
+  padding-left: 0;
+
+  overflow: hidden;
 }
 
 .trendingHeader {
@@ -421,6 +431,8 @@
 .trending > div > * {
   min-width: 0;
   color: #222;
+  // OTHER JOURNEYS 카드처럼 테두리를 넣습니다.
+  border: 1px solid #ddd;
 }
 
 .trending > div > div > a > div:first-child {

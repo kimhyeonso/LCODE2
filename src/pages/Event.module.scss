@@ -99,9 +99,28 @@ $black: #000;
   text-align: left;
   box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
   cursor: pointer;
+  animation: event-card-reveal 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+}
+
+.eventCard:nth-of-type(2) {
+  animation-delay: 0.18s;
+}
+
+.eventCard:nth-of-type(3) {
+  animation-delay: 0.28s;
+}
+
+@keyframes event-card-reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .cardVisual {
@@ -138,6 +157,10 @@ $black: #000;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .eventCard {
+    animation: none;
+  }
+
   .eventCard,
   .cardVisual > img,
   .cardVisual > .magazineCardVisual {
@@ -387,6 +410,8 @@ $black: #000;
 
 @media (max-width: 640px) {
   .listHeader { padding: 22px 16px 0; }
+  // 모바일: 제목 밑선 제거.
+  .listHeader h1 { padding-bottom: 0; border-bottom: 0; }
 }
 
 @media (min-width: 641px) and (max-width: 900px) {
