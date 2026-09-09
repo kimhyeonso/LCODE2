@@ -89,7 +89,7 @@
 .greeting { margin: 1rem 0 .25rem; color: #99948d; font: 400 .58rem $korean; }
 .profile h1 { margin: 0; color: #111; font: 700 1.5rem/1 $korean; }
 .email { margin-top: 1rem; letter-spacing: .04em; }
-.profileActions { display: flex; gap: .35rem; margin-top: .6rem; }
+.profileTools { display: flex; gap: .35rem; margin-top: .6rem; }
 .edit, .signout { display: inline-block; margin: 0; border: 1px solid #cecece; padding: .32rem .95rem; background: transparent; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
 .signout { cursor: pointer; }
 
@@ -286,7 +286,7 @@
   .profile > .greeting,
   .profile > h1,
   .profile > .email,
-  .profile > .profileActions { transform: none; }
+  .profile > .profileTools { transform: none; }
 
   .menuList {
     z-index: 1;
@@ -303,7 +303,7 @@
   .profile .email { font-size: 15px; }
   .profile .greeting { margin-top: 22px; font-size: 15px; }
   .profile h1 { font-size: clamp(32px, calc(2.5vw + 2px), 44px); }
-  .profile .profileActions { margin-top: 14px; }
+  .profile .profileTools { margin-top: 14px; }
   .profile .edit, .profile .signout { padding: 8px 14px; font-size: 15px; }
   .menuList a,
   .menuList button {
@@ -361,7 +361,7 @@
   .profile .greeting { margin: 20px 0 4px; font-size: 12px; }
   .profile h1 { font-size: 29px; }
   .profile .email { margin-top: 16px; font-size: 10px; }
-  .profile .profileActions { margin-top: 12px; }
+  .profile .profileTools { margin-top: 12px; }
   .profile .edit, .profile .signout { padding: 6px 9px; font-size: 10px; }
   .dashboard { grid-column: 1; grid-row: 2; display: block; height: auto; margin-top: 19px; }
   .heroVisual { display: none; }
