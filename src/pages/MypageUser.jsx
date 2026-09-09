@@ -106,7 +106,7 @@ export default function MypageUser() {
           <p className={styles.email}>{user?.email || ""}</p>
           <div className={styles.profileActions}>
             <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
-            <button className={styles.logout} type="button" onClick={handleLogout}>로그아웃</button>
+            <button className={styles.signout} type="button" onClick={handleLogout}>로그아웃</button>
           </div>
         </section>
 
