@@ -114,7 +114,10 @@
 
 // 모바일: 제목 밑선 제거.
 @media (max-width: 640px) {
-  .intro h1 { padding-bottom: 0; border-bottom: 0; }
+  .intro h1 {
+    padding-bottom: 18px;
+    border-bottom: 1px solid #dedad3;
+  }
 }
 
 // 여행 풍경 이미지(.visual) 제거 — PC/모바일 공통.
@@ -185,4 +188,22 @@
 
 .content {
   grid-template-columns: minmax(0, 1fr);
+}
+
+@media (max-width: 640px) {
+  .mainContent,
+  .intro {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .intro h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin: 20px 0 18px !important;
+    padding-bottom: 18px !important;
+    border-bottom: 1px solid #dedad3 !important;
+  }
 }
