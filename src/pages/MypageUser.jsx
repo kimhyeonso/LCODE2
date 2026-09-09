@@ -16,6 +16,7 @@ const menuItems = [
   { label: "쿠폰함", to: "/coupon", icon: "/Mypage-img/ticket.svg" },
   { label: "알림 설정", to: "/alarm", icon: "/Mypage-img/bell.svg" },
   { label: "고객센터", to: "/notice", icon: "/Mypage-img/headset.svg" },
+  { label: "장바구니", to: "/my-cart", icon: "/Mypage-img/bag.svg" },
 ];
 const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
 const recentSlideshowImages = ["9.png", "10.png", "11.png", "12.png"];
@@ -103,7 +104,10 @@ export default function MypageUser() {
           <p className={styles.greeting}>안녕하세요,</p>
           <h1 id="user-name">{displayName}</h1>
           <p className={styles.email}>{user?.email || ""}</p>
-          <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
+          <div className={styles.profileActions}>
+            <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
+            <button className={styles.logout} type="button" onClick={handleLogout}>로그아웃</button>
+          </div>
         </section>
 
         <section className={styles.dashboard} aria-label="나의 여행 대시보드">
@@ -149,7 +153,6 @@ export default function MypageUser() {
           {menuItems.map(({ label, to, icon, iconSize }) => (
             <Link key={label} to={to} style={{ "--menu-icon": `url("${icon}")`, "--menu-icon-size": iconSize }}>{label}<span aria-hidden="true">→</span></Link>
           ))}
-          <button type="button" onClick={handleLogout}>로그아웃</button>
         </nav>
       </div>
     </main>
