@@ -4,7 +4,7 @@ import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Buy.module.scss";
 import { useAuth } from "../hooks/useAuth";
 import { eligibleProducts, getPurchaseOrders } from "../services/purchaseHistory";
-import { enrichShopProduct } from "../utils/shopProductResolver";
+import { resolveProductImage } from "../utils/shopProductResolver";
 
 const filters = ["전체", "배송 준비", "배송 중", "배송 완료"];
 const PAGE_SIZE = 3;
@@ -22,9 +22,11 @@ function orderRows(savedOrders, uid) {
       price: (Number(item.price) + Number(item.option?.extraPrice || 0)) * Number(item.quantity || 1),
       status: savedOrder.status || "배송 준비",
       canReview: eligible.some((product) => product.id === String(item.id)),
-      image: product.image,
-    });
-    }));
+      // Firestore order records store the image URL resolved at purchase
+      // time, which 404s once local assets are re-hashed (e.g. the
+      // png/jpg -> webp conversion). Re-resolve against today's catalog.
+      image: resolveProductImage(item),
+    })));
 }
 
 export default function Buy() {
@@ -64,7 +66,7 @@ export default function Buy() {
             {visibleOrders.map((order) => (
               <article className={styles.orderCard} key={`${order.id}-${order.productId}`}>
                 <div className={styles.orderMeta}><span>주문일</span><strong>{order.date}</strong><span>주문번호</span><strong>{order.id}</strong></div>
-                {order.image ? <img className={styles.orderImage} src={order.image} alt={order.name} /> : <div className={styles.orderImage} aria-hidden="true" />}
+                {order.image ? <img loading="lazy" className={styles.orderImage} src={order.image} alt={order.name} /> : <div className={styles.orderImage} aria-hidden="true" />}
                 <div className={styles.orderInfo}><h2>{order.name}</h2><p>{order.option}</p><strong>{order.price.toLocaleString("ko-KR")}원</strong></div>
                 <div className={styles.orderActions}><span className={styles.status}>{order.status}</span><Link to={`/shop/${order.productId}`}>상품 상세</Link>{order.canReview && <Link to={`/review?productId=${encodeURIComponent(order.productId)}`} state={{ productName: order.name }}>리뷰 쓰기</Link>}</div>
               </article>
@@ -78,11 +80,11 @@ export default function Buy() {
           </nav>}
         </section>
         <aside className={styles.side}>
-          <div className={styles.stamp} aria-hidden="true" /><figure className={styles.heroFrame}><img src="/Buy-img/order-hero.png" alt="여행용품 컬렉션" /></figure>
+          <div className={styles.stamp} aria-hidden="true" /><figure className={styles.heroFrame}><img loading="lazy" src="/Buy-img/order-hero.webp" alt="여행용품 컬렉션" /></figure>
           <section className={styles.snapshot}><h2>ORDER SNAPSHOT</h2><div className={styles.snapshotGrid}><div><span>총 주문</span><strong>{new Set(orders.map((order) => order.id)).size}</strong></div><div><span>배송 중</span><strong>{orders.filter((order) => order.status === "배송 중").length}</strong></div><div><span>리뷰 가능 상품</span><strong>{new Set(orders.filter((order) => order.canReview).map((order) => order.productId)).size}</strong></div></div></section>
         </aside>
         <section className={styles.contactBox} aria-label="주문 관련 문의">
-          <div className={styles.contactIcon}><img src="/Mypage-img/set.svg" alt="" /></div>
+          <div className={styles.contactIcon}><img loading="lazy" src="/Mypage-img/set.svg" alt="" /></div>
           <div className={styles.contactCopy}><h2>주문 관련 문의가 있으신가요?</h2><p>평일 10:00–18:00&nbsp;&nbsp;·&nbsp;&nbsp;hello@lcode.travel</p></div>
           <Link to="/contact">문의하기 <span aria-hidden="true">→</span></Link>
         </section>

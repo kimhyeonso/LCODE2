@@ -33,7 +33,7 @@ export default function ProductCard({
   const imageNumber = Number(String(product.id).replace(/\D/g, ""));
   const thumbnail = resolveImageUrl(product.image, "")
     || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.webp`, "") : "")
-    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.png`, "") : "");
+    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.webp`, "") : "");
 
 
   const handleAdd =
@@ -112,7 +112,7 @@ export default function ProductCard({
           </span>
 
           {thumbnail ? (
-            <img
+            <img loading="lazy"
               className={styles.productThumb}
               src={thumbnail}
               alt={product.name}

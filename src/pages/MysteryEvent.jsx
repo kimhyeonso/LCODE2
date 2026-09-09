@@ -9,71 +9,71 @@ import styles from "./MysteryEvent.module.scss";
 ========================================================= */
 
 const asset = {
-  cover: "/event/event03/background1.png",
+  cover: "/event/event03/background1.webp",
 
   // PC에서는 새 가로 이미지를 사용하고, Background 컴포넌트가
   // 1024px 이하에서 기존 세로 원본으로 자동 전환한다.
-  flight: "/event/event03/background2-web.png",
-  flightMobile: "/event/event03/background2.png",
-  cabin: "/event/event03/SCENE1-web.png",
-  cabinMobile: "/event/event03/SCENE1.png",
+  flight: "/event/event03/background2-web.webp",
+  flightMobile: "/event/event03/background2.webp",
+  cabin: "/event/event03/SCENE1-web.webp",
+  cabinMobile: "/event/event03/SCENE1.webp",
 
   // 일반 대화용 보조 배경은 더 이상 커피 클로즈업을 반복 사용하지 않는다.
-  cabinAlt: "/event/event03/SCENE1-web.png",
+  cabinAlt: "/event/event03/SCENE1-web.webp",
 
   // 사건 장면
-  groupScene: "/event/event03/SCENE2_picture-web.png",
-  groupSceneMobile: "/event/event03/SCENE2_picture.png",
-  airportScene: "/event/event03/SCENE3_picture.png",
-  coffeeCloseup: "/event/event03/SCENE%204.png",
-  drowsyScene: "/event/event03/SCENE4_picture.png",
-  collapseScene: "/event/event03/SCENE5_picture-web.png",
-  collapseSceneMobile: "/event/event03/SCENE5_picture.png",
-  messageScene: "/event/event03/SCENE6_picture.png",
+  groupScene: "/event/event03/SCENE2_picture-web.webp",
+  groupSceneMobile: "/event/event03/SCENE2_picture.webp",
+  airportScene: "/event/event03/SCENE3_picture.webp",
+  coffeeCloseup: "/event/event03/SCENE%204.webp",
+  drowsyScene: "/event/event03/SCENE4_picture.webp",
+  collapseScene: "/event/event03/SCENE5_picture-web.webp",
+  collapseSceneMobile: "/event/event03/SCENE5_picture.webp",
+  messageScene: "/event/event03/SCENE6_picture.webp",
 
   // 조사 진입 전환 화면은 1차/2차를 분리한다.
-  caseOpenFirstDesktop: "/event/event03/SCENE5_picture-web.png",
-  caseOpenFirstMobile: "/event/event03/SCENE5_picture.png",
-  caseOpenSecondDesktop: "/event/event03/SCENE6_picture.png",
-  caseOpenSecondMobile: "/event/event03/SCENE6_picture-mob.png",
+  caseOpenFirstDesktop: "/event/event03/SCENE5_picture-web.webp",
+  caseOpenFirstMobile: "/event/event03/SCENE5_picture.webp",
+  caseOpenSecondDesktop: "/event/event03/SCENE6_picture.webp",
+  caseOpenSecondMobile: "/event/event03/SCENE6_picture-mob.webp",
 
   // 기존 코드 호환용 별칭
-  evidence: "/event/event03/SCENE%204.png",
-  ending: "/event/event03/SCENE5_picture.png",
+  evidence: "/event/event03/SCENE%204.webp",
+  ending: "/event/event03/SCENE5_picture.webp",
 
-  groupPhoto: "/event/event03/picture%20(2).png",
-  dyingMessage: "/event/event03/dying_message%20(2).png",
-  dyingMessageNote: "/event/event03/dying_message%20(2).png",
+  groupPhoto: "/event/event03/picture%20(2).webp",
+  dyingMessage: "/event/event03/dying_message%20(2).webp",
+  dyingMessageNote: "/event/event03/dying_message%20(2).webp",
 
-  starbucks: "/event/event03/Starbucks.png",
-  criminal: "/event/event03/criminal.png",
-  criminalWeb: "/event/event03/criminal-web.png",
+  starbucks: "/event/event03/Starbucks.webp",
+  criminal: "/event/event03/criminal.webp",
+  criminalWeb: "/event/event03/criminal-web.webp",
 
-  hyeonsu: "/event/event03/hyeonsu.png",
-  hyeonsuProfile: "/event/event03/hyeonsu-po1.png",
-  hyeonsuPose2: "/event/event03/hyeonsu-po2.png",
-  hyeonsuFace: "/event/event03/hyeonsu-face.png",
+  hyeonsu: "/event/event03/hyeonsu.webp",
+  hyeonsuProfile: "/event/event03/hyeonsu-po1.webp",
+  hyeonsuPose2: "/event/event03/hyeonsu-po2.webp",
+  hyeonsuFace: "/event/event03/hyeonsu-face.webp",
 
-  jeongeun: "/event/event03/jeongeun.png",
-  jeongeunProfile: "/event/event03/jeongeun-po1.png",
-  jeongeunPose2: "/event/event03/jeongeun-po2.png",
-  jeongeunFace: "/event/event03/jeongeun-face.png",
+  jeongeun: "/event/event03/jeongeun.webp",
+  jeongeunProfile: "/event/event03/jeongeun-po1.webp",
+  jeongeunPose2: "/event/event03/jeongeun-po2.webp",
+  jeongeunFace: "/event/event03/jeongeun-face.webp",
 
-  jiyoung: "/event/event03/jiyoung.png",
-  jiyoungProfile: "/event/event03/jiyoung-po1.png",
-  jiyoungPose2: "/event/event03/jiyoung-po2.png",
-  jiyoungFace: "/event/event03/jiyoung-face.png",
+  jiyoung: "/event/event03/jiyoung.webp",
+  jiyoungProfile: "/event/event03/jiyoung-po1.webp",
+  jiyoungPose2: "/event/event03/jiyoung-po2.webp",
+  jiyoungFace: "/event/event03/jiyoung-face.webp",
 
-  seunggeun: "/event/event03/seunggeun.png",
-  seunggeunProfile: "/event/event03/seunggeun-po1.png",
-  seunggeunProfileAlt1: "/event/event03/seunggeun-po1-1.png",
-  seunggeunProfileAlt2: "/event/event03/seunggeun-po1-2.png",
+  seunggeun: "/event/event03/seunggeun.webp",
+  seunggeunProfile: "/event/event03/seunggeun-po1.webp",
+  seunggeunProfileAlt1: "/event/event03/seunggeun-po1-1.webp",
+  seunggeunProfileAlt2: "/event/event03/seunggeun-po1-2.webp",
 
-  sohee: "/event/event03/sohee.png",
-  soheeProfile: "/event/event03/sohee-po1.png",
-  soheePose2: "/event/event03/sohee-po2.png",
-  soheeFace: "/event/event03/sohee-face.png",
-  soheePose3: "/event/event03/sohee-po3.png",
+  sohee: "/event/event03/sohee.webp",
+  soheeProfile: "/event/event03/sohee-po1.webp",
+  soheePose2: "/event/event03/sohee-po2.webp",
+  soheeFace: "/event/event03/sohee-face.webp",
+  soheePose3: "/event/event03/sohee-po3.webp",
 };
 
 /* =========================================================
@@ -2856,7 +2856,7 @@ function CharacterVisual({
         profilePose ? styles.characterVisualProfilePose : ""
       } ${animationClass}`}
     >
-      <img
+      <img loading="lazy"
         src={src}
         alt=""
       />
@@ -2886,7 +2886,7 @@ function PropVisual({
               : styles.propVisualPhoto
       }`}
     >
-      <img
+      <img loading="lazy"
         src={src}
         alt=""
       />
@@ -3036,7 +3036,7 @@ function InvestigationHub({
                       styles.cardPortrait
                     }
                   >
-                    <img
+                    <img loading="lazy"
                       src={
                         round === "02" && suspect.pose2
                           ? suspect.pose2
@@ -3231,7 +3231,7 @@ function FocusPick({
                 onClick={handleClick}
               >
                 <div className={styles.focusPortrait}>
-                  <img src={suspect.pose2 ?? suspect.image} alt="" />
+                  <img loading="lazy" src={suspect.pose2 ?? suspect.image} alt="" />
                 </div>
 
                 <strong>{suspect.name}</strong>
@@ -3343,7 +3343,7 @@ function Reconstruction({
                 className={`${!confirmed ? styles.reconstructionMissing : ""} ${!isMobile ? styles.reconstructionWebCard : ""}`}
               >
                 <div className={styles.reconstructionFace}>
-                  <img
+                  <img loading="lazy"
                     src={suspect.face}
                     alt={`${suspect.name} 얼굴`}
                     onError={(event) => {
@@ -3444,7 +3444,7 @@ function FinalChoice({
                     styles.finalPortrait
                   }
                 >
-                  <img
+                  <img loading="lazy"
                     src={isMobile ? suspect.face : (suspect.pose2 ?? suspect.face)}
                     alt={`${suspect.name} ${isMobile ? "얼굴" : "집중 조사 포즈"}`}
                     onError={(event) => {
@@ -3596,7 +3596,7 @@ function VerdictScreen({
                 key={part}
                 className={`${styles.verdictCloseup} ${styles[`verdictCloseup${index + 1}`]}`}
               >
-                <img src={suspect.pose2 ?? suspect.image} alt="" />
+                <img loading="lazy" src={suspect.pose2 ?? suspect.image} alt="" />
               </div>
             ))}
           </div>
@@ -3625,7 +3625,7 @@ function VerdictScreen({
           </div>
 
           <div className={styles.verdictPortrait}>
-            <img src={suspect.pose2 ?? suspect.image} alt="" />
+            <img loading="lazy" src={suspect.pose2 ?? suspect.image} alt="" />
           </div>
 
           {!correct && copy?.reaction && (
@@ -3698,7 +3698,7 @@ function WrongResult({
             styles.wrongPortrait
           }
         >
-          <img
+          <img loading="lazy"
             src={
               suspect?.image
             }
@@ -3764,7 +3764,7 @@ function CulpritScreen({ onNext }) {
     <section className={`${styles.scene} ${styles.culpritScreen} ${styles.criminalRevealScreen}`}>
       <picture>
         <source media="(min-width: 1025px)" srcSet={asset.criminalWeb} />
-      <img
+      <img loading="lazy"
         className={styles.criminalBackdrop}
         src={asset.criminal}
         alt="김현수 범인 공개"
@@ -3842,7 +3842,7 @@ function RewardScreen({
             styles.rewardCoupon
           }
         >
-          <img
+          <img loading="lazy"
             src={
               asset.starbucks
             }
@@ -3922,7 +3922,7 @@ function ChapterSummary({ chapter, summary, onNext }) {
             <article key={`${item.label}-${index}`}>
               {item.image && (
                 <div className={styles.summaryVisual}>
-                  <img src={item.image} alt="" />
+                  <img loading="lazy" src={item.image} alt="" />
                 </div>
               )}
               <div className={styles.summaryCardCopy}>
@@ -4128,7 +4128,7 @@ function Background({ src }) {
             : null;
 
   const image = (
-    <img
+    <img loading="lazy"
       className={`${styles.background} ${
         src === asset.flight ? styles.backgroundNaturalFit : ""
       }`}

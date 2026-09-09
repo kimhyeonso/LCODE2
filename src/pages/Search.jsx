@@ -254,7 +254,7 @@ export default function Search() {
     <main className={styles.searchPage}>
       <section className={styles.searchIntro}>
         <form role="search" onSubmit={submitSearch}>
-          <img src={searchIcon} alt="" aria-hidden="true" />
+          <img loading="lazy" src={searchIcon} alt="" aria-hidden="true" />
           <input
             type="search"
             value={query}

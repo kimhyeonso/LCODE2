@@ -132,6 +132,7 @@ export default function App() {
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
+  const isHomePage = pathname === "/";
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
   useEffect(() => {
@@ -141,7 +142,7 @@ export default function App() {
   return (
     <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
       {showIntro && <Intro onComplete={finishIntro} />}
-      {!showIntro && <Popup />}
+      {!showIntro && isHomePage && <Popup />}
       <ScrollTop />
       <PageSize />
       {!isImmersivePage && <Header />}

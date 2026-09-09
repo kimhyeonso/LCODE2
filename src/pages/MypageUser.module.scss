@@ -35,7 +35,7 @@
   inset: -4px;
   background:
     linear-gradient(180deg, rgb(0 0 0 / 4%), rgb(0 0 0 / 24%)),
-    url("/Mypage-img/trv.png") center 72% / cover no-repeat;
+    url("/Mypage-img/trv.webp") center 72% / cover no-repeat;
   content: "";
   filter: blur(2px);
   transform: scale(1.01);
@@ -73,7 +73,7 @@
   right: -1rem;
   width: 20rem;
   aspect-ratio: 1254 / 648;
-  background: url("/Mypage-img/u.png") center / contain no-repeat;
+  background: url("/Mypage-img/u.webp") center / contain no-repeat;
   content: "";
   opacity: 0.1;
   pointer-events: none;
@@ -119,7 +119,7 @@
   bottom: -4rem;
   width: 30rem;
   height: 19rem;
-  background: url("/Mypage-img/g.png") center / contain no-repeat;
+  background: url("/Mypage-img/g.webp") center / contain no-repeat;
   content: "";
   opacity: .38;
   pointer-events: none;
@@ -358,11 +358,10 @@
     border-bottom: 1px solid #dedad3;
   }
   .profile .eyebrow { font-size: 10px; }
-  .profile .greeting { margin: 20px 0 4px; font-size: 12px; }
-  .profile h1 { font-size: 29px; }
-  .profile .email { margin-top: 16px; font-size: 10px; }
-  .profile .profileTools { margin-top: 12px; }
-  .profile .edit, .profile .signout { padding: 6px 9px; font-size: 10px; }
+  .profile .greeting { margin: 20px 0 20px; font-size: 13px; }
+  .profile h1 { font-size: 38px; }
+  .profile .email { margin-top: 8px; font-size: 14px; }
+  .profile .edit { margin-top: 12px; padding: 6px 9px; font-size: 10px; }
   .dashboard { grid-column: 1; grid-row: 2; display: block; height: auto; margin-top: 19px; }
   .heroVisual { display: none; }
   .summary {

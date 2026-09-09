@@ -4,8 +4,8 @@ import styles from "./Popup.module.scss";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const popupItems = [
-  { id: "popup01", image: "/Mypage-img/popup01.png", event: "mystery" },
-  { id: "popup02", image: "/Mypage-img/popup02.png", event: "gacha" },
+  { id: "popup01", image: "/Mypage-img/popup01.webp", event: "mystery" },
+  { id: "popup02", image: "/Mypage-img/popup02.webp", event: "gacha" },
 ];
 
 const storageKey = (id) => `lcode-${id}-hidden-until`;
@@ -54,7 +54,7 @@ export default function Popup() {
               }}
               aria-label={event === "mystery" ? "비행기 살인사건 이벤트로 이동" : "가챠 뽑기 이벤트로 이동"}
             >
-              <img src={image} alt="" />
+              <img loading="lazy" src={image} alt="" />
             </button>
             <footer>
               <label>

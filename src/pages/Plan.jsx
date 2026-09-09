@@ -92,7 +92,7 @@ function PlaceImage({ src, name }) {
   const [failed, setFailed] = useState(false);
   return <span className={styles.placeImage}>
     {src && !failed
-      ? <img src={src} alt={name} onError={() => setFailed(true)} />
+      ? <img loading="lazy" src={src} alt={name} onError={() => setFailed(true)} />
       : <span className={styles.noPlaceImage}>사진 없음</span>}
   </span>;
 }
@@ -413,9 +413,9 @@ export default function Plan() {
       <section className={`${styles.points} ${styles.revealBox}`}>
         <h2>이 일정의 포인트</h2>
         <div>
-          <p><img src={travelIcon} alt="" /><strong>공항 접근성</strong></p>
-          <p><img src={diningIcon} alt="" /><strong>맛집 중심</strong></p>
-          <p><img src={carIcon} alt="" /><strong>도심 이동 거리</strong></p>
+          <p><img loading="lazy" src={travelIcon} alt="" /><strong>공항 접근성</strong></p>
+          <p><img loading="lazy" src={diningIcon} alt="" /><strong>맛집 중심</strong></p>
+          <p><img loading="lazy" src={carIcon} alt="" /><strong>도심 이동 거리</strong></p>
         </div>
       </section>
 

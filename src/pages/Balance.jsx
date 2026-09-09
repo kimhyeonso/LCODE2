@@ -47,48 +47,48 @@ const resolveTripImage = (image) => (
 );
 
 // 선택지에 사진을 넣을 때는 해당 객체에 아래처럼 image와 imageAlt를 추가하세요.
-// { title: "선택지", description: "소제목", image: "/BalanceGame/파일명.png", imageAlt: "사진 설명" }
+// { title: "선택지", description: "소제목", image: "/BalanceGame/파일명.webp", imageAlt: "사진 설명" }
 const questions = [
   {
     title: <>돈을 아낄 것인가,<br />시간을 아낄 것인가</>,
     choices: [
-      { title: "20시간 경유", description: "항공권 10만 원 · 경유 3번 , 하루를 이동에", image: "/BalanceGame/bal01.png", imageAlt: "경유 여행" },
-      { title: "2시간 직항", description: "항공권 80만 원 · 빠르고 편하게", image: "/BalanceGame/bal02.png", imageAlt: "직항 여행" },
+      { title: "20시간 경유", description: "항공권 10만 원 · 경유 3번 , 하루를 이동에", image: "/BalanceGame/bal01.webp", imageAlt: "경유 여행" },
+      { title: "2시간 직항", description: "항공권 80만 원 · 빠르고 편하게", image: "/BalanceGame/bal02.webp", imageAlt: "직항 여행" },
     ],
   },
   {
     title: "여행의 속도를 하나만 선택 해야한다면 ?",
     choices: [
-      { title: "새벽 6시부터 움직인다", description: "관광지 10곳 정복", image: "/BalanceGame/bal03.png", imageAlt: "이른 아침 여행" },
-      { title: "오전 11시까지 늦잠자기", description: "관광지는 하루 두 곳만", image: "/BalanceGame/bal04.png", imageAlt: "느긋한 여행" },
+      { title: "새벽 6시부터 움직인다", description: "관광지 10곳 정복", image: "/BalanceGame/bal03.webp", imageAlt: "이른 아침 여행" },
+      { title: "오전 11시까지 늦잠자기", description: "관광지는 하루 두 곳만", image: "/BalanceGame/bal04.webp", imageAlt: "느긋한 여행" },
     ],
   },
   {
     title: "여행에서 하나를 완전히 포기해야 한다면?",
     choices: [
-      { title: "관광지 전부 포기", description: "관광지는 거둘뿐, 미식 여행", image: "/BalanceGame/bal05.png", imageAlt: "미식 여행" },
-      { title: "관광지 전부 정복", description: "관광지는 풀코스로 5곳 이상부터", image: "/BalanceGame/bal06.png", imageAlt: "관광지 여행" },
+      { title: "관광지 전부 포기", description: "관광지는 거둘뿐, 미식 여행", image: "/BalanceGame/bal05.webp", imageAlt: "미식 여행" },
+      { title: "관광지 전부 정복", description: "관광지는 풀코스로 5곳 이상부터", image: "/BalanceGame/bal06.webp", imageAlt: "관광지 여행" },
     ],
   },
   {
     title: "남들과 다른 여행과 실패 없는 여행 중 하나만 고른다면?",
     choices: [
-      { title: "핫플만 여행", description: "사람들로 붐비는 대신 모두가 인정하는", image: "/BalanceGame/bal07.png", imageAlt: "인기 여행지" },
-      { title: "동네만 여행", description: "검색해도 잘 안 나오고 정보와 후기가 없는", image: "/BalanceGame/bal08.png", imageAlt: "한적한 동네 여행" },
+      { title: "핫플만 여행", description: "사람들로 붐비는 대신 모두가 인정하는", image: "/BalanceGame/bal07.webp", imageAlt: "인기 여행지" },
+      { title: "동네만 여행", description: "검색해도 잘 안 나오고 정보와 후기가 없는", image: "/BalanceGame/bal08.webp", imageAlt: "한적한 동네 여행" },
     ],
   },
   {
     title: "완벽한 계획과 예상 밖의 여행 중 하나만 선택한다면?",
     choices: [
-      { title: "1분 단위로 완벽하게 여행", description: "갑작스러운 일정 변경이 불가능한", image: "/BalanceGame/bal09.png", imageAlt: "계획적인 여행" },
-      { title: "발길 닿는 대로 여행", description: "예약한 맛집과 명소가 하나도 없는", image: "/BalanceGame/bal10.png", imageAlt: "즉흥적인 여행" },
+      { title: "1분 단위로 완벽하게 여행", description: "갑작스러운 일정 변경이 불가능한", image: "/BalanceGame/bal09.webp", imageAlt: "계획적인 여행" },
+      { title: "발길 닿는 대로 여행", description: "예약한 맛집과 명소가 하나도 없는", image: "/BalanceGame/bal10.webp", imageAlt: "즉흥적인 여행" },
     ],
   },
   {
     title: "완벽한 날씨와 한적한 여행 중 하나만 가질 수 있다면?",
     choices: [
-      { title: "일주일 내내 비오는 날씨", description: "모든 여행지에 관광객 0명", image: "/BalanceGame/bal11.png", imageAlt: "비 오는 한적한 여행지" },
-      { title: "일주일 내내 완벽한 날씨", description: "모든 여행지에 2시간 기다리는", image: "/BalanceGame/bal12.png", imageAlt: "맑고 붐비는 여행지" },
+      { title: "일주일 내내 비오는 날씨", description: "모든 여행지에 관광객 0명", image: "/BalanceGame/bal11.webp", imageAlt: "비 오는 한적한 여행지" },
+      { title: "일주일 내내 완벽한 날씨", description: "모든 여행지에 2시간 기다리는", image: "/BalanceGame/bal12.webp", imageAlt: "맑고 붐비는 여행지" },
     ],
   },
 ];
@@ -325,7 +325,7 @@ const Result = ({ result, onPlan }) => (
         <strong>{result.label}</strong>
         <p>{result.summary}</p>
       </div>
-      <img src={result.image} alt={`${result.label} 여행 유형`} />
+      <img loading="lazy" src={result.image} alt={`${result.label} 여행 유형`} />
     </div>
 
     <div className={styles.resultDetails}>
@@ -404,7 +404,7 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
       </header>
 
       <article className={styles.primaryMatch}>
-        <img src={primary.image} alt={primary.place} />
+        <img loading="lazy" src={primary.image} alt={primary.place} />
         <div className={styles.matchShade} aria-hidden="true" />
         <div className={styles.primaryCopy}>
           <p><strong>89%</strong> <span>MATCH</span></p>
@@ -459,7 +459,7 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
         <p className={styles.moreLabel}>MORE FOR YOU</p>
         {more.map((trip, index) => (
           <article className={styles.matchRow} key={`${trip.city}-${trip.place}`}>
-            <img src={trip.image} alt={trip.place} />
+            <img loading="lazy" src={trip.image} alt={trip.place} />
             <div>
               <p className={styles.matchPercent}><strong>{index === 0 ? 83 : 77}%</strong> <span>MATCH</span></p>
               <h2>{trip.cityEnglish}</h2>
@@ -574,7 +574,7 @@ const Balance = () => {
         <div className={styles.choices}>
           <button className={styles.choice} type="button" onClick={handleChoice}>
             {question.choices[0].image && (
-              <img
+              <img loading="lazy"
                 className={styles.choiceImage}
                 src={question.choices[0].image}
                 alt={question.choices[0].imageAlt || ""}
@@ -591,7 +591,7 @@ const Balance = () => {
 
           <button className={styles.choice} type="button" onClick={handleChoice}>
             {question.choices[1].image && (
-              <img
+              <img loading="lazy"
                 className={styles.choiceImage}
                 src={question.choices[1].image}
                 alt={question.choices[1].imageAlt || ""}
@@ -610,9 +610,9 @@ const Balance = () => {
 
   return (
     <section className={styles.main}>
-      <img
+      <img loading="lazy"
         className={styles.background}
-        src="/BalanceGame/p1.png"
+        src="/BalanceGame/p1.webp"
         alt="한옥 숙소에서 바라본 서울의 풍경"
       />
       <div className={styles.overlay} aria-hidden="true" />

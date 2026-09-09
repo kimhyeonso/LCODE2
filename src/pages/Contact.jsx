@@ -55,15 +55,15 @@ export default function Contact() {
         </section>
 
         <aside className={styles.visual} aria-label="여행 풍경">
-          <img src="/Mypage-img/tape.png" alt="테이프 이미지" className={styles.tape}/>
+          <img loading="lazy" src="/Mypage-img/tape.webp" alt="테이프 이미지" className={styles.tape}/>
           <figure className={styles.photoFrame}>
-            <img src="/Mypage-img/content.png" alt="노을이 비치는 여행지 풍경" />
+            <img loading="lazy" src="/Mypage-img/content.webp" alt="노을이 비치는 여행지 풍경" />
           </figure>
         </aside>
 
         <section className={styles.helpBox} aria-label="고객센터 문의">
           <div className={styles.helpIcon} aria-hidden="true">
-            <img src="/Mypage-img/set.svg" alt="" />
+            <img loading="lazy" src="/Mypage-img/set.svg" alt="" />
           </div>
           <div className={styles.helpCopy}>
             <h2>아직 궁금한 점이 있나요?</h2>

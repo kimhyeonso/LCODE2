@@ -52,7 +52,7 @@ export default function Shop() {
           <article id={item.id} className={styles.card} key={item.id}>
             <div className={styles.visual}>
               <span>{String(index + 1).padStart(2, "0")}</span>
-              <img src={item.image} alt={item.koreanName} />
+              <img loading="lazy" src={item.image} alt={item.koreanName} />
             </div>
             <div className={styles.copy}>
               <div>

@@ -18,8 +18,8 @@ const menuItems = [
   { label: "고객센터", to: "/notice", icon: "/Mypage-img/headset.svg" },
   { label: "장바구니", to: "/my-cart", icon: "/Mypage-img/bag.svg" },
 ];
-const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
-const recentSlideshowImages = ["9.png", "10.png", "11.png", "12.png"];
+const slideshowImages = ["3.webp", "4.webp", "5.webp", "6.webp"];
+const recentSlideshowImages = ["9.webp", "10.webp", "11.webp", "12.webp"];
 
 const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
   || plan.updatedAt?.seconds * 1000 || plan.createdAt?.toMillis?.()
@@ -116,7 +116,7 @@ export default function MypageUser() {
             <article className={styles.upcoming}>
               <div className={styles.upcomingSlideshow} aria-hidden="true">
                 {slideshowImages.map((image, index) => (
-                  <img className={index === slideIndex ? styles.activeSlide : ""} key={image}
+                  <img loading="lazy" className={index === slideIndex ? styles.activeSlide : ""} key={image}
                     src={`/Mypage-img/${image}`} alt="" decoding="async" />
                 ))}
               </div>
@@ -129,7 +129,7 @@ export default function MypageUser() {
             <article className={styles.recent}>
               <div className={styles.upcomingSlideshow} aria-hidden="true">
                 {recentSlideshowImages.map((image, index) => (
-                  <img className={index === slideIndex ? styles.activeSlide : ""} key={`recent-${image}`}
+                  <img loading="lazy" className={index === slideIndex ? styles.activeSlide : ""} key={`recent-${image}`}
                     src={`/Mypage-img/${image}`} alt="" decoding="async" />
                 ))}
               </div>

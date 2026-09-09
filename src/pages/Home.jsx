@@ -217,12 +217,13 @@ export default function Home() {
   useEffect(() => {
     if (heroSlides.length < 2) return undefined;
 
-    const timer = window.setInterval(() => {
+    const duration = activeHeroSlide === 0 ? 8000 : 5000;
+    const timer = window.setTimeout(() => {
       setActiveHeroSlide((current) => current + 1);
-    }, 5000);
+    }, duration);
 
-    return () => window.clearInterval(timer);
-  }, []);
+    return () => window.clearTimeout(timer);
+  }, [activeHeroSlide]);
 
   const SHOP_CURSOR_SIZE = 64;
 

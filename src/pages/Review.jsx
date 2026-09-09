@@ -9,6 +9,7 @@ import { prepareReviewPhoto } from "../services/reviewPhotos";
 import { getPlans } from "../services/firestoreService";
 import { recentReviewTrips } from "../services/recentReviewTrips";
 import { getReviewProducts, saveProductReview } from "../services/purchaseHistory";
+import { resolveProductImage } from "../utils/shopProductResolver";
 
 const baseTags = ["도시", "야경", "맛집", "감성", "재방문 의사"];
 const draftKey = "lcode-review-draft";
@@ -52,7 +53,10 @@ export default function Review() {
     getReviewProducts(user.uid).then((items) => {
       if (!active) return;
       const item = items.find((item) => item.id === productId);
-      setPurchase(item || null);
+      // Firestore purchase records store the image URL resolved at order
+      // time, which 404s once local assets are re-hashed (png/jpg -> webp).
+      // Re-resolve against today's catalog.
+      setPurchase(item ? { ...item, image: resolveProductImage(item) } : null);
       if (!item) setPurchaseError("최근 30일 이내에 구매한 상품만 리뷰를 작성할 수 있어요.");
     }).catch(() => { if (active) setPurchaseError("구매 내역을 확인하지 못했어요. 새로고침 후 다시 시도해 주세요."); })
       .finally(() => { if (active) setPurchaseLoading(false); });
@@ -243,7 +247,7 @@ export default function Review() {
           </section>}
           <section className={styles.tripSummary}>
             {productName ? <>
-              {purchase?.image && <img src={purchase.image} alt={productName} />}
+              {purchase?.image && <img loading="lazy" src={purchase.image} alt={productName} />}
               <div><h2>{productName}</h2>{purchase && <p>구매일 {new Date(purchase.orderedAt).toLocaleDateString("ko-KR")}</p>}
               {!editingReview && purchaseLoading && <p role="status">구매 내역 확인 중...</p>}{purchaseError && <p role="alert">{purchaseError}</p>}</div>
             </> : <div><h2>{tripTitle}</h2><p>{editingReview ? "작성한 리뷰 수정" : "새 리뷰 작성"}</p></div>}
@@ -269,7 +273,7 @@ export default function Review() {
           <section className={`${styles.formRow} ${styles.photoRow}`}>
             <h2>4. 사진 추가<small>(선택)</small></h2>
             <div className={styles.photos}>
-              {photos.map((photo, index) => <div className={styles.photoItem} key={`${index}-${photo.name}`}><img src={photo.src} alt={photo.name} /><button type="button" disabled={status.saving || processingPhotos} aria-label={`${photo.name} 삭제`} onClick={() => setPhotos((current) => current.filter((_, i) => i !== index))}>×</button></div>)}
+              {photos.map((photo, index) => <div className={styles.photoItem} key={`${index}-${photo.name}`}><img loading="lazy" src={photo.src} alt={photo.name} /><button type="button" disabled={status.saving || processingPhotos} aria-label={`${photo.name} 삭제`} onClick={() => setPhotos((current) => current.filter((_, i) => i !== index))}>×</button></div>)}
               {photos.length < 3 && <label className={styles.addPhoto}>＋<span>{processingPhotos ? "처리 중..." : "사진 추가"}</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={processingPhotos || status.saving} onChange={selectPhotos} /></label>}
             </div>
           </section>

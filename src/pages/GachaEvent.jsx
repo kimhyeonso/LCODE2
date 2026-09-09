@@ -6,34 +6,34 @@ import styles from "./GachaEvent.module.scss";
 import { EventHeader } from "./Event";
 
 const asset = {
-  bgIntro: "/event/event02/background01.png",
-  bgResult: "/event/event02/background03.png",
+  bgIntro: "/event/event02/background01.webp",
+  bgResult: "/event/event02/background03.webp",
 
-  capsuleClosed: "/event/event02/capsule01.png",
-  capsuleOpen: "/event/event02/capsule02.png",
+  capsuleClosed: "/event/event02/capsule01.webp",
+  capsuleOpen: "/event/event02/capsule02.webp",
 
   couponFirst: "/event/event02/coupon01.svg",
-  couponSecond: "/event/event02/coupon02.png",
-  couponKit: "/event/event02/coupon03.png",
-  couponSale: "/event/event02/coupon04.png",
+  couponSecond: "/event/event02/coupon02.webp",
+  couponKit: "/event/event02/coupon03.webp",
+  couponSale: "/event/event02/coupon04.webp",
 
-  ribbon: "/event/event02/decoration01.png",
-  coin: "/event/event02/decoration02.png",
-  touch: "/event/event02/decoration03.png",
+  ribbon: "/event/event02/decoration01.webp",
+  coin: "/event/event02/decoration02.webp",
+  touch: "/event/event02/decoration03.webp",
 
-  travelKit: "/event/event02/gift02.png",
-  mainPrize: "/event/event02/main.png",
+  travelKit: "/event/event02/gift02.webp",
+  mainPrize: "/event/event02/main.webp",
 
-  machineEmpty: "/event/event02/gacha/machine-empty.png",
-  capsuleCluster: "/event/event02/gacha/capsules-cluster.png",
+  machineEmpty: "/event/event02/gacha/machine-empty.webp",
+  capsuleCluster: "/event/event02/gacha/capsules-cluster.webp",
 
   capsulePieces: [
-    "/event/event02/gacha/capsule-01.png",
-    "/event/event02/gacha/capsule-02.png",
-    "/event/event02/gacha/capsule-03.png",
-    "/event/event02/gacha/capsule-04.png",
-    "/event/event02/gacha/capsule-05.png",
-    "/event/event02/gacha/capsule-06.png",
+    "/event/event02/gacha/capsule-01.webp",
+    "/event/event02/gacha/capsule-02.webp",
+    "/event/event02/gacha/capsule-03.webp",
+    "/event/event02/gacha/capsule-04.webp",
+    "/event/event02/gacha/capsule-05.webp",
+    "/event/event02/gacha/capsule-06.webp",
   ],
 };
 
@@ -560,7 +560,7 @@ export default function GachaEvent({ onExit }) {
                   aria-hidden="true"
                 />
 
-                <img
+                <img loading="lazy"
                   className={styles.introMainPrize}
                   src={asset.mainPrize}
                   alt="L:CODE 이벤트 여행 선물 세트"
@@ -627,7 +627,7 @@ export default function GachaEvent({ onExit }) {
                     className={styles.capsuleChamber}
                     aria-hidden="true"
                   >
-                    <img
+                    <img loading="lazy"
                       className={styles.clusterImage}
                       src={asset.capsuleCluster}
                       alt=""
@@ -635,7 +635,7 @@ export default function GachaEvent({ onExit }) {
 
                     <div className={styles.capsulePieces}>
                       {CAPSULE_LAYOUT.map((capsule, index) => (
-                        <img
+                        <img loading="lazy"
                           key={index}
                           className={`${styles.capsulePiece} ${
                             styles[`capsuleMotion${capsule.motion}`]
@@ -656,7 +656,7 @@ export default function GachaEvent({ onExit }) {
                     </div>
                   </div>
 
-                  <img
+                  <img loading="lazy"
                     className={styles.machineShell}
                     src={asset.machineEmpty}
                     alt="L:CODE 가차 머신"
@@ -670,7 +670,7 @@ export default function GachaEvent({ onExit }) {
                     aria-label="가차 추첨 시작"
                   >
                     <span className={styles.drawSpinGroup}>
-                      <img
+                      <img loading="lazy"
                         className={styles.drawMedallion}
                         src={asset.coin}
                         alt=""
@@ -691,7 +691,7 @@ export default function GachaEvent({ onExit }) {
                 disabled={drawing}
                 aria-label="쿠폰함 이동하기"
               >
-                <img
+                <img loading="lazy"
                   className={styles.couponRibbonImage}
                   src={asset.ribbon}
                   alt=""
@@ -737,14 +737,14 @@ export default function GachaEvent({ onExit }) {
             두근두근 결과는?
           </h2>
 
-          <img
+          <img loading="lazy"
             className={styles.closedCapsule}
             src={asset.capsuleClosed}
             alt="닫힌 가차 캡슐"
           />
 
           <div className={styles.touchGuide}>
-            <img
+            <img loading="lazy"
               src={asset.touch}
               alt=""
               aria-hidden="true"
@@ -763,7 +763,7 @@ export default function GachaEvent({ onExit }) {
         <section className={`${styles.scene} ${styles.openScene}`}>
           <Background src={asset.bgResult} />
 
-          <img
+          <img loading="lazy"
             className={styles.openCapsule}
             src={asset.capsuleOpen}
             alt="열린 가차 캡슐"
@@ -776,7 +776,7 @@ export default function GachaEvent({ onExit }) {
           <Background src={asset.bgResult} />
 
           <div className={styles.ribbonWrap}>
-            <img
+            <img loading="lazy"
               className={styles.ribbon}
               src={asset.ribbon}
               alt=""
@@ -802,14 +802,14 @@ export default function GachaEvent({ onExit }) {
                 : styles.resultSingle
             }`}
           >
-            <img
+            <img loading="lazy"
               className={styles.resultCoupon}
               src={selectedPrize.image}
               alt={selectedPrize.previewTitle}
             />
 
             {selectedPrize.showKit && (
-              <img
+              <img loading="lazy"
                 className={styles.resultKit}
                 src={asset.travelKit}
                 alt="L:CODE 여행키트"
@@ -999,7 +999,7 @@ function PrizeSheet({
               </span>
 
               <div className={styles.mobilePrizeImage}>
-                <img
+                <img loading="lazy"
                   src={prize.image}
                   alt={prize.previewTitle}
                 />
@@ -1051,7 +1051,7 @@ function PrizePreview() {
             </div>
 
             <div className={styles.prizeImageWrap}>
-              <img
+              <img loading="lazy"
                 src={prize.image}
                 alt={prize.previewTitle}
               />
@@ -1134,7 +1134,7 @@ function Background({
   className = "",
 }) {
   return (
-    <img
+    <img loading="lazy"
       className={`${styles.background} ${className}`}
       src={src}
       alt=""

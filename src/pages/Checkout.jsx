@@ -2674,7 +2674,7 @@ export default function Checkout() {
                           className="lcode-orderThumb"
                         >
                           {item.image ? (
-                            <img
+                            <img loading="lazy"
                               src={
                                 item.image
                               }

@@ -77,7 +77,7 @@ export default function CouponUp() {
             <footer><b>{registered?.code || "TC-0060"}</b><b>{registered?.expiry || "VALID UNTIL 2026.08.31"}</b></footer>
           </div>
 
-          {registered && <div className={styles.addedCoupon}><img src="/Mypage-img/coupon1.svg" alt="새로 등록된 쿠폰" /><div><strong>{registered.title} {registered.suffix}</strong><span>{registered.code}</span></div></div>}
+          {registered && <div className={styles.addedCoupon}><img loading="lazy" src="/Mypage-img/coupon1.svg" alt="새로 등록된 쿠폰" /><div><strong>{registered.title} {registered.suffix}</strong><span>{registered.code}</span></div></div>}
 
           <div className={styles.benefits}>
             <h2>쿠폰 등록 시 제공되는 혜택</h2>

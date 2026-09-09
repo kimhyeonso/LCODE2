@@ -33,7 +33,7 @@ import customStyles from "./ProductCustom.module.scss";
 
 const detailImageModules =
   import.meta.glob(
-    "../assets/images/detail/*.{png,webp}",
+    "../assets/images/detail/*.webp",
     {
       eager: true,
       import: "default",
@@ -47,11 +47,7 @@ const getDetailImage = (
   const basePath =
     `../assets/images/detail/${number}${suffix}`;
 
-  return [".png", ".webp"].reduce(
-    (image, extension) =>
-      image || detailImageModules[`${basePath}${extension}`],
-    ""
-  );
+  return detailImageModules[`${basePath}.webp`] || "";
 };
 
 /* =========================================================
@@ -1491,7 +1487,7 @@ export default function ProductDetailPage() {
           >
             {hasGallery ? (
               <>
-                <img
+                <img loading="lazy"
                   key={
                     currentImage
                   }
@@ -2318,7 +2314,7 @@ export default function ProductDetailPage() {
               }
             >
               {relatedToastProduct.thumbnail ? (
-                <img
+                <img loading="lazy"
                   src={
                     relatedToastProduct.thumbnail
                   }
@@ -2433,7 +2429,7 @@ export default function ProductDetailPage() {
                     }
                   >
                     {activeCustomDesign.image ? (
-                      <img
+                      <img loading="lazy"
                         className={
                           customStyles.customArtwork
                         }

@@ -14,22 +14,25 @@ import {
 } from "../services/firestoreService";
 import styles from "./AdminDashboard.module.scss";
 
-const detailImageModules = import.meta.glob("../assets/images/detail/*_1.{png,webp}", {
+const detailImageModules = import.meta.glob("../assets/images/detail/*_1.webp", {
   eager: true,
   import: "default",
 });
 
 const getProductImage = (index) => {
   const basePath = `../assets/images/detail/${index + 1}_1`;
-  return detailImageModules[`${basePath}.png`] || detailImageModules[`${basePath}.webp`] || "";
+  return detailImageModules[`${basePath}.webp`] || "";
 };
 
 // Files under src are bundled by Vite and cannot be requested directly by a
 // browser as /src/assets/.... Old Firestore records contain those development
-// URLs, so prefer the bundled catalogue thumbnail for those records.
+// URLs, so prefer the bundled catalogue thumbnail for those records. Records
+// pointing at a .png/.jpg/.jpeg path are stale too, now that every local
+// asset has been converted to .webp with a fresh hashed filename.
 const resolveAdminProductImage = (item) => {
   const catalogueImage = productImages[item.id] || "";
-  return item.image?.startsWith("/src/assets/") ? catalogueImage : item.image || catalogueImage;
+  const isStaleImagePath = item.image?.startsWith("/src/assets/") || /\.(png|jpe?g)(\?|$)/i.test(item.image || "");
+  return isStaleImagePath ? catalogueImage : item.image || catalogueImage;
 };
 
 const productImages = Object.fromEntries(
@@ -306,7 +309,7 @@ export default function AdminDashboard() {
             <article className={`${styles.manageCard} ${activeTab !== "products" ? styles.wideCard : ""}`} key={item.id}>
               {activeTab === "products" && (
                 <>
-                  <div className={styles.preview}>{item.image ? <img src={item.image} alt="" /> : <span>NO IMAGE</span>}</div>
+                  <div className={styles.preview}>{item.image ? <img loading="lazy" src={item.image} alt="" /> : <span>NO IMAGE</span>}</div>
                   <div className={styles.fields}>
                     <label>상품 이름<input value={item.name || ""} onChange={(event) => updateItem(item.id, "name", event.target.value)} /></label>
                     <label>상품 이미지 URL<input value={item.image || ""} onChange={(event) => updateItem(item.id, "image", event.target.value)} /></label>

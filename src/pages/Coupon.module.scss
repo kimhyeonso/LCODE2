@@ -197,7 +197,9 @@ h1 {
 .couponList .eventTicket {
   position: relative;
   aspect-ratio: 1483 / 989;
-  background: #1c1a17;
+  background:
+    linear-gradient(180deg, transparent 54%, rgb(0 0 0 / 82%) 100%),
+    url("/event/event02/coupon03.webp") center / contain no-repeat;
   color: #f5d287;
   overflow: hidden;
 }
@@ -549,7 +551,7 @@ h1 {
     height: auto;
     aspect-ratio: 1483 / 989;
     border: 0;
-    background: #1c1a17;
+    background: url("/event/event02/coupon03.webp") center / contain no-repeat;
   }
 
   // 좁은 모바일에서는 배너 슬라이드 이미지만 노출하고 텍스트/그라데이션은 숨깁니다.
