@@ -587,6 +587,10 @@ h1 {
   object-fit: cover;
 }
 
+.stories .defaultStoryPhoto {
+  background: url("../assets/images/Thumbnail/Thumbnail-image/japan/fukuoka.png") center / cover no-repeat;
+}
+
 .stories .storyMeta {
   display: flex;
   justify-content: space-between;

@@ -3,10 +3,12 @@ import { Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { collection, deleteDoc, doc, getDocs, query, where } from "firebase/firestore";
 import products from "../data/products.json";
+import { myStoryTrips } from "../data/myStoriesSummary";
 import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Mystories.module.scss";
 import { getReviewProducts } from "../services/purchaseHistory";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 
 const reviewStorageKey = "lcode-saved-reviews";
 const fallbackNames = ["여행용 키트", "멀티 어댑터", "트래블 파우치", "캐리어 커버"];
@@ -40,9 +42,9 @@ const getProductImage = (index) => {
 };
 
 const categorizedProducts = products.map((product, index) => ({
-  ...product,
+  ...enrichShopProduct(product),
   displayName: fallbackNames[index % fallbackNames.length],
-  displayImage: getProductImage(index) || product.image || "",
+  displayImage: getProductImage(index) || enrichShopProduct(product).image || "",
 }));
 
 function ReviewSummaryCard({ review }) {
@@ -54,7 +56,7 @@ function ReviewSummaryCard({ review }) {
   const subtitle = review.tripDate || review.tripTitle || "여행 리뷰";
 
   return <article className={`${styles.storyCard} ${styles.hasStoryPhoto}`}>
-    {photo?.src ? <img className={styles.storyPhoto} src={photo.src} alt={photo.name || `${review.title} 리뷰 사진`} loading="lazy" /> : <div className={styles.storyPhoto} aria-hidden="true" />}
+    {photo?.src ? <img className={styles.storyPhoto} src={photo.src} alt={photo.name || `${review.title} 리뷰 사진`} loading="lazy" /> : <div className={`${styles.storyPhoto} ${styles.defaultStoryPhoto}`} aria-hidden="true" />}
     <div className={styles.storyInfo}>
       <h2>{review.title}</h2>
       <p className={styles.storySubtitle}>{subtitle}{review.rating ? ` · 평점 ${review.rating} / 5` : ""}</p>
@@ -133,10 +135,17 @@ export default function Mystories() {
 
   const productReviews = reviews.filter((item) => item.userId === user.uid && item.productId);
   const reviewProducts = productReviews.filter((review) => !purchasedProducts.some((item) => item.id === review.productId))
-    .map((review) => ({ id: review.productId, name: review.productName, price: null, image: "" }));
+    .map((review) => enrichShopProduct({ id: review.productId, name: review.productName, price: null }));
   const productSource = [...purchasedProducts, ...reviewProducts];
-  const visibleProducts = (productSource.length ? productSource : categorizedProducts.slice(0, fallbackProductCount)).filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index).map((product) => ({ ...product, displayName: product.displayName || product.name,
-    displayImage: product.image || categorizedProducts.find((item) => String(item.id) === product.id)?.displayImage || "" }));
+  const visibleProducts = (productSource.length ? productSource : categorizedProducts.slice(0, fallbackProductCount)).filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index).map((product) => {
+    const resolved = enrichShopProduct(product);
+    return {
+      ...product,
+      ...resolved,
+      displayName: product.displayName || resolved.name,
+      displayImage: resolved.image || categorizedProducts.find((item) => String(item.id) === String(product.id))?.displayImage || "",
+    };
+  });
   const activeFilter = shoppingFilters.find((item) => item.key === shoppingFilter) || shoppingFilters[0];
   const filteredProducts = activeFilter.categories
     ? visibleProducts.filter((product) => activeFilter.categories.includes(product.category))
@@ -171,17 +180,26 @@ export default function Mystories() {
     event.preventDefault();
     event.stopPropagation();
   };
-  const travelReviews = reviews.filter((item) => item.userId === user?.uid && !item.productName);
-  const displayTravelReviews = travelReviews.length ? travelReviews : [{
-    id: "",
-    title: "후쿠오카 3박 4일",
-    tripTitle: "나만의 여행",
-    tripDate: "2026.08.17 - 08.20 | 12개 일정",
-    rating: 0,
-    content: "",
-    tags: [],
-    photos: [],
-  }];
+  // 여행 리뷰 영역은 저장된 여행 카드 목록을 기준으로 렌더링한다.
+  // 임의의 Firestore 테스트 리뷰가 대표 카드를 대체하지 않도록, 같은
+  // 여행명에 연결된 리뷰만 카드의 내용으로 합친다.
+  const displayTravelReviews = myStoryTrips.map((tripTitle) => {
+    const review = reviews.find((item) => item.userId === user?.uid && !item.productName && item.tripTitle === tripTitle);
+    return {
+      id: review?.id || "",
+      title: tripTitle,
+      tripTitle: "나만의 여행",
+      tripDate: "2026.08.17 - 08.20 | 12개 일정",
+      rating: 0,
+      content: "",
+      tags: [],
+      photos: [],
+      ...(review || {}),
+      title: tripTitle,
+      tripTitle: "나만의 여행",
+      tripDate: "2026.08.17 - 08.20 | 12개 일정",
+    };
+  });
   const currentSlide = Math.min(slide, Math.max(0, displayTravelReviews.length - 1));
   const goToPreviousReview = () => {
     if (displayTravelReviews.length < 2) return;

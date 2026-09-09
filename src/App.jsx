@@ -39,6 +39,7 @@ import JournalDetail from "./pages/JournalDetail";
 import Destinations from "./pages/Destinations";
 import FavoritePlaces from "./pages/FavoritePlaces";
 import Cart from "./pages/Cart";
+import MyCart from "./pages/MyCart";
 import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
 import MyPageMain from "./pages/MyPageMain";
@@ -163,6 +164,7 @@ export default function App() {
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/favorite-places" element={<ProtectedRoute><FavoritePlaces /></ProtectedRoute>} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/my-cart" element={<ProtectedRoute><MyCart /></ProtectedRoute>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-complete" element={<OrderComplete />} />
           <Route path="/travel-planner" element={<TravelPlanner />} />
