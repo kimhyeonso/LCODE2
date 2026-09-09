@@ -14,19 +14,59 @@ const coupons = [
 ];
 
 const COUPONS_PER_PAGE = 3;
+// 쿠폰함 맨 위에 고정되는 "가차 돌리기" 홍보 쿠폰(TC-0056)의 배너 슬라이드 이미지입니다.
+const PROMO_COUPON_CODE = "TC-0056";
+const GACHA_SLIDE_INTERVAL = 4000;
+const gachaCouponImages = [
+  "/event/event02/coupon01.png",
+  "/event/event02/coupon02.png",
+  "/event/event02/coupon03.png",
+  "/event/event02/coupon04.png",
+];
 
-function CouponTicket({ coupon, featured = false }) {
+function CouponTicket({ coupon }) {
+  // 가차 이벤트에서 실제로 당첨된 쿠폰(source: "event")은 일반 쿠폰 티켓으로 표시하고,
+  // 홍보용 "가차 돌리기" 쿠폰만 배너 슬라이드가 있는 이벤트 티켓으로 렌더링합니다.
+  const isPromoCoupon = coupon.code === PROMO_COUPON_CODE;
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  useEffect(() => {
+    if (!isPromoCoupon) return undefined;
+    const timer = window.setInterval(() => {
+      setSlideIndex((current) => (current + 1) % gachaCouponImages.length);
+    }, GACHA_SLIDE_INTERVAL);
+    return () => window.clearInterval(timer);
+  }, [isPromoCoupon]);
+
+  const displayCoupon = isPromoCoupon
+    ? { ...coupon, type: "EVENT", title: "가차 돌리기", description: "가차 돌리고 쿠폰받자!" }
+    : coupon;
   return (
-    <article className={`${styles.ticket} ${coupon.used ? styles.used : ""} ${featured ? styles.featured : ""} ${coupon.source === "event" ? styles.eventTicket : ""}`}>
+    <article
+      className={`${styles.ticket} ${displayCoupon.used ? styles.used : ""} ${isPromoCoupon ? styles.eventTicket : ""}`}
+    >
+      {isPromoCoupon && (
+        <div className={styles.eventSlides} aria-hidden="true">
+          {gachaCouponImages.map((image, index) => (
+            <img
+              className={index === slideIndex ? styles.activeSlide : ""}
+              key={image}
+              src={image}
+              alt=""
+              decoding="async"
+            />
+          ))}
+        </div>
+      )}
       <div className={styles.ticketBody}>
-        <p className={styles.ticketType}>{coupon.type}</p>
-        {coupon.used && <span className={styles.usedLabel}>USED</span>}
-        <h2>{coupon.title} {coupon.suffix && <small>{coupon.suffix}</small>}</h2>
-        <p className={styles.ticketDescription}>{coupon.description}</p>
-        {coupon.detail && <p className={styles.detail}>{coupon.detail}</p>}
+        <p className={styles.ticketType}>{displayCoupon.type}</p>
+        {displayCoupon.used && <span className={styles.usedLabel}>USED</span>}
+        <h2>{displayCoupon.title} {displayCoupon.suffix && <small>{displayCoupon.suffix}</small>}</h2>
+        <p className={styles.ticketDescription}>{displayCoupon.description}</p>
+        {displayCoupon.detail && <p className={styles.detail}>{displayCoupon.detail}</p>}
         {!coupon.used && <span className={styles.cut}>✂<small>USE<br />COUPON</small></span>}
       </div>
-      <footer><span>{coupon.code}</span><span>{coupon.expiry}</span></footer>
+      <footer><span>{displayCoupon.code}</span><span>{displayCoupon.expiry}</span></footer>
     </article>
   );
 }
@@ -69,15 +109,20 @@ export default function Coupon() {
       });
     return () => { active = false; };
   }, [user]);
-  const welcomeCoupon = managedCoupons.find((coupon) => coupon.code === "TC-0012");
+  // "쇼핑몰 전용"(TC-0012) 웰컴 쿠폰은 더 이상 상단에 고정하지 않고 일반 보유 쿠폰 목록에 포함합니다.
   const ownedCoupons = useMemo(
-    () => [...managedCoupons.filter((coupon) => coupon.code !== "TC-0012"), ...registeredCoupons],
+    () => [...managedCoupons, ...registeredCoupons],
     [managedCoupons, registeredCoupons],
   );
-  const availableCount = [...(welcomeCoupon ? [welcomeCoupon] : []), ...ownedCoupons]
-    .filter((coupon) => !coupon.used).length;
-  const pageCount = Math.max(1, Math.ceil(ownedCoupons.length / COUPONS_PER_PAGE));
-  const pageCoupons = ownedCoupons.slice(
+  // "가차 돌리기" 홍보 쿠폰은 목록 맨 위에 고정하고, 페이지네이션 대상에서는 제외합니다.
+  const promoCoupon = ownedCoupons.find((coupon) => coupon.code === PROMO_COUPON_CODE);
+  const listCoupons = useMemo(
+    () => ownedCoupons.filter((coupon) => coupon.code !== PROMO_COUPON_CODE),
+    [ownedCoupons],
+  );
+  const availableCount = listCoupons.filter((coupon) => !coupon.used).length;
+  const pageCount = Math.max(1, Math.ceil(listCoupons.length / COUPONS_PER_PAGE));
+  const pageCoupons = listCoupons.slice(
     (currentPage - 1) * COUPONS_PER_PAGE,
     currentPage * COUPONS_PER_PAGE,
   );
@@ -90,14 +135,14 @@ export default function Coupon() {
     const registeredCouponCode = state?.registeredCouponCode;
     if (!registeredCouponCode) return;
 
-    const registeredIndex = ownedCoupons.findIndex(
+    const registeredIndex = listCoupons.findIndex(
       (coupon) => coupon.code === registeredCouponCode,
     );
     if (registeredIndex >= 0) {
       const targetPage = Math.floor(registeredIndex / COUPONS_PER_PAGE) + 1;
       queueMicrotask(() => setCurrentPage(targetPage));
     }
-  }, [state?.registeredCouponCode, ownedCoupons]);
+  }, [state?.registeredCouponCode, listCoupons]);
 
   return (
     <main className={styles.coupon}>
@@ -114,11 +159,11 @@ export default function Coupon() {
           </div>
           <p className={styles.description}>보유한 쿠폰과 사용 가능한 혜택을 확인해보세요.</p>
           <div className={styles.divider} />
-          {welcomeCoupon && <CouponTicket coupon={welcomeCoupon} featured />}
           <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>
         </section>
         <section className={styles.couponList} aria-label="보유 쿠폰">
           {loadError && <p role="alert">{loadError}</p>}
+          {promoCoupon && <CouponTicket coupon={promoCoupon} key="promo" />}
           {pageCoupons.map((coupon, index) => (
             <CouponTicket coupon={coupon} key={`${coupon.code}-${index}`} />
           ))}

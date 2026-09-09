@@ -2,11 +2,15 @@ import { doc, getDoc } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { firebaseApp } from "../firebase/config";
 import { db } from "../firebase/firestore";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 
 export async function recordPurchase(userId, order) {
   if (!userId) return;
   const purchase = { userId, orderNumber: order.orderNumber, orderedAt: order.orderedAt,
-    items: order.items.map((item) => ({ id: String(item.id), name: item.name || "상품", image: item.image || "", price: Number(item.price) || 0, quantity: Number(item.quantity) || 1, option: { label: item.option?.label || "기본 옵션", extraPrice: Number(item.option?.extraPrice) || 0 } })) };
+    items: order.items.map((item) => {
+      const product = enrichShopProduct(item);
+      return { id: String(product.id), name: product.name || "상품", image: product.image || "", price: Number(item.price ?? product.price) || 0, quantity: Number(item.quantity) || 1, option: { label: item.option?.label || "기본 옵션", extraPrice: Number(item.option?.extraPrice) || 0 } };
+    }) };
   await httpsCallable(getFunctions(firebaseApp, "asia-northeast3"), "recordShopOrder")(purchase);
 }
 
@@ -36,5 +40,20 @@ export async function getReviewProducts(userId) {
 export async function getPurchaseOrders(userId) {
   const snapshot = await getDoc(doc(db, "users", userId, "shop", "purchaseHistory"));
   const orders = snapshot.data()?.orders;
-  return Array.isArray(orders) ? orders.filter((order) => order.userId === userId) : [];
+  return Array.isArray(orders)
+    ? orders
+      .filter((order) => order.userId === userId)
+      .map((order) => ({
+        ...order,
+        items: (order.items || []).map((item) => ({
+          ...item,
+          ...enrichShopProduct(item),
+          // Historical orders keep their actual paid price/options; only the
+          // catalogue metadata (especially image) is refreshed.
+          price: item.price ?? enrichShopProduct(item).price,
+          option: item.option,
+          quantity: item.quantity,
+        })),
+      }))
+    : [];
 }

@@ -409,8 +409,8 @@ h1 {
 .shoppingTitle {
   margin: 0 0 20px;
   color: #aaa49c;
-  font: 400 0.625rem $display;
-  letter-spacing: 0.2em !important;
+  font: 400 13px/1.4 $sans;
+  letter-spacing: 0.18em !important;
 }
 
 .shopping .productGrid {
@@ -585,6 +585,10 @@ h1 {
   min-height: 220px;
   background: #d7d4cd;
   object-fit: cover;
+}
+
+.stories .defaultStoryPhoto {
+  background: url("../assets/images/Thumbnail/Thumbnail-image/japan/fukuoka.png") center / cover no-repeat;
 }
 
 .stories .storyMeta {
@@ -814,8 +818,8 @@ h1 {
   position: absolute;
   z-index: 3;
   top: calc(50% + 10px);
-  width: 54px;
-  min-height: 64px;
+  width: 27px;
+  min-height: 32px;
   display: grid !important;
   place-items: center;
   border: 0;
@@ -828,11 +832,11 @@ h1 {
 
 .reviewSlider .slideArrow::before {
   content: "";
-  width: 36px;
-  height: 36px;
+  width: 18px;
+  height: 18px;
   border-color: #8f8a83;
   border-style: solid;
-  border-width: 4px 0 0 4px;
+  border-width: 3px 0 0 3px;
 }
 
 .reviewSlider .slideArrow:first-of-type {
@@ -858,5 +862,32 @@ h1 {
 
   .shopping .shoppingTitle {
     display: block !important;
+    font: 400 13px/1.4 $sans !important;
+    letter-spacing: 0.18em !important;
   }
+}
+
+.shopping .productCard {
+  border: 1px solid #d8d3ca !important;
+  background: transparent;
+}
+
+.shopping .productImage {
+  width: calc(100% + 2px);
+  margin: -1px -1px 0;
+}
+
+.shopping .productCard h2,
+.shopping .productCard small,
+.shopping .productCard p {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.shopping .productCard h2 {
+  margin-top: 12px;
+}
+
+.shopping .productCard footer {
+  margin: 14px 12px 16px;
 }

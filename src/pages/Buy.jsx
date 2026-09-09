@@ -11,11 +11,13 @@ const PAGE_SIZE = 3;
 
 function orderRows(savedOrders, uid) {
     const eligible = eligibleProducts(savedOrders, uid);
-    return savedOrders.flatMap((savedOrder) => (savedOrder.items || []).map((item, index) => ({
+    return savedOrders.flatMap((savedOrder) => (savedOrder.items || []).map((item, index) => {
+      const product = enrichShopProduct(item);
+      return ({
       id: savedOrder.orderNumber || `LC-${index + 1}`,
-      productId: item.id,
+      productId: product.id || item.id,
       date: new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(savedOrder.orderedAt || Date.now())).replaceAll(". ", ".").replace(/\.$/, ""),
-      name: item.name,
+      name: product.name || item.name,
       option: `${item.option?.label || "기본 옵션"} / ${item.quantity || 1}개`,
       price: (Number(item.price) + Number(item.option?.extraPrice || 0)) * Number(item.quantity || 1),
       status: savedOrder.status || "배송 준비",

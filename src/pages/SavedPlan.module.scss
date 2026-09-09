@@ -199,6 +199,8 @@
   margin: 0 0 16px;
 
   border: 1px solid #ddd;
+  // 호버 시 확대되는 이미지가 카드 밖으로 번지지 않도록 카드 안에서 잘라냅니다.
+  overflow: hidden;
 }
 
 .others article > span {
@@ -852,6 +854,18 @@
   .trending > div strong,
   .trending > div em {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page > h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin: 20px 0 18px !important;
+    padding-bottom: 18px !important;
+    border-bottom: 1px solid #dedad3 !important;
   }
 }
 
