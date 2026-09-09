@@ -1487,7 +1487,11 @@ $type-display: 36px;
   }
 
   .hero {
-    width: 100%;
+    // Keep the visual banner edge-to-edge. The rest of Home intentionally
+    // starts after the desktop sidebar, but the hero should not inherit that
+    // 220px loss of viewport width.
+    width: 100vw;
+    margin-left: -220px;
   }
 
   .sectionLabel {
