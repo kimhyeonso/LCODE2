@@ -325,7 +325,7 @@
 
 
 .contentHead p {
-  max-width: 340px;
+  max-width: none;
 
   margin: 0;
 
@@ -467,22 +467,20 @@
 
   grid-template-columns:
     repeat(
-      3,
+      4,
       minmax(0, 1fr)
     );
 
-  column-gap: 22px;
+  column-gap:
+    clamp(16px, 1.5vw, 24px);
 
-  row-gap: 56px;
+  row-gap:
+    clamp(48px, 4vw, 56px);
 
   padding:
     36px
     0
     72px;
-
-  border-bottom:
-    1px solid
-    #d8d3ca;
 }
 
 
@@ -730,20 +728,22 @@
 ========================================================= */
 
 .productInfo {
-  padding-top: 14px;
+  padding-top: 12px;
 }
 
 
 .productInfo > small {
   display: block;
 
-  margin-bottom: 8px;
+  margin-bottom: 0;
 
-  color: #77736c;
+  color: #68635c;
 
-  font-size: max(10px, var(--saved-min-font-size));
+  font-size: 13px;
 
-  letter-spacing: 0.04em;
+  font-weight: 500;
+
+  letter-spacing: 0.12em;
 }
 
 
@@ -755,23 +755,11 @@
 
 
 .productInfo h2 {
-  margin:
-    0
-    0
-    10px;
+  margin: 7px 0;
 
   color: #11110f;
 
-  font-family:
-    "Times New Roman",
-    "Noto Serif KR",
-    serif;
-
-  font-size: 20px;
-
-  font-weight: 500;
-
-  line-height: 1.1;
+  font: 18px $serif;
 }
 
 
@@ -780,11 +768,7 @@
 
   color: #11110f;
 
-  font-family:
-    "Times New Roman",
-    serif;
-
-  font-size: 15px;
+  font-size: 13px;
 }
 
 
@@ -911,6 +895,9 @@
   }
 
 
+}
+
+@media (max-width: 1023px) {
   .productGrid {
     grid-template-columns:
       repeat(
@@ -1099,28 +1086,30 @@
 
 
   .productInfo {
-    padding-top: 10px;
+    padding-top: 9px;
   }
 
 
   .productInfo > small {
-    margin-bottom: 6px;
+    margin-bottom: 0;
 
-    font-size: max(10px, var(--saved-min-font-size));
+    font-size: 11px;
   }
 
 
   .productInfo h2 {
     min-height: 34px;
 
-    margin-bottom: 6px;
+    margin: 5px 0;
 
-    font-size: 15px;
+    font-size: 14px;
+
+    line-height: 1.1;
   }
 
 
   .price {
-    font-size: max(13px, var(--saved-min-font-size));
+    font-size: 11px;
   }
 
 

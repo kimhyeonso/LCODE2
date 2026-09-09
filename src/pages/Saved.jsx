@@ -935,28 +935,6 @@ export default function Saved() {
           </>
         )}
 
-
-        {/* =================================================
-            BOTTOM
-        ================================================= */}
-
-        <div
-          className={
-            styles.bottomLink
-          }
-        >
-          <span>
-            L:CODE TRAVEL SHOP
-          </span>
-
-          <Link to="/shop">
-            CONTINUE SHOPPING
-
-            <b>
-              →
-            </b>
-          </Link>
-        </div>
       </section>
 
 

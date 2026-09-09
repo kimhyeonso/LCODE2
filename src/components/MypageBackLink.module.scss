@@ -1,3 +1,13 @@
 .backLink {
   text-decoration: none;
 }
+
+// 쿠폰함·알림 설정·고객센터처럼 페이지 전체 자간을 강제하는 화면에서도
+// 공통 BACK 버튼의 자간은 다른 마이페이지와 동일하게 유지합니다.
+.backLink[data-mypage-back] {
+  letter-spacing: .2em !important;
+}
+
+.backLink[data-mypage-back] span {
+  letter-spacing: 0 !important;
+}

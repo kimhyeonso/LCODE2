@@ -8,7 +8,7 @@ import styles from "./MypageUser.module.scss";
 
 const menuItems = [
   { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
-  { label: "내 일정", to: "/plan/saved", icon: "/Mypage-img/calendar_month_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
+  { label: "내 일정", to: "/my/plans", icon: "/Mypage-img/calendar_month_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
   { label: "나의 리뷰", to: "/mystories", icon: "/Mypage-img/pen.svg" },
   { label: "찜한 상품", to: "/saved", icon: "/Mypage-img/heart.svg" },
   { label: "찜한 일정", to: "/wishlist", icon: "/Mypage-img/calendar_add_on_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
