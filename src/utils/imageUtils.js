@@ -7,7 +7,7 @@ const normalizedImages = new Map(
   Object.entries(imageModules).map(([path, url]) => [path.replaceAll("\\", "/").toLowerCase(), url]),
 );
 
-export const DEFAULT_TRAVEL_IMAGE = normalizedImages.get("../assets/images/destinations/pexels/seoul.jpg")
+export const DEFAULT_TRAVEL_IMAGE = normalizedImages.get("../assets/images/destinations/pexels/seoul.webp")
   || normalizedImages.get("../assets/images/travel_kit.webp")
   || "";
 

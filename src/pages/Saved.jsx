@@ -954,7 +954,7 @@ export default function Saved() {
             }
           >
             {toastProduct.thumbnail ? (
-              <img
+              <img loading="lazy"
                 src={
                   toastProduct.thumbnail
                 }

@@ -10,7 +10,7 @@ export default function Alarm() {
   const toggleAlarm = (label) => setEnabledAlarms((current) => current.includes(label) ? current.filter((item) => item !== label) : [...current, label]);
 
   return <main className={styles.alarm}>
-    <img className={styles.tape} src="/Mypage-img/tape.png" alt="" />
+    <img loading="lazy" className={styles.tape} src="/Mypage-img/tape.webp" alt="" />
     <div className={styles.content}>
       <section className={styles.settings} aria-labelledby="alarm-title">
         <MypageBackLink />
@@ -27,7 +27,7 @@ export default function Alarm() {
       <div className={styles.imagePlaceholder} aria-label="알림 이미지 영역" />
       <section className={styles.notice} aria-label="푸시 알림 설정 안내">
         <div className={styles.noticeIcon} aria-hidden="true">
-          <img src="/Mypage-img/set.svg" alt="" />
+          <img loading="lazy" src="/Mypage-img/set.svg" alt="" />
         </div>
         <div className={styles.noticeCopy}>
           <h2>푸시 알림 설정</h2>

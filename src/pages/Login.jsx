@@ -57,9 +57,9 @@ export default function Login() {
               <>Nice to meet you,<br /> traveler.</>
             )}
           </h1>
-          <img
+          <img loading="lazy"
             className={styles.postmark}
-            src="/Mypage-img/u.png"
+            src="/Mypage-img/u.webp"
             alt=""
             aria-hidden="true"
           />

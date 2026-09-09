@@ -5,7 +5,7 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: 22px 0 72px;
-  background: transparent;
+  background: $paper;
   color: $ink;
 }
 
@@ -457,6 +457,28 @@
 @media (prefers-reduced-motion: reduce) {
   .trending > div > div > a > div:first-child::before {
     transition: none;
+  }
+}
+
+/* Mobile: one horizontally-scrollable row showing ~2.5 packages at a time. */
+@media (max-width: 640px) {
+  .trending > div {
+    display: flex;
+    grid-template-columns: none;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .trending > div::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trending > div > * {
+    flex: 0 0 calc((100% - 24px) / 2.5);
+    scroll-snap-align: start;
   }
 }
 

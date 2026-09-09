@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 3.5rem;
+  gap: 1.25rem;
   width: 100%;
 }
 
@@ -117,25 +117,39 @@
 
 @media (max-width: 900px) {
   .backdrop {
-    place-items: start center;
+    place-items: start;
     padding: 24px 16px;
   }
 
   .popupGroup {
     flex-direction: column;
-    gap: 24px;
+    align-items: flex-start;
+    gap: 14px;
   }
 
   .popupCard {
-    width: min(100%, 480px);
+    width: min(72%, 300px);
+  }
+
+  .popupCard footer {
+    font-size: 13px;
   }
 
 }
 
 @media (max-width: 480px) {
   .popupCard footer {
-    min-height: 46px;
-    padding-inline: 14px;
+    min-height: 40px;
+    padding-inline: 12px;
     font-size: 13px;
+  }
+
+  .popupCard label {
+    gap: 3px;
+  }
+
+  .popupCard input {
+    width: 12px;
+    height: 12px;
   }
 }

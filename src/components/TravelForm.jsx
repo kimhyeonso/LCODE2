@@ -799,7 +799,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <input type="date" required value={tripDateRange.end} readOnly />
           </label>
         </section>
-        {!isDomesticTrip && <div className={styles.flight}><span><img src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>}
+        {!isDomesticTrip && <div className={styles.flight}><span><img loading="lazy" src={travelIcon} alt="" />{flightInfo.departureDate} {flightInfo.departureHour}:{flightInfo.departureMinute} 출발 · {flightInfo.arrivalDate} {flightInfo.arrivalHour}:{flightInfo.arrivalMinute} 도착</span><button type="button" onClick={openFlightEdit}>변경</button></div>}
         <div className={styles.dayTabs}>
           {days.map(([day, date], index) => (
             <button className={activeDay === index ? styles.selected : ""} key={day} type="button" onClick={() => setActiveDay(index)}>
@@ -861,7 +861,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             >
               <article className={styles.stopCard}>
                 <time>{stop.time}</time>
-                <span className={styles.placeIcon}><img src={stop.icon} alt="" /></span>
+                <span className={styles.placeIcon}><img loading="lazy" src={stop.icon} alt="" /></span>
                 <div className={styles.placeCopy}><strong>{stop.name}</strong><small>{stop.type}</small><button type="button" onClick={() => setSelectedStop(stop)}>자세히 보기 &gt;</button></div>
                 <span
                   className={styles.drag}
@@ -902,9 +902,9 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                     setDraggedStopId(null);
                   }}
                 >
-                  <img src={menuIcon} alt="" draggable="false" />
+                  <img loading="lazy" src={menuIcon} alt="" draggable="false" />
                 </span>
-                <button className={styles.remove} type="button" aria-label={`${stop.name} 삭제`} onClick={() => removeStop(stop.id)}><img src={closeIcon} alt="" /></button>
+                <button className={styles.remove} type="button" aria-label={`${stop.name} 삭제`} onClick={() => removeStop(stop.id)}><img loading="lazy" src={closeIcon} alt="" /></button>
               </article>
               {stop.note && (
                 <div className={styles.note}>
@@ -915,8 +915,8 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   </span>
                 </div>
               )}
-              <button className={styles.addMemo} type="button" onClick={() => openMemo(stop)}><img src={addIcon} alt="" />{stop.note ? "메모 수정" : "메모 추가"}</button>
-              {stop.travel && stopIndex < stops.length - 1 && <div className={styles.travel}><span><img src={getTransportIcon(stop.travel)} alt="" />{stop.travel}</span><b><img src={arrowIcon} alt="" /></b></div>}
+              <button className={styles.addMemo} type="button" onClick={() => openMemo(stop)}><img loading="lazy" src={addIcon} alt="" />{stop.note ? "메모 수정" : "메모 추가"}</button>
+              {stop.travel && stopIndex < stops.length - 1 && <div className={styles.travel}><span><img loading="lazy" src={getTransportIcon(stop.travel)} alt="" />{stop.travel}</span><b><img loading="lazy" src={arrowIcon} alt="" /></b></div>}
             </div>
           ))}
         </div>
@@ -965,7 +965,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               {recommendationPlaces.map((place) => (
                 <article key={place.place}>
                   <span className={styles.recommendationImage}>
-                    <img
+                    <img loading="lazy"
                       src={getImageUrl(place.image)}
                       alt=""
                       onError={useImageFallback}
@@ -1035,7 +1035,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       {isPlaceAddOpen && (
         <div className={styles.placeAdder} role="presentation" onMouseDown={() => setIsPlaceAddOpen(false)}>
           <section className={styles.placeAdderInner} role="dialog" aria-modal="true" aria-labelledby="place-adder-title" onMouseDown={(event) => event.stopPropagation()}>
-            <header><button type="button" aria-label="뒤로 가기" onClick={() => setIsPlaceAddOpen(false)}><img src={backIcon} alt="" /></button><h2 id="place-adder-title">장소 추가하기</h2><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}><img src={closeIcon} alt="" /></button></header>
+            <header><button type="button" aria-label="뒤로 가기" onClick={() => setIsPlaceAddOpen(false)}><img loading="lazy" src={backIcon} alt="" /></button><h2 id="place-adder-title">장소 추가하기</h2><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}><img loading="lazy" src={closeIcon} alt="" /></button></header>
             <p className={styles.adderDescription}>일정에 추가할 장소와 방문 시간을 설정하세요 · {selectedTrip.city}</p>
             <section className={styles.placeMapArea}>
               <PlaceMap
@@ -1063,7 +1063,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   const selected = selectedCandidate?.place === place.place;
                   return <button className={selected ? styles.placeSelected : ""} type="button" key={place.place} onClick={() => setSelectedCandidate(place)}>
                     <span className={styles.resultNumber}>{index + 1}</span>
-                    <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
+                    <span className={styles.resultImage}>{getImageUrl(place.image) && <img loading="lazy" src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                     <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
                     {selected && <span className={styles.selectedCheck}>✓</span>}
                   </button>;
@@ -1079,9 +1079,9 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         <div className={styles.wishlistAdder} role="presentation" onMouseDown={() => setIsWishlistOpen(false)}>
           <section className={styles.wishlistAdderInner} role="dialog" aria-modal="true" aria-labelledby="wishlist-adder-title" onMouseDown={(event) => event.stopPropagation()}>
             <header>
-              <button type="button" aria-label="뒤로 가기" onClick={() => setIsWishlistOpen(false)}><img src={backIcon} alt="" /></button>
+              <button type="button" aria-label="뒤로 가기" onClick={() => setIsWishlistOpen(false)}><img loading="lazy" src={backIcon} alt="" /></button>
               <h2 id="wishlist-adder-title">찜한 장소 불러오기</h2>
-              <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}><img src={closeIcon} alt="" /></button>
+              <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}><img loading="lazy" src={closeIcon} alt="" /></button>
             </header>
             <p className={styles.adderDescription}>지도에 저장해둔 장소를 일정에 담아보세요</p>
             <section className={styles.wishlistMapArea}>
@@ -1109,7 +1109,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   return (
                     <article key={place.id}>
                       <span className={styles.resultNumber}>{index + 1}</span>
-                      <span className={styles.resultImage}>{getImageUrl(place.image) && <img src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
+                      <span className={styles.resultImage}>{getImageUrl(place.image) && <img loading="lazy" src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                       <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
                       <button className={selected ? styles.wishlistSelected : ""} type="button" onClick={() => toggleWishlistSelection(place)}>{selected ? "✓ 담김" : "+ 찜"}</button>
                     </article>
@@ -1255,12 +1255,12 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         <div className={styles.placeDetailBackdrop} role="presentation" onMouseDown={() => setSelectedStop(null)}>
         <section className={styles.placeDetail} role="dialog" aria-modal="true" aria-labelledby="place-detail-title" onMouseDown={(event) => event.stopPropagation()}>
           <header className={styles.detailHeader}>
-            <button type="button" aria-label="뒤로 가기" onClick={() => setSelectedStop(null)}><img src={backIcon} alt="" /></button>
-            <button type="button" aria-label="닫기" onClick={() => setSelectedStop(null)}><img src={closeIcon} alt="" /></button>
+            <button type="button" aria-label="뒤로 가기" onClick={() => setSelectedStop(null)}><img loading="lazy" src={backIcon} alt="" /></button>
+            <button type="button" aria-label="닫기" onClick={() => setSelectedStop(null)}><img loading="lazy" src={closeIcon} alt="" /></button>
           </header>
           <a className={styles.mapLink} href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${selectedStop.name} ${selectedTrip.city}`)}`} target="_blank" rel="noreferrer">구글 지도 앱으로 보기 &gt;</a>
           <div className={styles.detailImage}>
-            {selectedStop.image && <img src={selectedStop.image} alt={selectedStop.name} onError={useImageFallback} />}
+            {selectedStop.image && <img loading="lazy" src={selectedStop.image} alt={selectedStop.name} onError={useImageFallback} />}
           </div>
           <section className={styles.detailContent}>
             <h2 id="place-detail-title">{selectedStop.name}</h2>
@@ -1269,10 +1269,10 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <p className={styles.placeDescription}>{selectedStop.recommendation || `${selectedTrip.city} ${selectedStop.type} 추천 장소`}</p>
             <div className={styles.features}><span>✓ {selectedStop.isFreeMeal ? "자유 식사" : "일정 포함"}</span><span>{selectedStop.type}</span><span>{selectedStop.imageStatus || "장소 정보"}</span><b>›</b></div>
             <dl className={styles.detailList}>
-              <div><dt><img src={pinIcon} alt="위치" /></dt><dd>{selectedTrip.country.toUpperCase()} · {selectedTrip.city}</dd></div>
-              <div><dt><img src={checkIcon} alt="일정" /></dt><dd>{selectedStop.dayLabel} 일정에 등록된 장소</dd></div>
-              <div><dt><img src={travelIcon} alt="방문 시간" /></dt><dd>방문 예정 시간 · {selectedStop.time}</dd><b>⌄</b></div>
-              <div><dt><img src={heartIcon} alt="추천 정보" /></dt><dd>{selectedStop.recommendation || "추가 추천 정보가 없습니다."}<small>{selectedStop.imageSource ? `이미지 출처: ${selectedStop.imageSource}` : "trip_road.json 제공 정보"}</small></dd><b>⌄</b></div>
+              <div><dt><img loading="lazy" src={pinIcon} alt="위치" /></dt><dd>{selectedTrip.country.toUpperCase()} · {selectedTrip.city}</dd></div>
+              <div><dt><img loading="lazy" src={checkIcon} alt="일정" /></dt><dd>{selectedStop.dayLabel} 일정에 등록된 장소</dd></div>
+              <div><dt><img loading="lazy" src={travelIcon} alt="방문 시간" /></dt><dd>방문 예정 시간 · {selectedStop.time}</dd><b>⌄</b></div>
+              <div><dt><img loading="lazy" src={heartIcon} alt="추천 정보" /></dt><dd>{selectedStop.recommendation || "추가 추천 정보가 없습니다."}<small>{selectedStop.imageSource ? `이미지 출처: ${selectedStop.imageSource}` : "trip_road.json 제공 정보"}</small></dd><b>⌄</b></div>
             </dl>
           </section>
           <div className={styles.detailActions}>

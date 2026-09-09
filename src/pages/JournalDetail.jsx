@@ -2,10 +2,10 @@ import { Link } from "react-router-dom";
 import { useLayoutEffect } from "react";
 import BackButton from "../components/BackButton";
 import hero from "../assets/images/journal_tokyo.webp";
-import coffee from "../assets/images/Tokyo/Tokyo/GlitchCoffee&Roasters.png";
+import coffee from "../assets/images/Tokyo/Tokyo/GlitchCoffee&Roasters.webp";
 import crossing from "../assets/images/Tokyo/Tokyo/ShibuyaCrossing.webp";
-import tower from "../assets/images/Tokyo/Tokyo/TokyoTower.jpg";
-import station from "../assets/images/Tokyo/Tokyo/TokyoStation.jpg";
+import tower from "../assets/images/Tokyo/Tokyo/TokyoTower.webp";
+import station from "../assets/images/Tokyo/Tokyo/TokyoStation.webp";
 import styles from "./JournalDetail.module.scss";
 
 export default function JournalDetail() {
@@ -37,5 +37,5 @@ export default function JournalDetail() {
 }
 
 function JournalDay({ day, subtitle, images, children }) {
-  return <section className={styles.day}><header><h2>DAY {day}</h2><span>{subtitle}</span></header><div className={images.length > 1 ? styles.photoGrid : styles.photo}>{images.map((image) => <span className={styles.photoFrame} key={image}><img src={image} alt="" /></span>)}</div><div className={styles.story}>{children}</div></section>;
+  return <section className={styles.day}><header><h2>DAY {day}</h2><span>{subtitle}</span></header><div className={images.length > 1 ? styles.photoGrid : styles.photo}>{images.map((image) => <span className={styles.photoFrame} key={image}><img loading="lazy" src={image} alt="" /></span>)}</div><div className={styles.story}>{children}</div></section>;
 }

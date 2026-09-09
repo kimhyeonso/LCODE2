@@ -3,10 +3,10 @@ import MypageBackLink from "../components/MypageBackLink";
 
 // image 경로를 카드마다 따로 넣습니다. 빈 문자열이면 회색 박스로 표시됩니다.
 const completedTrips = [
-  { city: "TOKYO", detail: "도쿄 4박 5일 · 골목 탐방", image: "/Mypage-img/1.png" },
-  { city: "SEOUL", detail: "서울 2박 3일 · 힙한 골목", image: "/Mypage-img/4.png" },
-  { city: "KYOTO", detail: "교토 4박 5일 · 고즈넉한 여행", image: "/Mypage-img/3.png" },
-  { city: "BEIJING", detail: "베이징 3박 4일 · 광활한 여행", image: "/Mypage-img/5.png" },
+  { city: "TOKYO", detail: "도쿄 4박 5일 · 골목 탐방", image: "/Mypage-img/1.webp" },
+  { city: "SEOUL", detail: "서울 2박 3일 · 힙한 골목", image: "/Mypage-img/4.webp" },
+  { city: "KYOTO", detail: "교토 4박 5일 · 고즈넉한 여행", image: "/Mypage-img/3.webp" },
+  { city: "BEIJING", detail: "베이징 3박 4일 · 광활한 여행", image: "/Mypage-img/5.webp" },
 ];
 
 // 이미지가 있는 경우에만 backgroundImage 스타일을 만들어 줍니다.

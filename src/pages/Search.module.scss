@@ -58,6 +58,14 @@
   font: 600 30px/1.1 $serif;
   letter-spacing: normal;
 }
+
+// Match SavedPlan's mobile title scale.
+@media (max-width: 640px) {
+  .products h1 {
+    font: 400 38px/1.08 $serif;
+    letter-spacing: -.05em;
+  }
+}
 .products > div {
   display: grid;
   grid-template-columns: repeat(3, minmax(110px, 1fr));

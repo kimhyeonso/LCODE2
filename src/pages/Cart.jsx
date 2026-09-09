@@ -2998,7 +2998,7 @@ export default function Cart() {
                           to={`/shop/${item.id}`}
                         >
                           {productImage ? (
-                            <img
+                            <img loading="lazy"
                               src={
                                 productImage
                               }

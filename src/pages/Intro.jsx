@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./Intro.module.scss";
-import logoWhite from "../assets/images/logo-white.png";
+import logoWhite from "../assets/images/logo-white.webp";
 
 export default function Intro({ onComplete }) {
   const [closing, setClosing] = useState(false);

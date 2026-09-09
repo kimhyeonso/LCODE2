@@ -6,8 +6,8 @@ import MysteryEvent from "./MysteryEvent";
 import MagazineEvent from "./MagazineEvent";
 
 const asset = {
-  eventBanner: "/event/event01/gacha_banner.png",
-  mysteryBanner: "/event/event01/mystery_banner.png",
+  eventBanner: "/event/event01/gacha_banner.webp",
+  mysteryBanner: "/event/event01/mystery_banner.webp",
 };
 
 export default function Event() {
@@ -56,7 +56,7 @@ export default function Event() {
                   onClick={() => setStep("gacha")}
                 >
                   <div className={styles.cardVisual}>
-                    <img src={asset.eventBanner} alt="" />
+                    <img loading="lazy" src={asset.eventBanner} alt="" />
                   </div>
                   <div className={styles.cardText}>
                     <h2>여행 운세 뽑기</h2>
@@ -74,7 +74,7 @@ export default function Event() {
                   onClick={() => setStep("mystery")}
                 >
                   <div className={styles.cardVisual}>
-                    <img src={asset.mysteryBanner} alt="" />
+                    <img loading="lazy" src={asset.mysteryBanner} alt="" />
                   </div>
                   <div className={styles.cardText}>
                     <h2>비행기 살인사건</h2>
@@ -92,7 +92,7 @@ export default function Event() {
                   onClick={() => setStep("magazine")}
                 >
                   <div className={styles.cardVisual}>
-                    <img src="/event/event04/magazinebanne.png" alt="" />
+                    <img loading="lazy" src="/event/event04/magazinebanne.webp" alt="" />
                   </div>
                   <div className={styles.cardText}>
                     <h2>리뷰쓰고 잡지 받자!</h2>

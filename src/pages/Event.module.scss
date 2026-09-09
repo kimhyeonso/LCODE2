@@ -145,7 +145,7 @@ $black: #000;
 
 .magazineCardVisual {
   width: 100%;
-  background: #ece4d6 url("/event/event04/magazinebanne.png") center / cover no-repeat;
+  background: #ece4d6 url("/event/event04/magazinebanne.webp") center / cover no-repeat;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -335,10 +335,6 @@ $black: #000;
     min-height: auto;
   }
 
-  :global(body:has(.eventPageRoot) footer) {
-    margin-top: calc(-58px - env(safe-area-inset-bottom));
-  }
-
   .eventList {
     min-height: auto;
     padding: 0;
@@ -356,16 +352,17 @@ $black: #000;
   }
 
   .listHeader h1 {
-    font-size: clamp(44px, 14vw, 62px);
+    font-size: 38px;
   }
 
   .eventGroup {
     margin-top: 18px;
-    gap: 0;
+    padding: 0 16px;
+    gap: 16px;
   }
 
   .groupLabel {
-    padding: 0 16px;
+    padding: 0;
     margin-bottom: 18px;
   }
 
@@ -382,7 +379,7 @@ $black: #000;
   }
 
   .cardText div {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .eventHeader button {
@@ -392,7 +389,7 @@ $black: #000;
 
   .eventHeader span {
     padding-inline: 10px;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 3px;
   }
 }
@@ -403,7 +400,9 @@ $black: #000;
 .listHeader span {
   display: block;
   margin: 0 0 25px !important;
+  color: #aaa;
   font-size: 13px;
+  letter-spacing: .16em;
   line-height: normal !important;
 }
 

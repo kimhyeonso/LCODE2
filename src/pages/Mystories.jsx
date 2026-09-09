@@ -22,21 +22,15 @@ const shoppingFilters = [
 ];
 
 // Products.jsx와 동일하게 products.json의 배열 순서에 맞는 대표 이미지를 연결합니다.
-// products[0] -> 1_1.webp/png, products[1] -> 2_1.webp/png ...
-const productImageModules = import.meta.glob("../assets/images/detail/*_1.{webp,png,jpg,jpeg}", {
+// products[0] -> 1_1.webp, products[1] -> 2_1.webp ...
+const productImageModules = import.meta.glob("../assets/images/detail/*_1.webp", {
   eager: true,
   import: "default",
 });
 
 const getProductImage = (index) => {
   const base = `../assets/images/detail/${index + 1}_1`;
-  return (
-    productImageModules[`${base}.webp`]
-    || productImageModules[`${base}.png`]
-    || productImageModules[`${base}.jpg`]
-    || productImageModules[`${base}.jpeg`]
-    || ""
-  );
+  return productImageModules[`${base}.webp`] || "";
 };
 
 const categorizedProducts = products.map((product, index) => ({
@@ -136,7 +130,11 @@ export default function Mystories() {
     .map((review) => ({ id: review.productId, name: review.productName, price: null, image: "" }));
   const productSource = [...purchasedProducts, ...reviewProducts];
   const visibleProducts = (productSource.length ? productSource : categorizedProducts.slice(0, fallbackProductCount)).filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index).map((product) => ({ ...product, displayName: product.displayName || product.name,
-    displayImage: product.image || categorizedProducts.find((item) => String(item.id) === product.id)?.displayImage || "" }));
+    // Firestore purchase records store the image URL that was resolved at
+    // order time; when local assets are re-hashed (e.g. a png -> webp
+    // conversion) that stored URL 404s. Prefer today's catalog image and
+    // only fall back to the stored one for products no longer in the catalog.
+    displayImage: categorizedProducts.find((item) => String(item.id) === product.id)?.displayImage || product.image || "" }));
   const activeFilter = shoppingFilters.find((item) => item.key === shoppingFilter) || shoppingFilters[0];
   const filteredProducts = activeFilter.categories
     ? visibleProducts.filter((product) => activeFilter.categories.includes(product.category))
