@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Popup.module.scss";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const popupItems = [
-  { id: "popup01", image: "/Mypage-img/popup01.png" },
-  { id: "popup02", image: "/Mypage-img/popup02.png" },
+  { id: "popup01", image: "/Mypage-img/popup01.png", event: "mystery" },
+  { id: "popup02", image: "/Mypage-img/popup02.png", event: "gacha" },
 ];
 
 const storageKey = (id) => `lcode-${id}-hidden-until`;
@@ -18,6 +19,7 @@ const canShowPopup = (id) => {
 };
 
 export default function Popup() {
+  const navigate = useNavigate();
   const [visibleIds, setVisibleIds] = useState(() => (
     popupItems.filter(({ id }) => canShowPopup(id)).map(({ id }) => id)
   ));
@@ -41,9 +43,19 @@ export default function Popup() {
   return (
     <div className={styles.backdrop} role="presentation">
       <section className={styles.popupGroup} aria-label="프로모션 안내">
-        {visiblePopups.map(({ id, image }, index) => (
+        {visiblePopups.map(({ id, image, event }, index) => (
           <article className={styles.popupCard} key={id} role="dialog" aria-modal="true" aria-label={`프로모션 ${index + 1}`}>
-            <img src={image} alt="" />
+            <button
+              className={styles.imageLink}
+              type="button"
+              onClick={() => {
+                setVisibleIds([]);
+                navigate(`/event?event=${event}`);
+              }}
+              aria-label={event === "mystery" ? "비행기 살인사건 이벤트로 이동" : "가챠 뽑기 이벤트로 이동"}
+            >
+              <img src={image} alt="" />
+            </button>
             <footer>
               <label>
                 <input

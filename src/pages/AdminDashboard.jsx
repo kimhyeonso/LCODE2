@@ -14,14 +14,23 @@ import {
 } from "../services/firestoreService";
 import styles from "./AdminDashboard.module.scss";
 
-const detailImageModules = import.meta.glob("../assets/images/detail/*_1.png", {
+const detailImageModules = import.meta.glob("../assets/images/detail/*_1.{png,webp}", {
   eager: true,
   import: "default",
 });
 
-const getProductImage = (index) => (
-  detailImageModules[`../assets/images/detail/${index + 1}_1.png`] || ""
-);
+const getProductImage = (index) => {
+  const basePath = `../assets/images/detail/${index + 1}_1`;
+  return detailImageModules[`${basePath}.png`] || detailImageModules[`${basePath}.webp`] || "";
+};
+
+// Files under src are bundled by Vite and cannot be requested directly by a
+// browser as /src/assets/.... Old Firestore records contain those development
+// URLs, so prefer the bundled catalogue thumbnail for those records.
+const resolveAdminProductImage = (item) => {
+  const catalogueImage = productImages[item.id] || "";
+  return item.image?.startsWith("/src/assets/") ? catalogueImage : item.image || catalogueImage;
+};
 
 const productImages = Object.fromEntries(
   products.map((product, index) => [product.id, getProductImage(index)]),
@@ -140,7 +149,7 @@ export default function AdminDashboard() {
             return [
               type,
               type === "products"
-                ? loadedItems.map((item) => ({ ...item, image: item.image || productImages[item.id] || "" }))
+                ? loadedItems.map((item) => ({ ...item, image: resolveAdminProductImage(item) }))
                 : loadedItems,
             ];
           }),

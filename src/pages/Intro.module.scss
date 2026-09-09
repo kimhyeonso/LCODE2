@@ -83,7 +83,7 @@
 .logo {
   position: relative;
   display: block;
-  width: min(54%, 820px);
+  width: min(calc(54% - 3rem), 772px);
   -webkit-animation: text-focus-in 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) 0.15s both;
   animation: text-focus-in 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) 0.15s both;
 }

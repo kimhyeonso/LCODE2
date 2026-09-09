@@ -33,7 +33,7 @@ import customStyles from "./ProductCustom.module.scss";
 
 const detailImageModules =
   import.meta.glob(
-    "../assets/images/detail/*.png",
+    "../assets/images/detail/*.{png,webp}",
     {
       eager: true,
       import: "default",
@@ -44,13 +44,13 @@ const getDetailImage = (
   number,
   suffix = ""
 ) => {
-  const path =
-    `../assets/images/detail/${number}${suffix}.png`;
+  const basePath =
+    `../assets/images/detail/${number}${suffix}`;
 
-  return (
-    detailImageModules[
-      path
-    ] || ""
+  return [".png", ".webp"].reduce(
+    (image, extension) =>
+      image || detailImageModules[`${basePath}${extension}`],
+    ""
   );
 };
 
@@ -650,9 +650,13 @@ export default function ProductDetailPage() {
       thumbnail: "",
     };
 
-  const imageSet = product?.image
-    ? { ...defaultImageSet, gallery: [product.image], thumbnail: product.image }
-    : defaultImageSet;
+  // Catalog images are bundled with the app and remain reliable even when an
+  // older admin product record contains a stale image URL.
+  const imageSet = defaultImageSet.gallery.length
+    ? defaultImageSet
+    : product?.image
+      ? { ...defaultImageSet, gallery: [product.image], thumbnail: product.image }
+      : defaultImageSet;
 
   const galleryImages =
     imageSet.gallery;

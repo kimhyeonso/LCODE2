@@ -361,7 +361,7 @@ export default function SavedPlan({ showBack = false }) {
   if (loading) {
     return (
       <main className={showBack ? styles.page : styles.status}>
-        {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+        {showBack && <MypageBackLink label="마이페이지로 돌아가기" to="/mypage-user" />}
         <div className={showBack ? styles.status : ""}>
           저장한 일정을 불러오고 있어요.
         </div>
@@ -372,7 +372,7 @@ export default function SavedPlan({ showBack = false }) {
   if (loadError) {
     return (
       <main className={showBack ? styles.page : styles.status}>
-        {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+        {showBack && <MypageBackLink label="마이페이지로 돌아가기" to="/mypage-user" />}
         <div className={showBack ? styles.status : ""}>
           <div>
           <strong>일정을 불러올 수 없어요.</strong>
@@ -391,7 +391,7 @@ export default function SavedPlan({ showBack = false }) {
   if (!saved) {
     return (
       <main className={showBack ? styles.page : styles.status}>
-        {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+        {showBack && <MypageBackLink label="마이페이지로 돌아가기" to="/mypage-user" />}
         <div className={showBack ? styles.status : ""}>
           <div>
           <strong>
@@ -413,7 +413,7 @@ export default function SavedPlan({ showBack = false }) {
 
   return (
     <main ref={pageRef} className={styles.page}>
-      {showBack && <MypageBackLink label="이전 페이지로 돌아가기" />}
+      {showBack && <MypageBackLink label="마이페이지로 돌아가기" to="/mypage-user" />}
       <p className={styles.eyebrow}>
         MY PLAN
       </p>
