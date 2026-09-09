@@ -4,16 +4,17 @@ import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Buy.module.scss";
 import { useAuth } from "../hooks/useAuth";
 import { eligibleProducts, getPurchaseOrders } from "../services/purchaseHistory";
-import { resolveProductImage } from "../utils/shopProductResolver";
+import { enrichShopProduct, resolveProductImage } from "../utils/shopProductResolver";
 
 const filters = ["전체", "배송 준비", "배송 중", "배송 완료"];
 const PAGE_SIZE = 3;
 
 function orderRows(savedOrders, uid) {
     const eligible = eligibleProducts(savedOrders, uid);
-    return savedOrders.flatMap((savedOrder) => (savedOrder.items || []).map((item, index) => {
+    return savedOrders.flatMap((savedOrder) =>
+      (savedOrder.items || []).map((item, index) => {
       const product = enrichShopProduct(item);
-      return ({
+      return {
       id: savedOrder.orderNumber || `LC-${index + 1}`,
       productId: product.id || item.id,
       date: new Intl.DateTimeFormat("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(savedOrder.orderedAt || Date.now())).replaceAll(". ", ".").replace(/\.$/, ""),
@@ -26,7 +27,9 @@ function orderRows(savedOrders, uid) {
       // time, which 404s once local assets are re-hashed (e.g. the
       // png/jpg -> webp conversion). Re-resolve against today's catalog.
       image: resolveProductImage(item),
-    })));
+      };
+    }),
+  );
 }
 
 export default function Buy() {
