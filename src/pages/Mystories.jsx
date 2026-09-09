@@ -7,6 +7,7 @@ import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./Mystories.module.scss";
 import { getReviewProducts } from "../services/purchaseHistory";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 
 const reviewStorageKey = "lcode-saved-reviews";
 const fallbackNames = ["여행용 키트", "멀티 어댑터", "트래블 파우치", "캐리어 커버"];
@@ -40,9 +41,9 @@ const getProductImage = (index) => {
 };
 
 const categorizedProducts = products.map((product, index) => ({
-  ...product,
+  ...enrichShopProduct(product),
   displayName: fallbackNames[index % fallbackNames.length],
-  displayImage: getProductImage(index) || product.image || "",
+  displayImage: getProductImage(index) || enrichShopProduct(product).image || "",
 }));
 
 function ReviewSummaryCard({ review }) {
@@ -133,10 +134,17 @@ export default function Mystories() {
 
   const productReviews = reviews.filter((item) => item.userId === user.uid && item.productId);
   const reviewProducts = productReviews.filter((review) => !purchasedProducts.some((item) => item.id === review.productId))
-    .map((review) => ({ id: review.productId, name: review.productName, price: null, image: "" }));
+    .map((review) => enrichShopProduct({ id: review.productId, name: review.productName, price: null }));
   const productSource = [...purchasedProducts, ...reviewProducts];
-  const visibleProducts = (productSource.length ? productSource : categorizedProducts.slice(0, fallbackProductCount)).filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index).map((product) => ({ ...product, displayName: product.displayName || product.name,
-    displayImage: product.image || categorizedProducts.find((item) => String(item.id) === product.id)?.displayImage || "" }));
+  const visibleProducts = (productSource.length ? productSource : categorizedProducts.slice(0, fallbackProductCount)).filter((item, index, items) => items.findIndex((other) => other.id === item.id) === index).map((product) => {
+    const resolved = enrichShopProduct(product);
+    return {
+      ...product,
+      ...resolved,
+      displayName: product.displayName || resolved.name,
+      displayImage: resolved.image || categorizedProducts.find((item) => String(item.id) === String(product.id))?.displayImage || "",
+    };
+  });
   const activeFilter = shoppingFilters.find((item) => item.key === shoppingFilter) || shoppingFilters[0];
   const filteredProducts = activeFilter.categories
     ? visibleProducts.filter((product) => activeFilter.categories.includes(product.category))
@@ -171,7 +179,7 @@ export default function Mystories() {
     event.preventDefault();
     event.stopPropagation();
   };
-  const travelReviews = reviews.filter((item) => item.userId === user?.uid && !item.productName);
+  const travelReviews = reviews.filter((item) => item.userId === user?.uid && !item.productName && item.tripId);
   const displayTravelReviews = travelReviews.length ? travelReviews : [{
     id: "",
     title: "후쿠오카 3박 4일",

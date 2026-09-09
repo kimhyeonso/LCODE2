@@ -7,12 +7,12 @@ import { getFavoriteTrips, getPlans } from "../services/firestoreService";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
   { label: "내 일정", to: "/my/plans", icon: "/Mypage-img/calendar_month_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
-  { label: "나의 리뷰", to: "/mystories", icon: "/Mypage-img/pen.svg" },
-  { label: "찜한 상품", to: "/saved", icon: "/Mypage-img/heart.svg" },
   { label: "찜한 일정", to: "/wishlist", icon: "/Mypage-img/calendar_add_on_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
   { label: "찜한 장소", to: "/favorite-places", icon: "/Mypage-img/heart_plus_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
+  { label: "나의 리뷰", to: "/mystories", icon: "/Mypage-img/pen.svg" },
+  { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
+  { label: "찜한 상품", to: "/saved", icon: "/Mypage-img/heart.svg" },
   { label: "쿠폰함", to: "/coupon", icon: "/Mypage-img/ticket.svg" },
   { label: "알림 설정", to: "/alarm", icon: "/Mypage-img/bell.svg" },
   { label: "고객센터", to: "/notice", icon: "/Mypage-img/headset.svg" },
