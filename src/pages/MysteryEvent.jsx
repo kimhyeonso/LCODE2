@@ -41,9 +41,9 @@ const asset = {
   evidence: "/event/event03/SCENE%204.png",
   ending: "/event/event03/SCENE5_picture.png",
 
-  groupPhoto: "/event/event03/picture.png",
-  dyingMessage: "/event/event03/dying_message.png",
-  dyingMessageNote: "/event/event03/dyingmessage.png",
+  groupPhoto: "/event/event03/picture%20(2).png",
+  dyingMessage: "/event/event03/dying_message%20(2).png",
+  dyingMessageNote: "/event/event03/dying_message%20(2).png",
 
   starbucks: "/event/event03/Starbucks.png",
   criminal: "/event/event03/criminal.png",
@@ -2590,6 +2590,9 @@ function StoryScreen({
 }) {
   const isMobile = useMysteryMobile();
   const [deathLocked, setDeathLocked] = useState(Boolean(scene.deathDiscovery));
+  const [visibleText, setVisibleText] = useState(scene.text ?? "");
+  const fullText = scene.text ?? "";
+  const isTyping = visibleText.length < fullText.length;
 
   useEffect(() => {
     if (!scene.deathDiscovery) {
@@ -2602,6 +2605,35 @@ function StoryScreen({
 
     return () => window.clearTimeout(timer);
   }, [scene.deathDiscovery]);
+
+  useEffect(() => {
+    setVisibleText("");
+
+    if (!fullText) return undefined;
+
+    let index = 0;
+    const timer = window.setInterval(() => {
+      index += 1;
+      setVisibleText(fullText.slice(0, index));
+
+      if (index >= fullText.length) {
+        window.clearInterval(timer);
+      }
+    }, 28);
+
+    return () => window.clearInterval(timer);
+  }, [fullText]);
+
+  const revealOrMove = (move) => {
+    if (deathLocked) return;
+
+    if (isTyping) {
+      setVisibleText(fullText);
+      return;
+    }
+
+    move?.();
+  };
 
   const sceneCharacters =
     Array.isArray(scene.characters)
@@ -2665,7 +2697,7 @@ function StoryScreen({
       onClick={(event) => {
         if (!isMobile || deathLocked) return;
         if (event.target.closest("button, a, input, textarea, select, [role='button']")) return;
-        onNext?.();
+        revealOrMove(onNext);
       }}
     >
       {!scene.blackout &&
@@ -2676,6 +2708,13 @@ function StoryScreen({
             }
           />
         )}
+
+      {!isMobile && !deathLocked && (
+        <div className={styles.backgroundClickZones} aria-hidden="true">
+          <button type="button" tabIndex={-1} aria-label="이전 장면" onClick={() => revealOrMove(onPrev)} />
+          <button type="button" tabIndex={-1} aria-label="다음 장면" onClick={() => revealOrMove(onNext)} />
+        </div>
+      )}
 
       <div
         className={
@@ -2766,7 +2805,7 @@ function StoryScreen({
             </div>
           )}
 
-          <p>{scene.text}</p>
+          <p>{visibleText}</p>
         </div>
       )}
 
@@ -2875,6 +2914,13 @@ function CaseOpen({
       }}
     >
       <Background src={asset.caseOpenFirstDesktop} />
+
+      {!isMobile && (
+        <div className={styles.backgroundClickZones} aria-hidden="true">
+          <button type="button" tabIndex={-1} aria-label="이전 장면" onClick={onPrev} />
+          <button type="button" tabIndex={-1} aria-label="다음 장면" onClick={onNext} />
+        </div>
+      )}
 
       <div className={styles.caseOpenShade} />
 

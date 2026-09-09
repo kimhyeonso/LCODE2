@@ -432,3 +432,23 @@
   .contactCopy h2 { font-size: 17px; }
   .contactCopy p { font-size: 11px; }
 }
+
+.journal {
+  display: none !important;
+}
+
+.content {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  row-gap: 0;
+}
+
+.content > .contact {
+  margin-top: 27px;
+}
+
+@media (max-width: 640px) {
+  .content > .contact {
+    margin-top: 18px;
+  }
+}

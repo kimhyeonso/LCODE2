@@ -8991,3 +8991,90 @@ button {
     transform-origin: center top !important;
   }
 }
+
+/* EVENT 03: story readability and desktop background navigation. */
+.backgroundClickZones {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backgroundClickZones button {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+@media (min-width: 1025px) {
+  .storyScreen .background {
+    opacity: .82 !important;
+    filter: brightness(.66) saturate(.78) contrast(1.08) !important;
+  }
+
+  .storyScreen .simpleDialogue p,
+  .storyScreen .explanationDialogue p {
+    font-size: clamp(16px, 1.12vw, 20px) !important;
+    line-height: 1.58 !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .backgroundClickZones {
+    display: none;
+  }
+
+  .storyScreen .simpleDialogue p,
+  .storyScreen .explanationDialogue p {
+    font-size: max(11px, 3.05vw) !important;
+    line-height: 1.58 !important;
+  }
+}
+
+@media (min-width: 1025px) {
+  .coverCopy > span,
+  .caseOpenContent span,
+  .chapterBanner > span,
+  .chapterBanner > small {
+    font-size: 16px !important;
+  }
+
+  .coverCopy > span,
+  .caseOpenContent span,
+  .chapterBanner > span {
+    margin-bottom: 8px !important;
+    letter-spacing: 5px !important;
+  }
+
+  .chapterBanner > small {
+    margin-top: 10px !important;
+    color: rgba(245, 239, 232, 0.82) !important;
+    letter-spacing: 1.2px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .coverCopy > span,
+  .caseOpenContent span,
+  .chapterBanner > span,
+  .chapterBanner > small {
+    font-size: 11px !important;
+  }
+
+  .coverCopy > span,
+  .caseOpenContent span,
+  .chapterBanner > span {
+    margin-bottom: 5px !important;
+    letter-spacing: 3px !important;
+  }
+
+  .chapterBanner > small {
+    margin-top: 6px !important;
+    color: rgba(245, 239, 232, 0.82) !important;
+    letter-spacing: 1px !important;
+  }
+}
