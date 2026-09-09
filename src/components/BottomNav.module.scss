@@ -54,16 +54,16 @@
   font-size: 10px;
 }
 .nav .add {
-  width: 42px;
-  height: 42px;
+  width: 29px;
+  height: 29px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background: #111;
 }
 .nav .add img {
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
   filter: brightness(0) invert(1);
   transition: transform 0.22s ease;
 }
@@ -98,7 +98,7 @@
   border: 0;
   background: transparent;
   padding: 0;
-  color: #171714;
+  color: #fff;
   font-family: "Noto Sans KR", sans-serif;
   cursor: pointer;
   animation: fan-button-in 0.22s ease-out both;

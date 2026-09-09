@@ -28,9 +28,9 @@ export default function BottomNav() {
     navigate("/balance");
   };
 
-  const openSearch = () => {
+  const openDestinations = () => {
     setIsBalancePromptOpen(false);
-    navigate("/search");
+    navigate("/desrinationAll");
   };
 
   return (
@@ -55,12 +55,12 @@ export default function BottomNav() {
                   <button
                     type="button"
                     className={`${styles.fanButton} ${styles.fanSearch}`}
-                    onClick={openSearch}
+                    onClick={openDestinations}
                   >
                     <span className={styles.fanCircle}>
                       <img loading="lazy" src={searchGlyph} alt="" aria-hidden="true" />
                     </span>
-                    <small>검색</small>
+                    <small>일정보기</small>
                   </button>
                   <button
                     type="button"
@@ -70,7 +70,7 @@ export default function BottomNav() {
                     <span className={styles.fanCircle}>
                       <img loading="lazy" src={gameControllerIcon} alt="" aria-hidden="true" />
                     </span>
-                    <small>밸런스 게임</small>
+                    <small>취향분석</small>
                   </button>
                 </>
               )}

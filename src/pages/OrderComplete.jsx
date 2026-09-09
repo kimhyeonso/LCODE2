@@ -20,8 +20,9 @@ export default function OrderComplete() {
 
   return <main className={styles.completePage}>
     <span>ORDER</span><h1>{order ? "COMPLETE" : "ORDER INFO"}</h1>
+    {order && <p className={styles.completeDescription}>데모 주문이 완료되었습니다. 실제 결제와 배송은 진행되지 않습니다.</p>}
     {order ? <>
-      <div className={styles.completeMessage}><b>✓</b><div><h2>여행 준비가<br />한 단계 완료되었습니다.</h2><p>데모 주문이 완료되었습니다. 실제 결제와 배송은 진행되지 않습니다.</p></div></div>
+      <div className={styles.completeMessage}><b>✓</b><div><h2>여행 준비가<br />한 단계 완료되었습니다.</h2></div></div>
       <dl>
         <div><dt>ORDER NUMBER</dt><dd>{order.orderNumber}</dd></div>
         <div><dt>PAYMENT</dt><dd>{order.price.total.toLocaleString("ko-KR")} KRW</dd></div>

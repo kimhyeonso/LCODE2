@@ -12,7 +12,7 @@
 .eyebrow {
   margin: 0 0 25px;
   color: #aaa;
-  font-size: 13px;
+  font: 400 13px/normal $sans;
   letter-spacing: .16em;
 }
 
@@ -22,10 +22,9 @@
   width: 100%;
   margin: 20px 0 18px;
   padding-bottom: 18px;
-  // 밑선을 heroCard 이미지와 같은 폭(.page 콘텐츠 폭)으로, 잘 보이는 색으로.
-  border-bottom: 2px solid #c9c0b2;
+  border-bottom: 1px solid #cec7bb;
   font-family: $serif;
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -.05em;
@@ -753,7 +752,7 @@
   }
 
   .page > h1 {
-    font-size: 66px;
+    font-size: 60px;
   }
 }
 
@@ -839,9 +838,6 @@
     padding: 36px 0 0;
   }
 
-  .page > h1 {
-    font-size: 54px;
-  }
 
   .status {
     width: calc(100% - 220px);
@@ -865,7 +861,7 @@
     box-sizing: border-box;
     margin: 20px 0 18px !important;
     padding-bottom: 18px !important;
-    border-bottom: 1px solid #dedad3 !important;
+    border-bottom: 1px solid #cec7bb !important;
   }
 }
 

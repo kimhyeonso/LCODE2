@@ -28,6 +28,7 @@ import koreaImage from "../assets/images/korea.webp";
 import japanImage from "../assets/images/japan.webp";
 import chinaImage from "../assets/images/china.webp";
 import journalTokyoImage from "../assets/images/journal_tokyo.webp";
+import viewerIcon from "../assets/icons/menu_bar/05user.svg";
 
 import styles from "./Home.module.scss";
 
@@ -148,6 +149,40 @@ const SectionLabel = ({ number, children }) => (
     <span>{children}</span>
   </div>
 );
+
+const VIEWER_COUNT_START = 562;
+const VIEWER_COUNT_TARGETS = [7580, 8320];
+const VIEWER_COUNT_STEP_MIN = 100;
+const VIEWER_COUNT_STEP_MAX = 300;
+const VIEWER_COUNT_STEP_DELAY = 600;
+
+const ViewerBadge = ({ end }) => {
+  const [count, setCount] = useState(VIEWER_COUNT_START);
+
+  useEffect(() => {
+    let timer;
+    let current = VIEWER_COUNT_START;
+
+    const step = () => {
+      const increment = VIEWER_COUNT_STEP_MIN
+        + Math.floor(Math.random() * (VIEWER_COUNT_STEP_MAX - VIEWER_COUNT_STEP_MIN + 1));
+      current = Math.min(current + increment, end);
+      setCount(current);
+
+      if (current < end) timer = setTimeout(step, VIEWER_COUNT_STEP_DELAY);
+    };
+
+    timer = setTimeout(step, VIEWER_COUNT_STEP_DELAY);
+    return () => clearTimeout(timer);
+  }, [end]);
+
+  return (
+    <div className={styles.viewerBadge}>
+      <img src={viewerIcon} alt="" aria-hidden="true" />
+      <span>{count.toLocaleString("ko-KR")}명의 사람들이 보고 있어요</span>
+    </div>
+  );
+};
 
 const TextLink = ({ to, children, ...props }) => (
   <Link className={styles.textLink} to={to} {...props}>
@@ -401,6 +436,7 @@ export default function Home() {
                     />
                   </picture>
                 )}
+                {index < VIEWER_COUNT_TARGETS.length && <ViewerBadge end={VIEWER_COUNT_TARGETS[index]} />}
                 <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""} ${mobileBottomLeft ? styles.heroCopyMobileBottomLeft : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>

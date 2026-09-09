@@ -14,9 +14,12 @@
 .app {
   min-height: 100vh;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .main {
   min-height: 60vh;
+  flex: 1 0 auto;
 }
 
 // 모바일 전용: 콘텐츠 ↔ 풋터 간격을 마이페이지 기준으로 통일합니다.
