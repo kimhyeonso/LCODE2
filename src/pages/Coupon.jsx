@@ -83,6 +83,10 @@ export default function Coupon() {
   );
 
   useEffect(() => {
+    setCurrentPage((page) => Math.min(page, pageCount));
+  }, [pageCount]);
+
+  useEffect(() => {
     const registeredCouponCode = state?.registeredCouponCode;
     if (!registeredCouponCode) return;
 

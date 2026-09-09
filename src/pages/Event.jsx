@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import styles from "./Event.module.scss";
 import GachaEvent from "./GachaEvent";
 import MysteryEvent from "./MysteryEvent";
@@ -10,13 +11,25 @@ const asset = {
 };
 
 export default function Event() {
-  const [step, setStep] = useState("list");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedStep = searchParams.get("event");
+  const initialStep = requestedStep === "gacha" || requestedStep === "mystery"
+    ? requestedStep
+    : "list";
+  const [step, setStep] = useState(initialStep);
+
+  useEffect(() => {
+    setStep(initialStep);
+  }, [initialStep]);
 
   useEffect(() => {
     window.scrollTo({ top: 0, left: 0 });
   }, [step]);
 
-  const goList = () => setStep("list");
+  const goList = () => {
+    setSearchParams({});
+    setStep("list");
+  };
 
   return (
     <main className={`${styles.eventPage} eventPageRoot`}>

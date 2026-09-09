@@ -13,6 +13,7 @@ import { useShop } from "../hooks/useShop";
 import { useAuth } from "../hooks/useAuth";
 import { recordPurchase } from "../services/purchaseHistory";
 import { decreaseProductStocks } from "../services/firestoreService";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 import styles from "./Shop.module.scss";
 
 
