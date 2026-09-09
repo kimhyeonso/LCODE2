@@ -3,7 +3,7 @@
 @use "../styles/representative-title" as title;
 
 .contactPage, .contactPage * { box-sizing: border-box; }
-.contactPage { min-height: 100vh; padding: 36px 0 0; background: $paper; color: $ink; font-family: "Noto Sans KR", sans-serif; }
+.contactPage { padding: 36px 0 0; background: $paper; color: $ink; font-family: "Noto Sans KR", sans-serif; }
 .content { display: grid; grid-template-columns: minmax(0, 820px) minmax(300px, 370px); grid-template-rows: auto auto; gap: 54px clamp(68px, 6.5vw, 130px); width: min(1320px, calc(100% - 112px)); margin: 0 auto; }
 .mainContent { min-width: 0; }
 .eyebrow { margin: 0; color: #aaa; font: 400 13px "DM Serif Display", serif; letter-spacing: .14em; }
@@ -67,7 +67,7 @@
 }
 
 @include mobile {
-  .contactPage { min-height: auto; padding: 28px 0 72px; }
+  .contactPage { padding: 28px 0 72px; }
   .content { display: flex; width: calc(100% - 32px); flex-direction: column; gap: 30px; }
   // HELP DESK: 모바일에서도 다른 마이페이지 eyebrow처럼 sans 폰트로.
   .eyebrow { font-family: $sans; font-size: 13px; font-weight: 400; letter-spacing: .16em; }
