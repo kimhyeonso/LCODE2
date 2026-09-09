@@ -15,6 +15,10 @@ $black: #000;
   color: #fff;
 }
 
+.eventPage:has(.eventList) {
+  background: $paper;
+}
+
 .stage {
   width: 100%;
   min-height: 100vh;
@@ -419,6 +423,15 @@ $black: #000;
 }
 
 @media (min-width: 901px) {
-  .eventList { padding-top: 72px; }
+  .eventList {
+    padding-top: 72px;
+    padding-bottom: 0;
+  }
   .eventListInner { margin-left: max(56px, calc(50% - 660px)); margin-right: 0; }
+}
+
+@media (max-width: 640px) {
+  .eventList {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom)) !important;
+  }
 }

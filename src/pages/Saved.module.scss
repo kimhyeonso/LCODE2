@@ -871,6 +871,52 @@
    BOTTOM
 ========================================================= */
 
+.bottomLink {
+  position: relative;
+
+  border-top:
+    1px solid
+    #d8d3ca;
+
+  padding-top: 22px;
+
+  color: #11110f;
+
+  font-size: max(13px, var(--saved-min-font-size));
+
+  line-height: 1.35;
+}
+
+
+.bottomLink > span {
+  margin-right: 0;
+}
+
+
+.bottomLink a {
+  display: inline-flex;
+
+  align-items: center;
+
+  color: inherit;
+
+  text-decoration: none;
+}
+
+
+.bottomLink a::before {
+  position: absolute;
+
+  inset: 0;
+
+  content: "";
+}
+
+
+.bottomLink a b {
+  font-weight: 400;
+}
+
 
 /* =========================================================
    TABLET
