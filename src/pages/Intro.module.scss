@@ -29,7 +29,7 @@ $intro-zoom-duration: 3s;
   background: #efeade;
   color: $ink;
   font-family: $serif;
-  &[open] { display: grid; place-items: center; }
+  &[open] { display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }
   &::backdrop { background: #efeade; }
   button { cursor: pointer; }
   button:focus-visible { outline: 2px solid $sand; outline-offset: 4px; }
@@ -49,6 +49,13 @@ $intro-zoom-duration: 3s;
 }
 .close {
   z-index: 3;
+}
+@include mobile {
+  .skip, .close {
+    min-height: 34px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
 }
 .result {
   position: absolute;
@@ -84,15 +91,27 @@ $intro-zoom-duration: 3s;
     word-break: keep-all;
   }
 }
+.resultAside {
+  display: block;
+  margin: -8px 0 28px;
+  color: #796c56;
+  font: 400 13px/1.6 $sans;
+  word-break: keep-all;
+}
 .resultButton {
+  max-width: 100%;
   min-height: 48px;
   padding: 12px 28px;
   border: 1px solid #171714;
   border-radius: 0;
   background: #171714;
   color: #fff;
-  font: 400 18px/1.5 $sans;
+  font: 400 14px/1.5 $sans;
   span { margin-left: 8px; }
+  &:hover {
+    background: #fff;
+    color: #171714;
+  }
 }
 @include mobile {
   .resultBackground {
@@ -212,13 +231,14 @@ $intro-zoom-duration: 3s;
   .imageChoices > .plan { transition: translate .2s ease; &:hover { translate: 0 -3px; } }
 }
 @include mobile {
-  .intro[open] { display: grid; place-items: center end; overflow: hidden; }
+  .intro[open] { display: grid; place-items: center; overflow: hidden; }
   .book {
     width: var(--mobile-page-width);
+    max-width: 100%;
     height: auto;
     aspect-ratio: 812 / 992;
     min-height: 0;
-    margin: 0 6px 0 0;
+    margin: 0;
     display: block;
     overflow: hidden;
     transform-origin: right center;
@@ -239,9 +259,9 @@ $intro-zoom-duration: 3s;
   .copy {
     animation: magazineMobileReveal 3.8s linear both;
     position: absolute;
-    left: max(9%, calc(100% - 100vw + 24px));
+    left: 12%;
     top: 12.4%;
-    width: min(60%, calc(100vw - 48px));
+    width: 76%;
     margin: 0;
     padding: 0;
     background: transparent;
@@ -351,7 +371,8 @@ $intro-zoom-duration: 3s;
 
 @include mobile {
   .intro {
-    --mobile-page-width: max(calc(100vw - 6px), calc(94dvh * 812 / 992));
+    // Fit both axes: height-based enlargement crops content on tall phones.
+    --mobile-page-width: min(calc(100vw - 12px), calc(94dvh * 812 / 992));
     --mobile-page-height: calc(var(--mobile-page-width) * 992 / 812);
     --mobile-image-top: calc(var(--mobile-page-height) * -.107);
   }
@@ -359,7 +380,7 @@ $intro-zoom-duration: 3s;
 @keyframes magazinePanRight {
   0%, 20% {
     width: 94vw;
-    right: calc(50vw - 6px);
+    right: 50%;
     top: 50%;
     transform: translate(50%, -50%);
   }
