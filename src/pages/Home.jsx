@@ -82,6 +82,7 @@ const heroSlides = [
     to: "/balance",
     centered: true,
     compactTitle: true,
+    trimImageEdges: true,
   },
   {
     desktop: bannerPC4,
@@ -405,11 +406,11 @@ export default function Home() {
             }}
             onTransitionEnd={handleHeroTransitionEnd}
           >
-            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText }, index) => {
+            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges }, index) => {
               const isClone = index === heroSlides.length;
               return (
               <div
-                className={`${styles.heroSlide} ${video ? styles.heroSlideVideo : ""} ${dark ? styles.heroSlideDark : ""} ${mobileIvory ? styles.heroSlideMobileIvory : ""} ${mobileLightText ? styles.heroSlideMobileLightText : ""}`}
+                className={`${styles.heroSlide} ${video ? styles.heroSlideVideo : ""} ${dark ? styles.heroSlideDark : ""} ${mobileIvory ? styles.heroSlideMobileIvory : ""} ${mobileLightText ? styles.heroSlideMobileLightText : ""} ${trimImageEdges ? styles.heroSlideTrimmed : ""}`}
                 key={`${desktop}-${index}`}
                 aria-hidden={index !== activeHeroSlide || isClone}
               >
