@@ -163,11 +163,11 @@ export default function Coupon() {
           </div>
           <p className={styles.description}>보유한 쿠폰과 사용 가능한 혜택을 확인해보세요.</p>
           <div className={styles.divider} />
+          {promoCoupon && <CouponTicket coupon={promoCoupon} key="promo" />}
           <Link className={styles.register} to="/coupon/register">쿠폰 등록하기</Link>
         </section>
         <section className={styles.couponList} aria-label="보유 쿠폰">
           {loadError && <p role="alert">{loadError}</p>}
-          {promoCoupon && <CouponTicket coupon={promoCoupon} key="promo" />}
           {pageCoupons.map((coupon, index) => (
             <CouponTicket coupon={coupon} key={`${coupon.code}-${index}`} />
           ))}

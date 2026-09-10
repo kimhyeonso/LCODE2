@@ -194,7 +194,7 @@ h1 {
 .pagination .activePage { font-weight: 700; }
 .pagination button:disabled { cursor: default; opacity: .3; }
 
-.couponList .eventTicket {
+.eventTicket {
   position: relative;
   aspect-ratio: 1483 / 989;
   background: #171512;
@@ -328,16 +328,17 @@ h1 {
     margin: 0 auto;
   }
 
+  .archive .eventTicket {
+    margin-top: 1.85rem;
+  }
+
   .register {
-    position: fixed;
-    z-index: 20;
+    position: static;
     // 버튼 세로 위치: bottom 값을 키우면 위로, 줄이면 아래로 이동합니다.
-    bottom: 48px;
     // 버튼 가로 위치: SHOP과 같은 1320px 콘텐츠 영역의 왼쪽 시작점입니다.
-    left: calc(220px + max(56px, (100vw - 220px - 1320px) / 2));
     // 왼쪽 쿠폰 열의 폭: 콘텐츠 폭에서 두 열 사이 간격을 뺀 값의 절반입니다.
-    width: calc((min(1320px, 100vw - 332px) - clamp(56px, 6vw, 104px)) / 2);
-    margin-top: 0;
+    width: 100%;
+    margin-top: 1rem;
   }
 }
 
@@ -409,7 +410,7 @@ h1 {
   }
 
   // "가차 돌리기" 고정 배너를 목록 맨 위에 두고, 나머지 보유 쿠폰을 그 아래에 쌓습니다.
-  .couponList .eventTicket {
+  .eventTicket {
     order: 5;
     margin-top: 12px;
   }
@@ -558,6 +559,29 @@ h1 {
   .couponList .used {
     order: 4;
     margin-top: 12px;
+  }
+
+  // 모바일 전용 흐름: 쿠폰 목록 → 페이지 이동 → 등록 버튼 → 이벤트 배너.
+  .couponList .ticket:not(.eventTicket) {
+    order: 4 !important;
+  }
+
+  .pagination {
+    order: 5 !important;
+    margin: 18px 0 0;
+  }
+
+  .register {
+    position: static;
+    order: 6;
+    width: 100%;
+    height: 57px;
+    margin: 18px 0 0;
+  }
+
+  .eventTicket {
+    order: 7;
+    margin-top: 18px;
   }
 
   .couponList .ticket.eventTicket {
