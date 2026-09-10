@@ -1517,6 +1517,11 @@ $type-display: 36px;
     width: 100%;
   }
 
+  .heroVisual {
+    min-height: 560px;
+    height: min(68vh, 680px);
+  }
+
   .sectionLabel {
     font-size: 14px;
   }

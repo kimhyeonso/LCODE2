@@ -2592,6 +2592,8 @@ export default function Cart() {
     @media (max-width: 640px) {
       .lcode-cartTitle {
         font-size: 38px;
+        width: calc(100vw - 32px);
+        max-width: none;
       }
     }
 
