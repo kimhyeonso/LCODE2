@@ -1,3 +1,4 @@
+import AiButton from "./AiButton";
 import { useEffect, useState } from "react";
 import styles from "./TopButton.module.scss";
 
@@ -21,6 +22,8 @@ const TopButton = () => {
   };
 
   return (
+    <>
+    <AiButton topVisible={isVisible} />
     <button
       type="button"
       className={`${styles.topButton} ${isVisible ? styles.visible : ""}`}
@@ -36,6 +39,7 @@ const TopButton = () => {
         />
       </svg>
     </button>
+    </>
   );
 };
 

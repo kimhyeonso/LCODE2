@@ -1,3 +1,4 @@
+import { useReveal } from "../hooks/useReveal";
 import {
   Link,
 } from "react-router-dom";
@@ -18,6 +19,7 @@ export default function ProductCard({
   product,
   onQuickAdd,
 }) {
+  const revealRef = useReveal();
   const {
     saved,
     toggleSaved,
@@ -62,6 +64,7 @@ export default function ProductCard({
 
   return (
     <article
+      ref={revealRef}
       className={
         styles.productCard
       }

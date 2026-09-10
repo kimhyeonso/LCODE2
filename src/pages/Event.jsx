@@ -1,3 +1,4 @@
+import { useReveal } from "../hooks/useReveal";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import styles from "./Event.module.scss";
@@ -11,6 +12,7 @@ const asset = {
 };
 
 export default function Event() {
+  const revealRef = useReveal(`.${styles.listHeader}, .${styles.eventCard}`);
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedStep = searchParams.get("event");
   const initialStep = requestedStep === "gacha" || requestedStep === "mystery" || requestedStep === "magazine"
@@ -33,7 +35,7 @@ export default function Event() {
   };
 
   return (
-    <main className={`${styles.eventPage} ${isPlayStep ? styles.eventPlayPage : ""} eventPageRoot`}>
+    <main ref={revealRef} className={`${styles.eventPage} ${isPlayStep ? styles.eventPlayPage : ""} eventPageRoot`}>
       <section className={styles.stage} aria-label="이벤트 페이지">
         {step === "list" && (
           <section className={styles.eventList}>

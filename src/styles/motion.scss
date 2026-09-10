@@ -1,0 +1,9 @@
+@use "variables" as *;
+[data-reveal] {
+  transition: opacity 0.6s ease, translate 0.6s cubic-bezier(.2,.65,.3,1);
+}
+[data-reveal="pending"] { opacity: 0; translate: 0 24px; }
+[data-reveal="visible"] { opacity: 1; translate: 0 0; }
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] { opacity: 1; translate: none; transition: none; }
+}
