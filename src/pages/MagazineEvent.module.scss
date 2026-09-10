@@ -78,7 +78,10 @@ $label: #ece3d5;
   top: clamp(0px, 1.5vw, 22px);
   z-index: 2;
   width: clamp(180px, 30%, 288px);
-  transform: rotate(10deg);
+  --hero-rotation: 10deg;
+  transform: rotate(var(--hero-rotation));
+  transform-origin: center;
+  animation: magazineHeartbeat 1.8s ease-in-out infinite;
 }
 
 .heroCover {
@@ -222,13 +225,112 @@ $label: #ece3d5;
 ========================================================= */
 
 .preview {
+  position: relative;
   margin: 0;
 }
 
-.preview img {
+.preview > img {
   width: 100%;
   display: block;
   filter: drop-shadow(0 26px 42px rgba(23, 23, 20, 0.2));
+  animation: magazineFloat 4.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+// 표지와 스티커 묶음이 가볍게 두 번 뛰는 효과.
+@keyframes magazineHeartbeat {
+  from {
+    transform: rotate(var(--hero-rotation)) scale(1);
+    animation-timing-function: ease-out;
+  }
+
+  10% {
+    transform: rotate(var(--hero-rotation)) scale(0.91);
+    animation-timing-function: ease-in;
+  }
+
+  17% {
+    transform: rotate(var(--hero-rotation)) scale(0.98);
+    animation-timing-function: ease-out;
+  }
+
+  33% {
+    transform: rotate(var(--hero-rotation)) scale(0.87);
+    animation-timing-function: ease-in;
+  }
+
+  45%,
+  to {
+    transform: rotate(var(--hero-rotation)) scale(1);
+    animation-timing-function: ease-out;
+  }
+}
+
+// 잡지 미리보기 위에서만 마우스를 따라다니는 w.png
+.previewCursor {
+  position: absolute;
+  z-index: 2;
+  width: min(750px, 55vw) !important;
+  aspect-ratio: 1070 / 580;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(30deg);
+}
+
+// 렌즈의 실제 원형 영역. 마우스가 있는 구역에 맞는 page_1~3 한 장을 보여준다.
+.lensPages {
+  position: absolute;
+  top: 3%;
+  left: 2.5%;
+  width: 43.5%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 50%;
+  box-sizing: border-box;
+  border: 5px solid #3e4c4d;
+  box-shadow:
+    inset 0 0 0 2px rgba(255, 255, 255, 0.7),
+    0 2px 7px rgba(23, 23, 20, 0.42);
+}
+
+.lensPages img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  filter: none;
+}
+
+// 이미지 위에 한 번 더 올리는 렌즈 림: w.png의 흰 부분과 관계없이 테두리가 보이게 한다.
+.lensPages::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  border: 2px solid rgba(245, 249, 246, 0.8);
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 2px rgba(23, 31, 31, 0.45);
+}
+
+// w.png의 흰 배경은 감추고 금속 프레임만 위에 보이도록 한다.
+.magnifierFrame {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+  mix-blend-mode: multiply;
+  filter: drop-shadow(0 5px 10px rgba(23, 23, 20, 0.2)) !important;
+}
+
+@keyframes magazineFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
 }
 
 /* =========================================================
@@ -245,6 +347,11 @@ $label: #ece3d5;
   position: relative;
   flex: 0 0 auto;
   width: clamp(112px, 15vw, 164px);
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: zoom-in;
+  animation: rewardNudge 3.8s ease-in-out infinite;
 }
 
 .rewardCover {
@@ -261,6 +368,75 @@ $label: #ece3d5;
   width: 62%;
   transform: rotate(-8deg);
   opacity: 0.9;
+}
+
+// 클릭 가능한 선물 표지를 과하지 않게 좌우로 흔들어 상호작용을 알린다.
+@keyframes rewardNudge {
+  0%,
+  72%,
+  100% {
+    transform: translateX(0);
+  }
+
+  78% {
+    transform: translateX(-5px) rotate(-1deg);
+  }
+
+  84% {
+    transform: translateX(5px) rotate(1deg);
+  }
+
+  90% {
+    transform: translateX(-3px) rotate(-0.5deg);
+  }
+
+  96% {
+    transform: translateX(2px) rotate(0.3deg);
+  }
+}
+
+.presentOverlay {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  padding: 24px;
+  background: rgba(13, 13, 12, 0.56);
+  place-items: center;
+}
+
+.presentModal {
+  position: relative;
+  width: min(430px, 100%);
+  background: #111;
+  padding-top: 32px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+}
+
+.presentModal > img {
+  display: block;
+  width: 100%;
+  height: min(72vh, 540px);
+  object-fit: cover;
+  object-position: center;
+}
+
+.presentClose {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 32px;
+  border: 0;
+  background: #111;
+  color: #fff;
+  padding: 0 13px 2px 0;
+  font-size: 24px;
+  font-weight: 200;
+  line-height: 1;
+  cursor: pointer;
+  text-align: right;
 }
 
 .reward strong {
@@ -360,7 +536,7 @@ $label: #ece3d5;
     position: static;
     width: min(62%, 240px);
     margin: 24px auto 8px;
-    transform: rotate(6deg);
+    --hero-rotation: 6deg;
   }
 
   .heroSticker {
@@ -399,5 +575,25 @@ $label: #ece3d5;
 
   .ghost {
     order: 2;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .previewCursor {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview > img {
+    animation: none;
+  }
+
+  .heroVisual {
+    animation: none;
+  }
+
+  .rewardVisual {
+    animation: none;
   }
 }

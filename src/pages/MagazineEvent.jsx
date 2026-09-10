@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "./MagazineEvent.module.scss";
 import { EventHeader } from "./Event";
@@ -71,6 +72,38 @@ const tips = [
 ];
 
 export default function MagazineEvent({ onExit }) {
+  const [previewCursor, setPreviewCursor] = useState({ visible: false, x: 0, y: 0, page: 1 });
+  const [presentOpen, setPresentOpen] = useState(false);
+
+  useEffect(() => {
+    if (!presentOpen) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setPresentOpen(false);
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [presentOpen]);
+
+  const movePreviewCursor = (event) => {
+    if (event.pointerType === "touch") return;
+
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const localX = event.clientX - bounds.left;
+    const localY = event.clientY - bounds.top;
+    const page = localX < bounds.width / 2 ? 1 : localY < bounds.height / 2 ? 2 : 3;
+
+    setPreviewCursor({
+      visible: true,
+      x: localX,
+      y: localY,
+      page,
+    });
+  };
+
+  const hidePreviewCursor = () => {
+    setPreviewCursor((current) => ({ ...current, visible: false }));
+  };
+
   return (
     <>
       <EventHeader label="SPECIAL EVENT" onBack={onExit} light />
@@ -125,18 +158,31 @@ export default function MagazineEvent({ onExit }) {
 
           <section className={styles.block}>
             <h2>나만의 여행 잡지 미리보기</h2>
-            <figure className={styles.preview}>
+            <figure
+              className={styles.preview}
+              onPointerEnter={movePreviewCursor}
+              onPointerMove={movePreviewCursor}
+              onPointerLeave={hidePreviewCursor}
+            >
               <img loading="lazy" src={asset.spread} alt="여행 매거진 내지 미리보기" />
+              {previewCursor.visible && (
+                <div className={styles.previewCursor} style={{ left: previewCursor.x, top: previewCursor.y }}>
+                  <div className={styles.lensPages} aria-hidden="true">
+                    <img src={`/Mypage-img/page_${previewCursor.page}.png`} alt="" />
+                  </div>
+                  <img className={styles.magnifierFrame} src="/Mypage-img/w.png" alt="" aria-hidden="true" />
+                </div>
+              )}
             </figure>
           </section>
 
           <section className={styles.block}>
             <h2>당첨자 혜택</h2>
             <div className={styles.reward}>
-              <div className={styles.rewardVisual}>
+              <button className={styles.rewardVisual} type="button" onClick={() => setPresentOpen(true)} aria-label="당첨자 선물 패키지 크게 보기">
                 <img loading="lazy" className={styles.rewardCover} src={asset.cover} alt="" />
                 <img loading="lazy" className={styles.rewardStamp} src={asset.stamp} alt="" />
-              </div>
+              </button>
               <div>
                 <strong>
                   나만의 여행 잡지
@@ -172,6 +218,20 @@ export default function MagazineEvent({ onExit }) {
           </div>
         </div>
       </section>
+      {presentOpen && (
+        <div
+          className={styles.presentOverlay}
+          role="presentation"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget) setPresentOpen(false);
+          }}
+        >
+          <section className={styles.presentModal} role="dialog" aria-modal="true" aria-label="당첨자 선물 패키지">
+            <button className={styles.presentClose} type="button" onClick={() => setPresentOpen(false)} aria-label="팝업 닫기">×</button>
+            <img src="/Mypage-img/present.jfif" alt="리본으로 포장된 여행 매거진 선물" />
+          </section>
+        </div>
+      )}
     </>
   );
 }
