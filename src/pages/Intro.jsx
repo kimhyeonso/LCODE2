@@ -11,6 +11,7 @@ export default function Intro({ onComplete }) {
   const dialogRef = useRef(null);
   const videoRef = useRef(null);
   const headingRef = useRef(null);
+  const [runawayDisappeared, setRunawayDisappeared] = useState(false);
   const [stage, setStage] = useState(() =>
     window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "choose" : "video",
   );
@@ -78,7 +79,7 @@ export default function Intro({ onComplete }) {
                 <button className={styles.plan} aria-label="계획부터 세워볼래" type="button" onClick={() => setStage("planned")}>
                   <span className={styles.planLabel}>계획부터 세워볼래</span>
                 </button>
-                <IntroRunawayButton onChoose={() => setStage("spontaneous")} />
+                <IntroRunawayButton onDisappear={() => setRunawayDisappeared(true)} />
               </div>
             </div>
           </div>
@@ -90,18 +91,19 @@ export default function Intro({ onComplete }) {
             <img className={styles.resultBackground} src={resultBackground} alt="" aria-hidden="true" />
             <div className={styles.resultCopy}>
               <h1 ref={headingRef} tabIndex={-1}>
-                좋아요.<br />
-                {stage === "planned" ? "나만의 여행 코드를 만들어볼까요?" : "계획 없이 떠나는 것도 여행이니까요."}
+                {!runawayDisappeared && <>역시,<br /></>}
+                {runawayDisappeared ? "역시 계획이시군요." : "계획적인 분이시네요."}
               </h1>
-              <p>{stage === "planned"
-                ? "취향에 맞는 여행을 고르고, 내 방식대로 일정을 완성해보세요."
-                : "지금 끌리는 장소부터 가볍게 찾아볼까요?"}</p>
+              <p>{runawayDisappeared
+                ? "처음부터 그러실 줄 알았어요."
+                : "충분히 고민하고 선택하신 취향을 존중합니다."}</p>
+              <small className={styles.resultAside}>다른 선택지는 자유를 찾아 떠났습니다.</small>
               <button
                 className={styles.resultButton}
                 type="button"
                 onClick={() => enter("/")}
               >
-                {stage === "planned" ? "여행 계획 시작하기" : "지금 여행 시작하기"} <span aria-hidden="true">→</span>
+                직접 고르신 계획, 시작해볼까요? <span aria-hidden="true">→</span>
               </button>
             </div>
           </div>
