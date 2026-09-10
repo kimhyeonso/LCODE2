@@ -497,9 +497,12 @@ export default function GachaEvent({ onExit }) {
         return;
       }
 
-      setSelectedPrize(prize);
       setMachineOpen(false);
-      setStep("capsule");
+      navigate("/coupon", {
+        state: {
+          registeredCouponCode: result.couponId,
+        },
+      });
     } catch (error) {
       const message =
         error?.code === "permission-denied"

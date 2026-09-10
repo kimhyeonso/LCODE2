@@ -80,6 +80,15 @@ $type-display: 36px;
   user-select: none;
 }
 
+// banner03 source artwork includes a thin white canvas around its edges.
+.heroSlideTrimmed {
+  overflow: hidden;
+}
+
+.heroSlideTrimmed img {
+  transform: scale(1.025);
+}
+
 .heroSlideVideo::after {
   position: absolute;
   z-index: 0;

@@ -13,7 +13,7 @@ const asset = {
 export default function Event() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedStep = searchParams.get("event");
-  const initialStep = requestedStep === "gacha" || requestedStep === "mystery"
+  const initialStep = requestedStep === "gacha" || requestedStep === "mystery" || requestedStep === "magazine"
     ? requestedStep
     : "list";
   const [step, setStep] = useState(initialStep);

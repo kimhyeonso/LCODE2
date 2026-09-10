@@ -191,6 +191,7 @@ const createRecommendations = () => {
   return uniqueTrips.map((trip) => {
     const place = trip.places[Math.floor(Math.random() * trip.places.length)];
     return {
+      id: trip.id,
       country: trip.country,
       city: trip.city,
       cityEnglish: cityNames[trip.city] || trip.city,
@@ -201,13 +202,16 @@ const createRecommendations = () => {
       costs: trip.costs || null,
       totalEstimatedCostKRW: trip.totalEstimatedCostKRW || null,
       dayCount: trip.days.length,
+      packagePricing: packagePricingForTrip(trip),
     };
   });
 };
 
 const formatKRW = (value) => value == null
   ? "가격 정보 준비 중"
-  : `약 ₩${Math.round(value).toLocaleString("ko-KR")}`;
+  : `₩${Math.round(value).toLocaleString("ko-KR")}`;
+
+const formatPackagePrice = (value) => `₩${Math.round(value).toLocaleString("ko-KR")}`;
 
 const averageCost = (cost) => cost
   ? Math.round((cost.minKRW + cost.maxKRW) / 2)
@@ -217,13 +221,22 @@ const estimatedCostForTrip = (trip) => trip.totalEstimatedCostKRW
   ? Math.round((trip.totalEstimatedCostKRW.min + trip.totalEstimatedCostKRW.max) / 2)
   : 105000 + (trip.dayCount * 60000);
 
+const packagePricingForTrip = (trip) => {
+  const citySeed = Array.from(trip.city || "").reduce((total, char) => total + char.charCodeAt(0), 0);
+  const sale = 300000 + ((citySeed % 4) * 50000);
+  const discountPercent = [5, 8, 10, 12][citySeed % 4];
+  const original = Math.min(490000, sale + ((citySeed % 3) + 1) * 30000);
+
+  return { original, sale, discountPercent };
+};
+
 const exchangeByCountry = {
   japan: { code: "JPY", symbol: "¥", name: "엔화", rate: 920, baseUnit: 100 },
   china: { code: "CNY", symbol: "CN¥", name: "위안화", rate: 190, baseUnit: 1 },
   korea: { code: "KRW", symbol: "₩", name: "원화", rate: 1, baseUnit: 1 },
 };
 
-const ExchangeSummary = ({ exchange, estimatedExpense }) => {
+const ExchangeSummary = ({ exchange, estimatedExpense, packagePricing = null }) => {
   const converted = estimatedExpense == null
     ? null
     : (estimatedExpense * exchange.baseUnit) / exchange.rate;
@@ -234,11 +247,17 @@ const ExchangeSummary = ({ exchange, estimatedExpense }) => {
       maximumFractionDigits: exchange.code === "KRW" ? 0 : 2,
     })}`;
 
+  const isPackagePrice = Boolean(packagePricing);
+
   return (
     <div className={styles.exchangeSummary}>
       <div className={styles.exchangeCard}>
-        <span>예상 여행 경비 {exchange.name}</span>
-        <strong>{formattedAmount}</strong>
+        <span>{isPackagePrice ? "여행 패키지 가격" : `예상 여행 경비 ${exchange.name}`}</span>
+        <strong className={isPackagePrice ? styles.packagePrice : ""}>
+          {isPackagePrice && <del>{formatPackagePrice(packagePricing.original)}</del>}
+          {isPackagePrice && <b aria-hidden="true">→</b>}
+          {isPackagePrice ? formatPackagePrice(packagePricing.sale) : formattedAmount}
+        </strong>
         <p>최근 업데이트<small>{exchange.date || new Intl.DateTimeFormat("ko-KR", { dateStyle: "medium" }).format(new Date())}</small></p>
       </div>
       <Link to={`/destination?currency=${exchange.code}`} className={styles.exchangeMore}>
@@ -380,6 +399,7 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
   if (!primary) return null;
 
   const estimatedExpense = estimatedCostForTrip(primary);
+  const primaryPricing = primary.packagePricing || packagePricingForTrip(primary);
   const dayCount = primary.dayCount;
   const expenseRows = [
     ["교통", averageCost(primary.costs?.transportation) || 40000 + dayCount * 5000],
@@ -411,12 +431,12 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
           <h2>{primary.cityEnglish}</h2>
           <p className={styles.matchDescription}>{primary.place} · {primary.title}</p>
           <small>{primary.duration} · TRIP ROAD</small>
-          <button type="button" onClick={onItinerary}>경비 설정하기 <span>→</span></button>
+          <button type="button" onClick={() => onItinerary(primary)}>일정 자세히 보기 <span>→</span></button>
         </div>
       </article>
 
       <div className={styles.desktopExchange}>
-        <ExchangeSummary exchange={exchange} estimatedExpense={estimatedExpense} />
+        <ExchangeSummary exchange={exchange} estimatedExpense={estimatedExpense} packagePricing={primaryPricing} />
       </div>
 
       <section className={styles.expensePanel} aria-label="예상 여행 경비">
@@ -459,6 +479,7 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
         <p className={styles.moreLabel}>MORE FOR YOU</p>
         {more.map((trip, index) => (
           <article className={styles.matchRow} key={`${trip.city}-${trip.place}`}>
+            <p className={styles.matchPrice}><em>{(trip.packagePricing || packagePricingForTrip(trip)).discountPercent}% off</em><strong>{formatPackagePrice((trip.packagePricing || packagePricingForTrip(trip)).sale)}</strong></p>
             <img loading="lazy" src={trip.image} alt={trip.place} />
             <div>
               <p className={styles.matchPercent}><strong>{index === 0 ? 83 : 77}%</strong> <span>MATCH</span></p>
@@ -467,10 +488,11 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
               <p className={styles.moreExpense}>
                 예상 여행 경비 <strong>{formatKRW(estimatedCostForTrip(trip))}</strong>
               </p>
-              <button type="button" onClick={onItinerary}>여행 일정 보기 <span>→</span></button>
+              <button type="button" onClick={() => onItinerary(trip)}>여행 일정 보기 <span>→</span></button>
             </div>
           </article>
         ))}
+        <Link className={styles.moreTravelLink} to="/search">더 많은 여행 보러가기 <span>→</span></Link>
       </aside>
 
       <button type="button" className={styles.retryButton} onClick={onGame}>다시 테스트하기</button>
@@ -525,7 +547,7 @@ const Balance = () => {
       return (
         <MatchScreen
           recommendations={recommendations}
-          onItinerary={() => navigate("/plan/saved")}
+          onItinerary={(trip) => navigate(`/plan?trip=${encodeURIComponent(trip.id)}`)}
           onHome={() => navigate("/")}
           onGame={() => {
             setShowMatches(false);
