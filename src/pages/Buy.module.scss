@@ -18,18 +18,25 @@
 .filters button { min-width: 110px; height: 38px; border: 1px solid #d4cec5; background: transparent; color: #55514b; cursor: pointer; font: 500 13px "Noto Sans KR", sans-serif; }
 .filters .active { border-color: #111; background: #111; color: #fff; }
 .orderList { display: grid; flex: 1; align-content: start; gap: 7px; margin-top: 16px; }
-.orderCard { position: relative; display: grid; grid-template-columns: 122px 164px minmax(180px, 1fr) 240px; min-height: 158px; align-items: start; gap: 24px; border: 1px solid #d8d2ca; padding: 28px 26px; }
+.orderCard { position: relative; display: grid; grid-template-columns: 122px 164px minmax(180px, 1fr) 240px; min-height: 158px; align-items: stretch; gap: 24px; border: 1px solid #d8d2ca; padding: 28px 26px; }
 .orderMeta { align-self: stretch; border-right: 1px solid #ddd7cf; padding: 0 20px 0 0; }
 .orderMeta span { display: block; color: #9c968e; font-size: 13px; }
 .orderMeta strong { display: block; margin: 4px 0 17px; font: 400 16px "DM Serif Display", serif; letter-spacing: .02em; }
 .orderImage { width: 164px; height: 118px; object-fit: cover; }
+/* Price and the action buttons share the card's bottom edge, so they read
+   on one line. Both columns bottom-align themselves in the card row and let
+   their last child rest against the bottom. */
+.orderInfo { display: flex; flex-direction: column; align-items: flex-start; align-self: stretch; }
 .orderInfo h2 { margin: 0; font-size: 18px; font-weight: 600; }
 .orderInfo p { margin: 8px 0 22px; color: #8c8780; font-size: 13px; }
-.orderInfo strong { font: 400 20px "DM Serif Display", serif; }
-.orderActionsRow { display: grid; grid-template-columns: 1fr 1fr; column-gap: 10px; row-gap: 8px; align-self: start; padding-top: 0; }
-.status { grid-column: 1 / -1; justify-self: start; align-self: start; border-radius: 18px; padding: 7px 16px; background: #e8e3dc; color: #292723; font-size: 13px; white-space: nowrap; }
-.orderActionsRow > a { display: grid; box-sizing: border-box; align-self: end; height: 50px; padding: 0 16px; border: 1px solid #ddd9d2; background: #fff; color: #171714; font: 500 14px "Noto Sans KR", sans-serif; text-decoration: none; white-space: nowrap; place-items: center; }
-.orderActionsRow > a.reviewLink { border-color: #171714; background: #171714; color: #fff; }
+/* Price gets a box the same height as the action buttons and centres its text,
+   so it lines up with the vertical middle of the white/black boxes. */
+.orderInfo strong { margin-top: auto; display: flex; align-items: center; min-height: 50px; font: 400 20px "DM Serif Display", serif; }
+.orderActionsRow { display: flex; flex-direction: column; align-items: flex-start; align-self: stretch; padding-top: 0; }
+.status { align-self: start; border-radius: 18px; padding: 7px 16px; background: #e8e3dc; color: #292723; font-size: 13px; white-space: nowrap; }
+.orderButtons { margin-top: auto; display: grid; width: 100%; grid-template-columns: 1fr 1fr; column-gap: 10px; }
+.orderButtons > a, .orderButtons > .reviewDone { display: grid; box-sizing: border-box; height: 50px; padding: 0 16px; border: 1px solid #ddd9d2; background: #fff; color: #171714; font: 500 14px "Noto Sans KR", sans-serif; text-decoration: none; white-space: nowrap; place-items: center; }
+.orderButtons > a.reviewLink, .orderButtons > .reviewDone { border-color: #171714; background: #171714; color: #fff; }
 .emptyState { display: grid; height: 100%; min-height: 250px; align-content: center; justify-items: center; gap: 18px; border: 1px solid #d8d2ca; background: #f8f5ef; text-align: center; }
 .emptyState p { margin: 0; color: #292723; font: 500 16px "Noto Sans KR", sans-serif; }
 .emptyState a { display: inline-flex; align-items: center; gap: 10px; color: #766e65; font: 400 13px "Noto Sans KR", sans-serif; text-decoration: none; }
@@ -81,9 +88,10 @@
   .orderMeta strong { margin: 0 14px 0 0; font-size: 13px; }
   .orderImage { width: 88px; height: 88px; }
   .orderInfo p { margin: 5px 0 12px; }
-  .orderActionsRow { grid-column: 1 / -1; }
-  .status {  position: absolute; top: 135px; 
-  }
+  .orderInfo strong { min-height: 0; }
+  .orderActionsRow { grid-column: 1 / -1; margin-top: 4px; }
+  .status { position: static; align-self: flex-start; margin-bottom: 10px; }
+  .orderButtons { margin-top: 0; }
   .sideBox { display: block; }
   .heroFrame img { height: 360px; }
   .snapshot { margin-top: 16px; }

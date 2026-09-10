@@ -17,6 +17,7 @@ export default function Event() {
     ? requestedStep
     : "list";
   const [step, setStep] = useState(initialStep);
+  const isPlayStep = step === "gacha" || step === "mystery";
 
   useEffect(() => {
     setStep(initialStep);
@@ -32,7 +33,7 @@ export default function Event() {
   };
 
   return (
-    <main className={`${styles.eventPage} eventPageRoot`}>
+    <main className={`${styles.eventPage} ${isPlayStep ? styles.eventPlayPage : ""} eventPageRoot`}>
       <section className={styles.stage} aria-label="이벤트 페이지">
         {step === "list" && (
           <section className={styles.eventList}>
@@ -53,7 +54,7 @@ export default function Event() {
                 <button
                   className={styles.eventCard}
                   type="button"
-                  onClick={() => setStep("gacha")}
+                  onClick={() => setSearchParams({ event: "gacha" })}
                 >
                   <div className={styles.cardVisual}>
                     <img loading="lazy" src={asset.eventBanner} alt="" />
@@ -71,7 +72,7 @@ export default function Event() {
                 <button
                   className={styles.eventCard}
                   type="button"
-                  onClick={() => setStep("mystery")}
+                  onClick={() => setSearchParams({ event: "mystery" })}
                 >
                   <div className={styles.cardVisual}>
                     <img loading="lazy" src={asset.mysteryBanner} alt="" />

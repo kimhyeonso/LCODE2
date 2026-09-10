@@ -66,6 +66,7 @@ h1 {
 }
 // 여행 카드 외곽 스타일입니다.
 .storyCard {
+  position: relative;
   border: 1px solid #d4d1cc;
   background: $paper;
 }
@@ -133,9 +134,35 @@ h1 {
 .productGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.35rem .6rem; margin-top: 1.55rem; }
 // 상품 사진을 대신하는 고정 크기 회색 영역입니다.
 .productImage { width: 100%; height: 10.1rem; background: #d7d4cd; }
-.productCard h2 { margin: .55rem 0 0; color: #292929; font: 500 .64rem $korean; }
-.productCard small { display: block; margin-top: .1rem; color: #777; font: 400 .52rem $korean; }
-.productCard p { margin: .22rem 0 0; color: #777; font: 400 .53rem $korean; }
+.productCategory {
+  display: block;
+  margin: 14px 0 0;
+  color: #68635c;
+  font: 500 13px/1.4 $sans;
+  letter-spacing: 0.12em !important;
+}
+
+.productCard h2 {
+  margin: 7px 0;
+  color: #171714;
+  font: 18px/1.25 $serif;
+  font-weight: 400;
+  letter-spacing: 0 !important;
+}
+
+.productPrice {
+  margin-top: 0;
+  color: #171714;
+  font: 13px/1.4 $sans;
+  letter-spacing: 0 !important;
+}
+
+.productRating {
+  margin: 7px 0 0;
+  color: #77736b;
+  font: 13px/1.4 $sans;
+  letter-spacing: 0 !important;
+}
 .productCard p span { margin-left: .2rem; letter-spacing: .06em; }
 .productCard footer { display: grid; grid-template-columns: 1fr 1fr; gap: .3rem; margin-top: 1.65rem; }
 .productCard footer button { height: 50px; font-size: 14px; }
@@ -203,7 +230,7 @@ h1 {
   }
 
   .productCard footer {
-    display: none;
+    grid-column: 1 / -1;
   }
   .productCard::after { grid-column: 3; grid-row: 1 / span 3; align-self: center; content: "›"; color: #77736c; font: inherit; }
   .pagination { position: relative; margin-top: .8rem; border-bottom: 1px solid #ddd9d1; padding-bottom: .7rem; color: transparent; font-size: 0; text-align: left; }
@@ -308,6 +335,7 @@ h1 {
   .productCard h2 { margin-top: 0.3rem; font-size: 0.625rem; }
   .productCard small { font-size: 0.625rem; }
   .productCard p { margin-top: 0.15rem; font-size: 0.625rem; }
+  .shopping .productRating { font-size: 0.625rem; }
   .productCard footer { gap: 0.2rem; margin-top: 0.55rem; }
   .productCard footer button { height: 1.05rem; font-size: 0.625rem; }
   .pagination { margin-top: 0.35rem; font-size: 0.625rem; }
@@ -420,6 +448,60 @@ h1 {
 
 .shopping .productGrid:active {
   cursor: grabbing;
+}
+
+// 상품 목록에도 여행 리뷰 슬라이더와 같은 부등호(꺾쇠) 이동 버튼을 얹습니다.
+// 그리드 폭은 그대로 두고 좌우 끝에 겹쳐 배치합니다.
+.productSlider {
+  position: relative;
+}
+
+.productSlider .slideArrow {
+  position: absolute;
+  z-index: 3;
+  // 상품 카드 상단 이미지 영역에 맞춥니다(양쪽 버튼 동일한 값 → 같은 선상).
+  top: 42%;
+  width: 27px;
+  min-height: 32px;
+  display: grid !important;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.productSlider .slideArrow::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-color: #8f8a83;
+  border-style: solid;
+  border-width: 3px 0 0 3px;
+}
+
+.productSlider .slideArrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.productSlider .slideArrow:first-of-type {
+  left: 12px;
+}
+
+.productSlider .slideArrow:first-of-type::before {
+  transform: rotate(-45deg);
+}
+
+.productSlider .slideArrow:last-of-type {
+  right: 12px;
+}
+
+.productSlider .slideArrow:last-of-type::before {
+  transform: rotate(135deg);
 }
 
 @media (min-width: 901px) {
@@ -568,14 +650,6 @@ h1 {
     margin-top: 12px;
   }
 
-  .stories .reviewSlider:has(.slideArrow:disabled) {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .stories .reviewSlider:has(.slideArrow:disabled) .slideArrow,
-  .stories .reviewSlider:has(.slideArrow:disabled) .slideCount {
-    display: none;
-  }
 }
 
 .stories .storyPhoto {
@@ -743,12 +817,12 @@ h1 {
   font: 400 13px/1.5 $korean;
 }
 
-// 상품 카드 평점(별) 표시.
+// 상품 카드 평점(별) 표시. 글자 크기는 금액(.productPrice)과 동일하게 맞춥니다.
 .shopping .productRating {
   margin: 0.25rem 0 0;
   color: #9a938a;
-  font: 400 0.62rem/1 $korean;
-  letter-spacing: 0.04em;
+  font: 400 13px/1.4 $sans;
+  letter-spacing: 0 !important;
 }
 
 // 슬라이드 / 상품 페이지 공용 점 인디케이터.
@@ -796,7 +870,6 @@ h1 {
   // 쇼핑 리뷰 영역 제목은 시안에 없어 숨깁니다.
   .shopping .shoppingTitle { display: block; }
 
-  .shopping .productRating { font-size: 0.62rem; letter-spacing: 0.02em; }
 }
 
 .filters {
@@ -856,7 +929,8 @@ h1 {
 }
 
 @media (max-width: 600px) {
-  .reviewSlider .slideArrow {
+  .reviewSlider .slideArrow,
+  .productSlider .slideArrow {
     display: none !important;
   }
 
@@ -868,8 +942,54 @@ h1 {
 }
 
 .shopping .productCard {
+  position: relative;
   border: 1px solid #d8d3ca !important;
   background: transparent;
+}
+
+.stories .reviewDeleteButton,
+.shopping .deleteReviewButton {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 4;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.16);
+  color: #fff;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font: inherit;
+  letter-spacing: 0 !important;
+  place-items: center;
+  cursor: pointer;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.stories .reviewDeleteButton svg,
+.shopping .deleteReviewButton svg {
+  display: block;
+  width: 18px;
+  height: 18px;
+}
+
+.stories .reviewDeleteButton:disabled,
+.shopping .deleteReviewButton:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.shopping .productCard::after {
+  display: none !important;
+  content: none !important;
 }
 
 .shopping .productImage {
@@ -889,5 +1009,111 @@ h1 {
 }
 
 .shopping .productCard footer {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
   margin: 14px 12px 16px;
+}
+
+.shopping .productCard footer a {
+  min-height: 45px;
+  margin: 0;
+  padding: 0 10px;
+  border: 1px solid #ddd9d2;
+  background: $paper;
+  color: #171714;
+  font-family: $sans;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0 !important;
+}
+
+.shopping .productCard footer a:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.modalBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  padding: 24px;
+  background: rgba(23, 23, 20, .34);
+  place-items: center;
+}
+
+.modal {
+  width: min(420px, 100%);
+  padding: 26px 28px 22px;
+  border: 1px solid #d8d3ca;
+  background: $paper;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, .18);
+}
+
+.modal h2 {
+  margin: 0 0 14px;
+  color: #171714;
+  font: 500 18px/1.3 $korean;
+}
+
+.modal p {
+  margin: 0;
+  color: #6f6961;
+  font: 400 14px/1.6 $korean;
+}
+
+.modal footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.modal button {
+  min-width: 96px;
+  height: 44px;
+  border: 1px solid #d8d3ca;
+  background: #fff;
+  color: #171714;
+  cursor: pointer;
+  font: 500 14px/1 $korean;
+}
+
+.modal button:last-child {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+@media (min-width: 601px) {
+  .shopping .productGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 600px) {
+  .shopping .productGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 19px 8px;
+  }
+
+  .modalBackdrop {
+    padding: 18px;
+  }
+
+  .modal {
+    padding: 22px 20px 18px;
+  }
+
+  .modal footer {
+    margin-top: 20px;
+  }
+
+  .modal button {
+    min-width: 88px;
+    height: 42px;
+  }
 }

@@ -19,6 +19,12 @@ $black: #000;
   background: $paper;
 }
 
+.eventPlayPage {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .stage {
   width: 100%;
   min-height: 100vh;
@@ -28,6 +34,12 @@ $black: #000;
     radial-gradient(circle at 18% 14%, rgba(217, 170, 84, 0.14), transparent 30%),
     radial-gradient(circle at 82% 74%, rgba(108, 76, 33, 0.18), transparent 34%),
     linear-gradient(135deg, #020304 0%, #101014 42%, #040405 100%);
+}
+
+.eventPlayPage .stage {
+  height: 100vh;
+  min-height: 0;
+  overflow: hidden;
 }
 
 .eventList {
