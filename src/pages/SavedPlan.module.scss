@@ -5,23 +5,26 @@
   min-height: 100vh;
   margin: 0 auto;
   padding: 22px 0 72px;
-  background: transparent;
+  background: $paper;
   color: $ink;
 }
 
 .eyebrow {
   margin: 0 0 25px;
   color: #aaa;
-  font-size: 13px;
+  font: 400 13px/normal $sans;
   letter-spacing: .16em;
 }
 
 .page > h1 {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
   margin: 20px 0 18px;
   padding-bottom: 18px;
   border-bottom: 1px solid #cec7bb;
   font-family: $serif;
-  font-size: 38px;
+  font-size: 42px;
   font-weight: 400;
   line-height: 1.08;
   letter-spacing: -.05em;
@@ -192,10 +195,11 @@
 
 .others > article {
   position: relative;
-  overflow: hidden;
-  margin: 0 14px 16px;
+  margin: 0 0 16px;
 
   border: 1px solid #ddd;
+  // 호버 시 확대되는 이미지가 카드 밖으로 번지지 않도록 카드 안에서 잘라냅니다.
+  overflow: hidden;
 }
 
 .others article > span {
@@ -331,6 +335,11 @@
     margin-bottom: calc(-58px - env(safe-area-inset-bottom));
     padding-bottom: 0;
   }
+  // 모바일에서는 SAVED PLAN 제목 밑줄 제거.
+  .page > h1 {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
   .heroActions {
     right: 18px;
     bottom: 18px;
@@ -377,9 +386,9 @@
 ========================= */
 
 .trending {
-  margin: 68px -12px 0;
+  margin: 68px 0 0;
 
-  padding-left: 20px;
+  padding-left: 0;
 
   overflow: hidden;
 }
@@ -449,6 +458,28 @@
 @media (prefers-reduced-motion: reduce) {
   .trending > div > div > a > div:first-child::before {
     transition: none;
+  }
+}
+
+/* Mobile: one horizontally-scrollable row showing ~2.5 packages at a time. */
+@media (max-width: 640px) {
+  .trending > div {
+    display: flex;
+    grid-template-columns: none;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .trending > div::-webkit-scrollbar {
+    display: none;
+  }
+
+  .trending > div > * {
+    flex: 0 0 calc((100% - 24px) / 2.5);
+    scroll-snap-align: start;
   }
 }
 
@@ -721,7 +752,7 @@
   }
 
   .page > h1 {
-    font-size: 66px;
+    font-size: 60px;
   }
 }
 
@@ -807,9 +838,6 @@
     padding: 36px 0 0;
   }
 
-  .page > h1 {
-    font-size: 54px;
-  }
 
   .status {
     width: calc(100% - 220px);
@@ -822,6 +850,18 @@
   .trending > div strong,
   .trending > div em {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page > h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin: 20px 0 18px !important;
+    padding-bottom: 18px !important;
+    border-bottom: 1px solid #cec7bb !important;
   }
 }
 

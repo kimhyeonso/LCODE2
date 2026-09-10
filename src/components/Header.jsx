@@ -4,7 +4,7 @@ import gsap from "gsap";
 import { useAuth } from "../hooks/useAuth";
 import { usePlanDestination } from "../hooks/usePlanDestination";
 import styles from "./Header.module.scss";
-import logoBlack from "../assets/images/logo-black.png";
+import logoBlack from "../assets/images/logo-black.webp";
 import searchIcon from "../assets/icons/search.svg";
 import menuIcon from "../assets/icons/ham_menu.svg";
 import closeIcon from "../assets/icons/close.svg";
@@ -89,7 +89,7 @@ export default function Header() {
           aria-controls="mobile-search"
           onClick={toggleSearch}
         >
-          <img src={searchOpen ? closeIcon : searchIcon} alt="" aria-hidden="true" />
+          <img loading="lazy" src={searchOpen ? closeIcon : searchIcon} alt="" aria-hidden="true" />
         </button>
         <button
           className={styles.menu}
@@ -98,7 +98,7 @@ export default function Header() {
           aria-expanded={open}
           onClick={toggleMenu}
         >
-          <img src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
+          <img loading="lazy" src={open ? closeIcon : menuIcon} alt="" aria-hidden="true" />
         </button>
       </div>
       <form
@@ -119,7 +119,7 @@ export default function Header() {
             onChange={(event) => setSearchQuery(event.target.value)}
           />
           <button type="submit" aria-label="검색">
-            <img src={searchIcon} alt="" aria-hidden="true" />
+            <img loading="lazy" src={searchIcon} alt="" aria-hidden="true" />
           </button>
         </div>
       </form>

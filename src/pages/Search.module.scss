@@ -58,6 +58,14 @@
   font: 600 30px/1.1 $serif;
   letter-spacing: normal;
 }
+
+// Match SavedPlan's mobile title scale.
+@media (max-width: 640px) {
+  .products h1 {
+    font: 400 38px/1.08 $serif;
+    letter-spacing: -.05em;
+  }
+}
 .products > div {
   display: grid;
   grid-template-columns: repeat(3, minmax(110px, 1fr));
@@ -115,49 +123,20 @@
   gap: 10px;
 }
 
-.results > div {
-  transition:
-    opacity 0.7s ease-out,
-    transform 0.7s ease-out;
-}
-
-@keyframes search-card-rise {
-  from {
-    opacity: 0.2;
-    transform: translateY(14px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.results > div.revealUp {
-  animation: search-card-rise 0.75s ease-out both;
-}
-
-.results > div.revealFromRight {
-  opacity: 0.2;
-  transform: translateX(24px);
-}
-
-.results > div.revealVisible {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
 .results > div > a {
   overflow: hidden;
 }
 
 .results > div > a > div:first-child {
-  transition: transform 0.4s ease;
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
 }
 
 @media (hover: hover) and (pointer: fine) {
   .results > div:hover > a > div:first-child {
-    transform: scale(1.025);
+    transform: scale(1.035);
+    filter: brightness(0.96);
   }
 
   .results > div > button:hover {
@@ -176,18 +155,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .results > div,
-  .results > div.revealUp,
-  .results > div.revealFromRight {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-
-  .results > div.revealUp {
-    animation: none;
-  }
-
   .results > div > a > div:first-child {
     transition: none;
   }

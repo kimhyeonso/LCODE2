@@ -39,6 +39,7 @@ import JournalDetail from "./pages/JournalDetail";
 import Destinations from "./pages/Destinations";
 import FavoritePlaces from "./pages/FavoritePlaces";
 import Cart from "./pages/Cart";
+import MyCart from "./pages/MyCart";
 import Checkout from "./pages/Checkout";
 import OrderComplete from "./pages/OrderComplete";
 import MyPageMain from "./pages/MyPageMain";
@@ -131,7 +132,7 @@ export default function App() {
   const { pathname } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
-  const isRemixPage = pathname === "/ai-remix" || pathname === "/remix";
+  const isHomePage = pathname === "/";
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
   useEffect(() => {
@@ -141,7 +142,7 @@ export default function App() {
   return (
     <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
       {showIntro && <Intro onComplete={finishIntro} />}
-      {!showIntro && <Popup />}
+      {!showIntro && isHomePage && <Popup />}
       <ScrollTop />
       <PageSize />
       {!isImmersivePage && <Header />}
@@ -164,6 +165,7 @@ export default function App() {
           <Route path="/destinations" element={<Destinations />} />
           <Route path="/favorite-places" element={<ProtectedRoute><FavoritePlaces /></ProtectedRoute>} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/my-cart" element={<ProtectedRoute><MyCart /></ProtectedRoute>} />
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/order-complete" element={<OrderComplete />} />
           <Route path="/travel-planner" element={<TravelPlanner />} />
@@ -228,7 +230,7 @@ export default function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      {!isImmersivePage && !isRemixPage && <Footer />}
+      {!isImmersivePage && <Footer />}
       {!isImmersivePage && <BottomNav />}
       <TopButton />
     </div>

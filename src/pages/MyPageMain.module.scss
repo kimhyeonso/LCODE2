@@ -65,7 +65,7 @@ $english: $display;
       rgba(40, 40, 40, 0.78) 80%,
       rgba(17, 17, 17, 0.95) 100%
     ),
-    url('/Mypage-img/6.png') center / cover no-repeat;
+    url('/Mypage-img/6.webp') center / cover no-repeat;
 }
 
 .featuredTrip > strong {
@@ -219,8 +219,15 @@ $english: $display;
   .eyebrow,
   .upcoming h1 { margin-right: 0; margin-left: 0; }
   .eyebrow { margin-bottom: 0; font-size: 13px; letter-spacing: .16em !important; }
-  .upcoming h1 { margin-top: 20px; margin-bottom: 24px; font-size: 38px; line-height: 1.08; }
+  .upcoming h1 { margin-top: 20px; margin-bottom: 24px; font-size: 38px; line-height: 1.08; letter-spacing: -.05em !important; }
   .completed { margin-top: 24px; }
+}
+
+// Match SavedPlan's mobile title scale across the whole mobile range (not
+// just <600px, which the layout-specific rules above target).
+@media (max-width: 640px) {
+  .eyebrow { font-size: 13px; letter-spacing: .16em !important; }
+  .upcoming h1 { font-size: 38px; line-height: 1.08; letter-spacing: -.05em !important; }
 }
 
 @media (min-width: 641px) {

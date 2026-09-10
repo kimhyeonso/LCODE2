@@ -7,17 +7,19 @@ import { getFavoriteTrips, getPlans } from "../services/firestoreService";
 import styles from "./MypageUser.module.scss";
 
 const menuItems = [
-  { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
-  { label: "내 일정", to: "/plan/saved", icon: "/Mypage-img/calendar_month.svg" },
+  { label: "내 일정", to: "/my/plans", icon: "/Mypage-img/calendar_month_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
+  { label: "찜한 일정", to: "/wishlist", icon: "/Mypage-img/calendar_add_on_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
+  { label: "찜한 장소", to: "/favorite-places", icon: "/Mypage-img/heart_plus_100dp_1F1F1F_FILL0_wght200_GRAD0_opsz48.svg?v=20260908-1515", iconSize: "22px" },
   { label: "나의 리뷰", to: "/mystories", icon: "/Mypage-img/pen.svg" },
+  { label: "장바구니", to: "/my-cart", icon: "/Mypage-img/bag.svg" },
+  { label: "상품 주문 내역", to: "/buy", icon: "/Mypage-img/promotion.svg" },
   { label: "찜한 상품", to: "/saved", icon: "/Mypage-img/heart.svg" },
-  { label: "찜한 일정", to: "/wishlist", icon: "/Mypage-img/calendar_check.svg" },
-  { label: "찜한 장소", to: "/favorite-places", icon: "/Mypage-img/heart_plus.svg" },
   { label: "쿠폰함", to: "/coupon", icon: "/Mypage-img/ticket.svg" },
   { label: "알림 설정", to: "/alarm", icon: "/Mypage-img/bell.svg" },
   { label: "고객센터", to: "/notice", icon: "/Mypage-img/headset.svg" },
 ];
-const slideshowImages = ["3.png", "4.png", "5.png", "6.png"];
+const slideshowImages = ["3.webp", "4.webp", "5.webp", "6.webp"];
+const recentSlideshowImages = ["9.webp", "10.webp", "11.webp", "12.webp"];
 
 const getCreatedTime = (plan) => plan.updatedAt?.toMillis?.()
   || plan.updatedAt?.seconds * 1000 || plan.createdAt?.toMillis?.()
@@ -72,7 +74,7 @@ export default function MypageUser() {
 
   useEffect(() => {
     const timer = window.setInterval(() => {
-      setSlideIndex((current) => (current + 1) % slideshowImages.length);
+      setSlideIndex((current) => (current + 1) % recentSlideshowImages.length);
     }, 5500);
     return () => window.clearInterval(timer);
   }, []);
@@ -102,7 +104,10 @@ export default function MypageUser() {
           <p className={styles.greeting}>안녕하세요,</p>
           <h1 id="user-name">{displayName}</h1>
           <p className={styles.email}>{user?.email || ""}</p>
-          <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
+          <div className={styles.profileTools}>
+            <Link className={styles.edit} to="/profile/edit">회원정보 수정</Link>
+            <button className={styles.signout} type="button" onClick={handleLogout}>로그아웃</button>
+          </div>
         </section>
 
         <section className={styles.dashboard} aria-label="나의 여행 대시보드">
@@ -111,7 +116,7 @@ export default function MypageUser() {
             <article className={styles.upcoming}>
               <div className={styles.upcomingSlideshow} aria-hidden="true">
                 {slideshowImages.map((image, index) => (
-                  <img className={index === slideIndex ? styles.activeSlide : ""} key={image}
+                  <img loading="lazy" className={index === slideIndex ? styles.activeSlide : ""} key={image}
                     src={`/Mypage-img/${image}`} alt="" decoding="async" />
                 ))}
               </div>
@@ -122,6 +127,12 @@ export default function MypageUser() {
                 aria-label={latestPlan ? `${planTitle} 일정 보기` : "일정 검색하기"} />
             </article>
             <article className={styles.recent}>
+              <div className={styles.upcomingSlideshow} aria-hidden="true">
+                {recentSlideshowImages.map((image, index) => (
+                  <img loading="lazy" className={index === slideIndex ? styles.activeSlide : ""} key={`recent-${image}`}
+                    src={`/Mypage-img/${image}`} alt="" decoding="async" />
+                ))}
+              </div>
               <small>02</small><span>{latestPlan ? "RECENT PLAN" : "PLAN"}</span>
               <h2>{planTitle}</h2><p>{planPeriod}</p>
               <Link className={styles.cardLink} to={latestPlanLink}
@@ -139,10 +150,9 @@ export default function MypageUser() {
         </section>
 
         <nav className={styles.menuList} aria-label="마이페이지 메뉴">
-          {menuItems.map(({ label, to, icon }) => (
-            <Link key={label} to={to} style={{ "--menu-icon": `url("${icon}")` }}>{label}<span aria-hidden="true">→</span></Link>
+          {menuItems.map(({ label, to, icon, iconSize }) => (
+            <Link key={label} to={to} style={{ "--menu-icon": `url("${icon}")`, "--menu-icon-size": iconSize }}>{label}<span aria-hidden="true">→</span></Link>
           ))}
-          <button type="button" onClick={handleLogout}>로그아웃</button>
         </nav>
       </div>
     </main>

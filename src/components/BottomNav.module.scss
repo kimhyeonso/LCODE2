@@ -54,16 +54,26 @@
   font-size: 10px;
 }
 .nav .add {
-  width: 42px;
-  height: 42px;
+  width: 29px;
+  height: 29px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: #ddd;
+  background: #111;
 }
 .nav .add img {
-  width: 26px;
-  height: 26px;
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+  transition: transform 0.22s ease;
+}
+.addButton[aria-expanded="true"] .add img {
+  transform: rotate(45deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav .add img {
+    transition: none;
+  }
 }
 .active small {
   font-weight: 700;
@@ -76,51 +86,72 @@
   background: rgba(0, 0, 0, 0.34);
   padding: 0;
 }
-.balancePrompt {
+.fanButton {
   position: fixed;
   z-index: 52;
-  display: grid;
-  width: 110px;
-  height: 70px;
+  bottom: calc(58px + 26px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
   transform: translateX(-50%);
   border: 0;
-  background: url("/BalanceGame/pong.svg") center / 100% 100% no-repeat;
-  padding: 9px 8px 16px;
+  background: transparent;
+  padding: 0;
   color: #fff;
   font-family: "Noto Sans KR", sans-serif;
-  font-size: 11px;
-  line-height: 1.7;
-  place-items: center;
   cursor: pointer;
-   text-align: left;
+  animation: fan-button-in 0.22s ease-out both;
 }
-.balancePrompt span{
-  margin-bottom: 0.5rem;
-}
-.gamePrompt {
-  right: auto;
-  bottom: calc(49px + env(safe-area-inset-bottom));
-  left: 62%;
-  top: -150%;
-  line-height: 1.7;
-  text-align: left;
-}
-.balancePrompt b {
-  display: inline-grid;
-  min-width: 31px;
-  height: 17px;
-  border-radius: 9px;
-  background: #f4f1eb;
-  color: #111;
-  font-size: 10px;
-  font-weight: 500;
+.fanCircle {
+  display: grid;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
   place-items: center;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.18);
 }
-.searchPrompt {
-  right: auto;
-  bottom: calc(113px + env(safe-area-inset-bottom));
-  left: 62%;
-  top: -280%;
+.fanCircle img {
+  width: 26px;
+  height: 26px;
+}
+.fanButton small {
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.fanSearch {
+  left: calc(50% - 40px);
+}
+.fanSearch .fanCircle {
+  background: #a8664c;
+}
+.fanSearch img {
+  filter: brightness(0) invert(1);
+}
+.fanGame {
+  left: calc(50% + 40px);
+}
+.fanGame .fanCircle {
+  background: #6f93b8;
+}
+.fanGame img {
+  filter: brightness(0) invert(1);
+}
+@keyframes fan-button-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fanButton {
+    animation: none;
+  }
 }
 @media (min-width: 641px) {
   .nav,

@@ -67,7 +67,7 @@ export default function Paking() {
             <div className={styles.divider} />
           </div>
           <div className={styles.postcard}>
-            <img src="/Mypage-img/3.png" alt="교토의 전통 거리" />
+            <img loading="lazy" src="/Mypage-img/3.webp" alt="교토의 전통 거리" />
             <span>KYOTO, JAPAN</span>
           </div>
         </header>
@@ -122,8 +122,8 @@ export default function Paking() {
             aria-label="여행 준비 완료 스탬프"
             onClick={(event) => event.stopPropagation()}
           >
-            <img className={styles.stampBoardImage} src="/Mypage-img/stamp_2.svg" alt="여행 스탬프 보드" />
-            <img className={styles.completedStamp} src="/Mypage-img/stamp.png" alt="완료 스탬프" />
+            <img loading="lazy" className={styles.stampBoardImage} src="/Mypage-img/stamp_2.svg" alt="여행 스탬프 보드" />
+            <img loading="lazy" className={styles.completedStamp} src="/Mypage-img/stamp.webp" alt="완료 스탬프" />
             <button type="button" onClick={() => setShowStampModal(false)} aria-label="스탬프 닫기">×</button>
           </div>
         </div>

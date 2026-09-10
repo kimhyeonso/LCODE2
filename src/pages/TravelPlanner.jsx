@@ -4,6 +4,8 @@ import TravelForm from "../components/TravelForm";
 import Loading from "../components/Loading";
 import { useAuth } from "../hooks/useAuth";
 import { getPlan, getPlanDateConflict, savePlan, updatePlan } from "../services/firestoreService";
+import { getShopCatalog, resolveProductImage } from "../utils/shopProductResolver";
+import { getTravelProductRecommendations } from "../utils/travelProductRecommendations";
 import styles from "./Page.module.scss";
 
 export default function TravelPlanner() {
@@ -18,6 +20,7 @@ export default function TravelPlanner() {
   const [draftState, setDraftState] = useState({ saving: false, saved: false, savedAt: null, error: "" });
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(Boolean(remixDraft));
   const [conflictingPlan, setConflictingPlan] = useState(null);
+  const [productRecommendation, setProductRecommendation] = useState(null);
   const saveLockRef = useRef(false);
   const remixBaseDays = useRef(remixDraft ? location.state?.remixOriginalDays : undefined);
   const unsavedChangesRef = useRef(Boolean(remixDraft));
@@ -93,7 +96,14 @@ export default function TravelPlanner() {
       handleDirtyChange(false);
       saveLockRef.current = false;
       window.dispatchEvent(new Event("plans-changed"));
-      navigate(`/plan/saved?id=${encodeURIComponent(planId)}`);
+      setProductRecommendation({
+        planId: updated.id || planId,
+        city: updated.city,
+        products: getTravelProductRecommendations(updated, getShopCatalog()).map((product) => ({
+          ...product,
+          image: resolveProductImage(product),
+        })),
+      });
     } catch (saveError) {
       console.error("일정 수정 실패:", saveError);
       setEditState({ loading: false, saving: false, error: saveError.message || "변경 내용을 저장하지 못했습니다.", saved: false });
@@ -202,6 +212,33 @@ export default function TravelPlanner() {
         {draftState.saved && <p className={styles.editSuccess} role="status">{draftState.savedAt?.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })} 임시저장 완료</p>}
         {draftState.error && <p className={styles.editError} role="alert">{draftState.error}</p>}
       </div>
+      {productRecommendation && (
+        <div className={styles.productRecommendationBackdrop} role="presentation" onMouseDown={() => setProductRecommendation(null)}>
+          <section className={styles.productRecommendationModal} role="dialog" aria-modal="true" aria-labelledby="travel-product-recommendation-title" onMouseDown={(event) => event.stopPropagation()}>
+            <button className={styles.productRecommendationClose} type="button" aria-label="추천 모달 닫기" onClick={() => setProductRecommendation(null)}>×</button>
+            <p>TRAVEL ESSENTIALS</p>
+            <h2 id="travel-product-recommendation-title">여행 맞춤 준비물을<br />추천해 드릴게요.</h2>
+            <span>{productRecommendation.city} 일정의 여행지·계절·기간·활동을 반영했습니다.</span>
+            <div className={styles.productRecommendationGrid}>
+              {productRecommendation.products.map((product) => (
+                <Link className={styles.productRecommendationCard} to={`/shop/${product.id}`} key={product.id}>
+                  <span className={styles.productRecommendationImage}>
+                    {product.image ? <img loading="lazy" src={product.image} alt={product.name} /> : <b>{product.name.slice(0, 1)}</b>}
+                  </span>
+                  <small>{product.category}</small>
+                  <strong>{product.name}</strong>
+                  <em>{product.recommendationReason}</em>
+                  <i>{Number(product.price).toLocaleString("ko-KR")} KRW</i>
+                </Link>
+              ))}
+            </div>
+            <div className={styles.productRecommendationActions}>
+              <Link to={`/plan/saved?id=${encodeURIComponent(productRecommendation.planId)}`}>저장된 일정 보기</Link>
+              <Link to="/shop">쇼핑 더보기 <b>→</b></Link>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

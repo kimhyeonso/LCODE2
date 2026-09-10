@@ -63,6 +63,23 @@
   line-height: 2;
   white-space: pre-wrap;
 }
+.body > p {
+  margin: 0 0 1rem;
+}
+.body section {
+  margin-top: 1.35rem;
+}
+.body section h2 {
+  margin: 0 0 .45rem;
+  color: #222;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.6;
+}
+.body section p {
+  margin: 0;
+  color: #5f5a54;
+}
 
 .article footer {
   margin-top: 3rem;

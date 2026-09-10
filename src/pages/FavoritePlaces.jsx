@@ -94,7 +94,7 @@ export default function FavoritePlaces() {
       <section className={styles.grid}>
         {state.places.map((place) => (
           <article key={place.id}>
-            <span className={styles.image}>{imageUrl(place.image) && <img src={imageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
+            <span className={styles.image}>{imageUrl(place.image) && <img loading="lazy" src={imageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
             <div><small>{place.city} · {place.category}</small><h2>{place.name}</h2><p>{place.recommendation || "다음 일정에 추가해 보세요."}</p></div>
             <button type="button" onClick={() => remove(place)}>찜 해제</button>
           </article>

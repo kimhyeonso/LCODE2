@@ -73,7 +73,7 @@ h1 {
 .storyImage {
   width: 100%;
   height: 7.45rem;
-  background-image: url("/Mypage-img/2.png");
+  background-image: url("/Mypage-img/2.webp");
   background-size: cover;
 }
 // 여행 카드의 텍스트와 버튼 영역입니다.
@@ -128,6 +128,7 @@ h1 {
 .filters { display: flex; gap: .32rem; margin-top: .8rem; }
 .filters button { min-width: 2.5rem; height: 1.85rem; border: 1px solid #ddd9d2; background: #f8f8f8; color: #8e8982; font: 400 .5rem $korean; letter-spacing: .12em; }
 .filters .selected { border-color: #111; background: #111; color: #f8f8f8; }
+.filters { display: none !important; }
 // 상품 카드 2열 그리드입니다.
 .productGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.35rem .6rem; margin-top: 1.55rem; }
 // 상품 사진을 대신하는 고정 크기 회색 영역입니다.
@@ -163,7 +164,7 @@ h1 {
   .stories {
     position: relative;
   }
-  .stories::after { position: absolute; top: 3.5rem; transform: rotate(-25deg); right: 3.2rem; width: 10rem; height: 4.7rem; background: url("/Mypage-img/u.png") center / contain no-repeat; content: ""; opacity: 0.1; pointer-events: none; }
+  .stories::after { position: absolute; top: 0.9rem; transform: rotate(-25deg); right: 3.2rem; width: 10rem; height: 4.7rem; background: url("/Mypage-img/u.webp") center / contain no-repeat; content: ""; opacity: 0.1; pointer-events: none; }
   .storyList {
     margin-top: 2.6rem;
   }
@@ -174,7 +175,7 @@ h1 {
   .storyImage {
     width: 100%;
     height: 100%;
-    background: url("../assets/images/Thumbnail/Thumbnail-image/japan/fukuoka.png") center / cover no-repeat;
+    background: url("../assets/images/Thumbnail/Thumbnail-image/japan/fukuoka.webp") center / cover no-repeat;
   }
   .storyInfo { display: flex; flex-direction: column; padding: 1.45rem 1.55rem 1.2rem; }
   .storyInfo small { margin-top: 1.4rem; border-top: 1px solid #ddd9d1; padding-top: .85rem; }
@@ -185,8 +186,10 @@ h1 {
   }
 
   .filters {
+    gap: 12px;
     margin-top: 1rem;
   }
+  .filters button { padding: 0 16px; }
   .productGrid { grid-template-columns: 1fr; gap: 0; margin-top: 1rem; }
   .productCard { position: relative; display: grid; grid-template-columns: 6rem minmax(0, 1fr) auto; grid-template-rows: auto auto 1fr; column-gap: 1rem; min-height: 7.5rem; border-bottom: 1px solid #ddd9d1; padding: 0 0 1rem; }
   .productCard:nth-child(n + 3) {
@@ -250,8 +253,8 @@ h1 {
   .storyDots .activeDot { background: #99948d; }
   .shopping { margin: 0; border-top: 1px solid #ddd9d1; padding-top: 17px; }
   .shopping h1, .shopping > p { display: none; }
-  .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; margin: 0; }
-  .filters button { min-width: 0; width: 100%; height: 31px; padding: 0 1px; font-size: 10px; letter-spacing: .12em !important; }
+  .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; margin: 0; }
+  .filters button { min-width: 0; width: 100%; height: 28px; padding: 0; font-size: 8.5px; letter-spacing: 0 !important; white-space: nowrap; }
   .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 19px 3px; width: 100%; margin-top: 17px; }
   .productImage { height: auto; aspect-ratio: 1 / 1; }
   .productCard h2 { margin-top: 7px; font-size: 11px; }
@@ -296,8 +299,9 @@ h1 {
   .shopping { padding-top: 0.6rem; border-top: 1px solid #ddd9d1; }
   .shopping h1,
   .shopping > p { display: none; }
-  .filters { gap: 0.2rem; margin-top: 0; }
-  .filters button { min-width: 2.35rem; height: 1.35rem; font-size: 0.625rem; }
+  // 필터 탭 5개를 균등 폭으로 배치하고, 글자 간격을 없애 라벨이 칸 안에 들어오게 합니다.
+  .filters { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.25rem; margin-top: 0; }
+  .filters button { min-width: 0; width: 100%; height: 1.5rem; padding: 0; font-size: 0.53rem; letter-spacing: 0 !important; white-space: nowrap; }
 
   .productGrid { width: 100%; gap: 1rem 0.125rem; margin-top: 0.75rem; }
   .productImage { height: auto; aspect-ratio: 1 / 1; }
@@ -405,8 +409,17 @@ h1 {
 .shoppingTitle {
   margin: 0 0 20px;
   color: #aaa49c;
-  font: 400 0.625rem $display;
-  letter-spacing: 0.2em !important;
+  font: 400 13px/1.4 $sans;
+  letter-spacing: 0.18em !important;
+}
+
+.shopping .productGrid {
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.shopping .productGrid:active {
+  cursor: grabbing;
 }
 
 @media (min-width: 901px) {
@@ -423,6 +436,8 @@ h1 {
     padding: 0;
     border: 0;
   }
+
+  .filters { margin-bottom: 24px; }
 
   .productGrid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -482,7 +497,7 @@ h1 {
 .stories .emptyState { padding: 32px 20px; border: 1px solid #ddd9d2; margin: 24px 0; }
 .stories .emptyState h2 { font-size: 18px; line-height: 1.6; }
 .stories .emptyState p { margin-top: 12px; font-size: 14px; color: #777; }
-.stories .newReview { display: flex; align-items: center; justify-content: center; min-height: 52px; margin-top: 20px; padding: 12px 20px; background: #171714; color: #fff; font-size: 14px; }
+.stories .newReview { display: none; align-items: center; justify-content: center; min-height: 52px; margin-top: 20px; padding: 12px 20px; background: #171714; color: #fff; font-size: 14px; }
 .storyCard .storyInfo { width: 100%; }
 .stories .storyList .storyCard { display: block; aspect-ratio: auto; min-height: 0; margin-bottom: 16px; }
 .stories .storyInfo { padding: 22px 18px; }
@@ -494,7 +509,7 @@ h1 {
 .reviewSlider .reviewSlide { flex: 0 0 100%; min-width: 0; margin: 0; }
 .reviewSlider .slideArrow { width: 36px; min-height: 48px; padding: 0; border: 1px solid #ddd9d2; background: #fff; color: #171714; font-size: 28px; cursor: pointer; }
 .reviewSlider .slideArrow:disabled { opacity: .3; cursor: default; }
-.reviewSlider .slideCount { grid-column: 1 / -1; margin: 0; text-align: center; font-size: 12px; }
+.reviewSlider .slideCount { display: none; }
 @media (prefers-reduced-motion: reduce) { .reviewSlider .slideTrack { transition: none; } }
 
 .shopping .productCard footer {
@@ -519,3 +534,360 @@ h1 {
   white-space: nowrap;
 }
 .shopping .productCard footer > button:disabled { opacity: .5; cursor: default; }
+
+@media (min-width: 901px) {
+  // 리뷰 카드도 아래 SHOPPING REVIEW 영역과 같은 전체 폭을 쓰도록 합니다.
+  .stories .reviewSlider,
+  .stories .newReview,
+  .stories .emptyState {
+    width: 100%;
+    margin-right: 0;
+    margin-left: 0;
+  }
+
+  .stories .reviewSlider {
+    margin-top: 28px;
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    gap: 10px;
+  }
+
+  .stories .storyList {
+    margin-top: 0;
+  }
+
+  .stories .storyList .storyCard {
+    margin-bottom: 0;
+  }
+
+  .stories .storyInfo {
+    padding: 28px 28px 20px;
+  }
+
+  .stories .newReview {
+    min-height: 56px;
+    margin-top: 12px;
+  }
+
+  .stories .reviewSlider:has(.slideArrow:disabled) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .stories .reviewSlider:has(.slideArrow:disabled) .slideArrow,
+  .stories .reviewSlider:has(.slideArrow:disabled) .slideCount {
+    display: none;
+  }
+}
+
+.stories .storyPhoto {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  background: #d7d4cd;
+  object-fit: cover;
+}
+
+.stories .defaultStoryPhoto {
+  background: url("../assets/images/Thumbnail/Thumbnail-image/japan/fukuoka.webp") center / cover no-repeat;
+}
+
+.stories .storyMeta {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+  color: #8f8a83;
+  font: 400 12px/1.4 $korean;
+}
+
+.stories .storyExcerpt {
+  display: -webkit-box;
+  margin: 14px 0 0;
+  color: #5f5b55;
+  font: 400 14px/1.7 $korean;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.stories .storyTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stories .storyTags li {
+  min-height: 26px;
+  padding: 6px 10px;
+  border: 1px solid #d8d3ca;
+  border-radius: 999px;
+  color: #6d675f;
+  font: 400 12px/1 $korean;
+}
+
+.stories .hasStoryPhoto {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.stories .hasStoryPhoto .storyInfo {
+  min-width: 0;
+}
+
+// 태블릿·PC: 사진이 있는 리뷰 카드는 2단(사진 + 본문)으로 고정합니다.
+// .storyList .storyCard { display:block } 규칙(명시도 0,3,0)을 이겨야 해서 함께 씁니다.
+@media (min-width: 601px) {
+  .stories .storyList .storyCard.hasStoryPhoto {
+    display: grid;
+    grid-template-columns: minmax(200px, 280px) minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 240px;
+    overflow: hidden;
+  }
+
+  .stories .hasStoryPhoto .storyPhoto {
+    height: 100%;
+    min-height: 240px;
+  }
+}
+
+@media (min-width: 901px) {
+  .stories .storyList .storyCard.hasStoryPhoto {
+    grid-template-columns: minmax(0, calc((100% - 60px) / 4)) minmax(0, 1fr);
+    align-items: stretch;
+    min-height: 0;
+  }
+
+  .stories .hasStoryPhoto .storyPhoto {
+    height: clamp(320px, 24vw, 380px);
+    min-height: 320px;
+    aspect-ratio: auto;
+  }
+
+  .stories .hasStoryPhoto .storyInfo {
+    display: flex;
+    flex-direction: column;
+    min-height: 320px;
+    padding: 30px 78px 24px 32px;
+  }
+
+  .stories .storyInfo h2 {
+    margin-bottom: 12px;
+    font-size: 28px;
+    line-height: 1.25;
+  }
+
+  .stories .storySubtitle {
+    margin-top: 0;
+  }
+
+  .stories .storyExcerpt {
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+
+  .stories .storyTags {
+    margin-top: 18px;
+    margin-bottom: 0;
+  }
+
+  .stories .storyInfo footer {
+    margin-top: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .stories .hasStoryPhoto {
+    display: block;
+  }
+
+  .stories .storyPhoto {
+    height: 150px;
+    min-height: 0;
+  }
+
+  .stories .storyMeta {
+    display: grid;
+    gap: 4px;
+    margin-bottom: 10px;
+    font-size: 11px;
+  }
+
+  .stories .storyExcerpt {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .stories .storyTags {
+    gap: 5px;
+    margin-top: 12px;
+  }
+
+  .stories .storyTags li {
+    min-height: 23px;
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}
+
+// ── 리뷰(마이 스토리) 페이지: 시안 12-6 구성에 맞춘 정리 ──────────────
+
+// 카드 제목 아래 여행 기간 한 줄.
+.stories .storySubtitle {
+  margin: 10px 0 0;
+  color: #8f8a83;
+  font: 400 13px/1.5 $korean;
+}
+
+// 상품 카드 평점(별) 표시.
+.shopping .productRating {
+  margin: 0.25rem 0 0;
+  color: #9a938a;
+  font: 400 0.62rem/1 $korean;
+  letter-spacing: 0.04em;
+}
+
+// 슬라이드 / 상품 페이지 공용 점 인디케이터.
+.pageDots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 18px 0 0;
+}
+.pageDots button {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #d4d1cc;
+  cursor: pointer;
+}
+.pageDots .activeDot { background: #99948d; }
+.stories .reviewSlider .pageDots { grid-column: 1 / -1; }
+
+@media (min-width: 641px) {
+  // 데스크톱에서도 점 인디케이터를 노출합니다.
+  .stories .reviewSlider .pageDots { display: flex; margin-top: 20px; }
+}
+
+@media (max-width: 640px) {
+  // 제목 아래 보조 문구는 시안에 없어 숨깁니다.
+  .stories > .description { display: none !important; }
+
+  // 여행 리뷰 슬라이더: 좌우 화살표·"n / m" 텍스트 대신 점 인디케이터만 사용합니다.
+  .stories .reviewSlider { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .stories .reviewSlider .slideArrow,
+  .stories .reviewSlider .slideCount { display: none; }
+  // 점 인디케이터가 아래 구분선에 붙지 않도록 위로 올리고 간격을 둡니다.
+  .stories .reviewSlider .pageDots { margin: 8px 0 24px; }
+
+  // 카드 상단 평점 뱃지는 숨기고 여행 기간만 노출합니다.
+  .stories .storyMeta { display: none; }
+  .stories .storySubtitle { margin-top: 6px; font-size: 11px; }
+
+  // 하단 '새 리뷰 작성' 버튼은 시안에 없어 숨깁니다. (카드의 '리뷰 쓰기'로 대체)
+  .stories .newReview { display: none; }
+
+  // 쇼핑 리뷰 영역 제목은 시안에 없어 숨깁니다.
+  .shopping .shoppingTitle { display: block; }
+
+  .shopping .productRating { font-size: 0.62rem; letter-spacing: 0.02em; }
+}
+
+.filters {
+  display: none !important;
+}
+
+.stories .reviewSlider {
+  position: relative;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+.reviewSlider .slideViewport {
+  grid-column: 1;
+  touch-action: pan-y;
+}
+
+.reviewSlider .slideArrow {
+  position: absolute;
+  z-index: 3;
+  top: calc(50% + 10px);
+  width: 27px;
+  min-height: 32px;
+  display: grid !important;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  line-height: 1;
+  transform: translateY(-50%);
+}
+
+.reviewSlider .slideArrow::before {
+  content: "";
+  width: 18px;
+  height: 18px;
+  border-color: #8f8a83;
+  border-style: solid;
+  border-width: 3px 0 0 3px;
+}
+
+.reviewSlider .slideArrow:first-of-type {
+  left: 18px;
+}
+
+.reviewSlider .slideArrow:first-of-type::before {
+  transform: rotate(-45deg);
+}
+
+.reviewSlider .slideArrow:nth-of-type(2) {
+  right: 18px;
+}
+
+.reviewSlider .slideArrow:nth-of-type(2)::before {
+  transform: rotate(135deg);
+}
+
+@media (max-width: 600px) {
+  .reviewSlider .slideArrow {
+    display: none !important;
+  }
+
+  .shopping .shoppingTitle {
+    display: block !important;
+    font: 400 13px/1.4 $sans !important;
+    letter-spacing: 0.18em !important;
+  }
+}
+
+.shopping .productCard {
+  border: 1px solid #d8d3ca !important;
+  background: transparent;
+}
+
+.shopping .productImage {
+  width: calc(100% + 2px);
+  margin: -1px -1px 0;
+}
+
+.shopping .productCard h2,
+.shopping .productCard small,
+.shopping .productCard p {
+  padding-right: 12px;
+  padding-left: 12px;
+}
+
+.shopping .productCard h2 {
+  margin-top: 12px;
+}
+
+.shopping .productCard footer {
+  margin: 14px 12px 16px;
+}

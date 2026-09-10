@@ -514,3 +514,218 @@
   color: #a33b32;
   font-size: 13px;
 }
+
+.productRecommendationBackdrop {
+  position: fixed;
+  z-index: 500;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(17, 17, 15, .48);
+}
+
+.productRecommendationModal {
+  position: relative;
+  width: min(900px, 100%);
+  padding: clamp(28px, 4vw, 52px);
+  background: #fff;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .22);
+}
+
+.productRecommendationClose {
+  position: absolute;
+  top: 16px;
+  right: 18px;
+  width: 38px;
+  height: 38px;
+  display: grid;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: $ink;
+  cursor: pointer;
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.productRecommendationClose:hover {
+  background: rgba(17, 17, 15, .06);
+}
+
+.productRecommendationModal > p {
+  margin: 0;
+  color: $muted;
+  font-size: 12px;
+  letter-spacing: .18em;
+}
+
+.productRecommendationModal > h2 {
+  margin: 14px 0 12px;
+  color: $ink;
+  font: 400 clamp(30px, 4vw, 48px) / .98 $serif;
+  letter-spacing: -.055em;
+}
+
+.productRecommendationModal > span {
+  display: block;
+  color: $muted;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.productRecommendationGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(12px, 2vw, 20px);
+  margin-top: 30px;
+}
+
+.productRecommendationCard {
+  min-width: 0;
+  color: $ink;
+  text-decoration: none;
+}
+
+.productRecommendationImage {
+  display: grid;
+  aspect-ratio: 1 / 1.06;
+  overflow: hidden;
+  background: #d8d4cc;
+  place-items: center;
+}
+
+.productRecommendationImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .25s ease;
+}
+
+.productRecommendationCard:hover .productRecommendationImage img {
+  transform: scale(1.035);
+}
+
+.productRecommendationImage b {
+  color: rgba(17, 17, 15, .16);
+  font: 80px $serif;
+}
+
+.productRecommendationCard small,
+.productRecommendationCard strong,
+.productRecommendationCard em,
+.productRecommendationCard i {
+  display: block;
+}
+
+.productRecommendationCard small {
+  margin-top: 12px;
+  color: $muted;
+  font-size: 11px;
+  letter-spacing: .1em;
+}
+
+.productRecommendationCard strong {
+  margin-top: 6px;
+  overflow: hidden;
+  font: 400 18px $serif;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productRecommendationCard em {
+  min-height: 40px;
+  margin-top: 7px;
+  color: #77736c;
+  font-size: 12px;
+  font-style: normal;
+  line-height: 1.55;
+}
+
+.productRecommendationCard i {
+  margin-top: 9px;
+  font-size: 13px;
+  font-style: normal;
+}
+
+.productRecommendationActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 34px;
+}
+
+.productRecommendationActions button,
+.productRecommendationActions a {
+  min-width: 130px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 18px;
+  border: 1px solid $line;
+  background: transparent;
+  color: $ink;
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.productRecommendationActions > :last-child {
+  border-color: $ink;
+  background: $ink;
+  color: $paper;
+}
+
+@media (max-width: 640px) {
+  .productRecommendationBackdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .productRecommendationModal {
+    width: 100%;
+    padding: 28px 20px 22px;
+  }
+
+  .productRecommendationGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .productRecommendationCard {
+    display: block;
+  }
+
+  .productRecommendationImage {
+    grid-row: auto;
+  }
+
+  .productRecommendationCard small {
+    margin-top: 8px;
+  }
+
+  .productRecommendationCard strong {
+    margin-top: 4px;
+  }
+
+  .productRecommendationCard em {
+    min-height: 55px;
+    margin-top: 5px;
+  }
+
+  .productRecommendationCard i {
+    margin-top: 5px;
+  }
+
+  .productRecommendationActions {
+    margin-top: 26px;
+  }
+
+  .productRecommendationActions button,
+  .productRecommendationActions a {
+    flex: 1;
+    min-width: 0;
+  }
+}

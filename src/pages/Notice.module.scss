@@ -173,7 +173,7 @@
   right: -4.5rem;
   width: 6.5rem;
   aspect-ratio: 1;
-  background: url("/Mypage-img/u.png") center / contain no-repeat;
+  background: url("/Mypage-img/u.webp") center / contain no-repeat;
   opacity: .3;
   pointer-events: none;
 }
@@ -431,4 +431,24 @@
   .contactCopy { padding-left: 14px; }
   .contactCopy h2 { font-size: 17px; }
   .contactCopy p { font-size: 11px; }
+}
+
+.journal {
+  display: none !important;
+}
+
+.content {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+  row-gap: 0;
+}
+
+.content > .contact {
+  margin-top: 27px;
+}
+
+@media (max-width: 640px) {
+  .content > .contact {
+    margin-top: 18px;
+  }
 }

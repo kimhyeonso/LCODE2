@@ -15,6 +15,10 @@ $black: #000;
   color: #fff;
 }
 
+.eventPage:has(.eventList) {
+  background: $paper;
+}
+
 .stage {
   width: 100%;
   min-height: 100vh;
@@ -97,11 +101,29 @@ $black: #000;
   background: #fbfaf7;
   color: inherit;
   text-align: left;
-  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.08);
   cursor: pointer;
+  animation: event-card-reveal 0.72s cubic-bezier(0.22, 1, 0.36, 1) 0.08s both;
   transition:
     transform 0.3s ease,
     box-shadow 0.3s ease;
+}
+
+.eventCard:nth-of-type(2) {
+  animation-delay: 0.18s;
+}
+
+.eventCard:nth-of-type(3) {
+  animation-delay: 0.28s;
+}
+
+@keyframes event-card-reveal {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .cardVisual {
@@ -122,7 +144,7 @@ $black: #000;
 
 .magazineCardVisual {
   width: 100%;
-  background: #ece4d6 url("/event/event04/magazinebanne.png") center / cover no-repeat;
+  background: #ece4d6 url("/event/event04/magazinebanne.webp") center / cover no-repeat;
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -138,6 +160,10 @@ $black: #000;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .eventCard {
+    animation: none;
+  }
+
   .eventCard,
   .cardVisual > img,
   .cardVisual > .magazineCardVisual {
@@ -154,6 +180,12 @@ $black: #000;
   color: #171717;
   font-size: clamp(24px, 2vw, 34px);
   font-weight: 800;
+}
+
+@media (min-width: 901px) {
+  .cardText h2 {
+    font-size: clamp(21px, 2vw, 31px);
+  }
 }
 
 .cardText p {
@@ -308,10 +340,6 @@ $black: #000;
     min-height: auto;
   }
 
-  :global(body:has(.eventPageRoot) footer) {
-    margin-top: calc(-58px - env(safe-area-inset-bottom));
-  }
-
   .eventList {
     min-height: auto;
     padding: 0;
@@ -329,16 +357,17 @@ $black: #000;
   }
 
   .listHeader h1 {
-    font-size: clamp(44px, 14vw, 62px);
+    font-size: 38px;
   }
 
   .eventGroup {
     margin-top: 18px;
-    gap: 0;
+    padding: 0 16px;
+    gap: 16px;
   }
 
   .groupLabel {
-    padding: 0 16px;
+    padding: 0;
     margin-bottom: 18px;
   }
 
@@ -355,7 +384,7 @@ $black: #000;
   }
 
   .cardText div {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .eventHeader button {
@@ -365,7 +394,7 @@ $black: #000;
 
   .eventHeader span {
     padding-inline: 10px;
-    font-size: 10px;
+    font-size: 11px;
     letter-spacing: 3px;
   }
 }
@@ -376,7 +405,9 @@ $black: #000;
 .listHeader span {
   display: block;
   margin: 0 0 25px !important;
+  color: #aaa;
   font-size: 13px;
+  letter-spacing: .16em;
   line-height: normal !important;
 }
 
@@ -387,6 +418,8 @@ $black: #000;
 
 @media (max-width: 640px) {
   .listHeader { padding: 22px 16px 0; }
+  // 모바일: 제목 밑선 제거.
+  .listHeader h1 { padding-bottom: 18px; border-bottom: 1px solid #dedad3; }
 }
 
 @media (min-width: 641px) and (max-width: 900px) {
@@ -394,6 +427,32 @@ $black: #000;
 }
 
 @media (min-width: 901px) {
-  .eventList { padding-top: 72px; }
+  .eventList {
+    padding-top: 72px;
+    padding-bottom: 0;
+  }
   .eventListInner { margin-left: max(56px, calc(50% - 660px)); margin-right: 0; }
+}
+
+@media (max-width: 640px) {
+  .eventList {
+    padding-bottom: calc(58px + env(safe-area-inset-bottom)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .listHeader {
+    box-sizing: border-box;
+    width: 100%;
+  }
+
+  .listHeader h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin: 20px 0 18px !important;
+    padding-bottom: 18px !important;
+    border-bottom: 1px solid #dedad3 !important;
+  }
 }

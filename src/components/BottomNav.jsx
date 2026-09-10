@@ -7,6 +7,8 @@ import planIcon from "../assets/icons/menu_bar/02plan.svg";
 import addIcon from "../assets/icons/menu_bar/03add.svg";
 import shopIcon from "../assets/icons/menu_bar/04shopping_bag.svg";
 import userIcon from "../assets/icons/menu_bar/05user.svg";
+import searchGlyph from "../assets/icons/search.svg";
+import gameControllerIcon from "../assets/icons/game_controller.svg";
 
 const items = [
   { to: "/", icon: homeIcon, label: "HOME", end: true },
@@ -26,9 +28,9 @@ export default function BottomNav() {
     navigate("/balance");
   };
 
-  const openSearch = () => {
+  const openDestinations = () => {
     setIsBalancePromptOpen(false);
-    navigate("/search");
+    navigate("/desrinationAll");
   };
 
   return (
@@ -52,29 +54,35 @@ export default function BottomNav() {
                 <>
                   <button
                     type="button"
-                    className={`${styles.balancePrompt} ${styles.searchPrompt}`}
-                    onClick={openSearch}
+                    className={`${styles.fanButton} ${styles.fanSearch}`}
+                    onClick={openDestinations}
                   >
-                    <span>검색<br />바로가기 <b>click!</b></span>
+                    <span className={styles.fanCircle}>
+                      <img loading="lazy" src={searchGlyph} alt="" aria-hidden="true" />
+                    </span>
+                    <small>일정보기</small>
                   </button>
                   <button
                     type="button"
-                    className={`${styles.balancePrompt} ${styles.gamePrompt}`}
+                    className={`${styles.fanButton} ${styles.fanGame}`}
                     onClick={openBalance}
                   >
-                    <span>밸런스 게임<br />하러가기 <b>click!</b></span>
+                    <span className={styles.fanCircle}>
+                      <img loading="lazy" src={gameControllerIcon} alt="" aria-hidden="true" />
+                    </span>
+                    <small>취향분석</small>
                   </button>
                 </>
               )}
               <button
                 type="button"
                 className={styles.addButton}
-                aria-label="밸런스 게임 열기"
+                aria-label="빠른 메뉴 열기"
                 aria-expanded={isBalancePromptOpen}
                 onClick={() => setIsBalancePromptOpen((current) => !current)}
               >
                 <span className={styles.add}>
-                  <img src={icon} alt="" aria-hidden="true" />
+                  <img loading="lazy" src={icon} alt="" aria-hidden="true" />
                 </span>
               </button>
             </div>
@@ -89,7 +97,7 @@ export default function BottomNav() {
           className={({ isActive }) => (isActive ? styles.active : "")}
         >
           <span className={add ? styles.add : ""}>
-            <img src={icon} alt="" aria-hidden="true" />
+            <img loading="lazy" src={icon} alt="" aria-hidden="true" />
           </span>
           {label && <small>{label}</small>}
         </NavLink>

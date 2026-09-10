@@ -9,6 +9,7 @@ import { prepareReviewPhoto } from "../services/reviewPhotos";
 import { getPlans } from "../services/firestoreService";
 import { recentReviewTrips } from "../services/recentReviewTrips";
 import { getReviewProducts, saveProductReview } from "../services/purchaseHistory";
+import { resolveProductImage } from "../utils/shopProductResolver";
 
 const baseTags = ["도시", "야경", "맛집", "감성", "재방문 의사"];
 const draftKey = "lcode-review-draft";
@@ -52,7 +53,10 @@ export default function Review() {
     getReviewProducts(user.uid).then((items) => {
       if (!active) return;
       const item = items.find((item) => item.id === productId);
-      setPurchase(item || null);
+      // Firestore purchase records store the image URL resolved at order
+      // time, which 404s once local assets are re-hashed (png/jpg -> webp).
+      // Re-resolve against today's catalog.
+      setPurchase(item ? { ...item, image: resolveProductImage(item) } : null);
       if (!item) setPurchaseError("최근 30일 이내에 구매한 상품만 리뷰를 작성할 수 있어요.");
     }).catch(() => { if (active) setPurchaseError("구매 내역을 확인하지 못했어요. 새로고침 후 다시 시도해 주세요."); })
       .finally(() => { if (active) setPurchaseLoading(false); });
@@ -85,8 +89,13 @@ export default function Review() {
     }).finally(() => { if (active) setTripsLoading(false); });
     return () => { active = false; };
   }, [user.uid, productName, editingReview]);
+  useEffect(() => {
+    if (!productName && !editingReview && !tripId && trips.length) {
+      setTripId(trips[0].id);
+    }
+  }, [productName, editingReview, tripId, trips]);
   const selectedTrip = trips.find((trip) => trip.id === tripId);
-  const tripTitle = selectedTrip?.title || selectedTrip?.city || state?.tripTitle || editingReview?.tripTitle || (productName ? "후쿠오카 3박 4일" : "나의 여행");
+  const tripTitle = selectedTrip?.title || selectedTrip?.city || state?.tripTitle || editingReview?.tripTitle || (productName ? productName : "나의 여행");
 
   const allTags = useMemo(() => [...baseTags, ...customTags], [customTags]);
   const toggleTag = (tag) => setTags((current) => current.includes(tag) ? current.filter((item) => item !== tag) : [...current, tag]);
@@ -222,13 +231,12 @@ export default function Review() {
     <main className={styles.review}>
       <div className={styles.page}>
         <header className={styles.heading}>
-          <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
           <MypageBackLink to="/mystories" label="나의 리뷰로 돌아가기" />
-          <div><p>MY JOURNEY</p><h1>REVIEW</h1><p className={styles.description}>여행과 상품 이용 후기를 남겨보세요.</p></div>
+          <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
         </header>
 
         <form onSubmit={submit}>
-          {!productName && !editingReview && <section className={styles.tripPicker}>
+          {false && !productName && !editingReview && <section className={styles.tripPicker}>
             <label htmlFor="review-trip">리뷰를 작성할 여행</label>
             <p>종료일 기준 최근 30일 이내의 저장된 여행을 선택해 주세요.</p>
             {tripsError ? <p role="alert">{tripsError}</p> : tripsLoading ? <p role="status">여행을 불러오고 있어요.</p> : trips.length ?
@@ -239,7 +247,7 @@ export default function Review() {
           </section>}
           <section className={styles.tripSummary}>
             {productName ? <>
-              {purchase?.image && <img src={purchase.image} alt={productName} />}
+              {purchase?.image && <img loading="lazy" src={purchase.image} alt={productName} />}
               <div><h2>{productName}</h2>{purchase && <p>구매일 {new Date(purchase.orderedAt).toLocaleDateString("ko-KR")}</p>}
               {!editingReview && purchaseLoading && <p role="status">구매 내역 확인 중...</p>}{purchaseError && <p role="alert">{purchaseError}</p>}</div>
             </> : <div><h2>{tripTitle}</h2><p>{editingReview ? "작성한 리뷰 수정" : "새 리뷰 작성"}</p></div>}
@@ -265,7 +273,7 @@ export default function Review() {
           <section className={`${styles.formRow} ${styles.photoRow}`}>
             <h2>4. 사진 추가<small>(선택)</small></h2>
             <div className={styles.photos}>
-              {photos.map((photo, index) => <div className={styles.photoItem} key={`${index}-${photo.name}`}><img src={photo.src} alt={photo.name} /><button type="button" disabled={status.saving || processingPhotos} aria-label={`${photo.name} 삭제`} onClick={() => setPhotos((current) => current.filter((_, i) => i !== index))}>×</button></div>)}
+              {photos.map((photo, index) => <div className={styles.photoItem} key={`${index}-${photo.name}`}><img loading="lazy" src={photo.src} alt={photo.name} /><button type="button" disabled={status.saving || processingPhotos} aria-label={`${photo.name} 삭제`} onClick={() => setPhotos((current) => current.filter((_, i) => i !== index))}>×</button></div>)}
               {photos.length < 3 && <label className={styles.addPhoto}>＋<span>{processingPhotos ? "처리 중..." : "사진 추가"}</span><input type="file" accept="image/jpeg,image/png,image/webp" multiple disabled={processingPhotos || status.saving} onChange={selectPhotos} /></label>}
             </div>
           </section>

@@ -58,6 +58,13 @@ const loadRates = async (apiKey) => {
         change: change.startsWith("-") ? change : `+${change}`,
         date: latest.TIME,
         baseUnit: item.baseUnit,
+        history: rows
+          .map((row) => ({
+            date: row.TIME,
+            rate: Number(row.DATA_VALUE),
+          }))
+          .filter((row) => Number.isFinite(row.rate))
+          .slice(-30),
       };
     }),
   );

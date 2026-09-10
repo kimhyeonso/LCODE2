@@ -9,6 +9,9 @@ import {
   Link,
 } from "react-router-dom";
 
+import savedPlanStyles from "./SavedPlan.module.scss";
+import MypageBackLink from "../components/MypageBackLink";
+
 import { useShop } from "../hooks/useShop";
 import { enrichShopProduct } from "../utils/shopProductResolver";
 import products from "../data/products.json";
@@ -380,6 +383,8 @@ export default function Cart() {
      RIGHT SUMMARY FOLLOW
   ======================================================= */
 
+  const cartListRef = useRef(null);
+
   const summaryRailRef =
     useRef(null);
 
@@ -417,6 +422,26 @@ export default function Cart() {
     editingLineId,
     setEditingLineId,
   ] = useState(null);
+
+  const [draftOptionId, setDraftOptionId] = useState("standard");
+  const optionDialogRef = useRef(null);
+  const editingItem = normalizedCart.find((item) => item.lineId === editingLineId);
+
+  const isOptionModalOpen = Boolean(editingItem);
+
+  useEffect(() => {
+    const dialog = optionDialogRef.current;
+    if (!dialog || !isOptionModalOpen) return;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    dialog.showModal();
+    document.body.style.overflow = "hidden";
+    return () => {
+      dialog.close();
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus();
+    };
+  }, [isOptionModalOpen]);
 
 
   /* =======================================================
@@ -544,6 +569,7 @@ export default function Cart() {
 
     const box =
       summaryBoxRef.current;
+    const list = cartListRef.current;
 
 
     if (
@@ -589,6 +615,7 @@ export default function Cart() {
           window.innerWidth <=
           850
         ) {
+          rail.style.minHeight = "";
           resetBox();
 
           return;
@@ -627,35 +654,18 @@ export default function Cart() {
         }
 
 
-        /*
-          Cart 끝에 도착
-        */
-
-        const shouldStop =
-          railRect.bottom <=
-          boxHeight +
-            TOP_GAP;
-
+        // Stop at the product list's bottom border, not the stretched grid rail.
+        const listBottom = list?.getBoundingClientRect().bottom ?? railRect.bottom;
+        const stopTop = Math.max(0, listBottom - railRect.top - boxHeight);
+        const shouldStop = railRect.top + stopTop <= TOP_GAP;
 
         if (shouldStop) {
-          box.style.position =
-            "absolute";
-
-          box.style.top =
-            "auto";
-
-          box.style.bottom =
-            "0px";
-
-          box.style.left =
-            "0px";
-
-          box.style.width =
-            "100%";
-
-          box.style.zIndex =
-            "20";
-
+          box.style.position = "absolute";
+          box.style.top = `${stopTop}px`;
+          box.style.bottom = "auto";
+          box.style.left = "0px";
+          box.style.width = "100%";
+          box.style.zIndex = "20";
           return;
         }
 
@@ -742,9 +752,8 @@ export default function Cart() {
         );
 
 
-      resizeObserver.observe(
-        box
-      );
+      resizeObserver.observe(box);
+      if (list) resizeObserver.observe(list);
     }
 
 
@@ -1057,6 +1066,10 @@ export default function Cart() {
     ===================================================== */
 
     .lcode-cart {
+      --cart-min-font-size: 14px;
+      --cart-divider-spacing: 18px;
+      font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 14px;
       width:
         calc(
           100% - 220px
@@ -1139,6 +1152,16 @@ export default function Cart() {
        LEFT
     ===================================================== */
 
+    .lcode-cartHeader {
+      grid-column: 1 / -1;
+      min-width: 0;
+      padding-bottom: 28px;
+    }
+
+    .lcode-cartHeader [data-mypage-back] {
+      font-size: max(13px, var(--cart-min-font-size)) !important;
+    }
+
     .lcode-cartMain {
       min-width:
         0;
@@ -1146,49 +1169,28 @@ export default function Cart() {
 
 
     .lcode-cartEyebrow {
-      display:
-        block;
-
-      margin-bottom:
-        50px;
-
-      color:
-        #77736c;
-
-      font-size:
-        10px;
-
-      letter-spacing:
-        0.23em;
+      display: block;
+      margin: 0 0 25px;
+      padding: 0;
+      color: #aaa;
+      font-size: max(13px, var(--cart-min-font-size));
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.16em;
     }
 
-
     .lcode-cartTitle {
-      margin:
-        0
-        0
-        50px;
-
-      font-family:
-        "Times New Roman",
-        "Noto Serif KR",
-        serif;
-
-      font-size:
-        clamp(
-          76px,
-          7vw,
-          108px
-        );
-
-      font-weight:
-        500;
-
-      line-height:
-        0.82;
-
-      letter-spacing:
-        -0.065em;
+      display: block;
+      width: 100%;
+      margin: 0 0 18px;
+      padding: 0 0 var(--cart-divider-spacing);
+      border-bottom: 1px solid #cec7bb;
+      color: #171714;
+      font-family: "DM Serif Display", "Noto Sans KR", serif;
+      font-size: 54px;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.05em;
     }
 
 
@@ -1216,7 +1218,7 @@ export default function Cart() {
         16px;
 
       padding:
-        0
+        12px
         18px;
 
       border:
@@ -1256,10 +1258,10 @@ export default function Cart() {
         center;
 
       width:
-        30px;
+        40px;
 
       height:
-        30px;
+        40px;
 
       flex:
         0 0 auto;
@@ -1269,11 +1271,12 @@ export default function Cart() {
         #11110f;
 
       font-family:
-        "Times New Roman",
+        "DM Serif Display",
+        "Noto Sans KR",
         serif;
 
       font-size:
-        16px;
+        22px;
     }
 
 
@@ -1285,7 +1288,7 @@ export default function Cart() {
         4px;
 
       font-size:
-        12px;
+        16px;
     }
 
 
@@ -1294,21 +1297,34 @@ export default function Cart() {
         #77736c;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
     .lcode-cartBenefit > span {
+      flex-shrink: 0;
+      white-space: nowrap;
+      line-height: 1;
       color:
         #77736c;
 
       font-size:
-        10px;
+        12px;
 
       letter-spacing:
-        0.12em;
+        0.04em;
     }
 
+
+    @media (max-width: 640px) {
+      .lcode-cartBenefit b { font-size: 14px; }
+      .lcode-cartBenefitMark {
+        width: 36px;
+        height: 36px;
+        font-size: 20px;
+      }
+      .lcode-cartBenefit > span { font-size: 11px; }
+    }
 
     /* =====================================================
        TOOLS
@@ -1358,7 +1374,7 @@ export default function Cart() {
         pointer;
 
       font-size:
-        12px;
+        max(12px, var(--cart-min-font-size));
     }
 
 
@@ -1386,7 +1402,7 @@ export default function Cart() {
         #858078;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -1419,7 +1435,7 @@ export default function Cart() {
         pointer;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -1535,7 +1551,8 @@ export default function Cart() {
         );
 
       font-family:
-        "Times New Roman",
+        "DM Serif Display",
+        "Noto Sans KR",
         serif;
 
       font-size:
@@ -1564,7 +1581,7 @@ export default function Cart() {
         #858078;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
 
       letter-spacing:
         0.14em;
@@ -1578,8 +1595,8 @@ export default function Cart() {
         8px;
 
       font-family:
-        "Times New Roman",
-        "Noto Serif KR",
+        "DM Serif Display",
+        "Noto Sans KR",
         serif;
 
       font-size:
@@ -1607,7 +1624,7 @@ export default function Cart() {
         #77736c;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -1674,7 +1691,7 @@ export default function Cart() {
         pointer;
 
       font-size:
-        13px;
+        max(13px, var(--cart-min-font-size));
     }
 
 
@@ -1697,7 +1714,7 @@ export default function Cart() {
         center;
 
       font-size:
-        11px;
+        max(11px, var(--cart-min-font-size));
 
       font-weight:
         500;
@@ -1726,7 +1743,7 @@ export default function Cart() {
         pointer;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -1751,7 +1768,8 @@ export default function Cart() {
         nowrap;
 
       font-family:
-        "Times New Roman",
+        "DM Serif Display",
+        "Noto Sans KR",
         serif;
 
       font-size:
@@ -1843,7 +1861,7 @@ export default function Cart() {
         );
 
       font-size:
-        10px;
+        var(--cart-min-font-size);
 
       text-align:
         center;
@@ -1855,7 +1873,7 @@ export default function Cart() {
         #11110f;
 
       font-size:
-        10px;
+        var(--cart-min-font-size);
 
       font-weight:
         600;
@@ -1864,6 +1882,18 @@ export default function Cart() {
         0.1em;
     }
 
+
+    .lcode-cartDelivery span,
+    .lcode-cartDelivery small {
+      font-size: var(--cart-min-font-size);
+    }
+
+    @media (max-width: 640px) {
+      .lcode-cartDelivery {
+        row-gap: 3px;
+        line-height: 1.35;
+      }
+    }
 
     .lcode-cartDelivery.preorder {
       background:
@@ -1888,66 +1918,6 @@ export default function Cart() {
     /* =====================================================
        OPTION PANEL
     ===================================================== */
-
-    .lcode-cartOptionPanel {
-      margin:
-        18px
-        44px
-        0
-        152px;
-
-      padding:
-        18px;
-
-      border:
-        1px solid
-        #d8d3ca;
-
-      background:
-        rgba(
-          255,
-          255,
-          255,
-          0.22
-        );
-    }
-
-
-    .lcode-cartOptionPanelHead {
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      gap:
-        20px;
-
-      margin-bottom:
-        13px;
-    }
-
-
-    .lcode-cartOptionPanelHead b {
-      font-size:
-        10px;
-
-      letter-spacing:
-        0.16em;
-    }
-
-
-    .lcode-cartOptionPanelHead small {
-      color:
-        #858078;
-
-      font-size:
-        10px;
-    }
-
 
     .lcode-cartOptionChoices {
       display:
@@ -1992,7 +1962,7 @@ export default function Cart() {
         left;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -2028,7 +1998,7 @@ export default function Cart() {
         0.65;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -2063,7 +2033,8 @@ export default function Cart() {
         9px;
 
       font-family:
-        "Times New Roman",
+        "DM Serif Display",
+        "Noto Sans KR",
         serif;
 
       font-size:
@@ -2084,7 +2055,7 @@ export default function Cart() {
         #77736c;
 
       font-size:
-        11px;
+        max(11px, var(--cart-min-font-size));
     }
 
 
@@ -2114,7 +2085,7 @@ export default function Cart() {
         none;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
     }
 
 
@@ -2156,53 +2127,37 @@ export default function Cart() {
       width:
         330px;
 
-      padding:
-        32px
-        26px
-        30px;
+      padding: 0 32px 40px;
 
-      border-top:
-        2px solid
-        #11110f;
+      border-top: 0;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 0;
 
-      background:
-        rgba(
-          248,
-          245,
-          239,
-          0.98
-        );
+      background: #fbf9f4;
 
-      backdrop-filter:
-        blur(
-          10px
-        );
+      backdrop-filter: none;
 
       box-sizing:
         border-box;
+      border-right: 1px solid #e5e5e5;
+      color: #222;
     }
 
 
     .lcode-cartSummary h2 {
-      margin:
-        0
-        0
-        38px;
+      margin: 0;
 
-      font-family:
-        "Times New Roman",
-        "Noto Serif KR",
-        serif;
+      font-family: inherit;
 
-      font-size:
-        31px;
+      font-size: 21px;
 
-      font-weight:
-        500;
+      font-weight: 700;
+      padding: 20px 0;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #d9d9d9;
+      line-height: 1.5;
     }
 
 
@@ -2223,15 +2178,13 @@ export default function Cart() {
       padding-bottom:
         21px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 0;
 
-      color:
-        #77736c;
+      color: #888;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
+      padding: 26px 0 18px;
     }
 
 
@@ -2240,7 +2193,7 @@ export default function Cart() {
         #11110f;
 
       font-size:
-        11px;
+        max(11px, var(--cart-min-font-size));
 
       font-weight:
         500;
@@ -2252,13 +2205,9 @@ export default function Cart() {
     ===================================================== */
 
     .lcode-cartSummaryRows {
-      padding:
-        21px
-        0;
+      padding: 0 0 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
     }
 
 
@@ -2275,27 +2224,22 @@ export default function Cart() {
       gap:
         20px;
 
-      padding:
-        8px
-        0;
+      padding: 9px 0;
 
-      color:
-        #77736c;
+      color: #888;
 
       font-size:
-        11px;
+        max(11px, var(--cart-min-font-size));
     }
 
 
     .lcode-cartSummaryRow b {
-      color:
-        #11110f;
+      color: #222;
 
       font-size:
-        12px;
+        max(12px, var(--cart-min-font-size));
 
-      font-weight:
-        400;
+      font-weight: 600;
     }
 
 
@@ -2307,8 +2251,7 @@ export default function Cart() {
       display:
         flex;
 
-      align-items:
-        flex-end;
+      align-items: center;
 
       justify-content:
         space-between;
@@ -2316,19 +2259,16 @@ export default function Cart() {
       gap:
         18px;
 
-      padding:
-        30px
-        0;
+      padding: 26px 0 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
+      flex-wrap: wrap;
     }
 
 
     .lcode-cartTotal > span {
       font-size:
-        13px;
+        max(13px, var(--cart-min-font-size));
 
       font-weight:
         700;
@@ -2342,15 +2282,12 @@ export default function Cart() {
       white-space:
         nowrap;
 
-      font-family:
-        "Times New Roman",
-        serif;
+      font-family: inherit;
 
-      font-size:
-        30px;
+      font-size: 21px;
 
-      font-weight:
-        500;
+      font-weight: 600;
+      color: #222;
     }
 
 
@@ -2359,11 +2296,10 @@ export default function Cart() {
         5px;
 
       font-family:
-        Arial,
-        sans-serif;
+        inherit;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
 
       font-weight:
         400;
@@ -2375,13 +2311,9 @@ export default function Cart() {
     ===================================================== */
 
     .lcode-cartExpectedBenefit {
-      padding:
-        24px
-        0;
+      padding: 26px 0 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
     }
 
 
@@ -2389,17 +2321,14 @@ export default function Cart() {
       display:
         block;
 
-      margin-bottom:
-        11px;
+      margin-bottom: 18px;
 
-      color:
-        #88837b;
+      color: #aaa;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
 
-      letter-spacing:
-        0.13em;
+      letter-spacing: 2px;
     }
 
 
@@ -2416,11 +2345,12 @@ export default function Cart() {
       margin:
         0;
 
-      color:
-        #77736c;
+      color: #888;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
+      flex-wrap: wrap;
+      row-gap: 8px;
     }
 
 
@@ -2429,7 +2359,7 @@ export default function Cart() {
         #11110f;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
 
       font-weight:
         500;
@@ -2469,7 +2399,7 @@ export default function Cart() {
         none;
 
       font-size:
-        11px;
+        max(11px, var(--cart-min-font-size));
 
       font-weight:
         700;
@@ -2494,22 +2424,17 @@ export default function Cart() {
 
 
     .lcode-cartSummaryNotice {
-      margin:
-        13px
-        0
-        0;
+      margin: 18px 0 0;
 
-      color:
-        #8b867e;
+      color: #aaa;
 
       text-align:
         center;
 
       font-size:
-        10px;
+        max(10px, var(--cart-min-font-size));
 
-      line-height:
-        1.7;
+      line-height: 1.6;
     }
 
 
@@ -2658,6 +2583,20 @@ export default function Cart() {
     }
 
 
+    @media (max-width: 640px) {
+      .lcode-cart {
+        --cart-min-font-size: 11px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .lcode-cartTitle {
+        font-size: 38px;
+        width: calc(100vw - 32px);
+        max-width: none;
+      }
+    }
+
     /* =====================================================
        MOBILE
     ===================================================== */
@@ -2679,14 +2618,6 @@ export default function Cart() {
       }
 
 
-      .lcode-cartTitle {
-        font-size:
-          clamp(
-            58px,
-            18vw,
-            76px
-          );
-      }
 
 
       .lcode-cartBenefit {
@@ -2813,6 +2744,85 @@ export default function Cart() {
           column;
       }
     }
+    .lcode-cartFrame {
+      grid-template-rows: auto 1fr;
+      row-gap: 0;
+    }
+
+    .lcode-cartHeader .lcode-cartTitle {
+      margin-bottom: var(--cart-divider-spacing);
+    }
+
+    .lcode-cartDescription {
+      display: block;
+      margin: 0;
+      padding: 0;
+      color: #8c857b;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      letter-spacing: normal;
+    }
+
+    @media (max-width: 850px) {
+      .lcode-cartSummaryRail {
+        margin-top: var(--cart-divider-spacing);
+      }
+    }
+    @media (max-width: 640px) {
+      .lcode-cartSummary {
+        padding: 0 16px 28px;
+      }
+    }
+
+    .lcode-cartOptionModal {
+      border: 0;
+      margin: auto;
+      max-height: calc(100dvh - 40px);
+      width: min(calc(100% - 40px), 390px);
+      overflow-y: auto;
+    }
+
+    .lcode-cartOptionModal::backdrop {
+      background: rgba(0, 0, 0, 0.72);
+    }
+
+    .lcode-cartOptionModal > p,
+    .lcode-cartOptionModal > span {
+      font-size: max(13px, var(--cart-min-font-size));
+    }
+
+    .lcode-cartModalOptions {
+      border: 0;
+      padding: 0;
+      margin: 24px 0;
+      text-align: left;
+    }
+
+    .lcode-cartModalOptions legend {
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+
+    .lcode-cartModalOptions label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 12px;
+      border: 1px solid #ddd;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .lcode-cartModalOptions label + label { margin-top: 8px; }
+    .lcode-cartModalOptions label:has(input:checked) { border-color: #171714; }
+    .lcode-cartModalOptions input { accent-color: #171714; }
+    .lcode-cartModalOptions small {
+      display: block;
+      margin-top: 6px;
+      color: #888;
+      font-size: max(11px, var(--cart-min-font-size));
+    }
   `;
 
 
@@ -2833,7 +2843,8 @@ export default function Cart() {
               LEFT
           ================================================= */}
 
-          <section className="lcode-cartMain">
+          <header className="lcode-cartHeader">
+            <MypageBackLink />
             <span className="lcode-cartEyebrow">
               SHOP / CART
             </span>
@@ -2842,8 +2853,12 @@ export default function Cart() {
             <h1 className="lcode-cartTitle">
               CART
             </h1>
+            <p className="lcode-cartDescription">
+              여행에 필요한 준비물을 확인하고 주문해보세요.
+            </p>
+          </header>
 
-
+          <section className="lcode-cartMain">
             {/* ===============================================
                 BENEFIT
             =============================================== */}
@@ -2926,7 +2941,7 @@ export default function Cart() {
                 ITEMS
             =============================================== */}
 
-            <div className="lcode-cartList">
+            <div ref={cartListRef} className="lcode-cartList">
               {normalizedCart.map(
                 (item) => {
                   const isSelected =
@@ -2935,15 +2950,7 @@ export default function Cart() {
                     );
 
 
-                  const isEditing =
-                    editingLineId ===
-                    item.lineId;
-
-
-                  const currentOptionId =
-                    item.option?.id ||
-                    "standard";
-
+                  const currentOptionId = item.option?.id || "standard";
 
                   const productImage =
                     item.thumbnail ||
@@ -2998,7 +3005,7 @@ export default function Cart() {
                           to={`/shop/${item.id}`}
                         >
                           {productImage ? (
-                            <img
+                            <img loading="lazy"
                               src={
                                 productImage
                               }
@@ -3097,17 +3104,13 @@ export default function Cart() {
                             <button
                               type="button"
                               className="lcode-cartOptionChange"
-                              onClick={() =>
-                                setEditingLineId(
-                                  isEditing
-                                    ? null
-                                    : item.lineId
-                                )
-                              }
+                              aria-haspopup="dialog"
+                              onClick={() => {
+                                setDraftOptionId(item.option?.id || "standard");
+                                setEditingLineId(item.lineId);
+                              }}
                             >
-                              {isEditing
-                                ? "옵션 닫기"
-                                : "옵션 변경"}
+                              옵션 변경
                             </button>
                           </div>
                         </div>
@@ -3189,64 +3192,6 @@ export default function Cart() {
                       </div>
 
 
-                      {/* =====================================
-                          OPTION PANEL
-                      ===================================== */}
-
-                      {isEditing && (
-                        <div className="lcode-cartOptionPanel">
-                          <div className="lcode-cartOptionPanelHead">
-                            <b>
-                              OPTION CHANGE
-                            </b>
-
-
-                            <small>
-                              선물 포장은 주문 단위로 한 번만 적용됩니다.
-                            </small>
-                          </div>
-
-
-                          <div className="lcode-cartOptionChoices">
-                            {PRODUCT_OPTIONS.map(
-                              (
-                                option
-                              ) => (
-                                <button
-                                  type="button"
-                                  key={
-                                    option.id
-                                  }
-                                  className={
-                                    currentOptionId ===
-                                    option.id
-                                      ? "is-active"
-                                      : ""
-                                  }
-                                  onClick={() =>
-                                    handleOptionChange(
-                                      item,
-                                      option
-                                    )
-                                  }
-                                >
-                                  {
-                                    option.label
-                                  }
-
-
-                                  {option.id ===
-                                    "gift" && (
-                                    <small>
-                                      주문 전체 +2,500 KRW
-                                    </small>
-                                  )}
-                                </button>
-                              )
-                            )}
-                          </div>
-                        </div>
-                      )}
                     </article>
                   );
                 }
@@ -3414,6 +3359,39 @@ export default function Cart() {
             </div>
           </aside>
         </div>
+        {editingItem && (
+          <dialog
+            ref={optionDialogRef}
+            className={`${savedPlanStyles.deleteModal} lcode-cartOptionModal`}
+            aria-labelledby="cart-option-title"
+            onCancel={() => setEditingLineId(null)}
+            onClick={(event) => {
+              if (event.target !== event.currentTarget) return;
+              const rect = event.currentTarget.getBoundingClientRect();
+              if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) {
+                setEditingLineId(null);
+              }
+            }}
+          >
+            <p>OPTION CHANGE</p>
+            <h2 id="cart-option-title">옵션 변경</h2>
+            <span>{editingItem.name}</span>
+            <fieldset className="lcode-cartModalOptions">
+              <legend>상품 옵션 선택</legend>
+              {PRODUCT_OPTIONS.map((option) => (
+                <label key={option.id}>
+                  <input type="radio" name="cart-option" value={option.id} checked={draftOptionId === option.id} onChange={() => setDraftOptionId(option.id)} />
+                  <span>{option.label}{option.extraPrice > 0 && <small>주문 전체 +{option.extraPrice.toLocaleString()} KRW</small>}</span>
+                </label>
+              ))}
+            </fieldset>
+            <span>선물 포장은 주문 단위로 한 번만 적용됩니다.</span>
+            <div>
+              <button type="button" onClick={() => setEditingLineId(null)}>취소</button>
+              <button type="button" onClick={() => handleOptionChange(editingItem, PRODUCT_OPTIONS.find((option) => option.id === draftOptionId))}>변경하기</button>
+            </div>
+          </dialog>
+        )}
       </main>
     </>
   );

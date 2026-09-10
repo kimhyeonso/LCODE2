@@ -239,6 +239,17 @@ function getPath() {
 ========================================================= */
 
 function getRevealSelector(pathname) {
+  if (pathname === "/plan/saved" || pathname === "/my/plans") {
+    return "[data-shop-reveal]";
+  }
+
+  if (pathname === "/search") {
+    return [
+      'section[aria-labelledby="package-archive-title"] > div > div:has(> a)',
+      'section[aria-labelledby="search-products-title"] article',
+    ].join(",");
+  }
+
   /* =======================================================
      CHECKOUT
 

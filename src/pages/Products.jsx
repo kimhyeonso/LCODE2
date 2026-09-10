@@ -24,7 +24,7 @@ import styles from "./Shop.module.scss";
 ========================================================= */
 
 const detailImageModules = import.meta.glob(
-  "../assets/images/detail/*.{webp,png,jpg,jpeg}",
+  "../assets/images/detail/*.webp",
   {
     eager: true,
     import: "default",
@@ -37,13 +37,7 @@ const getDetailImage = (
 ) => {
   const base = `../assets/images/detail/${number}${suffix}`;
 
-  return (
-    detailImageModules[`${base}.webp`]
-    || detailImageModules[`${base}.png`]
-    || detailImageModules[`${base}.jpg`]
-    || detailImageModules[`${base}.jpeg`]
-    || ""
-  );
+  return detailImageModules[`${base}.webp`] || "";
 };
 
 const STANDARD_OPTION = {
@@ -675,7 +669,7 @@ export default function Products() {
               }
             >
               {quickProduct.thumbnail ? (
-                <img
+                <img loading="lazy"
                   src={
                     quickProduct.thumbnail
                   }

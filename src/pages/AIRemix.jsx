@@ -452,17 +452,34 @@ export default function AIRemix() {
       };
       setRemixError(messages[error.code] || "변경안을 만드는 중 문제가 생겼어요. 잠시 후 다시 시도해 주세요.");
       setStage("error");
-    } finally { requestLock.current = false; }
+    } finally {
+      if (generation === requestGeneration.current) requestLock.current = false;
+    }
   };
 
   const reset = () => {
+    requestGeneration.current += 1;
+    requestLock.current = false;
+    setAiResult(null);
     setStage("select");
     setProgress(0);
   };
 
+  const backButton = (
+    <button
+      type="button"
+      className={styles.backButton}
+      onClick={() => !loadDone || stage === "select" ? navigate(-1) : reset()}
+      aria-label={!loadDone || stage === "select" ? "이전 페이지로 돌아가기" : "상황 선택으로 돌아가기"}
+    >
+      <span aria-hidden="true">←</span> BACK
+    </button>
+  );
+
   if (!loadDone) {
     return (
-      <main className={`${styles.page} ${stage === "complete" ? styles.completionPage : ""} aiRemixPageRoot`}>
+      <main className={`${styles.page} ${styles.progressPage} aiRemixPageRoot`}>
+        {backButton}
         <section className={styles.analyzing}>
           <p className={styles.meta}>L:CODE AI REMIX</p>
           <h1>일정을 불러오고 있어요.</h1>
@@ -473,6 +490,7 @@ export default function AIRemix() {
 
   return (
     <main className={`${styles.page} ${stage === "select" ? styles.selectionPage : ""} ${stage === "analyzing" ? styles.progressPage : ""} ${stage === "result" && reason.id === "rain" ? styles.rainPage : ""} ${stage === "result" && ["delay", "auto"].includes(reason.id) ? styles.delayPage : ""} ${stage === "result" && reason.id === "closed" ? styles.closedPage : ""} ${stage === "complete" ? styles.completionPage : ""} aiRemixPageRoot`}>
+      {backButton}
       {stage === "select" && (
         <section className={styles.selectPanel} aria-label={`${sourcePlan?.title || selectedTrip.title || selectedTrip.city} 일정 변경`}>
           <header className={styles.selectHeader}>

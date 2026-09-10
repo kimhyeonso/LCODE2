@@ -1157,6 +1157,24 @@ $plan-muted: #8b8780;
 }
 
 @media (max-width: 640px) {
+  .intro h1 {
+    display: block !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+    margin: 20px 0 18px !important;
+    padding-bottom: 18px !important;
+    border-bottom: 1px solid #dedad3 !important;
+  }
+
+  .stats,
+  .expense > p,
+  .exchangeRate,
+  .timeline li,
+  .otherDays h2 {
+    border-color: #dedad3;
+  }
+
   .savedControls small,
   .savedControls p,
   .savedActions a span {

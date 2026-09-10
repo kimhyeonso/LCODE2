@@ -5,8 +5,8 @@ import { defaultNotices } from "../data/defaultNotices";
 import styles from "./Notice.module.scss";
 
 const journalCards = [
-  { image: "3.png", location: "KYOTO · JAPAN", caption: "L:CODE JOURNAL" },
-  { image: "5.png", location: "BEIJING · CHINA", caption: "JOURNEY IN STYLE" },
+  { image: "3.webp", location: "KYOTO · JAPAN", caption: "L:CODE JOURNAL" },
+  { image: "5.webp", location: "BEIJING · CHINA", caption: "JOURNEY IN STYLE" },
 ];
 
 export default function Notice() {
@@ -29,7 +29,7 @@ export default function Notice() {
         <section className={styles.journal} aria-label="L:CODE 여행 저널">
           {journalCards.map(({ image, location, caption }) => (
             <article className={styles.journalCard} key={location}>
-              <img src={`/Mypage-img/${image}`} alt="여행지 풍경" />
+              <img loading="lazy" src={`/Mypage-img/${image}`} alt="여행지 풍경" />
               <div className={styles.cardCaption}><span>{location}</span><i aria-hidden="true" /><span>{caption}</span></div>
             </article>
           ))}
@@ -37,7 +37,7 @@ export default function Notice() {
         </section>
         <section className={styles.contact} aria-label="고객센터 전화 안내">
           <div className={styles.contactIcon} aria-hidden="true">
-            <img src="/Mypage-img/set.svg" alt="" />
+            <img loading="lazy" src="/Mypage-img/set.svg" alt="" />
           </div>
           <div className={styles.contactCopy}>
             <h2>고객센터 문의</h2>

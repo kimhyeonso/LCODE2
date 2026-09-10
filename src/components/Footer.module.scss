@@ -1,12 +1,17 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 .footer {
+  // 마이페이지 풋터 간격 기준으로 통일 (px/mo 동일 80px).
+  margin-top: 80px;
+  background: #efeade;
+}
+
+.footerInner {
   @include page;
-  margin-top: 120px;
   padding: 48px 0 38px;
-  border-top: 1px solid $ink;
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-columns: 1fr auto;
+  row-gap: 40px;
   strong {
     font: 700 30px $serif;
   }
@@ -19,6 +24,13 @@
     flex-direction: column;
     gap: 13px;
     font-size: 13px;
+  }
+  // 여행 찾기 / AI 플래너 / 나의 일정 / 문의하기 한 줄 배치.
+  .desktopLinks {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 28px;
   }
   .note {
     font-size: 13px;
@@ -35,30 +47,46 @@
 
 @media (min-width: 901px) {
   .footer {
-    width: min(1320px, calc(100% - 220px - 112px));
-    margin-right: 0;
-    margin-left: calc(220px + max(56px, (100% - 1540px) / 2));
+    width: calc(100% - 220px);
+    margin-left: 220px;
+  }
+
+  .footerInner {
+    width: min(1320px, calc(100% - 112px));
+    margin-inline: auto;
   }
 }
 
 @include mobile {
   .footer {
     position: relative;
-    display: block;
     width: 100%;
     min-height: 320px;
     margin-top: 80px;
     overflow: hidden;
-    border-top: 0;
     background: #111;
-    padding: 34px 20px calc(88px + env(safe-area-inset-bottom));
     color: #f5f5f5;
   }
 
-  .desktopBrand,
-  .desktopLinks,
-  .desktopNote {
+  .footerInner {
+    display: block;
+    width: 100%;
+    padding: 34px 20px calc(88px + env(safe-area-inset-bottom));
+  }
+
+  .footer .desktopBrand,
+  .footer .desktopNote {
     display: none;
+  }
+
+  // 여행 찾기 / AI 플래너 / 나의 일정 / 문의하기 한 줄 — 모바일에서도 유지하고
+  // 로고(L:CODE)와의 세로 간격만 적당히 둡니다.
+  .footer .desktopLinks {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px 18px;
+    margin-bottom: 22px;
+    font-size: 11px;
   }
 
   .mobileFooter {
@@ -96,7 +124,7 @@
     nav {
       display: grid;
       width: 100%;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(4, 1fr);
       gap: 0;
       border-top: 1px solid #333;
     }
@@ -105,15 +133,17 @@
       min-height: 46px;
       display: flex;
       align-items: center;
+      justify-content: center;
+      padding: 0 2px;
       border-bottom: 1px solid #333;
       color: #d5d5d5;
-      font-size: 10px;
-      line-height: 1.5;
-      letter-spacing: 0.8px;
+      font-size: 9px;
+      line-height: 1.4;
+      letter-spacing: 0.2px;
+      text-align: center;
     }
 
-    nav a:nth-child(even) {
-      padding-left: 18px;
+    nav a:not(:first-child) {
       border-left: 1px solid #333;
     }
 

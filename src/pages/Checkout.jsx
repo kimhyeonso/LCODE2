@@ -9,10 +9,12 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import MypageBackLink from "../components/MypageBackLink";
 import { useShop } from "../hooks/useShop";
 import { useAuth } from "../hooks/useAuth";
 import { recordPurchase } from "../services/purchaseHistory";
 import { decreaseProductStocks } from "../services/firestoreService";
+import { enrichShopProduct } from "../utils/shopProductResolver";
 import styles from "./Shop.module.scss";
 
 
@@ -1039,40 +1041,51 @@ export default function Checkout() {
     }
 
 
-    .lcode-checkoutEyebrow {
-      display: block;
-
-      margin-bottom: 54px;
-
-      color: #77736c;
-
-      font-size: 13px;
-
-      letter-spacing: 0.23em;
+    .lcode-checkoutHeader {
+      grid-column: 1 / -1;
+      min-width: 0;
+      padding-bottom: 28px;
+      font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
 
+    .lcode-checkoutHeader [data-mypage-back] {
+      font-size: 14px !important;
+    }
 
-    .lcode-checkoutTitle {
-      margin: 0 0 42px;
+    .lcode-checkoutEyebrow {
+      display: block;
+      margin: 0 0 25px;
+      padding: 0;
+      color: #aaa;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: normal;
+      letter-spacing: 0.16em;
+    }
 
-      font-family:
-        "Times New Roman",
-        "Noto Serif KR",
-        serif;
+    .lcode-checkoutHeader .lcode-checkoutTitle {
+      display: block;
+      width: 100%;
+      margin: 0 0 18px;
+      padding: 0 0 18px;
+      border-bottom: 1px solid #cec7bb;
+      color: #171714;
+      font-family: "DM Serif Display", "Noto Sans KR", serif;
+      font-size: 54px;
+      font-weight: 400;
+      line-height: 1.08;
+      letter-spacing: -0.05em;
+    }
 
-      font-size:
-        clamp(
-          72px,
-          7vw,
-          112px
-        );
-
-      font-weight: 500;
-
-      line-height: 0.8;
-
-      letter-spacing:
-        -0.065em;
+    .lcode-checkoutDescription {
+      display: block;
+      margin: 0;
+      padding: 0;
+      color: #8c857b;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.7;
+      letter-spacing: normal;
     }
 
 
@@ -1085,7 +1098,7 @@ export default function Checkout() {
 
       gap: 15px;
 
-      margin-bottom: 80px;
+      margin: 0 0 16px;
 
       padding:
         20px
@@ -1397,76 +1410,25 @@ export default function Checkout() {
     }
 
 
-    .lcode-shippingRow {
-      min-height: 62px;
-
+    .lcode-checkout .lcode-shippingRow {
+      position: relative;
       display: grid;
-
-      grid-template-columns:
-        120px
-        minmax(0, 1fr);
-
+      grid-template-columns: 120px minmax(0, 1fr);
       align-items: center;
-
+      min-height: 62px;
+      margin: 0;
       gap: 25px;
-
-      border-top:
-        1px solid
-        #e4e0d9;
+      border-top: 1px solid #e4e0d9;
     }
 
-
-    .lcode-shippingRow:first-child {
+    .lcode-checkout .lcode-shippingRow:first-child {
       border-top: 0;
     }
 
-
-    /*
-      수령인 / 연락처 / 주소 등
-      왼쪽 글자만 3px 아래
-    */
     .lcode-shippingRow > span {
       font-size: 13px;
-
-      transform:
-        translateY(3px);
+      align-self: center;
     }
-
-
-   .lcode-shippingRow {
-  position: relative;
-
-  min-height: 62px;
-
-  display: grid;
-
-  grid-template-columns:
-    120px
-    minmax(0, 1fr);
-
-  align-items: center;
-
-  gap: 25px;
-
-  border-top:
-    1px solid
-    #e4e0d9;
-}
-
-
-.lcode-shippingRow:first-child {
-  border-top: 0;
-}
-
-
-/* 왼쪽 라벨 */
-.lcode-shippingRow > span {
-  font-size: 13px;
-
-  transform:
-    translateY(3px);
-}
-
 
 /* 수령인 / 연락처 / 주소 / 상세주소 */
 .lcode-shippingRow input {
@@ -1998,55 +1960,44 @@ export default function Checkout() {
       box-sizing:
         border-box;
 
-      padding:
-        32px
-        26px
-        30px;
+      padding: 0 32px 40px;
 
-      border-top:
-        2px solid
-        #11110f;
+      border-top: 0;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 0;
 
-      background:
-        rgba(
-          248,
-          245,
-          239,
-          0.98
-        );
+      background: #fbf9f4;
 
-      backdrop-filter:
-        blur(10px);
+      backdrop-filter: none;
+      border-right: 1px solid #e5e5e5;
+      color: #222;
+      font-family: "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --payment-min-font-size: 14px;
     }
 
 
     .lcode-paymentSticky h2 {
-      margin:
-        0
-        0
-        40px;
+      margin: 0;
 
-      font-family:
-        "Times New Roman",
-        "Noto Serif KR",
-        serif;
+      font-family: inherit;
 
-      font-size: 31px;
+      font-size: 21px;
 
-      font-weight: 500;
+      font-weight: 700;
+      padding: 20px 0;
+      min-height: 74px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #d9d9d9;
+      line-height: 1.5;
     }
 
 
     .lcode-summaryRows {
-      padding-bottom: 27px;
+      padding-bottom: 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
+      padding-top: 26px;
     }
 
 
@@ -2058,26 +2009,24 @@ export default function Checkout() {
       justify-content:
         space-between;
 
-      gap: 22px;
+      gap: 20px;
 
       margin: 0;
 
-      padding:
-        11px
-        0;
+      padding: 9px 0;
 
-      color: #69655f;
+      color: #888;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
     }
 
 
     .lcode-summaryRow b {
-      color: #11110f;
+      color: #222;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
-      font-weight: 400;
+      font-weight: 600;
     }
 
 
@@ -2089,26 +2038,22 @@ export default function Checkout() {
     .lcode-summaryTotal {
       display: flex;
 
-      align-items:
-        flex-end;
+      align-items: center;
 
       justify-content:
         space-between;
 
-      gap: 20px;
+      gap: 18px;
 
-      padding:
-        32px
-        0;
+      padding: 26px 0 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
+      flex-wrap: wrap;
     }
 
 
     .lcode-summaryTotal > span {
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
       font-weight: 700;
     }
@@ -2119,37 +2064,30 @@ export default function Checkout() {
 
       white-space: nowrap;
 
-      font-family:
-        "Times New Roman",
-        serif;
+      font-family: inherit;
 
-      font-size: 31px;
+      font-size: 21px;
 
-      font-weight: 500;
+      font-weight: 600;
+      color: #222;
     }
 
 
     .lcode-summaryTotal strong small {
-      margin-left: 6px;
+      margin-left: 5px;
 
-      font-family:
-        Arial,
-        sans-serif;
+      font-family: inherit;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
       font-weight: 400;
     }
 
 
     .lcode-summaryBenefit {
-      padding:
-        27px
-        0;
+      padding: 26px 0 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
     }
 
 
@@ -2159,7 +2097,7 @@ export default function Checkout() {
       justify-content:
         space-between;
 
-      gap: 18px;
+      gap: 15px;
 
       margin: 0;
 
@@ -2167,18 +2105,20 @@ export default function Checkout() {
         8px
         0;
 
-      color: #77736c;
+      color: #888;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
+      flex-wrap: wrap;
+      row-gap: 8px;
     }
 
 
     .lcode-summaryBenefit p b {
       color: #11110f;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
-      font-weight: 400;
+      font-weight: 500;
     }
 
 
@@ -2188,43 +2128,36 @@ export default function Checkout() {
 
 
     .lcode-summaryMethod {
-      padding:
-        27px
-        0;
+      padding: 26px 0 20px;
 
-      border-bottom:
-        1px solid
-        #d8d3ca;
+      border-bottom: 1px solid #e2e2e2;
     }
 
 
     .lcode-summaryMethod span {
       display: block;
 
-      margin-bottom: 11px;
+      margin-bottom: 18px;
 
-      color: #88837b;
+      color: #aaa;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
-      letter-spacing:
-        0.13em;
+      letter-spacing: 2px;
     }
 
 
     .lcode-summaryMethod b {
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
     }
 
 
     .lcode-payButton {
       width: 100%;
 
-      margin-top: 27px;
+      margin-top: 26px;
 
-      padding:
-        19px
-        12px;
+      padding: 12px;
 
       border: 0;
 
@@ -2235,9 +2168,11 @@ export default function Checkout() {
 
       cursor: pointer;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
       font-weight: 700;
+      min-height: 56px;
+      font-family: inherit;
     }
 
 
@@ -2255,18 +2190,15 @@ export default function Checkout() {
 
 
     .lcode-payNotice {
-      margin:
-        14px
-        0
-        0;
+      margin: 18px 0 0;
 
-      color: #8b867e;
+      color: #aaa;
 
       text-align: center;
 
-      font-size: 13px;
+      font-size: var(--payment-min-font-size);
 
-      line-height: 1.7;
+      line-height: 1.6;
     }
 
 
@@ -2430,14 +2362,6 @@ export default function Checkout() {
       }
 
 
-      .lcode-checkoutTitle {
-        font-size:
-          clamp(
-            64px,
-            8vw,
-            90px
-          );
-      }
 
 
       .lcode-paymentGrid {
@@ -2466,14 +2390,6 @@ export default function Checkout() {
       }
 
 
-      .lcode-checkoutTitle {
-        font-size:
-          clamp(
-            62px,
-            12vw,
-            86px
-          );
-      }
 
 
       .lcode-paymentRail {
@@ -2505,14 +2421,6 @@ export default function Checkout() {
       }
 
 
-      .lcode-checkoutTitle {
-        font-size:
-          clamp(
-            54px,
-            17vw,
-            72px
-          );
-      }
 
 
       .lcode-checkoutSteps {
@@ -2558,7 +2466,7 @@ export default function Checkout() {
       }
 
 
-      .lcode-shippingRow {
+      .lcode-checkout .lcode-shippingRow {
         grid-template-columns:
           85px
           minmax(0, 1fr);
@@ -2570,6 +2478,33 @@ export default function Checkout() {
           27px
           0;
       }
+    }
+    .lcode-checkoutFrame {
+      grid-template-rows: auto 1fr;
+      row-gap: 0;
+    }
+
+    @media (max-width: 850px) {
+      .lcode-paymentRail { margin-top: 35px; }
+    }
+
+    @media (max-width: 640px) {
+      .lcode-paymentSticky {
+        --payment-min-font-size: 11px;
+        padding: 0 16px 28px;
+      }
+      .lcode-summaryTotal > span { font-size: 13px; }
+      .lcode-checkoutHeader .lcode-checkoutTitle {
+        font-size: 38px;
+        width: calc(100vw - 32px);
+        max-width: none;
+      }
+      .lcode-checkoutEyebrow { font-size: 13px; }
+      .lcode-checkoutHeader [data-mypage-back] { font-size: 13px !important; }
+    }
+
+    @media (max-width: 600px) {
+      .lcode-checkoutFrame { padding-top: 32px; }
     }
   `;
 
@@ -2593,9 +2528,8 @@ export default function Checkout() {
         >
           {/* LEFT */}
 
-          <div
-            className="lcode-checkoutMain"
-          >
+          <header className="lcode-checkoutHeader">
+            <MypageBackLink />
             <span
               className="lcode-checkoutEyebrow"
             >
@@ -2610,7 +2544,10 @@ export default function Checkout() {
               <br />
               & PAYMENT
             </h1>
-            <p>데모 결제 화면입니다. 실제 결제·배송은 진행되지 않지만 주문 수량만큼 상품 재고가 차감됩니다. 배송 정보는 예시로 입력해 주세요.</p>
+            <p className="lcode-checkoutDescription">데모 결제 화면입니다. 실제 결제·배송은 진행되지 않지만 주문 수량만큼 상품 재고가 차감됩니다. 배송 정보는 예시로 입력해 주세요.</p>
+          </header>
+
+          <div className="lcode-checkoutMain">
 
 
             <div
@@ -2673,7 +2610,7 @@ export default function Checkout() {
                           className="lcode-orderThumb"
                         >
                           {item.image ? (
-                            <img
+                            <img loading="lazy"
                               src={
                                 item.image
                               }

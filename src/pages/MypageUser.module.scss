@@ -35,7 +35,7 @@
   inset: -4px;
   background:
     linear-gradient(180deg, rgb(0 0 0 / 4%), rgb(0 0 0 / 24%)),
-    url("/Mypage-img/trv.png") center 72% / cover no-repeat;
+    url("/Mypage-img/trv.webp") center 72% / cover no-repeat;
   content: "";
   filter: blur(2px);
   transform: scale(1.01);
@@ -44,7 +44,7 @@
   position: absolute;
   z-index: 1;
   right: 1.4rem;
-  bottom: 1rem;
+  bottom: 4.35rem;
   margin: 0;
   color: #fff;
   font: 400 2.05rem/1.12 $display;
@@ -73,7 +73,7 @@
   right: -1rem;
   width: 20rem;
   aspect-ratio: 1254 / 648;
-  background: url("/Mypage-img/u.png") center / contain no-repeat;
+  background: url("/Mypage-img/u.webp") center / contain no-repeat;
   content: "";
   opacity: 0.1;
   pointer-events: none;
@@ -89,12 +89,14 @@
 .greeting { margin: 1rem 0 .25rem; color: #99948d; font: 400 .58rem $korean; }
 .profile h1 { margin: 0; color: #111; font: 700 1.5rem/1 $korean; }
 .email { margin-top: 1rem; letter-spacing: .04em; }
-.edit { display: inline-block; margin-top: .6rem; border: 1px solid #cecece; padding: .32rem .95rem; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
+.profileTools { display: flex; gap: .35rem; margin-top: .6rem; }
+.edit, .signout { display: inline-block; margin: 0; border: 1px solid #cecece; padding: .32rem .95rem; background: transparent; color: #77736c; font: 400 .5rem $korean; text-decoration: none; }
+.signout { cursor: pointer; }
 
 // Limit the menu and its dividers to two-thirds of the profile area.
 .menuList { display: grid; width: 66.6667%; gap: 0; margin-top: 7.7rem; border-top: 1px solid #dedad3; }
-.menuList a, .menuList button { display: grid; grid-template-columns: .9rem 1fr auto; align-items: center; column-gap: .45rem; min-height: 1.75rem; border: 0; border-bottom: 1px solid #dedad3; background: transparent; color: #222; font: 400 .62rem $korean; text-align: left; text-decoration: none; }
-.menuList a::before, .menuList button::before { width: .7rem; height: .7rem; background: var(--menu-icon) center / contain no-repeat; content: ""; }
+.menuList a, .menuList button { display: grid; grid-template-columns: 1.35rem 1fr auto; align-items: center; column-gap: .7rem; min-height: 1.75rem; border: 0; border-bottom: 1px solid #dedad3; background: transparent; color: #222; font: 400 .62rem $korean; text-align: left; text-decoration: none; }
+.menuList a::before, .menuList button::before { justify-self: center; width: var(--menu-icon-size, .7rem); height: var(--menu-icon-size, .7rem); background: var(--menu-icon) center / contain no-repeat; content: ""; }
 .menuList button::before { background: url("/Mypage-img/out.svg") center / contain no-repeat; }
 .menuList span { color: #aaa49c; }
 .menuList button { color: #aaa49c; }
@@ -117,7 +119,7 @@
   bottom: -4rem;
   width: 30rem;
   height: 19rem;
-  background: url("/Mypage-img/g.png") center / contain no-repeat;
+  background: url("/Mypage-img/g.webp") center / contain no-repeat;
   content: "";
   opacity: .38;
   pointer-events: none;
@@ -175,11 +177,24 @@
 .recent h2 em { color: #777; font-style: normal; }
 .recent p { margin: 0; color: #777; font: 400 .42rem $korean; letter-spacing: .12em; }
 .saved {
-  background: #f2f0eb;
+  background:
+    linear-gradient(180deg, rgb(244 240 231 / 0%) 24%, rgb(244 240 231 / 74%) 62%, rgb(244 240 231 / 96%) 100%),
+    url("/Mypage-img/stories-card.svg") center / cover no-repeat;
 }
 
-.saved strong { margin-top: .25rem; color: #1d2638; font-size: 2rem; }
-.stories strong { margin-top: .25rem; color: #66615a; font-size: .78rem; line-height: 1.1; font-size: 1.5rem;}
+.stories {
+  background:
+    linear-gradient(180deg, rgb(244 240 231 / 0%) 24%, rgb(244 240 231 / 74%) 62%, rgb(244 240 231 / 96%) 100%),
+    url("/Mypage-img/travel-story-04.svg") center / cover no-repeat;
+}
+
+.summary small { color: #eee !important; text-shadow: 0 1px 8px rgb(0 0 0 / 34%); }
+.saved > small { color: #eee !important; text-shadow: 0 1px 8px rgb(0 0 0 / 34%); }
+.stories > small { color: #fff !important; text-shadow: 0 1px 8px rgb(0 0 0 / 52%); }
+.saved > span,
+.stories > span { color: #706b63; }
+.saved strong { margin-top: .25rem; color: #07172f; font-size: 2rem; }
+.stories strong { margin-top: .25rem; color: #29241f; font-size: .78rem; line-height: 1.1; font-size: 1.5rem;}
 .stories .stars { display: block; font: 400 1rem/1 $korean; letter-spacing: .14em; }
 
 @include tablet {
@@ -243,7 +258,7 @@
     overflow: hidden;
   }
   .heroVisual { height: 100%; }
-  .heroVisual p { right: 18px; bottom: 18px; font-size: 46px; }
+  .heroVisual p { right: 18px; bottom: 118px; font-size: 46px; }
 
   .profile {
     grid-row: 1;
@@ -271,7 +286,7 @@
   .profile > .greeting,
   .profile > h1,
   .profile > .email,
-  .profile > .edit { transform: none; }
+  .profile > .profileTools { transform: none; }
 
   .menuList {
     z-index: 1;
@@ -288,16 +303,17 @@
   .profile .email { font-size: 15px; }
   .profile .greeting { margin-top: 22px; font-size: 15px; }
   .profile h1 { font-size: clamp(32px, calc(2.5vw + 2px), 44px); }
-  .profile .edit { margin-top: 14px; padding: 8px 14px; font-size: 15px; }
+  .profile .profileTools { margin-top: 14px; }
+  .profile .edit, .profile .signout { padding: 8px 14px; font-size: 15px; }
   .menuList a,
   .menuList button {
     min-height: clamp(34px, 4.6vh, 44px);
-    grid-template-columns: 20px 1fr auto;
-    column-gap: 10px;
+    grid-template-columns: 26px 1fr auto;
+    column-gap: 14px;
     font-size: 15px;
   }
   .menuList a::before,
-  .menuList button::before { width: 16px; height: 16px; }
+  .menuList button::before { width: var(--menu-icon-size, 16px); height: var(--menu-icon-size, 16px); }
   .summary small { font-size: 13px; }
   .summary > article > span { font-size: 13px; }
   .recent p { font-size: 13px; }
@@ -338,14 +354,16 @@
     grid-row: 1;
     display: block;
     margin-top: 0;
-    padding: 0 28px 24px;
+    padding: 0 0 24px;
     border-bottom: 1px solid #dedad3;
   }
   .profile .eyebrow { font-size: 10px; }
-  .profile .greeting { margin: 20px 0 4px; font-size: 12px; }
-  .profile h1 { font-size: 29px; }
-  .profile .email { margin-top: 16px; font-size: 10px; }
-  .profile .edit { margin-top: 12px; padding: 6px 9px; font-size: 10px; }
+  .profile .greeting { margin: 20px 0 20px; font-size: 13px; }
+  .profile h1 { font-size: 38px; }
+  .profile .email { margin-top: 8px; font-size: 14px; }
+  .profile .profileTools { margin-top: 12px; }
+  .profile .edit,
+  .profile .signout { padding: 6px 9px; font-size: 10px; }
   .dashboard { grid-column: 1; grid-row: 2; display: block; height: auto; margin-top: 19px; }
   .heroVisual { display: none; }
   .summary {
@@ -371,12 +389,13 @@
   }
   .menuList a,
   .menuList button {
+    grid-template-columns: 26px 1fr auto;
     min-height: 54px;
     padding: 0 28px;
     font-size: 13px;
   }
   .menuList a::before,
-  .menuList button::before { width: 15px; height: 15px; }
+  .menuList button::before { width: var(--menu-icon-size, 15px); height: var(--menu-icon-size, 15px); }
   .profile::after { display: none; }
 }
 

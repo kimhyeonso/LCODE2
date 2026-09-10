@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 import styles from "./MagazineEvent.module.scss";
 import { EventHeader } from "./Event";
 
-const icon = (name) => `/event/event04/${name}.png`;
+const icon = (name) => `/event/event04/${name}.webp`;
 
 const asset = {
-  cover: "/event/event04/magazine_01.png",
-  spread: "/event/event04/magazine_02.png",
-  sticker: "/event/event04/magazine_icon_02.png",
-  stamp: "/event/event04/magazine_icon_01.png",
+  cover: "/event/event04/magazine_01.webp",
+  spread: "/event/event04/magazine_02.webp",
+  sticker: "/event/event04/magazine_icon_02.webp",
+  stamp: "/event/event04/magazine_icon_01.webp",
 };
 
 const steps = [
@@ -92,8 +92,8 @@ export default function MagazineEvent({ onExit }) {
               </p>
             </div>
             <div className={styles.heroVisual}>
-              <img className={styles.heroCover} src={asset.cover} alt="여행 매거진 표지" />
-              <img className={styles.heroSticker} src={asset.sticker} alt="" />
+              <img loading="lazy" className={styles.heroCover} src={asset.cover} alt="여행 매거진 표지" />
+              <img loading="lazy" className={styles.heroSticker} src={asset.sticker} alt="" />
             </div>
           </header>
 
@@ -103,7 +103,7 @@ export default function MagazineEvent({ onExit }) {
               {steps.map((step) => (
                 <li key={step.no}>
                   <span className={styles.stepNo}>{step.no}</span>
-                  <img src={step.icon} alt="" />
+                  <img loading="lazy" src={step.icon} alt="" />
                   <h3>{step.title}</h3>
                   <p>{step.text}</p>
                 </li>
@@ -126,7 +126,7 @@ export default function MagazineEvent({ onExit }) {
           <section className={styles.block}>
             <h2>나만의 여행 잡지 미리보기</h2>
             <figure className={styles.preview}>
-              <img src={asset.spread} alt="여행 매거진 내지 미리보기" />
+              <img loading="lazy" src={asset.spread} alt="여행 매거진 내지 미리보기" />
             </figure>
           </section>
 
@@ -134,8 +134,8 @@ export default function MagazineEvent({ onExit }) {
             <h2>당첨자 혜택</h2>
             <div className={styles.reward}>
               <div className={styles.rewardVisual}>
-                <img className={styles.rewardCover} src={asset.cover} alt="" />
-                <img className={styles.rewardStamp} src={asset.stamp} alt="" />
+                <img loading="lazy" className={styles.rewardCover} src={asset.cover} alt="" />
+                <img loading="lazy" className={styles.rewardStamp} src={asset.stamp} alt="" />
               </div>
               <div>
                 <strong>
@@ -154,7 +154,7 @@ export default function MagazineEvent({ onExit }) {
             <ul className={styles.tips}>
               {tips.map((tip) => (
                 <li key={tip.title}>
-                  <img src={tip.icon} alt="" />
+                  <img loading="lazy" src={tip.icon} alt="" />
                   <h3>{tip.title}</h3>
                   <p>{tip.text}</p>
                 </li>
