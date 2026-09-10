@@ -9078,3 +9078,715 @@ button {
     letter-spacing: 1px !important;
   }
 }
+
+/* =========================================================
+   FINAL POLISH · 2026-09-10
+   - 선택형 화면 CHAPTER 블록은 JSX에서 제거
+   - 모바일 1/2차 조사 작은 골드 라벨
+   - 쿠폰 발급 프리뷰 UI
+========================================================= */
+
+.mobileInvestigationLabel {
+  display: none;
+}
+
+.rewardCoupon {
+  grid-template-columns: 82px 1fr auto;
+}
+
+.rewardCouponCopy {
+  min-width: 0;
+}
+
+.couponIssueButton {
+  min-width: 76px;
+  min-height: 68px;
+  border: 1px solid rgba(214, 170, 97, 0.42);
+  background: rgba(214, 170, 97, 0.06);
+  color: #d6aa61;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 5px;
+  padding: 9px 10px;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 180ms ease, background 180ms ease, opacity 180ms ease;
+}
+
+.couponIssueButton:hover:not(:disabled) {
+  border-color: rgba(214, 170, 97, 0.78);
+  background: rgba(214, 170, 97, 0.11);
+}
+
+.couponIssueButton > span {
+  min-width: 24px;
+  min-height: 24px;
+  display: grid;
+  place-items: center;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.couponIssueButton > small {
+  color: inherit;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.couponIssueButton:disabled {
+  cursor: wait;
+  opacity: 0.78;
+}
+
+.couponIssueDone {
+  color: rgba(245, 239, 232, 0.72);
+  border-color: rgba(245, 239, 232, 0.18);
+  background: rgba(245, 239, 232, 0.035);
+}
+
+.couponSpinner {
+  width: 23px !important;
+  height: 23px !important;
+  min-width: 23px !important;
+  min-height: 23px !important;
+  border: 2px solid rgba(214, 170, 97, 0.24);
+  border-top-color: #d6aa61;
+  border-radius: 50%;
+  animation: couponSpin 0.72s linear infinite;
+}
+
+@keyframes couponSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.couponModalOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(2, 5, 11, 0.78);
+  backdrop-filter: blur(8px);
+}
+
+.couponIssuedModal {
+  width: min(560px, calc(100% - 32px));
+  border: 1px solid rgba(214, 170, 97, 0.52);
+  background:
+    linear-gradient(145deg, rgba(18, 24, 36, 0.995), rgba(6, 9, 16, 0.995));
+  box-shadow: 0 28px 80px rgba(0, 0, 0, 0.48);
+  padding: 34px 32px 30px;
+  text-align: center;
+}
+
+.couponIssuedModal > span {
+  display: block;
+  margin-bottom: 12px;
+  color: #d6aa61;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.couponIssuedModal h3 {
+  margin: 0 0 16px;
+  color: #fff;
+  font-size: 28px;
+  line-height: 1.24;
+  word-break: keep-all;
+}
+
+.couponIssuedModal > p {
+  margin: 0;
+  color: rgba(245, 239, 232, 0.78);
+  font-size: 14px;
+  line-height: 1.65;
+  word-break: keep-all;
+}
+
+.couponIssuedModal > small {
+  display: block;
+  margin-top: 10px;
+  color: rgba(245, 239, 232, 0.46);
+  font-size: 10px;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.couponModalActions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.couponModalActions button {
+  min-height: 48px;
+  border: 1px solid rgba(245, 239, 232, 0.15);
+  background: transparent;
+  color: rgba(245, 239, 232, 0.74);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.couponModalActions button:last-child {
+  border-color: rgba(214, 170, 97, 0.65);
+  background: #d6aa61;
+  color: #070910;
+}
+
+@media (max-width: 1024px) {
+  .hubScreen[data-round="01"] .hubHeader,
+  .hubScreen[data-round="02"] .hubHeader {
+    padding-top: 4px;
+  }
+
+  .hubScreen[data-round="01"] .mobileInvestigationLabel,
+  .hubScreen[data-round="02"] .mobileInvestigationLabel {
+    display: block !important;
+    margin: 0 0 10px !important;
+    color: #d6aa61 !important;
+    font-size: 10px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    letter-spacing: 0.18em !important;
+    text-align: center !important;
+  }
+
+  .rewardCoupon {
+    grid-template-columns: 58px minmax(0, 1fr) 58px !important;
+    gap: 8px !important;
+  }
+
+  .rewardCoupon > div {
+    padding-left: 8px;
+  }
+
+  .couponIssueButton {
+    min-width: 54px;
+    min-height: 58px;
+    padding: 7px 5px;
+  }
+
+  .couponIssueButton > span {
+    font-size: 19px;
+  }
+
+  .couponIssueButton > small {
+    font-size: 7px;
+  }
+
+  .couponModalOverlay {
+    padding: 18px;
+  }
+
+  .couponIssuedModal {
+    width: 100%;
+    padding: 28px 20px 22px;
+  }
+
+  .couponIssuedModal h3 {
+    font-size: 23px;
+  }
+
+  .couponIssuedModal > p {
+    font-size: 12px;
+  }
+
+  .couponModalActions {
+    gap: 9px;
+    margin-top: 21px;
+  }
+
+  .couponModalActions button {
+    min-height: 46px;
+    font-size: 10px;
+  }
+}
+
+/* =========================================================
+   FINAL POLISH 2026-09-10
+   - WEB focus picker optical centering
+   - lightweight coupon issue action
+========================================================= */
+@media (min-width: 1025px) {
+  /* 기존 공통 +70px 보정 때문에 집중조사 묶음이 우측으로 밀려 보이던 것을 보정. */
+  .mysteryExperience[data-phase="focus1"] .focusInner,
+  .mysteryExperience[data-phase="focus2"] .focusInner {
+    margin-left: calc(var(--mystery-web-sidebar) + 6px) !important;
+    margin-right: auto !important;
+  }
+}
+
+.couponIssueButton {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 10px 0 10px 18px !important;
+  border: 0 !important;
+  background: transparent !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  place-items: initial !important;
+  align-content: initial !important;
+  gap: 7px !important;
+  color: #d6aa61 !important;
+  box-shadow: none !important;
+  white-space: nowrap;
+  cursor: pointer;
+  opacity: 0.92;
+  transition: opacity 160ms ease, transform 160ms ease !important;
+}
+
+.couponIssueButton:hover:not(:disabled) {
+  border: 0 !important;
+  background: transparent !important;
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.couponIssueButton > small {
+  order: 1;
+  color: inherit !important;
+  font-size: 11px !important;
+  font-weight: 850 !important;
+  line-height: 1 !important;
+  letter-spacing: 0.04em !important;
+}
+
+.couponIssueButton > span {
+  order: 2;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  width: 18px !important;
+  height: 18px !important;
+  display: inline-grid !important;
+  place-items: center !important;
+  font-size: 20px !important;
+  line-height: 1 !important;
+}
+
+.couponDownloadIcon {
+  position: relative;
+  top: -1px;
+  font-weight: 900;
+}
+
+.couponIssueButton:disabled {
+  opacity: 0.72 !important;
+}
+
+.couponIssueDone {
+  color: rgba(245, 239, 232, 0.62) !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.couponSpinner {
+  order: 2;
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  border-width: 2px !important;
+}
+
+@media (max-width: 1024px) {
+  .couponIssueButton {
+    padding: 8px 0 8px 8px !important;
+    gap: 5px !important;
+  }
+
+  .couponIssueButton > small {
+    font-size: 8px !important;
+  }
+
+  .couponIssueButton > span {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+    font-size: 17px !important;
+  }
+
+  .couponSpinner {
+    width: 16px !important;
+    height: 16px !important;
+    min-width: 16px !important;
+    min-height: 16px !important;
+  }
+}
+
+/* =========================================================
+   COUPON ICON BUTTON FINAL
+   - icon only
+   - restore compact square outline
+========================================================= */
+.couponIssueButton {
+  width: 48px !important;
+  height: 48px !important;
+  min-width: 48px !important;
+  min-height: 48px !important;
+  padding: 0 !important;
+  border: 1px solid rgba(214, 170, 97, 0.52) !important;
+  background: rgba(214, 170, 97, 0.025) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  place-items: center !important;
+  gap: 0 !important;
+  color: #d6aa61 !important;
+  opacity: 0.94;
+  transform: none !important;
+  transition: border-color 160ms ease, background 160ms ease, opacity 160ms ease !important;
+}
+
+.couponIssueButton:hover:not(:disabled) {
+  border-color: rgba(214, 170, 97, 0.88) !important;
+  background: rgba(214, 170, 97, 0.08) !important;
+  opacity: 1;
+  transform: none !important;
+}
+
+.couponIssueButton > small {
+  display: none !important;
+}
+
+.couponDownloadIcon {
+  position: static !important;
+  top: auto !important;
+  margin: 0 !important;
+  transform: none !important;
+  line-height: 1 !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  display: block !important;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+.couponIssuedIcon {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  display: grid !important;
+  place-items: center !important;
+  font-size: 19px !important;
+  line-height: 1 !important;
+}
+
+.couponIssueDone {
+  border-color: rgba(245, 239, 232, 0.22) !important;
+  background: rgba(245, 239, 232, 0.025) !important;
+  color: rgba(245, 239, 232, 0.62) !important;
+}
+
+.couponSpinner {
+  order: initial !important;
+  width: 19px !important;
+  height: 19px !important;
+  min-width: 19px !important;
+  min-height: 19px !important;
+}
+
+@media (max-width: 1024px) {
+  .couponIssueButton {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+  }
+
+  .couponDownloadIcon,
+  .couponIssuedIcon {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px !important;
+    min-height: 20px !important;
+  }
+
+  .couponSpinner {
+    width: 17px !important;
+    height: 17px !important;
+    min-width: 17px !important;
+    min-height: 17px !important;
+  }
+}
+
+/* Content is already inside Event's sidebar offset. */
+@media (min-width: 1025px) {
+  .mysteryExperience[data-phase] .hubInner,
+  .mysteryExperience[data-phase] .focusInner,
+  .mysteryExperience[data-phase] .summaryInner,
+  .mysteryExperience[data-phase] .reconstructionInner,
+  .mysteryExperience[data-phase] .finalInner {
+    width: min(1260px, calc(100% - 64px)) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    box-sizing: border-box;
+  }
+  .mysteryExperience .finalGrid,
+  .mysteryExperience .focusGrid,
+  .mysteryExperience .suspectGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    width: 100% !important;
+  }
+  .mysteryExperience .hubScreen .caseProgressHud {
+    position: relative !important;
+    inset: auto !important;
+    transform: none !important;
+    width: 100% !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    margin: 24px auto 100px !important;
+  }
+}
+.navigationFeedback {
+  position: absolute;
+  top: 44%;
+  z-index: 55;
+  pointer-events: none;
+  color: #fff;
+  font-size: clamp(32px, 4vw, 60px);
+  line-height: 1;
+  opacity: 0;
+  animation: navigationFeedbackFade 420ms ease-out both;
+}
+.navigationFeedback[data-direction="left"] { left: 12%; }
+.navigationFeedback[data-direction="right"] { right: 12%; }
+@keyframes navigationFeedbackFade {
+  0% { opacity: 0; }
+  20% { opacity: .22; }
+  100% { opacity: 0; }
+}
+@media (max-width: 1024px) {
+  .navigationFeedback { display: none; }
+}
+@media (min-width: 1025px) {
+  .mysteryExperience .hubScreen .caseProgressHud {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 24px;
+    gap: 16px;
+    clip-path: none;
+    box-sizing: border-box;
+  }
+  .mysteryExperience .hubScreen .caseProgressMeter { height: 40px; }
+}
+
+/* Desktop skip confirmation: separate description from actions. */
+@media (min-width: 1025px) {
+  .confirmModal.skipConfirmModal {
+    height: auto;
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+
+  .confirmModal.skipConfirmModal > h2 {
+    margin: 12px 0 16px;
+    line-height: 1.3;
+  }
+
+  .confirmModal.skipConfirmModal > p {
+    margin: 0 0 22px;
+    line-height: 1.65;
+  }
+}
+
+/* =========================================================
+   FINAL PATCH 2026-09-10
+   - desktop selection centering
+   - background navigation feedback
+   - coupon icon optical centering
+   - desktop skip modal spacing
+========================================================= */
+
+@media (min-width: 1025px) {
+  /* The event root already starts to the right of the site sidebar.
+     Center selection/investigation boards inside this root only. */
+  .mysteryExperience[data-phase="round1Hub"] .hubInner,
+  .mysteryExperience[data-phase="round2Hub"] .hubInner,
+  .mysteryExperience[data-phase="focus1"] .focusInner,
+  .mysteryExperience[data-phase="focus2"] .focusInner,
+  .mysteryExperience[data-phase="summary"] .summaryInner,
+  .mysteryExperience[data-phase="reconstruction"] .reconstructionInner,
+  .mysteryExperience[data-phase="finalChoice"] .finalInner {
+    width: min(1260px, calc(100% - 96px)) !important;
+    max-width: 1260px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    left: auto !important;
+    right: auto !important;
+    transform: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .mysteryExperience[data-phase="focus1"] .focusGrid,
+  .mysteryExperience[data-phase="focus2"] .focusGrid,
+  .mysteryExperience[data-phase="finalChoice"] .finalGrid {
+    width: 100% !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  }
+
+  /* Investigation hubs stay 2 x 2 and keep the fixed CASE PROGRESS HUD. */
+  .mysteryExperience[data-phase="round1Hub"] .suspectGrid,
+  .mysteryExperience[data-phase="round2Hub"] .suspectGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .mysteryExperience[data-phase="round1Hub"] .caseProgressHud,
+  .mysteryExperience[data-phase="round2Hub"] .caseProgressHud {
+    position: fixed !important;
+    top: 50% !important;
+    right: 0 !important;
+    bottom: auto !important;
+    left: auto !important;
+    width: 205px !important;
+    min-height: 390px !important;
+    margin: 0 !important;
+    padding: 32px 24px 28px 31px !important;
+    transform: translateY(-50%) !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 11px !important;
+    clip-path: polygon(14% 0, 100% 0, 100% 100%, 0 100%, 0 10%) !important;
+  }
+
+  .confirmModal.skipConfirmModal {
+    padding: 44px 34px 38px !important;
+  }
+
+  .confirmModal.skipConfirmModal > span {
+    display: block;
+    margin-bottom: 18px !important;
+  }
+
+  .confirmModal.skipConfirmModal > h2 {
+    margin: 0 0 22px !important;
+    line-height: 1.34 !important;
+  }
+
+  .confirmModal.skipConfirmModal > p {
+    margin: 0 0 30px !important;
+    line-height: 1.75 !important;
+  }
+
+  .confirmModal.skipConfirmModal > button + button {
+    margin-top: 12px !important;
+  }
+}
+
+.navigationFeedback {
+  position: absolute !important;
+  top: 50% !important;
+  z-index: 55 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  pointer-events: none !important;
+  transform: translateY(-50%) !important;
+  opacity: 0;
+  animation: mysteryNavigationFeedback 440ms ease-out both !important;
+}
+
+.navigationFeedback[data-direction="left"] {
+  left: 7% !important;
+}
+
+.navigationFeedback[data-direction="right"] {
+  right: 7% !important;
+}
+
+.navigationFeedback > span {
+  display: block;
+  width: 0;
+  height: 0;
+  opacity: .72;
+}
+
+.navigationFeedback[data-direction="right"] > span {
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-left: 15px solid rgba(255, 255, 255, .78);
+}
+
+.navigationFeedback[data-direction="left"] > span {
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 15px solid rgba(255, 255, 255, .78);
+}
+
+.navigationFeedback > span:nth-child(1) { opacity: .24; }
+.navigationFeedback > span:nth-child(2) { opacity: .42; }
+.navigationFeedback > span:nth-child(3) { opacity: .62; }
+
+@keyframes mysteryNavigationFeedback {
+  0% { opacity: 0; transform: translateY(-50%) scale(.92); }
+  22% { opacity: .28; transform: translateY(-50%) scale(1); }
+  100% { opacity: 0; transform: translateY(-50%) scale(1.04); }
+}
+
+@media (max-width: 1024px) {
+  .navigationFeedback { display: none !important; }
+}
+
+.couponIssueButton {
+  display: grid !important;
+  place-items: center !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 0 !important;
+  line-height: 0 !important;
+}
+
+.couponIssueButton .couponDownloadIcon {
+  display: block !important;
+  position: static !important;
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateY(-1px) !important;
+  transform-origin: center !important;
+  overflow: visible !important;
+}
+
+.couponIssueButton .couponIssuedIcon {
+  display: grid !important;
+  place-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  line-height: 1 !important;
+  transform: none !important;
+}

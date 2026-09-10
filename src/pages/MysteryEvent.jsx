@@ -1,4 +1,6 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import styles from "./MysteryEvent.module.scss";
 
 // REVISION 2026-09-08 / WEB-PASS-03
@@ -315,7 +317,7 @@ const prologueScenes = [
     character: asset.jeongeun,
     fixedPosition: "left",
     animation: "quickLeft",
-    text: "사진부터 정리해야 돼.",
+    text: "나는 일단 사진부터 정리해야 돼.",
   },
 
   {
@@ -335,7 +337,7 @@ const prologueScenes = [
     character: asset.seunggeun,
     fixedPosition: "center",
     animation: "soft",
-    text: "야, 우리 사진 한 장 더 찍자. 이번엔 좀 제대로.",
+    text: "우리 단체 사진 마지막으로 한 장만 더 찍자. 기념으로.",
   },
 
   {
@@ -366,7 +368,7 @@ const prologueScenes = [
     character: asset.sohee,
     fixedPosition: "center",
     animation: "soft",
-    text: "근데 승근이 왜 이렇게 조용해? 승근아?",
+    text: "근데 승근이 무슨 일로 이렇게 조용해?",
   },
 
   {
@@ -375,20 +377,13 @@ const prologueScenes = [
     character: asset.sohee,
     fixedPosition: "center",
     animation: "none",
-    text: "야, 전승근. 자?",
+    text: "승근아, 자?",
   },
 
   {
     speaker: "내레이션",
     background: asset.drowsyScene,
     deathDiscovery: true,
-    darkness: 0.18,
-    text: "소희가 가까이 다가가 승근의 상태를 확인했다.",
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.drowsyScene,
     text: "승근은 숨을 쉬지 않고 있었다.",
     darkness: 0.22,
   },
@@ -400,7 +395,7 @@ const prologueScenes = [
     fixedPosition: "center",
     animation: "soft",
     emphasis: true,
-    text: "승근아!!",
+    text: "전승근!!",
     darkness: 0.24,
   },
 
@@ -410,7 +405,7 @@ const prologueScenes = [
     character: asset.jiyoung,
     fixedPosition: "right",
     animation: "soft",
-    text: "잠깐... 어떡해. 우리 어떡해...?",
+    text: "서...설마 죽은거야? 진짜로??",
     darkness: 0.24,
   },
 
@@ -418,13 +413,6 @@ const prologueScenes = [
     speaker: "내레이션",
     background: asset.drowsyScene,
     text: "모두가 얼어붙은 사이, 승근의 손 근처에서 작은 메모가 발견됐다.",
-    darkness: 0.25,
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.drowsyScene,
-    text: "급히 남긴 듯 흐트러진 글씨. 죽기 전 남긴 마지막 메시지였다.",
     darkness: 0.25,
   },
 
@@ -474,7 +462,7 @@ const firstInterviews = {
       position: "right",
 
       text:
-        "여행비 때문에 좀 싸운 건 맞아. 정산이 계속 안 맞았거든.",
+        "여행비 때문에 좀 다툰 건 맞아요. 정산이 계속 안 맞았거든요.",
     },
 
     {
@@ -485,7 +473,7 @@ const firstInterviews = {
       position: "left",
 
       text:
-        "그래도 그게 끝이야. 사진 찍고 나서는 계속 자리에서 영화 보고 있었고.",
+        "그래도 그게 끝이에요. 사진 찍고 나서는 계속 자리에서 영화 보고 있었어요.",
     },
 
     {
@@ -494,15 +482,7 @@ const firstInterviews = {
       character: asset.jiyoungProfile,
       fixedPosition: "left",
       emphasis: true,
-      text: "아, 마지막 단체사진. 그때 승근이 표정이 평소랑 조금 달랐어.",
-    },
-
-    {
-      speaker: "내레이션",
-      background: asset.cabin,
-      prop: asset.groupPhoto,
-      propType: "photoFocus",
-      text: "사진을 다시 확인하자, 승근의 표정은 다른 사람들과 미묘하게 달라 보였다.",
+      text: "아, 마지막 단체사진. 그때 승근이 표정이 평소랑 조금 달랐어요.",
     },
 
     {
@@ -513,7 +493,7 @@ const firstInterviews = {
       position: "right",
 
       text:
-        "사건이 일어날 때까지 거의 자리에서 안 움직였어. 그게 내가 말할 수 있는 전부야.",
+        "사건이 일어날 때까지 거의 자리에서 안 움직였어요. 그게 제가 말할 수 있는 전부예요.",
     },
   ],
 
@@ -561,7 +541,7 @@ const firstInterviews = {
       background: asset.cabin,
       character: asset.jeongeun,
       position: "right",
-      text: "액세서리 하나를 빌려줬다가 잃어버린 적은 있어.",
+      text: "예전에 악세서리 하나를 빌려줬다가 잃어버려서 어쩔 수 없이 넘어갔던 적은 있습니다.",
     },
 
     {
@@ -570,7 +550,7 @@ const firstInterviews = {
       character: asset.jeongeunProfile,
       position: "left",
       emphasis: true,
-      text: "사진 찍고 난 뒤엔 따뜻한 물 받으러 갔어.",
+      text: "사진 찍고 난 뒤에요? 다른 건 없었고 따뜻한 물을 받으러 갔습니다.",
     },
 
     {
@@ -578,7 +558,7 @@ const firstInterviews = {
       background: asset.cabinAlt,
       character: asset.jeongeun,
       position: "right",
-      text: "승근이 컵은 안 만졌어.",
+      text: "승근이 쪽으론 손대지도 않았습니다.",
     },
   ],
 
@@ -629,7 +609,7 @@ const hiddenFiles = {
       background: asset.cabin,
       character: asset.jiyoung,
       position: "right",
-      text: "사실... 내가 영화 보고 있었다고 했잖아.",
+      text: "사실... 제가 영화 보고 있었다고 했잖아요.",
     },
     {
       speaker: "유지영",
@@ -637,7 +617,7 @@ const hiddenFiles = {
       character: asset.jiyoung,
       position: "right",
       animation: "none",
-      text: "그게 뭐였냐면...",
+      text: "그게 뭐였냐면요...",
     },
     {
       speaker: "유지영",
@@ -653,22 +633,22 @@ const hiddenFiles = {
       character: asset.jiyoungProfile,
       position: "left",
       emphasis: true,
-      text: "뿌이뿌이 모루카였어.",
+      text: "뿌이뿌이 모루카라는 만화였어요.",
     },
     {
       speaker: "유지영",
       background: asset.cabin,
       character: asset.jiyoung,
       position: "right",
-      text: "기니피그가 자동차가 되는 건데... 아니, 왜 설명하고 있지.",
+      text: "기니피그가 자동차가 되는 건데요... 아니, 제가 왜 설명하고 있죠.",
     },
     {
       speaker: "유지영",
       background: asset.cabinAlt,
       character: asset.jiyoung,
       position: "right",
-      text: "승근이가 내 인형 가져가서 장난치는 것도 진짜 싫었어.",
-      note: "돈 문제 말고도 오래 쌓인 불만이 있었다.",
+      text: "승근이가 제 인형 가져가서 장난치는 것도 솔직히 진짜 싫었어요.",
+      note: "돈 문제 말고도 오래 쌓인 불만이 많아보였다.",
     },
   ],
 
@@ -681,7 +661,7 @@ const hiddenFiles = {
       position: "left",
 
       text:
-        "사실 입학하기 전에는 무용을 전공했어.",
+        "사실 모델과로 입학하기 전에는 무용을 전공했었어.",
     },
 
     {
@@ -735,14 +715,14 @@ const hiddenFiles = {
       background: asset.cabin,
       character: asset.jeongeun,
       position: "right",
-      text: "승근이는 자기 의견이 센 편이었어.",
+      text: "승근이는 자기 의견이 강한 편이었습니다.",
     },
     {
       speaker: "최정은",
       background: asset.cabin,
       character: asset.jeongeun,
       position: "right",
-      text: "조율할 때 부딪힌 적은 있었고.",
+      text: "조율할 때 부딪힌 적도 종종 있었습니다.",
     },
     {
       speaker: "최정은",
@@ -750,14 +730,14 @@ const hiddenFiles = {
       character: asset.jeongeunProfile,
       position: "left",
       emphasis: true,
-      text: "그래도 내가 팀장이니까 정리해야 했지.",
+      text: "그래도 제가 당시에 팀장이니까 제 선에서 정리해야 했습니다.",
     },
     {
       speaker: "최정은",
       background: asset.cabin,
       character: asset.jeongeun,
       position: "right",
-      text: "승근이도 결국 양보했고. 그 마음은 알고 있었어.",
+      text: "승근이도 결국 양보했습니다. 그 마음은 알고 있었고요.",
     },
   ],
 
@@ -765,78 +745,45 @@ const hiddenFiles = {
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsu,
       position: "left",
-
-      text:
-        "이번 프로젝트에서 내가 팀장 맡았던 건 맞아. 신경 쓸 게 꽤 많았지.",
+      text: "내가 불만이었던 건 프로젝트 마무리랑 피날레 자리였어.",
     },
-
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsuProfile,
       position: "right",
-
-      text:
-        "전체 퀄리티 신경 쓴다고 마감 직전까지 수정한 적도 많았고, 승근이가 그런 걸로 놀린 적도 있었어.",
+      text: "프로젝트도 다 안 끝났는데 발표 직전 이틀을 빠졌잖아. 그동안 남은 사람들이 마무리를 다 메웠고.",
     },
-
     {
       speaker: "김현수",
       background: asset.cabinAlt,
-
       character: asset.hyeonsu,
       position: "left",
-
-      text:
-        "원래 내가 유력했던 피날레 메인 자리도 결국 승근이한테 갔고.",
+      emphasis: true,
+      text: "그런데 피날레 메인은 결국 승근이가 가져갔지. 나도 원래 유력한 후보였어.",
     },
-
     {
       speaker: "김현수",
       background: asset.cabinAlt,
-
       character: asset.hyeonsuProfile,
       position: "right",
-
-      text:
-        "기분이 아예 안 나빴다고 하면 그게 더 거짓말이지.",
+      text: "솔직히 기분 좋을 리 없지. 내가 한 만큼은 인정받고 싶었으니까.",
     },
-
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsu,
       position: "left",
-
-      text:
-        "근데 마지막 리허설 끝나고 승근이랑 둘이 쌀국수도 먹으러 갔어.",
+      text: "그래도 마지막 리허설 끝나고 승근이랑 둘이 쌀국수도 먹으러 갔어.",
     },
-
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsuProfile,
       position: "right",
-
-      text:
-        "내가 진짜 승근이를 그렇게 싫어했으면 둘이 밥 먹으러 갔겠냐.",
-    },
-
-    {
-      speaker: "추가 증언",
-      background: asset.cabinAlt,
-
-      text:
-        "커피가 전달되던 무렵, 피해자 근처 좌석에서는 '승근아, 네 거 여기'라는 말이 들렸다.",
-
-      note:
-        "목소리가 들렸다는 사실만 확인됐고, 정확한 화자는 특정되지 않았다.",
+      text: "불만이 있었다고 해서 내가 승근이를 죽였다는 건 아니잖아.",
     },
   ],
 };
@@ -852,7 +799,7 @@ const secondInterviews = {
       background: asset.cabin,
       character: asset.jiyoung,
       position: "left",
-      text: "단체사진 찍고 바로 자리로 돌아갔어.",
+      text: "단체사진 찍고 바로 자리로 돌아갔어요.",
     },
     {
       speaker: "사건 기록",
@@ -860,23 +807,12 @@ const secondInterviews = {
       text: "단체사진 직후 지영의 좌석 화면에서 영상 재생이 다시 시작됐다.",
     },
     {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-      text: "이후 자막과 음량을 조작한 기록이 일정한 간격으로 남아 있다.",
-      note: "재생 기록은 지영의 진술과 시간대를 대조할 수 있는 자료다.",
-    },
-    {
       speaker: "유지영",
       background: asset.cabin,
       character: asset.jiyoungProfile,
       fixedPosition: "right",
       emphasis: true,
-      text: "사진 뒤에는 계속 내 자리였어. 재생 기록 시간도 확인해 봐.",
-    },
-    {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-      text: "좌석 화면의 재생·조작 기록은 지영의 진술과 대체로 이어진다. 다만 기록만으로 모든 순간의 위치를 단정할 수는 없다.",
+      text: "사진 뒤에는 계속 제 자리였어요. 재생 기록 시간도 확인해 보세요.",
     },
   ],
 
@@ -884,34 +820,20 @@ const secondInterviews = {
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "사건 전, 소희와 피해자가 짧게 언성을 높이는 것을 들었다는 승객이 나타났다.",
+      text: "사건 전, 소희와 피해자가 짧게 언성을 높이는 것을 들었다는 승객이 나타났다.",
     },
-
     {
       speaker: "전소희",
       background: asset.cabin,
-
       character: asset.soheeProfile,
       fixedPosition: "right",
       emphasis: true,
-
-      text:
-        "...잠깐 말다툼한 건 맞아. 괜히 이런 상황에서 더 의심받기 싫어서 말 안 했어.",
+      text: "...잠깐 말다툼한 건 맞아. 괜히 이런 상황에서 더 의심받기 싫어서 말 안 했어.",
     },
-
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-      text: "사건 전후 소희가 기내 뒤쪽으로 이동하는 모습이 승무원에게 목격됐다.",
-    },
-
-    {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-      text: "화장실 대기 기록과 승무원 기억에 소희의 이동 흔적이 남아 있다.",
-      note: "기록마다 시각에 차이가 있어 다른 진술과 직접 대조해야 한다.",
+      text: "사건 전후 소희가 기내 뒤쪽으로 이동한 흔적이 화장실 대기 기록과 승무원 기억에 남아 있다.",
     },
   ],
 
@@ -919,58 +841,27 @@ const secondInterviews = {
     {
       speaker: "사건 기록",
       background: asset.coffeeCloseup,
-
-      text:
-        "피해자가 마신 종이컵에서 최정은의 지문이 발견됐다.",
-
-      note:
-        "1차 진술에서 정은은 컵을 건드린 적이 없다고 말했다.",
+      text: "피해자가 마신 종이컵에서 최정은의 지문이 발견됐다.",
+      note: "1차 진술에서 정은은 컵을 건드린 적이 없다고 말했다.",
     },
-
     {
       speaker: "조사 기록",
       background: asset.cabinAlt,
-
       character: asset.jeongeunProfile,
       position: "left",
-
-      text:
-        "컵을 건드린 적 없다고 했죠.",
+      text: "컵을 건드린 적 없다고 했죠.",
     },
-
     {
       speaker: "최정은",
       background: asset.cabin,
-
-      character: asset.jeongeunProfile,
-      fixedPosition: "right",
-
-      text: "...",
-    },
-
-    {
-      speaker: "최정은",
-      background: asset.cabin,
-
       character: asset.jeongeun,
       position: "left",
-
-      text:
-        "만진 건 맞아. 통로 쪽으로 떨어질 것 같아서 안쪽으로 밀어놨어. 그게 전부야.",
-
-      note:
-        "컵을 만진 사실을 숨긴 것은 사실이었다.",
+      text: "..죄송합니다. 만진 것은 맞습니다. 통로 쪽으로 떨어질 것 같아서 안쪽으로 밀어뒀습니다.",
     },
-
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "커피가 전달될 무렵 정은은 기내 뒤쪽에서 승무원에게 따뜻한 물을 요청하고 기다렸다.",
-
-      note:
-        "그 순간 정은의 위치는 승무원이 직접 확인했다.",
+      text: "커피가 전달될 무렵 정은은 기내 뒤쪽에서 승무원에게 따뜻한 물을 요청하고 기다렸다고 한다.",
     },
   ],
 
@@ -978,65 +869,30 @@ const secondInterviews = {
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsu,
       position: "left",
-
-      text:
-        "팔찌? 사진 찍을 때까진 나도 하고 있었어. 찍고 나서 불편해서 뺐어.",
+      text: "팔찌? 사진 찍을 때까진 나도 하고 있었어. 찍고 나서 불편해서 뺐어.",
     },
-
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
       prop: asset.groupPhoto,
       propType: "photoFocus",
-
-      text:
-        "하지만 마지막 단체사진에서 현수의 팔목에는 이미 팔찌가 보이지 않는다.",
+      text: "하지만 마지막 단체사진에서 현수의 팔목에는 이미 팔찌가 보이지 않는다.",
     },
-
     {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-
-      text:
-        "'사진 이후에 팔찌를 뺐다'는 현수의 진술은 사진 기록과 일치하지 않는다.",
+      text: "커피가 나눠지던 시간대, 현수의 좌석 기록은 비어 있었다. 그 시간의 정확한 동선은 확인되지 않았다.",
     },
-
-    {
-      speaker: "사건 기록",
-      background: asset.cabinAlt,
-
-      text:
-        "커피가 전달되던 순간, 현수의 좌석 기록은 없었다. 그를 봤다는 독립적인 증언도 없었다.",
-    },
-
-    {
-      speaker: "추가 증언",
-      background: asset.cabinAlt,
-
-      text:
-        "피해자 근처 좌석의 승객은 커피가 전달되던 순간 '승근아, 네 거 여기'라는 말을 들었다고 기억했다.",
-
-      note:
-        "이름을 부르는 방식만으로 특정 인물을 단정할 수는 없다.",
-    },
-
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsuProfile,
       fixedPosition: "left",
       emphasis: true,
-
-      text:
-        "난 사진 이후 승근이 자리 쪽으로 안 갔어.",
-
-      note:
-        "팔찌 제거 시점뿐 아니라 사건 당시의 행동에서도 설명되지 않는 모순이 남았다.",
+      text: "난 사진 이후 승근이 자리 쪽으로 안 갔어.",
+      note: "팔찌 제거 시점뿐 아니라 사건 당시의 행동에서도 설명되지 않는 모순이 남았다.",
     },
   ],
 };
@@ -1059,13 +915,6 @@ const truthScenes = [
     background: asset.airportScene,
     text: "김현수는 비행기가 출발하기 전부터 전승근을 죽일 계획을 세우고 있었다.",
     darkness: 0.28,
-  },
-
-  {
-    speaker: "내레이션",
-    background: asset.airportScene,
-    text: "모두에게는 평범한 귀국 일정이었지만, 현수에게는 이미 계획된 범행의 시작이었다.",
-    darkness: 0.32,
   },
 
   {
@@ -1094,33 +943,25 @@ const truthScenes = [
   {
     speaker: "내레이션",
     background: asset.coffeeCloseup,
-
-    text:
-      "음료 서비스가 시작된 뒤, 현수는 승근에게 전달될 커피에 손을 댔다.",
+    text: "그날 커피를 단체로 주문한 사람은 김현수였다.",
   },
 
   {
-    speaker: "김현수",
+    speaker: "내레이션",
     background: asset.coffeeCloseup,
-    character: asset.hyeonsuProfile,
-    fixedPosition: "right",
-    emphasis: true,
-
-    text:
-      "승근아, 네 거 여기.",
-
-    note:
-      "승근은 휴대폰을 보고 있어 커피를 건넨 사람의 손목을 제대로 확인하지 못했다.",
+    text: "평소에도 현수가 먼저 주문을 제안하곤 했기에, 누구도 그 사실을 이상하게 여기지 않았다.",
   },
 
   {
-    speaker: "전승근",
+    speaker: "사건 기록",
     background: asset.coffeeCloseup,
-    character: asset.seunggeunProfile,
-    fixedPosition: "left",
+    text: "현수는 다섯 잔의 커피를 받아온 뒤, 짧은 틈에 승근의 잔에 분말 형태의 독성 물질을 섞어 함께 나눠줬다.",
+  },
 
-    text:
-      "어, 고마워.",
+  {
+    speaker: "내레이션",
+    background: asset.coffeeCloseup,
+    text: "승근은 휴대폰을 보던 중 자기 앞에 놓인 커피를 별다른 의심 없이 마셨다.",
   },
 
   {
@@ -1229,7 +1070,7 @@ const truthScenes = [
   {
     speaker: "내레이션",
     background: asset.drowsyScene,
-    text: "결국 승근은 더 이상 몸을 버티지 못했다.",
+    text: "승근은 메모지에 최후의 메시지를 남겼다.",
     darkness: 0.42,
     blur: 0.65,
   },
@@ -1242,7 +1083,7 @@ const truthScenes = [
       "우리 모두... 같았는데.",
 
     note:
-      "마지막 순간 승근이 떠올린 것은 모두에게 있어야 했던 팔찌와, 커피를 건넨 사람의 비어 있던 손목이었다.",
+      "마지막 순간 승근이 떠올린 것은 모두에게 있어야 했던 기념 팔찌였다.",
 
     darkness: 0.58,
     blur: 0.8,
@@ -1256,7 +1097,7 @@ const truthScenes = [
 const wrongCopy = {
   jiyoung: {
     title: "유지영은 범인이 아니다.",
-    reaction: ["아니, 내가 왜 범인이야?", "나 진짜 아니라고."],
+    reaction: ["제가 범인이라고요??", "스트레스 받네요."],
 
     body:
       "지영의 진술에는 숨긴 부분이 있었지만, 좌석 화면 기록과 주변 진술까지 함께 놓으면 그것만으로 범행을 설명하기 어렵다.",
@@ -1264,7 +1105,7 @@ const wrongCopy = {
 
   sohee: {
     title: "전소희는 범인이 아니다.",
-    reaction: ["뭐?", "나를 범인으로 찍었다고?"],
+    reaction: ["무슨 소리야?", "나를 범인으로 찍었다고?"],
 
     body:
       "소희가 숨긴 말다툼과 기내 뒤쪽 이동만으로는 문제의 커피 전달까지 설명되지 않는다.",
@@ -1272,7 +1113,7 @@ const wrongCopy = {
 
   jeongeun: {
     title: "최정은은 범인이 아니다.",
-    reaction: ["…진심이야?", "기분 나쁘네."],
+    reaction: ["…진심이에요?", "기분이 나쁘네요."],
 
     body:
       "정은의 지문은 중요한 단서였지만, 컵을 만진 시점과 커피가 전달된 시점을 따로 대조하면 하나의 결론으로 바로 이어지지 않는다.",
@@ -2198,7 +2039,17 @@ export default function MysteryEvent({ onExit }) {
       </button>
 
       {phase !== "cover" &&
-        !["verdict", "culprit", "reward", "wrong"].includes(phase) && (
+        ![
+          "verdict",
+          "culprit",
+          "reward",
+          "wrong",
+          "round1Hub",
+          "focus1",
+          "round2Hub",
+          "focus2",
+          "finalChoice",
+        ].includes(phase) && (
           <ChapterBanner chapter={currentChapter} />
         )}
 
@@ -2589,8 +2440,13 @@ function StoryScreen({
   onNext,
 }) {
   const isMobile = useMysteryMobile();
+  const [navigationFeedback, setNavigationFeedback] = useState(null);
+  const clickLockRef = useRef(false);
+  const clickLockTimerRef = useRef(null);
+  const feedbackTimerRef = useRef(null);
   const [deathLocked, setDeathLocked] = useState(Boolean(scene.deathDiscovery));
   const [visibleText, setVisibleText] = useState(scene.text ?? "");
+  const typingTimerRef = useRef(null);
   const fullText = scene.text ?? "";
   const isTyping = visibleText.length < fullText.length;
 
@@ -2609,31 +2465,75 @@ function StoryScreen({
   useEffect(() => {
     setVisibleText("");
 
+    if (typingTimerRef.current) {
+      window.clearInterval(typingTimerRef.current);
+      typingTimerRef.current = null;
+    }
+
     if (!fullText) return undefined;
 
     let index = 0;
-    const timer = window.setInterval(() => {
+    typingTimerRef.current = window.setInterval(() => {
       index += 1;
       setVisibleText(fullText.slice(0, index));
 
       if (index >= fullText.length) {
-        window.clearInterval(timer);
+        window.clearInterval(typingTimerRef.current);
+        typingTimerRef.current = null;
       }
     }, 28);
 
-    return () => window.clearInterval(timer);
+    return () => {
+      if (typingTimerRef.current) {
+        window.clearInterval(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
+    };
   }, [fullText]);
 
   const revealOrMove = (move) => {
-    if (deathLocked) return;
+    if (deathLocked) return false;
 
     if (isTyping) {
+      if (typingTimerRef.current) {
+        window.clearInterval(typingTimerRef.current);
+        typingTimerRef.current = null;
+      }
       setVisibleText(fullText);
-      return;
+      return false;
     }
 
     move?.();
+    return true;
   };
+
+  const moveFromBackground = (direction, move) => {
+    if (deathLocked || clickLockRef.current) return;
+
+    const moved = revealOrMove(move);
+    if (!moved) return;
+
+    clickLockRef.current = true;
+    setNavigationFeedback({ direction, id: Date.now() });
+
+    if (clickLockTimerRef.current) window.clearTimeout(clickLockTimerRef.current);
+    if (feedbackTimerRef.current) window.clearTimeout(feedbackTimerRef.current);
+
+    clickLockTimerRef.current = window.setTimeout(() => {
+      clickLockRef.current = false;
+      clickLockTimerRef.current = null;
+    }, 320);
+
+    feedbackTimerRef.current = window.setTimeout(() => {
+      setNavigationFeedback(null);
+      feedbackTimerRef.current = null;
+    }, 440);
+  };
+
+  useEffect(() => () => {
+    if (clickLockTimerRef.current) window.clearTimeout(clickLockTimerRef.current);
+    if (feedbackTimerRef.current) window.clearTimeout(feedbackTimerRef.current);
+  }, []);
 
   const sceneCharacters =
     Array.isArray(scene.characters)
@@ -2711,8 +2611,21 @@ function StoryScreen({
 
       {!isMobile && !deathLocked && (
         <div className={styles.backgroundClickZones} aria-hidden="true">
-          <button type="button" tabIndex={-1} aria-label="이전 장면" onClick={() => revealOrMove(onPrev)} />
-          <button type="button" tabIndex={-1} aria-label="다음 장면" onClick={() => revealOrMove(onNext)} />
+          <button type="button" tabIndex={-1} aria-label="이전 장면" onClick={() => moveFromBackground("left", onPrev)} />
+          <button type="button" tabIndex={-1} aria-label="다음 장면" onClick={() => moveFromBackground("right", onNext)} />
+        </div>
+      )}
+
+      {!isMobile && navigationFeedback && (
+        <div
+          key={navigationFeedback.id}
+          className={styles.navigationFeedback}
+          data-direction={navigationFeedback.direction}
+          aria-hidden="true"
+        >
+          <span />
+          <span />
+          <span />
         </div>
       )}
 
@@ -2974,6 +2887,12 @@ function InvestigationHub({
             styles.hubHeader
           }
         >
+          {isMobile && (round === "01" || round === "02") && (
+            <span className={styles.mobileInvestigationLabel}>
+              {round === "01" ? "첫 번째 조사" : "두 번째 조사"}
+            </span>
+          )}
+
           <h2>{title}</h2>
 
           <p>
@@ -3308,7 +3227,7 @@ const reconstructionWebSummaries = {
   jiyoung: "단체사진 촬영 후 자신의 자리로 돌아갔다고 진술했다. 기내 화면의 재생 기록은 사건 핵심 시간대까지 이어져 있다. 다만 사진 촬영 직후의 이동 시각은 다른 기록과 함께 확인할 필요가 있다.",
   sohee: "사건 전후 기내 뒤쪽으로 이동한 정황이 있다. 화장실에서 돌아오다 평소보다 조용한 승근에게 말을 걸었다고 진술했다. 승근을 확인한 시점과 이동 시간은 주변 진술과 대조해야 한다.",
   jeongeun: "피해자의 컵을 만진 사실은 인정했다. 다만 컵을 만진 시점과 따뜻한 물을 요청한 시각은 서로 다른 행동이라고 진술했다. 컵의 이동 경로와 주변 승객의 기억을 다시 확인할 필요가 있다.",
-  hyeonsu: "팔찌 제거 시점과 피해자 접근 여부에 관한 진술에 일부 모순이 남아 있다. 커피 전달 과정과 관련된 기록 역시 완전히 일치하지 않는다. 사건 핵심 시간대의 동선을 다른 인물의 진술과 직접 대조해야 한다.",
+  hyeonsu: "팔찌 제거 시점과 피해자 접근 여부에 관한 진술에 일부 모순이 남아 있다. 커피 주문과 분배 시간대의 동선 역시 완전히 일치하지 않는다. 사건 핵심 시간대의 동선을 다른 인물의 진술과 직접 대조해야 한다.",
 };
 
 /* =========================================================
@@ -3729,7 +3648,7 @@ function WrongResult({
 
           <p>
             마지막 단체사진과
-            커피가 전달된 시각,
+            커피가 나눠진 시각,
             그리고 각 인물의 거짓말을
             다시 비교하세요.
           </p>
@@ -3784,7 +3703,7 @@ function CulpritScreen({ onNext }) {
         <i />
         <p>
           흩어진 진술과 기록이 마지막에 가리킨 한 사람.<br />
-          승근에게 문제의 커피를 건넨 사람은 김현수였다.
+          그날 커피를 주문하고 다섯 잔을 받아온 사람은 김현수였다.
         </p>
       </div>
 
@@ -3803,85 +3722,140 @@ function RewardScreen({
   onExit,
   onRestart,
 }) {
-  return (
-    <section
-      className={`${styles.scene} ${styles.rewardScreen}`}
-    >
-      <div
-        className={
-          styles.rewardInner
+  const { user } = useAuth();
+  const navigate = useNavigate();
+  const rewardId = "mystery-airplane-starbucks";
+  const storageKey = "lcode-event-coupons";
+
+  const hasStoredCoupon = () => {
+    if (!user?.uid) return false;
+    try {
+      const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+      return Array.isArray(saved) && saved.some((item) => item.userId === user.uid && item.rewardId === rewardId);
+    } catch {
+      return false;
+    }
+  };
+
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [couponIssued, setCouponIssued] = useState(() => hasStoredCoupon());
+  const [couponModalOpen, setCouponModalOpen] = useState(false);
+
+  useEffect(() => {
+    setCouponIssued(hasStoredCoupon());
+  }, [user?.uid]);
+
+  const issueCouponPreview = () => {
+    if (!user) {
+      navigate("/login", { state: { from: "/event" } });
+      return;
+    }
+
+    if (couponLoading || couponIssued) {
+      if (couponIssued) setCouponModalOpen(true);
+      return;
+    }
+
+    setCouponLoading(true);
+    window.setTimeout(() => {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || "[]");
+        const list = Array.isArray(saved) ? saved : [];
+        const exists = list.some((item) => item.userId === user.uid && item.rewardId === rewardId);
+        if (!exists) {
+          list.push({
+            id: `${rewardId}-${user.uid}`,
+            rewardId,
+            userId: user.uid,
+            name: "스타벅스 쿠폰",
+            description: "아메리카노 1잔",
+            status: "available",
+            source: "mystery-event-01",
+            issuedAt: new Date().toISOString(),
+          });
+          localStorage.setItem(storageKey, JSON.stringify(list));
         }
-      >
-        <span>
-          CASE 01 · COMPLETE
-        </span>
+        window.dispatchEvent(new CustomEvent("lcode:coupon-issued", { detail: { rewardId, userId: user.uid } }));
+        setCouponIssued(true);
+        setCouponModalOpen(true);
+      } finally {
+        setCouponLoading(false);
+      }
+    }, 1000);
+  };
 
-        <h2>
-          CASE
-          <br />
-          COMPLETE
-        </h2>
+  const openCouponWalletPreview = () => {
+    setCouponModalOpen(false);
+    navigate("/coupon");
+  };
 
-        <p>
-          비행기 살인사건의 진실을
-          밝혀냈습니다.
-        </p>
+  return (
+    <section className={`${styles.scene} ${styles.rewardScreen}`}>
+      <div className={styles.rewardInner}>
+        <span>CASE 01 · COMPLETE</span>
 
-        <div
-          className={
-            styles.rewardDivider
-          }
-        >
+        <h2>CASE<br />COMPLETE</h2>
+
+        <p>비행기 살인사건의 진실을 밝혀냈습니다.</p>
+
+        <div className={styles.rewardDivider}>
           <i />
           <b>REWARD</b>
           <i />
         </div>
 
-        <article
-          className={
-            styles.rewardCoupon
-          }
-        >
-          <img loading="lazy"
-            src={
-              asset.starbucks
-            }
-            alt=""
-          />
+        <article className={styles.rewardCoupon}>
+          <img loading="lazy" src={asset.starbucks} alt="" />
 
-          <div>
-            <small>
-              CASE SOLVED REWARD
-            </small>
-
-            <strong>
-              스타벅스 쿠폰
-            </strong>
-
-            <p>
-              아메리카노 1잔
-            </p>
+          <div className={styles.rewardCouponCopy}>
+            <small>CASE SOLVED REWARD</small>
+            <strong>스타벅스 쿠폰</strong>
+            <p>아메리카노 1잔</p>
           </div>
+
+          <button
+            type="button"
+            className={`${styles.couponIssueButton} ${couponLoading ? styles.couponIssueLoading : ""} ${couponIssued ? styles.couponIssueDone : ""}`}
+            onClick={issueCouponPreview}
+            disabled={couponLoading}
+            aria-label={couponIssued ? "쿠폰 발급 완료" : "쿠폰 발급하기"}
+          >
+            {couponLoading ? (
+              <span className={styles.couponSpinner} aria-hidden="true" />
+            ) : couponIssued ? (
+              <span className={styles.couponIssuedIcon} aria-hidden="true">✓</span>
+            ) : (
+              <svg
+                className={styles.couponDownloadIcon}
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path d="M12 3v11" />
+                <path d="m7.5 10 4.5 4.5 4.5-4.5" />
+                <path d="M5 18.5h14" />
+              </svg>
+            )}
+          </button>
         </article>
 
-        <button
-          type="button"
-          onClick={() =>
-            onExit?.()
-          }
-        >
-          이벤트 목록으로
-        </button>
-
-        <button
-          type="button"
-          onClick={
-            onRestart
-          }
-        >
-          사건 다시 플레이
-        </button>
+        <button type="button" onClick={() => onExit?.()}>이벤트 목록으로</button>
+        <button type="button" onClick={onRestart}>사건 다시 플레이</button>
       </div>
+
+      {couponModalOpen && (
+        <div className={styles.couponModalOverlay} role="presentation">
+          <div className={styles.couponIssuedModal} role="dialog" aria-modal="true" aria-labelledby="coupon-issued-title">
+            <span>REWARD ISSUED</span>
+            <h3 id="coupon-issued-title">쿠폰 발급이 완료되었습니다!</h3>
+            <p>스타벅스 아메리카노 1잔 쿠폰이 쿠폰함에 저장되었습니다.</p>
+            <small>* 발급된 쿠폰은 마이페이지 &gt; 쿠폰함에서 확인해주세요.</small>
+            <div className={styles.couponModalActions}>
+              <button type="button" onClick={() => setCouponModalOpen(false)}>확인</button>
+              <button type="button" onClick={openCouponWalletPreview}>쿠폰함 바로가기</button>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
