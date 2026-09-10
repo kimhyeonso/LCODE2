@@ -248,6 +248,39 @@ $type-display: 36px;
   color: #131313;
 }
 
+.viewerBadge {
+  position: absolute;
+  z-index: 2;
+  top: 20px;
+  right: clamp(20px, 4vw, 64px);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(239, 68, 68, 0.72);
+  border-radius: 999px;
+  background: rgba(255, 244, 244, 0.9);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  color: #ef4444;
+  font: 400 13px/1 $sans;
+  letter-spacing: -0.02em;
+  pointer-events: none;
+
+  img {
+    width: 16px;
+    height: 16px;
+    filter: invert(39%) sepia(98%) saturate(2132%) hue-rotate(343deg) brightness(98%) contrast(90%);
+  }
+
+  strong {
+    margin-right: 2px;
+    color: #ef4444;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
 .heroDots {
   position: absolute;
   z-index: 1;
@@ -280,6 +313,29 @@ $type-display: 36px;
 }
 
 @media (max-width: 640px) {
+  .heroSlide:first-child {
+    .heroCopy h1,
+    .heroEyebrow,
+    .heroSubtitle,
+    .heroDescription {
+      color: #fffdf7;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.78), 0 0 16px rgba(0, 0, 0, 0.58);
+    }
+  }
+
+  .viewerBadge {
+    top: 14px;
+    right: 14px;
+    gap: 6px;
+    padding: 8px 10px;
+    font-size: 11px;
+
+    img {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
   .heroSlideDark::after {
     content: "";
     position: absolute;

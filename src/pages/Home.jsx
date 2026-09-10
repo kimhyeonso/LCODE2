@@ -58,6 +58,7 @@ const heroSlides = [
     description: "일상에서 한 걸음 벗어나 나만의 여행지를 만나보세요.",
     cta: "EXPLORE DESTINATIONS",
     to: "/destinations",
+    viewerCount: 128,
   },
   {
     desktop: bannerPC1,
@@ -70,6 +71,7 @@ const heroSlides = [
     cta: "VIEW PACKAGE",
     to: "/plan?city=FUKUOKA",
     mobileIvory: true,
+    viewerCount: 86,
   },
   {
     desktop: bannerPC2,
@@ -82,6 +84,7 @@ const heroSlides = [
     cta: "VIEW PACKAGE",
     to: "/plan?city=SEOUL",
     mobileLightText: true,
+    viewerCount: 104,
   },
   {
     desktop: bannerPC3,
@@ -160,6 +163,13 @@ const SectionLabel = ({ number, children }) => (
     <span>/</span>
     <span>{children}</span>
   </div>
+);
+
+const ViewerBadge = ({ count }) => (
+  <p className={styles.viewerBadge}>
+    <img src={viewerIcon} alt="" aria-hidden="true" />
+    <span><strong>{count.toLocaleString("ko-KR")}</strong>명이 보고 있어요</span>
+  </p>
 );
 
 function HeroVideo({ src, poster, active }) {
@@ -439,7 +449,7 @@ export default function Home() {
             }}
             onTransitionEnd={handleHeroTransitionEnd}
           >
-            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges }, index) => {
+            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges, viewerCount }, index) => {
               const isClone = index === heroSlides.length;
               return (
               <div
@@ -464,7 +474,7 @@ export default function Home() {
                     />
                   </picture>
                 )}
-                {index < VIEWER_COUNT_TARGETS.length && <ViewerBadge end={VIEWER_COUNT_TARGETS[index]} />}
+                {viewerCount && <ViewerBadge count={viewerCount} />}
                 <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""} ${mobileBottomLeft ? styles.heroCopyMobileBottomLeft : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>
