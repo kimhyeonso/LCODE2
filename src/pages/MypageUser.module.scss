@@ -361,7 +361,9 @@
   .profile .greeting { margin: 20px 0 20px; font-size: 13px; }
   .profile h1 { font-size: 38px; }
   .profile .email { margin-top: 8px; font-size: 14px; }
-  .profile .edit { margin-top: 12px; padding: 6px 9px; font-size: 10px; }
+  .profile .profileTools { margin-top: 12px; }
+  .profile .edit,
+  .profile .signout { padding: 6px 9px; font-size: 10px; }
   .dashboard { grid-column: 1; grid-row: 2; display: block; height: auto; margin-top: 19px; }
   .heroVisual { display: none; }
   .summary {

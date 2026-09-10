@@ -36,6 +36,23 @@
   min-height: 100vh;
 }
 
+@media (min-width: 901px) {
+  .balanceApp {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .balanceApp .main {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .balanceApp :global(footer) {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .balanceApp {
     background: #111;

@@ -2494,7 +2494,11 @@ export default function Checkout() {
         padding: 0 16px 28px;
       }
       .lcode-summaryTotal > span { font-size: 13px; }
-      .lcode-checkoutHeader .lcode-checkoutTitle { font-size: 38px; }
+      .lcode-checkoutHeader .lcode-checkoutTitle {
+        font-size: 38px;
+        width: calc(100vw - 32px);
+        max-width: none;
+      }
       .lcode-checkoutEyebrow { font-size: 13px; }
       .lcode-checkoutHeader [data-mypage-back] { font-size: 13px !important; }
     }
