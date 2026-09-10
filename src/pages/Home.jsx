@@ -49,6 +49,17 @@ const getImageUrl = (imagePath) => {
 // Add a banner by importing its image above and appending its copy here.
 const heroSlides = [
   {
+    desktop: "/Mypage-img/travel-coast.jpg",
+    mobile: "/Mypage-img/travel-coast.jpg",
+    video: "/Mypage-img/travel-coast.mp4",
+    eyebrow: "FIND YOUR NEXT TRIP",
+    title: "NEXT TRIP",
+    subtitle: "바다를 따라, 새로운 여행",
+    description: "일상에서 한 걸음 벗어나 나만의 여행지를 만나보세요.",
+    cta: "EXPLORE DESTINATIONS",
+    to: "/destinations",
+  },
+  {
     desktop: bannerPC1,
     mobile: bannerMO1,
     video: "/Mypage-img/fukuoka.mp4",
@@ -150,39 +161,61 @@ const SectionLabel = ({ number, children }) => (
   </div>
 );
 
-const VIEWER_COUNT_START = 562;
-const VIEWER_COUNT_TARGETS = [7580, 8320];
-const VIEWER_COUNT_STEP_MIN = 100;
-const VIEWER_COUNT_STEP_MAX = 300;
-const VIEWER_COUNT_STEP_DELAY = 600;
-
-const ViewerBadge = ({ end }) => {
-  const [count, setCount] = useState(VIEWER_COUNT_START);
+function HeroVideo({ src, poster, active }) {
+  const videoRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
-    let timer;
-    let current = VIEWER_COUNT_START;
-
-    const step = () => {
-      const increment = VIEWER_COUNT_STEP_MIN
-        + Math.floor(Math.random() * (VIEWER_COUNT_STEP_MAX - VIEWER_COUNT_STEP_MIN + 1));
-      current = Math.min(current + increment, end);
-      setCount(current);
-
-      if (current < end) timer = setTimeout(step, VIEWER_COUNT_STEP_DELAY);
+    const video = videoRef.current;
+    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPlayback = () => {
+      if (active && !motion.matches && !document.hidden) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
     };
-
-    timer = setTimeout(step, VIEWER_COUNT_STEP_DELAY);
-    return () => clearTimeout(timer);
-  }, [end]);
+    syncPlayback();
+    motion.addEventListener("change", syncPlayback);
+    document.addEventListener("visibilitychange", syncPlayback);
+    return () => {
+      video.pause();
+      motion.removeEventListener("change", syncPlayback);
+      document.removeEventListener("visibilitychange", syncPlayback);
+    };
+  }, [active]);
 
   return (
-    <div className={styles.viewerBadge}>
-      <img src={viewerIcon} alt="" aria-hidden="true" />
-      <span>{count.toLocaleString("ko-KR")}명의 사람들이 보고 있어요</span>
-    </div>
+    <>
+      <video
+        ref={videoRef}
+        className={styles.heroVideo}
+        src={active ? src : undefined}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-hidden="true"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+      />
+      <button
+        type="button"
+        className={styles.heroVideoToggle}
+        tabIndex={active ? 0 : -1}
+        aria-label={playing ? "배경 영상 일시정지" : "배경 영상 재생"}
+        title={playing ? "배경 영상 일시정지" : "배경 영상 재생"}
+        onClick={() => {
+          if (playing) videoRef.current.pause();
+          else videoRef.current.play().catch(() => {});
+        }}
+      >
+        <span aria-hidden="true">{playing ? "Ⅱ" : "▶"}</span>
+      </button>
+    </>
   );
-};
+}
 
 const TextLink = ({ to, children, ...props }) => (
   <Link className={styles.textLink} to={to} {...props}>
@@ -414,16 +447,10 @@ export default function Home() {
                 aria-hidden={index !== activeHeroSlide || isClone}
               >
                 {video ? (
-                  <video
-                    className={styles.heroVideo}
+                  <HeroVideo
                     src={video}
                     poster={desktop}
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    preload="metadata"
-                    aria-hidden="true"
+                    active={index === activeHeroSlide}
                   />
                 ) : (
                   <picture>

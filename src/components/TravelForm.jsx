@@ -315,12 +315,37 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [wishlistCategory, setWishlistCategory] = useState("all");
   const [wishlistSelections, setWishlistSelections] = useState([]);
+  const [addedStopIds, setAddedStopIds] = useState([]);
+  const stopElements = useRef(new Map());
+
+  useEffect(() => {
+    if (!addedStopIds.length) return undefined;
+    const frame = window.requestAnimationFrame(() => {
+      const element = stopElements.current.get(addedStopIds[0]);
+      element?.focus({ preventScroll: true });
+      element?.scrollIntoView({
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+        block: "center",
+      });
+    });
+    const timer = window.setTimeout(() => setAddedStopIds([]), 4000);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timer);
+    };
+  }, [addedStopIds]);
   const summaryColumnRef = useRef(null);
   const summaryRef = useRef(null);
   const addActionsRef = useRef(null);
   const [summaryDock, setSummaryDock] = useState({ mode: "flow", left: 0, top: 0, width: 0 });
-  const dirtyTrackingStarted = useRef(false);
+  const previousEditValues = useRef({ flightInfo, stopsByDay, travelTitle, tripDateRange });
   const stops = stopsByDay[activeDay] || [];
+  const additionDate = tripDateRange.start
+    ? addDays(tripDateRange.start, activeDay)
+    : toDateInputValue(selectedTrip.days[activeDay]?.date);
+  const additionDateLabel = additionDate
+    ? new Date(`${additionDate}T00:00:00`).toLocaleDateString("ko-KR", { month: "long", day: "numeric" })
+    : "날짜 미정";
   const estimatedBudget = 135000 + stopsByDay.flat().length * 32000;
   const expenseSettingsLink = `/plan/expense?trip=${encodeURIComponent(selectedTrip.tripId || selectedTrip.id || "")}`;
   const isDomesticTrip = ["korea", "한국", "대한민국", "south korea"].includes(
@@ -452,11 +477,12 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   });
 
   useEffect(() => {
-    if (!dirtyTrackingStarted.current) {
-      dirtyTrackingStarted.current = true;
-      return;
+    const previous = previousEditValues.current;
+    previousEditValues.current = { flightInfo, stopsByDay, travelTitle, tripDateRange };
+    if (previous.flightInfo !== flightInfo || previous.stopsByDay !== stopsByDay
+      || previous.travelTitle !== travelTitle || previous.tripDateRange !== tripDateRange) {
+      onDirtyChange?.(true);
     }
-    onDirtyChange?.(true);
   }, [flightInfo, onDirtyChange, stopsByDay, travelTitle, tripDateRange]);
 
   useEffect(() => {
@@ -640,9 +666,10 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
 
   const addSelectedPlace = () => {
     if (!selectedCandidate || !selectedPlaceTime) return;
+    const addedId = `added-${Date.now()}`;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
       ? resequenceStopTimes(sortStopsByTime([...dayStops, {
-        id: `added-${Date.now()}`,
+        id: addedId,
         time: selectedPlaceTime,
         icon: categoryIcons[selectedCandidate.category] || pinIcon,
         name: selectedCandidate.place,
@@ -658,6 +685,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       }]))
       : dayStops));
     setIsPlaceAddOpen(false);
+    setAddedStopIds([addedId]);
     setSelectedCandidate(null);
     setSelectedPlaceTime("10:00");
     setPlaceQuery("");
@@ -688,6 +716,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     .filter((item) => !stops.some((stop) => stop.name === item.place));
   const wishlistPlaces = availableWishlistPlaces
     .filter((item) => wishlistCategory === "all" || item.category === wishlistCategory);
+  const selectedWishlistPlaces = availableWishlistPlaces.filter((place) => wishlistSelections.includes(place.id));
 
   const toggleWishlistSelection = (place) => {
     setWishlistSelections((current) => current.includes(place.id)
@@ -718,11 +747,12 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   };
 
   const addWishlistPlaces = () => {
-    const selectedItems = availableWishlistPlaces.filter((place) => wishlistSelections.includes(place.id));
+    const selectedItems = selectedWishlistPlaces;
     if (!selectedItems.length) return;
+    const addedIds = selectedItems.map((_, index) => `wishlist-${Date.now()}-${index}`);
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
       ? resequenceStopTimes(sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
-        id: `wishlist-${Date.now()}-${placeIndex}`,
+        id: addedIds[placeIndex],
         time: "시간 미정",
         icon: categoryIcons[place.category] || pinIcon,
         name: place.place,
@@ -739,6 +769,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       : dayStops));
     setWishlistSelections([]);
     setIsWishlistOpen(false);
+    setAddedStopIds(addedIds);
   };
   return (
     <form className={styles.form} onSubmit={submit}>
@@ -859,7 +890,15 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                 setDragTargetId(null);
               }}
             >
-              <article className={styles.stopCard}>
+              <article
+                className={`${styles.stopCard} ${addedStopIds.includes(stop.id) ? styles.addedStop : ""}`}
+                tabIndex={-1}
+                aria-label={`${stop.name} 일정`}
+                ref={(element) => {
+                  if (element) stopElements.current.set(stop.id, element);
+                  else stopElements.current.delete(stop.id);
+                }}
+              >
                 <time>{stop.time}</time>
                 <span className={styles.placeIcon}><img loading="lazy" src={stop.icon} alt="" /></span>
                 <div className={styles.placeCopy}><strong>{stop.name}</strong><small>{stop.type}</small><button type="button" onClick={() => setSelectedStop(stop)}>자세히 보기 &gt;</button></div>
@@ -1037,6 +1076,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           <section className={styles.placeAdderInner} role="dialog" aria-modal="true" aria-labelledby="place-adder-title" onMouseDown={(event) => event.stopPropagation()}>
             <header><button type="button" aria-label="뒤로 가기" onClick={() => setIsPlaceAddOpen(false)}><img loading="lazy" src={backIcon} alt="" /></button><h2 id="place-adder-title">장소 추가하기</h2><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}><img loading="lazy" src={closeIcon} alt="" /></button></header>
             <p className={styles.adderDescription}>일정에 추가할 장소와 방문 시간을 설정하세요 · {selectedTrip.city}</p>
+            <p className={styles.additionDate}>{activeDay + 1}일차 · {additionDateLabel}에 추가</p>
             <section className={styles.placeMapArea}>
               <PlaceMap
                 places={placeCandidates}
@@ -1061,7 +1101,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               <div>
                 {placeCandidates.map((place, index) => {
                   const selected = selectedCandidate?.place === place.place;
-                  return <button className={selected ? styles.placeSelected : ""} type="button" key={place.place} onClick={() => setSelectedCandidate(place)}>
+                  return <button className={selected ? styles.placeSelected : ""} type="button" aria-pressed={selected} key={place.place} onClick={() => setSelectedCandidate(place)}>
                     <span className={styles.resultNumber}>{index + 1}</span>
                     <span className={styles.resultImage}>{getImageUrl(place.image) && <img loading="lazy" src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                     <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
@@ -1071,7 +1111,13 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                 {!placeCandidates.length && <p className={styles.noPlaces}>검색 결과가 없습니다.</p>}
               </div>
             </section>
-            <footer className={styles.placeAddFooter}><span>{selectedCandidate ? `${selectedPlaceTime} · 1개 장소` : "선택한 장소 0개"}</span><button type="button" disabled={!selectedCandidate || !selectedPlaceTime} onClick={addSelectedPlace}>선택한 장소 추가</button></footer>
+            <footer className={styles.placeAddFooter}>
+              <div className={styles.selectionSummary} aria-live="polite" aria-atomic="true">
+                <strong>{selectedCandidate?.place || "장소를 선택해 주세요"}</strong>
+                <small>{selectedCandidate ? `방문 시간 ${selectedPlaceTime || "선택 필요"}` : "선택한 장소 0곳"}</small>
+              </div>
+              <button type="button" disabled={!selectedCandidate || !selectedPlaceTime} onClick={addSelectedPlace}>1곳 추가하기</button>
+            </footer>
           </section>
         </div>
       )}
@@ -1084,6 +1130,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}><img loading="lazy" src={closeIcon} alt="" /></button>
             </header>
             <p className={styles.adderDescription}>지도에 저장해둔 장소를 일정에 담아보세요</p>
+            <p className={styles.additionDate}>{activeDay + 1}일차 · {additionDateLabel}에 추가</p>
             <section className={styles.wishlistMapArea}>
               <PlaceMap
                 places={wishlistPlaces}
@@ -1111,13 +1158,29 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                       <span className={styles.resultNumber}>{index + 1}</span>
                       <span className={styles.resultImage}>{getImageUrl(place.image) && <img loading="lazy" src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
                       <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
-                      <button className={selected ? styles.wishlistSelected : ""} type="button" onClick={() => toggleWishlistSelection(place)}>{selected ? "✓ 담김" : "+ 찜"}</button>
+                      <label className={styles.wishlistCheckbox}>
+                        <input type="checkbox" checked={selected} onChange={() => toggleWishlistSelection(place)} aria-label={`${place.place} 선택`} />
+                        <span>{selected ? "선택됨" : "선택"}</span>
+                      </label>
                     </article>
                   );
                 })}
               </div>
             </section>
-            <footer className={styles.wishlistFooter}><span>찜한 장소 {wishlistSelections.length}개</span><button type="button" disabled={!wishlistSelections.length} onClick={addWishlistPlaces}>선택한 장소 추가</button></footer>
+            <footer className={styles.wishlistFooter}>
+              <div className={styles.selectionSummary}>
+                <strong role="status">선택한 장소 {selectedWishlistPlaces.length}곳</strong>
+                {selectedWishlistPlaces.length > 0 ? (
+                  <ul className={styles.selectedPlaceList} aria-label="추가할 찜한 장소">
+                    {selectedWishlistPlaces.map((place) => <li key={place.id}>
+                      <span>{place.place}</span>
+                      <button type="button" onClick={() => toggleWishlistSelection(place)} aria-label={`${place.place} 선택 해제`}>×</button>
+                    </li>)}
+                  </ul>
+                ) : <small>추가할 장소를 선택해 주세요</small>}
+              </div>
+              <button type="button" disabled={!selectedWishlistPlaces.length} onClick={addWishlistPlaces}>{selectedWishlistPlaces.length}곳 추가하기</button>
+            </footer>
           </section>
         </div>
       )}
