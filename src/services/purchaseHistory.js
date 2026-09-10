@@ -37,6 +37,27 @@ export async function getReviewProducts(userId) {
   return eligibleProducts(await getPurchaseOrders(userId), userId);
 }
 
+// Same eligibility rule as eligibleProducts, but keeps one entry per order
+// line instead of collapsing repeat purchases — so the review list can mirror
+// the order history card-for-card.
+export function eligibleOrderLines(orders, userId, now = new Date()) {
+  const cutoff = new Date(now);
+  cutoff.setDate(cutoff.getDate() - 30);
+  const lines = [];
+  [...orders].sort((a, b) => new Date(b.orderedAt) - new Date(a.orderedAt)).forEach((order) => {
+    const date = new Date(order.orderedAt);
+    if (order.userId !== userId || !(date >= cutoff && date <= now) || ["cancelled", "refunded"].includes(order.status)) return;
+    (order.items || []).forEach((item, index) => {
+      if (item.id) lines.push({ ...item, id: String(item.id), orderNumber: order.orderNumber, orderedAt: order.orderedAt, lineKey: `${order.orderNumber || "LC"}-${item.id}-${index}` });
+    });
+  });
+  return lines;
+}
+
+export async function getReviewProductLines(userId) {
+  return eligibleOrderLines(await getPurchaseOrders(userId), userId);
+}
+
 export async function getPurchaseOrders(userId) {
   const snapshot = await getDoc(doc(db, "users", userId, "shop", "purchaseHistory"));
   const orders = snapshot.data()?.orders;

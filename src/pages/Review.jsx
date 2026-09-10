@@ -11,9 +11,20 @@ import { recentReviewTrips } from "../services/recentReviewTrips";
 import { getReviewProducts, saveProductReview } from "../services/purchaseHistory";
 import { resolveProductImage } from "../utils/shopProductResolver";
 
-const baseTags = ["도시", "야경", "맛집", "감성", "재방문 의사"];
+const baseTags = ["도시", "야경", "맛집", "감성", "재방문 의사", "좋아요"];
 const draftKey = "lcode-review-draft";
 const reviewStorageKey = "lcode-saved-reviews";
+const hiddenProductReviewCardsKey = "lcode-hidden-product-review-cards";
+
+function unhideProductReviewCard(userId, productId) {
+  if (!userId || !productId) return;
+  try {
+    const stored = JSON.parse(localStorage.getItem(hiddenProductReviewCardsKey) || "{}");
+    if (!Array.isArray(stored[userId])) return;
+    stored[userId] = stored[userId].filter((id) => String(id) !== String(productId));
+    localStorage.setItem(hiddenProductReviewCardsKey, JSON.stringify(stored));
+  } catch { /* Ignore local UI state persistence failures. */ }
+}
 
 function saveReviewLocally(review) {
   let reviews = [];
@@ -40,7 +51,8 @@ function readDraft(key) {
 export default function Review() {
   const { user } = useAuth();
   const { state } = useLocation();
-  const editingReview = state?.review?.userId === user.uid ? state.review : null;
+  const isNewReview = Boolean(state?.newReview);
+  const editingReview = !isNewReview && state?.review?.userId === user.uid ? state.review : null;
   const [params] = useSearchParams();
   const productId = params.get("productId") || state?.review?.productId || "";
   const isProductReview = Boolean(productId || state?.productName || state?.review?.productName);
@@ -64,7 +76,7 @@ export default function Review() {
   }, [user.uid, productId, isProductReview, editingReview]);
   const navigate = useNavigate();
   const userDraftKey = `${draftKey}:${user.uid}:${productId || state?.productName || "travel"}`;
-  const [draft] = useState(() => state?.newReview ? {} : readDraft(userDraftKey));
+  const [draft] = useState(() => isNewReview ? {} : readDraft(userDraftKey));
   const initialReview = editingReview || draft;
   const [rating, setRating] = useState(initialReview.rating || 0);
   const [title, setTitle] = useState(initialReview.title || "");
@@ -74,8 +86,9 @@ export default function Review() {
   const [photos, setPhotos] = useState(() => initialReview.photos || []);
   const [processingPhotos, setProcessingPhotos] = useState(false);
   const [status, setStatus] = useState({ saving: false, message: "", error: "" });
+  const [noticeMessage, setNoticeMessage] = useState("");
   const productName = isProductReview ? purchase?.name || state?.productName || editingReview?.productName || "상품 리뷰" : "";
-  const [tripId, setTripId] = useState(initialReview.tripId || "");
+  const [tripId, setTripId] = useState(initialReview.tripId || state?.tripId || "");
   const [trips, setTrips] = useState([]);
   const [tripsLoading, setTripsLoading] = useState(!productName && !editingReview);
   const [tripsError, setTripsError] = useState("");
@@ -90,10 +103,10 @@ export default function Review() {
     return () => { active = false; };
   }, [user.uid, productName, editingReview]);
   useEffect(() => {
-    if (!productName && !editingReview && !tripId && trips.length) {
+    if (!productName && !editingReview && !isNewReview && !tripId && trips.length) {
       setTripId(trips[0].id);
     }
-  }, [productName, editingReview, tripId, trips]);
+  }, [productName, editingReview, isNewReview, tripId, trips]);
   const selectedTrip = trips.find((trip) => trip.id === tripId);
   const tripTitle = selectedTrip?.title || selectedTrip?.city || state?.tripTitle || editingReview?.tripTitle || (productName ? productName : "나의 여행");
 
@@ -152,7 +165,7 @@ export default function Review() {
       userId: user.uid,
       userEmail: user.email || "",
       tripTitle,
-      tripId: selectedTrip?.id || editingReview?.tripId || "",
+      tripId: selectedTrip?.tripId || selectedTrip?.id || editingReview?.tripId || "",
       tripDate: selectedTrip ? `${selectedTrip.dateRange.start || ""} ~ ${selectedTrip.dateRange.end}` : (editingReview?.tripDate || ""),
       productName,
       productId,
@@ -200,14 +213,16 @@ export default function Review() {
 
       try {
       saveReviewLocally({ ...reviewData, id: reviewId, updatedAt: Date.now() });
+      if (isProductReview) unhideProductReviewCard(user.uid, productId);
       if (editingReview?.id?.startsWith("local-") && editingReview.id !== reviewId) {
         const saved = JSON.parse(localStorage.getItem(reviewStorageKey)) || [];
         localStorage.setItem(reviewStorageKey, JSON.stringify(saved.filter((item) => item.id !== editingReview.id || item.userId !== user.uid)));
       }
       localStorage.removeItem(userDraftKey);
       } catch { /* Server save succeeded; a full local cache must not undo it. */ }
-      setStatus({ saving: false, message: editingReview ? "리뷰가 수정되었습니다." : "리뷰가 등록되었습니다.", error: "" });
-      setTimeout(() => navigate("/mystories", { replace: true }), 700);
+      // Keep the 상품 주문 내역 badge ("리뷰 쓰기" -> "리뷰 완료") in sync.
+      if (isProductReview) window.dispatchEvent(new Event("product-reviews-changed"));
+      setNoticeMessage(editingReview ? "리뷰가 수정되었습니다. 나의 리뷰로 이동합니다." : "리뷰가 등록되었습니다. 나의 리뷰로 이동합니다.");
     } catch (error) {
       if (isProductReview) {
         setStatus({ saving: false, message: "", error: error.code === "functions/failed-precondition" ? "최근 30일 이내의 주문 내역이 필요합니다." : "상품 리뷰를 저장하지 못했어요. 구매 내역과 연결을 확인하고 다시 시도해 주세요." });
@@ -221,10 +236,14 @@ export default function Review() {
         return;
       }
       localStorage.removeItem(userDraftKey);
-      setStatus({ saving: false, message: "서버에 저장하지 못해 이 기기에 임시 보관했습니다.", error: "" });
+      setNoticeMessage("서버에 저장하지 못해 이 기기에 임시 보관했습니다. 나의 리뷰로 이동합니다.");
       console.warn("Firestore 리뷰 저장 실패, 로컬에 저장했습니다.", error);
-      setTimeout(() => navigate("/mystories", { replace: true }), 700);
     }
+  };
+
+  const closeNotice = () => {
+    setNoticeMessage("");
+    navigate("/mystories", { replace: true });
   };
 
   return (
@@ -267,7 +286,7 @@ export default function Review() {
 
           <section className={`${styles.formRow} ${styles.detailRow}`}>
             <label htmlFor="review-content">3. 상세 리뷰</label>
-            <div className={styles.textareaWrap}><textarea id="review-content" maxLength="2000" value={content} placeholder="여행에서 느낀 점, 좋았던 순간, 추천하고 싶은 장소나 팁을 자유롭게 적어주세요." onChange={(event) => setContent(event.target.value)} /><span>{content.length} / 2000</span></div>
+            <div className={styles.textareaWrap}><textarea id="review-content" maxLength="2000" value={content} placeholder="자유롭게 적어주세요" onChange={(event) => setContent(event.target.value)} /><span>{content.length} / 2000</span></div>
           </section>
 
           <section className={`${styles.formRow} ${styles.photoRow}`}>
@@ -287,6 +306,17 @@ export default function Review() {
           <div className={styles.actions}><button type="button" disabled={processingPhotos || status.saving} onClick={saveDraft}>♡&nbsp; 임시 저장</button><button type="submit" disabled={status.saving || processingPhotos}>{status.saving ? "등록 중..." : "리뷰 등록"}</button></div>
         </form>
       </div>
+      {noticeMessage && (
+        <div className={styles.modalBackdrop} role="presentation">
+          <section className={styles.modal} role="dialog" aria-modal="true" aria-labelledby="review-notice-title">
+            <h2 id="review-notice-title">알림</h2>
+            <p>{noticeMessage}</p>
+            <footer>
+              <button type="button" onClick={closeNotice}>확인</button>
+            </footer>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

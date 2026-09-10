@@ -2187,9 +2187,10 @@ export default function ProductDetailPage() {
 
                       {relatedImage ? (
                         <img
-                          className={
-                            styles.productThumb
-                          }
+                          className={[
+                            styles.productThumb,
+                            styles.productThumbLoaded,
+                          ].join(" ")}
                           src={
                             relatedImage
                           }

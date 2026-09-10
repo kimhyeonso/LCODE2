@@ -1,19 +1,36 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import MypageBackLink from "../components/MypageBackLink";
 import styles from "./Buy.module.scss";
+import { db } from "../firebase/firestore";
 import { useAuth } from "../hooks/useAuth";
 import { eligibleProducts, getPurchaseOrders } from "../services/purchaseHistory";
 import { enrichShopProduct, resolveProductImage } from "../utils/shopProductResolver";
 
 const filters = ["전체", "배송 준비", "배송 중", "배송 완료"];
 const PAGE_SIZE = 3;
+const reviewStorageKey = "lcode-saved-reviews";
 
-function orderRows(savedOrders, uid) {
-    const eligible = eligibleProducts(savedOrders, uid);
+function readLocalReviewedIds(uid) {
+  if (typeof window === "undefined" || !uid) return [];
+  try {
+    const stored = JSON.parse(localStorage.getItem(reviewStorageKey) || "[]");
+    return Array.isArray(stored)
+      ? stored.filter((review) => review.userId === uid && review.productId).map((review) => String(review.productId))
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function orderRows(savedOrders, uid, reviewedIds = new Set()) {
+    const eligibleIds = new Set(eligibleProducts(savedOrders, uid).map((product) => String(product.id)));
     return savedOrders.flatMap((savedOrder) =>
       (savedOrder.items || []).map((item, index) => {
       const product = enrichShopProduct(item);
+      const productId = String(product.id || item.id);
+      const reviewed = reviewedIds.has(productId);
       return {
       id: savedOrder.orderNumber || `LC-${index + 1}`,
       productId: product.id || item.id,
@@ -22,7 +39,11 @@ function orderRows(savedOrders, uid) {
       option: `${item.option?.label || "기본 옵션"} / ${item.quantity || 1}개`,
       price: (Number(item.price) + Number(item.option?.extraPrice || 0)) * Number(item.quantity || 1),
       status: savedOrder.status || "배송 준비",
-      canReview: eligible.some((product) => product.id === String(item.id)),
+      // Every order line shows a review box: a reviewed product keeps "리뷰 완료"
+      // regardless of the 30-day window, an unreviewed one shows "리뷰 쓰기"
+      // while it is still eligible.
+      reviewDone: reviewed,
+      canReview: !reviewed && eligibleIds.has(productId),
       // Firestore order records store the image URL resolved at purchase
       // time, which 404s once local assets are re-hashed (e.g. the
       // png/jpg -> webp conversion). Re-resolve against today's catalog.
@@ -45,9 +66,35 @@ export default function Buy() {
       .finally(() => { if (active) setOrdersLoading(false); });
     return () => { active = false; };
   }, [user?.uid]);
+  const [reviewedProductIds, setReviewedProductIds] = useState(() => new Set());
+  useEffect(() => {
+    let active = true;
+    if (!user?.uid) return undefined;
+    // Firestore's `reviews` collection is the source of truth for "was this
+    // product reviewed" (one doc per user+product). The local cache is only a
+    // fallback for when that read fails, since it can keep stale entries for
+    // reviews that were deleted on another device.
+    const loadReviewedIds = () => {
+      const localIds = readLocalReviewedIds(user.uid);
+      Promise.resolve(db
+        ? getDocs(query(collection(db, "reviews"), where("userId", "==", user.uid)))
+          .then((snapshot) => snapshot.docs.map((entry) => entry.data().productId).filter(Boolean).map(String))
+        : localIds)
+        .then((ids) => { if (active) setReviewedProductIds(new Set(ids)); })
+        .catch(() => { if (active) setReviewedProductIds(new Set(localIds)); });
+    };
+    loadReviewedIds();
+    // Deleting or writing a review on the 나의 리뷰 page fires this, so the
+    // "리뷰 완료 / 리뷰 쓰기" badges here flip without a manual refresh.
+    window.addEventListener("product-reviews-changed", loadReviewedIds);
+    return () => {
+      active = false;
+      window.removeEventListener("product-reviews-changed", loadReviewedIds);
+    };
+  }, [user?.uid]);
   const [selectedFilter, setSelectedFilter] = useState("전체");
   const [page, setPage] = useState(1);
-  const orders = useMemo(() => orderRows(savedOrders.filter((order) => order.userId === user?.uid), user?.uid), [savedOrders, user?.uid]);
+  const orders = useMemo(() => orderRows(savedOrders.filter((order) => order.userId === user?.uid), user?.uid, reviewedProductIds), [savedOrders, user?.uid, reviewedProductIds]);
   const filteredOrders = useMemo(() => selectedFilter === "전체" ? orders : orders.filter((order) => order.status === selectedFilter), [orders, selectedFilter]);
   const pageCount = Math.max(1, Math.ceil(filteredOrders.length / PAGE_SIZE));
   const visibleOrders = filteredOrders.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
@@ -170,7 +217,7 @@ export default function Buy() {
                 <div className={styles.orderMeta}><span>주문일</span><strong>{order.date}</strong><span>주문번호</span><strong>{order.id}</strong></div>
                 {order.image ? <img loading="lazy" className={styles.orderImage} src={order.image} alt={order.name} /> : <div className={styles.orderImage} aria-hidden="true" />}
                 <div className={styles.orderInfo}><h2>{order.name}</h2><p>{order.option}</p><strong>{order.price.toLocaleString("ko-KR")}원</strong></div>
-                <div className={styles.orderActionsRow}><span className={styles.status}>{order.status}</span><Link to={`/shop/${order.productId}`}>상품 상세</Link>{order.canReview && <Link className={styles.reviewLink} to={`/review?productId=${encodeURIComponent(order.productId)}`} state={{ productName: order.name }}>리뷰 쓰기</Link>}</div>
+                <div className={styles.orderActionsRow}><span className={styles.status}>{order.status}</span><div className={styles.orderButtons}><Link to={`/shop/${order.productId}`}>상품 상세</Link>{order.reviewDone ? <span className={styles.reviewDone}>리뷰 완료</span> : order.canReview && <Link className={styles.reviewLink} to={`/review?productId=${encodeURIComponent(order.productId)}`} state={{ productName: order.name }}>리뷰 쓰기</Link>}</div></div>
               </article>
             ))}
             {!ordersLoading && !ordersError && !visibleOrders.length && <div className={styles.emptyState}><p>{orders.length ? "해당 배송 상태의 주문이 없어요." : "주문한 상품이 아직 존재하지 않아요."}</p><Link to="/shop">상품 보러가기 <span aria-hidden="true">→</span></Link></div>}
@@ -184,7 +231,7 @@ export default function Buy() {
         <aside className={styles.side} ref={sideRailRef}>
           <div className={styles.sideBox} ref={sideBoxRef}>
             <figure className={styles.heroFrame}><img loading="lazy" src="/Buy-img/order-hero.webp" alt="여행용품 컬렉션" /></figure>
-            <section className={styles.snapshot}><h2>ORDER SNAPSHOT</h2><div className={styles.snapshotGrid}><div><span>총 주문</span><strong>{new Set(orders.map((order) => order.id)).size}</strong></div><div><span>배송 중</span><strong>{orders.filter((order) => order.status === "배송 중").length}</strong></div><div><span>리뷰 가능 상품</span><strong>{new Set(orders.filter((order) => order.canReview).map((order) => order.productId)).size}</strong></div></div></section>
+            <section className={styles.snapshot}><h2>ORDER SNAPSHOT</h2><div className={styles.snapshotGrid}><div><span>총 주문</span><strong>{orders.length}</strong></div><div><span>배송 중</span><strong>{orders.filter((order) => order.status === "배송 중").length}</strong></div><div><span>리뷰 가능 상품</span><strong>{orders.filter((order) => order.canReview).length}</strong></div></div></section>
           </div>
         </aside>
         <section className={styles.contactBox} aria-label="주문 관련 문의">

@@ -9,8 +9,11 @@
   color: $ink;
 }
 
+// 좌우 여백은 ExchangeRate.module.scss .page 기준(모바일 16px)을 그대로 따릅니다.
+// .expenseSettings(= calc(100% - 32px) 중앙정렬)만으로 여백을 잡고,
+// 안쪽 컨테이너/섹션은 추가 가로 패딩을 두지 않습니다.
 .pageInner {
-  width: min(100%, 334px);
+  width: 100%;
   margin: 0 auto;
 }
 
@@ -19,7 +22,7 @@
 }
 
 .pageHeader {
-  padding: 0 18px 20px;
+  padding: 0 0 20px;
   border-bottom: 1px solid #ccc9c3;
 }
 
@@ -55,7 +58,7 @@
 }
 
 .package {
-  padding: 33px 18px 21px;
+  padding: 33px 0 21px;
 }
 
 .package h2 {
@@ -80,7 +83,7 @@
 }
 
 .expenseCard {
-  padding: 37px 20px 35px;
+  padding: 37px 0 35px;
 }
 
 .expenseCard h2 {

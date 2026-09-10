@@ -17,6 +17,15 @@
   display: flex;
   flex-direction: column;
 }
+
+.shopApp {
+  background: #efeade;
+}
+
+.shopApp :global(footer) {
+  margin-top: 0;
+}
+
 .main {
   min-height: 60vh;
   flex: 1 0 auto;
@@ -49,6 +58,21 @@
   }
 
   .balanceApp :global(footer) {
+    display: none;
+  }
+
+  .eventPlayApp {
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .eventPlayApp .main {
+    height: 100vh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .eventPlayApp :global(footer) {
     display: none;
   }
 }

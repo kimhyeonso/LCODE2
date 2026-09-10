@@ -129,9 +129,12 @@ export default function App() {
   const [showIntro, setShowIntro] = useState(
     () => sessionStorage.getItem(INTRO_SESSION_KEY) !== "true",
   );
-  const { pathname } = useLocation();
+  const { pathname, search } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
+  const isShopPage = pathname === "/shop" || pathname.startsWith("/shop/");
+  const eventStep = new URLSearchParams(search).get("event");
+  const isEventPlayPage = pathname === "/event" && (eventStep === "gacha" || eventStep === "mystery");
   const isHomePage = pathname === "/";
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
@@ -140,7 +143,7 @@ export default function App() {
   }, [showIntro]);
 
   return (
-    <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""}`}>
+    <div className={`${styles.app} ${isBalancePage ? styles.balanceApp : ""} ${isShopPage ? styles.shopApp : ""} ${isEventPlayPage ? styles.eventPlayApp : ""}`}>
       {showIntro && <Intro onComplete={finishIntro} />}
       {!showIntro && isHomePage && <Popup />}
       <ScrollTop />
