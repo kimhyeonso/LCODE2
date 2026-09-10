@@ -95,6 +95,28 @@ $type-display: 36px;
   pointer-events: none;
 }
 
+.heroVideoToggle {
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  bottom: 16px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+  }
+}
+
 .heroCopy {
   position: absolute;
   z-index: 1;

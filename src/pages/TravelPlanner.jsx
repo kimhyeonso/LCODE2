@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useBlocker, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import TravelForm from "../components/TravelForm";
 import Loading from "../components/Loading";
 import { useAuth } from "../hooks/useAuth";
@@ -20,11 +20,27 @@ export default function TravelPlanner() {
   const [conflictingPlan, setConflictingPlan] = useState(null);
   const saveLockRef = useRef(false);
   const remixBaseDays = useRef(remixDraft ? location.state?.remixOriginalDays : undefined);
+  const unsavedChangesRef = useRef(Boolean(remixDraft));
+  const blocker = useBlocker(useCallback(() => unsavedChangesRef.current, []));
 
   const handleDirtyChange = useCallback((dirty) => {
+    unsavedChangesRef.current = dirty;
     setHasUnsavedChanges(dirty);
     if (dirty) setDraftState((current) => ({ ...current, saved: false }));
   }, []);
+
+  useEffect(() => {
+    if (blocker.state !== "blocked") return undefined;
+    // Let the router restore the current history entry before confirming a POP.
+    const timer = window.setTimeout(() => {
+      if (window.confirm("저장하지 않은 변경 사항이 있습니다. 페이지를 나갈까요?")) {
+        blocker.proceed();
+      } else {
+        blocker.reset();
+      }
+    }, 0);
+    return () => window.clearTimeout(timer);
+  }, [blocker]);
 
   useEffect(() => {
     if (!hasUnsavedChanges) return undefined;
@@ -33,23 +49,9 @@ export default function TravelPlanner() {
       event.preventDefault();
       event.returnValue = message;
     };
-    const guardLink = (event) => {
-      const anchor = event.target.closest?.("a[href]");
-      if (!anchor || anchor.target === "_blank") return;
-      const target = new URL(anchor.href, window.location.href);
-      if (target.origin !== window.location.origin) return;
-      if (!window.confirm(message)) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
-      setHasUnsavedChanges(false);
-    };
     window.addEventListener("beforeunload", beforeUnload);
-    document.addEventListener("click", guardLink, true);
     return () => {
       window.removeEventListener("beforeunload", beforeUnload);
-      document.removeEventListener("click", guardLink, true);
     };
   }, [hasUnsavedChanges]);
 
@@ -88,7 +90,7 @@ export default function TravelPlanner() {
       remixBaseDays.current = updated.days;
       setSavedPlan(updated);
       setEditState({ loading: false, saving: false, error: "", saved: true });
-      setHasUnsavedChanges(false);
+      handleDirtyChange(false);
       saveLockRef.current = false;
       window.dispatchEvent(new Event("plans-changed"));
       navigate(`/plan/saved?id=${encodeURIComponent(planId)}`);
@@ -123,7 +125,7 @@ export default function TravelPlanner() {
       const document = await savePlan(user.uid, { ...plan, status: "confirmed" });
       if (!document?.id) throw new Error("확정 일정 문서 ID가 없습니다.");
       window.dispatchEvent(new Event("plans-changed"));
-      setHasUnsavedChanges(false);
+      handleDirtyChange(false);
       saveLockRef.current = false;
       navigate(`/plan/saved?id=${encodeURIComponent(document.id)}`);
     } catch (confirmError) {
@@ -165,10 +167,11 @@ export default function TravelPlanner() {
         if (!document?.id) throw new Error("임시저장 문서 ID가 없습니다.");
         setDraftState({ saving: false, saved: true, savedAt: new Date(), error: "" });
         window.dispatchEvent(new Event("plans-changed"));
+        handleDirtyChange(false);
         navigate(`/travel-planner?plan=${encodeURIComponent(document.id)}`, { replace: true });
       }
       window.dispatchEvent(new Event("plans-changed"));
-      setHasUnsavedChanges(false);
+      handleDirtyChange(false);
       saveLockRef.current = false;
     } catch (draftError) {
       console.error("일정 임시저장 실패:", draftError);

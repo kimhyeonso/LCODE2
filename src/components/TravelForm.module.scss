@@ -1029,14 +1029,14 @@
   font-size: 14px;
   text-align: center;
 }
-.placeAddFooter button {
+.placeAddFooter > button {
   height: 50px;
   border: 0;
   background: #111;
   color: #fff;
   font-size: 14px;
 }
-.placeAddFooter button:disabled {
+.placeAddFooter > button:disabled {
   opacity: 0.4;
 }
 
@@ -1118,27 +1118,26 @@
   position: relative;
   min-height: 96px;
   display: grid;
-  grid-template-columns: 24px 92px 1fr;
+  grid-template-columns: 24px 72px minmax(0, 1fr) 58px;
   gap: 10px;
   align-items: center;
   padding: 8px;
   background: #f7f7f7;
 }
-.wishlistResults article > button {
-  position: absolute;
-  right: 10px;
-  min-width: 50px;
-  border: 0;
-  padding: 6px 9px;
-  background: #222;
-  color: #fff;
-  font-size: 14px;
+.wishlistCheckbox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  cursor: pointer;
+  font-size: 12px;
+
+  input { width: 20px; height: 20px; accent-color: #222; }
 }
-.wishlistResults article > button.wishlistSelected {
-  border: 1px solid #aaa;
-  background: #fff;
-  color: #222;
-}
+.wishlistResults .resultImage { width: 72px; }
+.wishlistResults .resultCopy small { max-width: 100%; box-sizing: border-box; }
 .wishlistFooter {
   position: sticky;
   z-index: 3;
@@ -1159,15 +1158,63 @@
   font-size: 14px;
   text-align: center;
 }
-.wishlistFooter button {
+.wishlistFooter > button {
   height: 50px;
   border: 0;
   background: #111;
   color: #fff;
   font-size: 14px;
 }
-.wishlistFooter button:disabled {
+.wishlistFooter > button:disabled {
   opacity: 0.4;
+}
+
+.additionDate {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  background: #f5f1e9;
+  color: #333;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.placeAddFooter,
+.wishlistFooter {
+  grid-template-columns: minmax(0, 1fr) auto;
+
+  > button { min-width: 112px; padding-inline: 16px; }
+}
+
+.selectionSummary {
+  min-width: 0;
+  strong { display: block; font-size: 14px; line-height: 1.5; overflow-wrap: anywhere; }
+  small { display: block; margin-top: 4px; color: #666; font-size: 12px; }
+}
+
+.selectedPlaceList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 112px;
+  overflow-y: auto;
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li { display: flex; align-items: center; max-width: 100%; padding-left: 8px; border-radius: 4px; background: #f3f3f3; }
+  li span { min-width: 0; overflow-wrap: anywhere; text-align: left; color: #333; font-size: 12px; }
+  button { flex-shrink: 0; width: 44px; height: 44px; border: 0; background: transparent; color: #333; font-size: 20px; }
+}
+
+.stopCard.addedStop {
+  background: #fff3ce;
+  box-shadow: 0 0 0 2px #a97b28;
+  scroll-margin-block: 120px;
+}
+
+@media (max-width: 380px) {
+  .wishlistResults article { grid-template-columns: 20px 48px minmax(0, 1fr) 44px; gap: 6px; }
+  .wishlistResults .resultImage { width: 48px; height: 60px; }
 }
 
 .flightEditor {
