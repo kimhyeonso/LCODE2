@@ -509,11 +509,11 @@ export default function Plan() {
             <section className={styles.savedControls} aria-label="저장 일정 관리">
               <div>
                 <small>PLAN OPTIONS</small>
-                <p>현재 일정이 마음에 들지 않으면 AI로 다시 조정할 수 있어요.</p>
+                <p>계획에 문제가 생겼나요?</p><p>날씨 · 휴무 · 일정 변경이 생겨도 현재 여행을 기준으로 일정을 다시 추천해드려요.</p>
               </div>
               <div className={styles.savedActions}>
                 <button type="button" onClick={() => navigate(`/travel-planner?plan=${encodeURIComponent(savedPlanId)}`)}>일정 수정</button>
-                <Link to={`/ai-remix?planId=${encodeURIComponent(savedPlanId)}`}><span>AI REMIX</span><b>AI로 일정 다시 짜기</b></Link>
+                <Link to={`/ai-remix?planId=${encodeURIComponent(savedPlanId)}`}><span>AI REMIX</span><b>일정 다시 맞추기 →</b></Link>
                 <button type="button" onClick={() => {
                   setDeleteState({ deleting: false, error: "" });
                   setIsDeleteOpen(true);

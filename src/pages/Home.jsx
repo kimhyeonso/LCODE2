@@ -53,10 +53,10 @@ const heroSlides = [
     mobile: "/Mypage-img/travel-coast.jpg",
     video: "/Mypage-img/travel-coast.mp4",
     eyebrow: "FIND YOUR NEXT TRIP",
-    title: "NEXT TRIP",
-    subtitle: "바다를 따라, 새로운 여행",
-    description: "일상에서 한 걸음 벗어나 나만의 여행지를 만나보세요.",
-    cta: "EXPLORE DESTINATIONS",
+    title: "계획이 틀어져도,\n여행은 계속된다.",
+    serviceIntro: true,
+    description: "취향에 맞는 여행을 추천하고, 여행 중 예상치 못한 상황에서도 일정을 다시 설계하는 여행 일정 리믹스 플랫폼",
+    cta: "나에게 맞는 여행 찾기",
     to: "/destinations",
     viewerCount: 128,
   },
@@ -252,45 +252,63 @@ export default function Home() {
   const [heroTransitionEnabled, setHeroTransitionEnabled] = useState(true);
 
   useEffect(() => {
-    const context = gsap.context(() => {
+    const motion = gsap.matchMedia();
+    motion.add("(prefers-reduced-motion: no-preference)", () => {
       gsap.from(`.${styles.heroVisual}`, {
         opacity: 0,
         duration: 0.9,
         ease: "power2.out",
       });
     }, page);
-    return () => context.revert();
+    return () => motion.revert();
   }, []);
 
   useEffect(() => {
     const root = page.current;
-    if (!root) return undefined;
+    const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!root || media.matches || !("IntersectionObserver" in window)) return;
 
-    const targets = root.querySelectorAll(
-      `.${styles.section}, .${styles.destinationList} > a`,
-    );
+    // Reveal siblings in reading order, with the original short upward motion.
+    const targets = [...root.querySelectorAll(
+      `.${styles.section} > *, .${styles.destinationList} > a`,
+    )].filter((target) => !target.classList.contains(styles.destinationList) && !target.classList.contains(styles.shopDragCursor));
+    const countryCards = [...root.querySelectorAll(`.${styles.destinationList} > a`)];
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting);
+      visible.sort((a, b) => targets.indexOf(a.target) - targets.indexOf(b.target));
+      visible.forEach((entry, index) => {
+        const countryIndex = countryCards.indexOf(entry.target);
+        const delay = countryIndex >= 0 ? countryIndex * 0.2 : Math.min(index, 3) * 0.12;
+        entry.target.style.setProperty("--home-reveal-delay", `${delay}s`);
+        entry.target.classList.add(styles.revealVisible);
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0, rootMargin: "0px 0px -8% 0px" });
 
-    if (!("IntersectionObserver" in window)) {
-      targets.forEach((target) => target.classList.add(styles.revealVisible));
-      return undefined;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add(styles.revealVisible);
-          observer.unobserve(entry.target);
-        });
-      },
-      {
-        threshold: 0.12,
-        rootMargin: "0px 0px -8% 0px",
-      },
-    );
-
-    targets.forEach((target) => observer.observe(target));
-    return () => observer.disconnect();
+    targets.forEach((target) => {
+      target.classList.add(styles.revealPending);
+      observer.observe(target);
+    });
+    const show = (target) => {
+      target.style.setProperty("--home-reveal-delay", "0s");
+      target.classList.add(styles.revealVisible);
+      observer.unobserve(target);
+    };
+    const onMotionChange = () => { if (media.matches) targets.forEach(show); };
+    const onFocus = (event) => targets.forEach((target) => {
+      if (target.contains(event.target)) show(target);
+    });
+    media.addEventListener("change", onMotionChange);
+    root.addEventListener("focusin", onFocus);
+    return () => {
+      observer.disconnect();
+      media.removeEventListener("change", onMotionChange);
+      root.removeEventListener("focusin", onFocus);
+      targets.forEach((target) => {
+        target.classList.remove(styles.revealPending, styles.revealVisible);
+        target.style.removeProperty("--home-reveal-delay");
+      });
+    };
   }, []);
 
   useEffect(() => {
@@ -449,7 +467,7 @@ export default function Home() {
             }}
             onTransitionEnd={handleHeroTransitionEnd}
           >
-            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges, viewerCount }, index) => {
+            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges, viewerCount, serviceIntro }, index) => {
               const isClone = index === heroSlides.length;
               return (
               <div
@@ -475,7 +493,7 @@ export default function Home() {
                   </picture>
                 )}
                 {viewerCount && <ViewerBadge count={viewerCount} />}
-                <div className={`${styles.heroCopy} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""} ${mobileBottomLeft ? styles.heroCopyMobileBottomLeft : ""}`}>
+                <div className={`${styles.heroCopy} ${serviceIntro ? styles.serviceIntro : ""} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""} ${mobileBottomLeft ? styles.heroCopyMobileBottomLeft : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>
                   {subtitle && <p className={styles.heroSubtitle}>{subtitle}</p>}
@@ -520,8 +538,9 @@ export default function Home() {
                 <strong>{dDay === null ? "DATE TBD" : dDay > 0 ? `D−${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</strong>
                 <h2><Link to="/plan">{upcomingPlan.city?.toUpperCase()}</Link></h2>
                 <p>{upcomingPlan.title}</p>
+                <div className={styles.remixContext}><h3>계획에 문제가 생겼나요?</h3><p>날씨 · 휴무 · 일정 변경이 생겨도 현재 여행을 기준으로 일정을 다시 추천해드려요.</p></div>
                 <Link className={styles.remixButton} to={`/ai-remix?planId=${encodeURIComponent(upcomingPlan.id)}`}>
-                  <span>AI REMIX</span><b>AI로 일정 다시 짜기</b>
+                  <span>AI REMIX</span><b>일정 다시 맞추기 →</b>
                 </Link>
               </div>
               <div
@@ -675,6 +694,10 @@ export default function Home() {
                     src={product.image}
                     alt={product.name}
                     loading="lazy"
+                    className={styles.productThumb}
+                    onLoad={(event) => {
+                      event.currentTarget.classList.add(styles.productThumbLoaded);
+                    }}
                     onError={(event) => {
                       const fallback = homeProductImages[index];
                       if (fallback && event.currentTarget.dataset.fallbackApplied !== "true") {

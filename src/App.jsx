@@ -129,7 +129,7 @@ export default function App() {
   const [showIntro, setShowIntro] = useState(
     () => sessionStorage.getItem(INTRO_SESSION_KEY) !== "true",
   );
-  const { pathname, search } = useLocation();
+  const { pathname, search, state } = useLocation();
   const isImmersivePage = immersivePagePaths.has(pathname);
   const isBalancePage = pathname === "/balance";
   const isShopPage = pathname === "/shop" || pathname.startsWith("/shop/");
@@ -227,8 +227,8 @@ export default function App() {
             }
           />
           <Route path="/event" element={<Event />} />
-          <Route path="/ai-remix" element={<ProtectedRoute><AIRemix /></ProtectedRoute>} />
-          <Route path="/remix" element={<ProtectedRoute><AIRemix /></ProtectedRoute>} />
+          <Route path="/ai-remix" element={<ProtectedRoute><AIRemix key={state?.remixEntry || "default"} /></ProtectedRoute>} />
+          <Route path="/remix" element={<ProtectedRoute><AIRemix key={state?.remixEntry || "default"} /></ProtectedRoute>} />
           <Route path="/contact" element={<Contact />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

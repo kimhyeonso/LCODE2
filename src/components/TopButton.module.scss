@@ -39,3 +39,11 @@
     height: 40px;
   }
 }
+
+@media (min-width: 901px) {
+  .topButton {
+    width: 57px;
+    height: 57px;
+    svg { width: 26px; height: 26px; }
+  }
+}

@@ -1,222 +1,384 @@
+@use "../styles/variables" as *;
+@use "../styles/mixins" as *;
+
+@font-face {
+  font-family: "GriunXHangeul OCHUNGI KIM";
+  src: url("/fonts/GriunXHangeul_OCHUNGI.KIM-Rg.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+$intro-title-font: "GriunXHangeul OCHUNGI KIM", $serif;
+
+// Adjust these two values to tune the opening zoom.
+$intro-zoom-start: .78;
+$intro-zoom-duration: 3s;
+
 .intro {
   position: fixed;
-  z-index: 9999;
   inset: 0;
-  display: grid;
-  place-items: center;
   width: 100%;
-  height: 100vh;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
   overflow: hidden;
-  background-color: #111;
+  background: #efeade;
+  color: $ink;
+  font-family: $serif;
+  &[open] { display: grid; place-items: center; }
+  &::backdrop { background: #efeade; }
+  button { cursor: pointer; }
+  button:focus-visible { outline: 2px solid $sand; outline-offset: 4px; }
 }
-
-.backgroundVideo,
-.overlay {
+.video { width: 100%; height: 100%; object-fit: contain; }
+@include mobile { .video { height: 100dvh; } }
+.skip, .close {
+  position: absolute;
+  right: 24px;
+  top: 20px;
+  min-height: 44px;
+  padding: 10px 16px;
+  border: 1px solid rgba(246,243,236,.5);
+  background: $ink;
+  color: $paper;
+  font: 400 15px/1.5 $sans;
+}
+.close {
+  z-index: 3;
+}
+.result {
   position: absolute;
   inset: 0;
-  display: block;
+  overflow: hidden;
+}
+.resultBackground {
   width: 100%;
   height: 100%;
+  object-fit: cover;
+  object-position: right center;
 }
+.resultCopy {
+  position: absolute;
+  right: 6%;
+  bottom: 26%;
+  width: 35%;
+  color: #403321;
+  text-align: left;
+  h1 {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    font: 400 calc(clamp(24px, 2.2vw, 42px) + 3px)/1.35 $intro-title-font;
+    letter-spacing: -.045em;
+    word-break: keep-all;
+    outline: none;
+  }
+  p {
+    margin: 24px 0;
+    color: #796c56;
+    font: 400 calc(clamp(13px, 1vw, 17px) + 3px)/1.7 $sans;
+    word-break: keep-all;
+  }
+}
+.resultButton {
+  min-height: 48px;
+  padding: 12px 28px;
+  border: 1px solid #171714;
+  border-radius: 0;
+  background: #171714;
+  color: #fff;
+  font: 400 18px/1.5 $sans;
+  span { margin-left: 8px; }
+}
+@include mobile {
+  .resultBackground {
+    width: 200%;
+    max-width: none;
+    position: absolute;
+    right: 0;
+  }
+  .resultCopy {
+    right: 24px;
+    left: 24px;
+    bottom: max(22dvh, calc(env(safe-area-inset-bottom) + 32px));
+    width: auto;
+    text-align: center;
+    h1 {
+      font-size: calc(clamp(25px, 6.5vw, 34px) + 3px);
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+    p { margin: 20px 0 24px; font-size: 17px; }
+  }
+}
+.book {
+  position: relative;
+  width: 100%;
+  min-height: 100dvh;
+  container-type: inline-size;
 
-.backgroundVideo {
-  z-index: 0;
+}
+.magazineStage {
+  background: #efeade;
+  overflow-x: hidden;
+  &::backdrop { background: #efeade; }
+}
+.bookImage {
+  position: absolute;
+  display: block;
+  left: -2%;
+  top: -12%;
+  width: 104%;
+  height: 120%;
   object-fit: cover;
 }
+@media (min-width: 641px) {
+  .magazineStage { overflow: hidden; }
+  .book {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    // Fit the printed book, excluding the asset's transparent outer margins.
+    width: min(calc((100vw - 12px) / .98), calc((100dvh - 12px) / .84 * 4 / 3));
+    min-height: 0;
+    aspect-ratio: 4 / 3;
+    transform: translate(-50%, -50%);
+    animation: magazineZoom $intro-zoom-duration cubic-bezier(.22, .61, .36, 1) both;
+  }
+  .bookImage {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
 
-.overlay {
-  z-index: 1;
-  background: rgba(0, 0, 0, 0.3);
 }
-
-.introContent {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-  color: #fff;
-  font-family: "DM Serif Display", serif;
-  text-align: center;
-}
-
-.topCopy,
-.bottomCopy {
-  margin: 0;
-  font-weight: 400;
-}
-
-.skipButton {
+.copy {
   position: absolute;
-  z-index: 3;
-  right: clamp(36px, 5vw, 80px);
-  bottom: clamp(42px, 6vh, 72px);
-  padding: 12px 4px;
-  border: 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.55);
-  background: transparent;
-  color: rgba(255, 255, 255, 0.82);
-  font: 400 14px/1 "DM Serif Display", serif;
-  letter-spacing: 0.16em;
-  cursor: pointer;
-  transition: color 0.25s ease, border-color 0.25s ease;
+  left: 53%;
+  top: 18%;
+  width: 31%;
+  text-align: center;
+  h1 { margin: 3cqw -2cqw 0; font: 400 calc(3.7cqw + 3px)/1.25 $sans; letter-spacing: -.055em; outline: none; word-break: keep-all; }
 }
-
-.skipButton:hover {
-  border-color: #fff;
-  color: #fff;
+.description { margin: 1.7cqw 0 1cqw; font-size: calc(1.5cqw + 3px); }
+.imageChoices {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  gap: 10px;
+  // Previous card width: (container - 10px gap) / 2, enlarged by 1.3.
+  > button { width: calc(65% - 6.5px); }
 }
-
-.skipButton:focus-visible {
-  outline: 1px solid #fff;
-  outline-offset: 5px;
-}
-
-.topCopy {
-  margin-bottom: clamp(34px, 4.5vh, 54px);
-  font-size: clamp(26px, calc(1.8vw + 0.6rem), 38px);
-  line-height: 1.05;
-  animation: intro-copy-down 0.75s ease-out 0.12s both;
-}
-
-.logo {
+.plan {
   position: relative;
   display: block;
-  width: min(calc(54% - 3rem), 772px);
-  -webkit-animation: text-focus-in 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) 0.15s both;
-  animation: text-focus-in 0.8s cubic-bezier(0.55, 0.085, 0.68, 0.53) 0.15s both;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  appearance: none;
+  box-shadow: none;
+  border-radius: 0;
+  img { display: block; width: 100%; height: auto; }
 }
-
-.line {
-  width: 0;
-  height: 1px;
-  margin-top: clamp(28px, 4vh, 46px);
-  background: rgba(255, 255, 255, 0.36);
-  animation: intro-line-grow 0.85s ease-out 0.3s forwards;
-}
-
-.bottomCopy {
-  margin-top: clamp(24px, 3.5vh, 40px);
-  font-size: clamp(18px, calc(1vw + 0.5rem), 24px);
-  line-height: 1;
-  animation: intro-copy-up 0.75s ease-out 0.18s both;
-}
-
-.introClosing {
-  -webkit-mask-image:
-    linear-gradient(to right, #000 0 100%),
-    linear-gradient(to left, #000 0 100%);
-  mask-image:
-    linear-gradient(to right, #000 0 100%),
-    linear-gradient(to left, #000 0 100%);
-  -webkit-mask-position: left center, right center;
-  mask-position: left center, right center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  animation: intro-split-exit 0.8s cubic-bezier(0.65, 0, 0.35, 1) forwards;
-}
-
-@-webkit-keyframes text-focus-in {
-  0% {
-    -webkit-filter: blur(12px);
-    filter: blur(12px);
-    opacity: 0;
+// Crop only the image files' empty padding so the visible buttons sit together.
+.imageChoices > button { overflow: hidden; }
+.plan {
+  aspect-ratio: 1000 / 470;
+  color: $ink;
+  &::before {
+    content: "";
+    position: absolute;
+    top: 22.5px;
+    left: calc(5% + 2.5px);
+    right: calc(5% + 2.5px);
+    height: calc(64% - 5px);
+    box-sizing: border-box;
+    border: 4px double #695944;
+    background: #eee2cc;
+    transition: background-color .25s ease, border-color .25s ease;
   }
-
-  100% {
-    -webkit-filter: blur(0);
-    filter: blur(0);
-    opacity: 1;
+  &:focus-visible {
+    color: $paper;
+    &::before { background: #352e25; border-color: $sand; }
   }
 }
-
-@keyframes text-focus-in {
-  0% {
-    -webkit-filter: blur(12px);
-    filter: blur(12px);
-    opacity: 0;
+@media (hover: hover) and (pointer: fine) {
+  .imageChoices > .plan { transition: translate .2s ease; &:hover { translate: 0 -3px; } }
+}
+@include mobile {
+  .intro[open] { display: grid; place-items: center end; overflow: hidden; }
+  .book {
+    width: var(--mobile-page-width);
+    height: auto;
+    aspect-ratio: 812 / 992;
+    min-height: 0;
+    margin: 0 6px 0 0;
+    display: block;
+    overflow: hidden;
+    transform-origin: right center;
+    animation: magazineMobileCrop 3.8s linear both;
   }
-
-  100% {
-    -webkit-filter: blur(0);
-    filter: blur(0);
-    opacity: 1;
+  // Match the reference crop: a sliver of the spine and the entire right page.
+  .bookImage {
+    position: absolute;
+    left: auto;
+    right: 0;
+    top: var(--mobile-image-top);
+    width: 194%;
+    max-width: none;
+    height: auto;
+    transform: none;
+    animation: magazinePanRight 3.8s cubic-bezier(.22,.61,.36,1) both;
+  }
+  .copy {
+    animation: magazineMobileReveal 3.8s linear both;
+    position: absolute;
+    left: max(9%, calc(100% - 100vw + 24px));
+    top: 12.4%;
+    width: min(60%, calc(100vw - 48px));
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    box-sizing: border-box;
+    h1 {
+      width: 100%;
+      max-width: none;
+      margin: 6cqw auto 0;
+      text-align: center;
+      font-size: calc(6.3cqw + 3px);
+      line-height: 1.35;
+      letter-spacing: -.045em;
+    }
+  }
+  .description { margin: 4.5cqw 0 0; font-size: calc(2.8cqw + 3px); }
+  .imageChoices { gap: 0; }
+  .imageChoices > .plan {
+    width: 57%; min-width: 0;
+    height: 10.5cqw; min-height: 44px;
+    margin-top: 5cqw;
+    aspect-ratio: auto;
+    &::before { inset: 0; height: 100%; }
   }
 }
-
-@keyframes intro-copy-down {
-  from {
-    opacity: 0;
-    transform: translateY(-16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes intro-copy-up {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes intro-line-grow {
-  from {
-    width: 0;
-  }
-
-  to {
-    width: 100%;
-  }
-}
-
-@-webkit-keyframes intro-split-exit {
-  from {
-    -webkit-mask-size: 50.1% 100%, 50.1% 100%;
-    mask-size: 50.1% 100%, 50.1% 100%;
-  }
-
-  to {
-    -webkit-mask-size: 0 100%, 0 100%;
-    mask-size: 0 100%, 0 100%;
-  }
-}
-
-@keyframes intro-split-exit {
-  from {
-    -webkit-mask-size: 50.1% 100%, 50.1% 100%;
-    mask-size: 50.1% 100%, 50.1% 100%;
-  }
-
-  to {
-    -webkit-mask-size: 0 100%, 0 100%;
-    mask-size: 0 100%, 0 100%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .backgroundVideo,
-  .logo,
-  .topCopy,
-  .bottomCopy,
-  .line,
-  .introClosing {
-    animation: none;
-    -webkit-animation: none;
-  }
+  .book { animation: none; }
+  .imageChoices button { transition: none; }
 }
 
-@media (max-width: 640px) {
-  .logo {
-    width: 78%;
+@keyframes magazineZoom {
+  from { transform: translate(-50%, -50%) scale($intro-zoom-start); }
+  to { transform: translate(-50%, -50%) scale(1); }
+}
+
+
+.planLabel {
+  position: absolute;
+  z-index: 1;
+  top: calc(20px + 32%);
+  left: 0;
+  width: 100%;
+  transform: translateY(-50%);
+  color: inherit;
+  transition: color .25s ease;
+  text-align: center;
+  white-space: nowrap;
+  font: 400 calc(clamp(12px, 1.5cqw, 24px) + 3px)/1.4 $intro-title-font;
+  pointer-events: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .plan:hover {
+    color: $paper;
+    &::before { background: #352e25; border-color: $sand; }
   }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan::before, .planLabel { transition: none; }
+}
+
+.runawayArea {
+  position: relative;
+  width: 100%;
+  height: clamp(110px, 14cqw, 190px);
+  min-width: 0;
+}
+.runawayButton {
+  position: absolute;
+  left: calc((100% - (65% - 6.5px)) / 2);
+  top: 0;
+  z-index: 2;
+  width: calc(65% - 6.5px);
+  min-width: 44px;
+  min-height: 44px;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: 1000 / 470;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  touch-action: manipulation;
+  transition: transform .25s cubic-bezier(.22,.61,.36,1);
+  img {
+    width: 100%; height: 100%; position: absolute; inset: 0;
+    object-fit: contain; pointer-events: none;
+    animation: runawayPaperSwap .2s ease-out;
+  }
+}
+@keyframes runawayPaperSwap { from { opacity: .9; } to { opacity: 1; } }
+@media (min-width: 641px) {
+  .copy h1 { font-size: calc(3.7cqw - 2px); }
+  .plan { top: 10px; }
+  .runawayButton { top: -5px; }
+}
+@include mobile {
+  .runawayArea { height: clamp(120px, 22dvh, 160px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .runawayButton { transition: none; img { animation: none; } }
+}
+
+@include mobile {
+  .planLabel { top: 50%; font-size: calc(2.8cqw + 3px); }
+  .runawayArea { margin-top: 0; height: 20cqw; }
+  .runawayButton { width: 65%; left: 17.5%; }
+}
+
+@include mobile {
+  .intro {
+    --mobile-page-width: max(calc(100vw - 6px), calc(94dvh * 812 / 992));
+    --mobile-page-height: calc(var(--mobile-page-width) * 992 / 812);
+    --mobile-image-top: calc(var(--mobile-page-height) * -.107);
+  }
+}
+@keyframes magazinePanRight {
+  0%, 20% {
+    width: 94vw;
+    right: calc(50vw - 6px);
+    top: 50%;
+    transform: translate(50%, -50%);
+  }
+  90%, 100% {
+    width: 194%;
+    right: 0;
+    top: var(--mobile-image-top);
+    transform: none;
+  }
+}
+@keyframes magazineMobileCrop {
+  0%, 89% { overflow: visible; }
+  90%, 100% { overflow: hidden; }
+}
+@keyframes magazineMobileReveal {
+  0%, 90% { opacity: 0; visibility: hidden; }
+  91% { opacity: 0; visibility: visible; }
+  100% { opacity: 1; visibility: visible; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .book, .bookImage, .copy { animation: none; }
 }

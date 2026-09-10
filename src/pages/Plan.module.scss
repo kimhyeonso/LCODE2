@@ -1181,3 +1181,20 @@ $plan-muted: #8b8780;
     font-size: 11px;
   }
 }
+
+.savedActions a {
+  min-height: 48px;
+  height: auto;
+  padding: 12px 18px;
+  background: $ink;
+  color: $paper;
+  border: 1px solid $ink;
+  span, b { color: inherit; }
+  &:focus-visible { outline: 2px solid $ink; outline-offset: 4px; }
+}
+.savedControls > div:first-child {
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  p:last-child { flex-basis: 100%; max-width: 560px; font-size: 12px; line-height: 1.7; word-break: keep-all; }
+}
+.savedActions a { flex-wrap: wrap; white-space: normal; }

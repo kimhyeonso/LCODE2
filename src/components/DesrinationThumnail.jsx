@@ -1,3 +1,4 @@
+import { useReveal } from "../hooks/useReveal";
 import { Link } from "react-router-dom";
 import styles from "./DesrinationThumnail.module.scss";
 
@@ -13,8 +14,9 @@ export default function DesrinationThumnail({
   actionLabel = "일정에 추가 >",
   scheduleSummary,
 }) {
+  const revealRef = useReveal();
   return (
-    <div className={styles.tripCard}>
+    <div ref={revealRef} className={styles.tripCard}>
       <Link to={to} className={styles.tripLink} onClick={onTripClick}>
         <div className={styles.tripImage} style={image ? { backgroundImage: `url(${image})` } : undefined} />
         <div className={styles.tripCopy}>
