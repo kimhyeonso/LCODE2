@@ -55,6 +55,23 @@ service cloud.firestore {
           && request.resource.data.prizeId in [
             'event-first', 'event-second', 'event-third', 'event-fourth'
           ];
+        // Portfolio mystery reward: one immutable reward per account.
+        allow create: if isOwner(userId)
+          && couponId == 'mystery-case-01'
+          && request.resource.data.keys().hasOnly([
+            'eventId', 'type', 'title', 'description', 'detail', 'code',
+            'source', 'used', 'issuedAt', 'expiry'
+          ])
+          && request.resource.data.eventId == 'mystery-case-01'
+          && request.resource.data.type == 'CASE SOLVED REWARD'
+          && request.resource.data.title == '스타벅스 쿠폰'
+          && request.resource.data.description == '아메리카노 1잔'
+          && request.resource.data.detail == '포트폴리오용 보상 · 실제 매장 사용 불가'
+          && request.resource.data.code == 'MYSTERY-CASE-01-' + userId
+          && request.resource.data.source == 'event'
+          && request.resource.data.used == false
+          && request.resource.data.issuedAt == request.time
+          && request.resource.data.expiry == 'DEMO REWARD';
         allow update, delete: if false;
       }
     }

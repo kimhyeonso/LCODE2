@@ -1,19 +1,13 @@
 @use "../styles/variables" as *;
 @use "../styles/mixins" as *;
 
-@font-face {
-  font-family: "GriunXHangeul OCHUNGI KIM";
-  src: url("/fonts/GriunXHangeul_OCHUNGI.KIM-Rg.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
-$intro-title-font: "GriunXHangeul OCHUNGI KIM", $serif;
-
-// Adjust these two values to tune the opening zoom.
-$intro-zoom-start: .78;
-$intro-zoom-duration: 3s;
+$intro-font: "Pretendard Variable", "Pretendard", "SUIT Variable", "SUIT", "Noto Sans KR", $sans;
+$editorial-serif: "Bodoni 72", Didot, "Times New Roman", Georgia, serif;
+$deep: #2d2923;
+$soft: #6c6254;
+$paper: rgba(255, 252, 245, .96);
 
 .intro {
   position: fixed;
@@ -26,380 +20,2813 @@ $intro-zoom-duration: 3s;
   padding: 0;
   border: 0;
   overflow: hidden;
-  background: #efeade;
-  color: $ink;
-  font-family: $serif;
-  &[open] { display: grid; grid-template-columns: minmax(0, 1fr); place-items: center; }
-  &::backdrop { background: #efeade; }
-  button { cursor: pointer; }
-  button:focus-visible { outline: 2px solid $sand; outline-offset: 4px; }
-}
-.video { width: 100%; height: 100%; object-fit: contain; }
-@include mobile { .video { height: 100dvh; } }
-.skip, .close {
-  position: absolute;
-  right: 24px;
-  top: 20px;
-  min-height: 44px;
-  padding: 10px 16px;
-  border: 1px solid rgba(246,243,236,.5);
-  background: $ink;
-  color: $paper;
-  font: 400 15px/1.5 $sans;
-}
-.close {
-  z-index: 3;
-}
-@include mobile {
-  .skip, .close {
-    min-height: 34px;
-    padding: 6px 10px;
-    font-size: 12px;
+  background:
+    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, .5), transparent 46%),
+    #e9e4d9;
+  color: $deep;
+  font-family: $intro-font;
+
+  &[open] {
+    display: grid;
+    place-items: center;
+  }
+
+  &::backdrop {
+    background: #e9e4d9;
+  }
+
+  button {
+    font-family: $intro-font;
+    cursor: pointer;
+  }
+
+  button:focus-visible {
+    outline: 3px solid rgba(53, 46, 38, .28);
+    outline-offset: 4px;
   }
 }
+
+.close {
+  position: absolute;
+  z-index: 50;
+  top: 20px;
+  right: 24px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border: 1px solid rgba(255, 255, 255, .42);
+  border-radius: 999px;
+  background: rgba(33, 30, 26, .56);
+  color: #fff;
+  font: 650 12px/1 $intro-font;
+  letter-spacing: -.02em;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background .2s ease, transform .2s ease;
+
+  &:hover {
+    background: rgba(33, 30, 26, .78);
+    transform: translateY(-1px);
+  }
+}
+
+.book {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(calc((100vw - 12px) / .98), calc((100dvh - 12px) / .84 * 4 / 3));
+  aspect-ratio: 4 / 3;
+  transform: translate(-50%, -50%);
+  isolation: isolate;
+  perspective: 1600px;
+  container-type: inline-size;
+}
+
+.bookTilt {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transform-origin: 50% 52%;
+  animation: bookCameraSettle 1.38s cubic-bezier(.16, .78, .18, 1) both;
+  will-change: transform;
+}
+
+.bookReady .bookTilt {
+  overflow: visible;
+  animation: none;
+  transform: perspective(1600px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1);
+}
+
+.bookTilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 71% 35%, rgba(255, 252, 244, .13), transparent 31%),
+    linear-gradient(90deg, transparent 47.7%, rgba(35, 27, 18, .08) 50%, transparent 52.3%);
+  opacity: .7;
+  mix-blend-mode: multiply;
+  animation: surfaceCalm 1.35s ease both;
+}
+
+.bookImage {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(.996);
+  animation: finalBookReveal .58s ease .9s forwards, softDrift 14s ease-in-out 1.6s both;
+}
+
+.pageOpening {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  perspective: 1500px;
+  transform-style: preserve-3d;
+  animation: openingLayerOut .3s ease 1.24s forwards;
+}
+
+.mobileCover {
+  display: none;
+}
+
+.openPage {
+  position: absolute;
+  top: 0;
+  width: 50.05%;
+  height: 100%;
+  overflow: hidden;
+  background-image: url("../assets/images/intro/background02.png");
+  background-repeat: no-repeat;
+  background-size: 200% 100%;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, filter;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+}
+
+.openPageLeft {
+  left: 0;
+  transform-origin: right center;
+  background-position: left center;
+  transform: rotateY(77deg) translateZ(14px);
+  filter: brightness(.72) saturate(.9);
+  animation: openLeftPage 1.18s cubic-bezier(.16, .82, .2, 1) .08s forwards;
+
+  &::after {
+    background:
+      linear-gradient(90deg, rgba(255, 255, 255, .12), transparent 36%),
+      linear-gradient(270deg, rgba(29, 21, 14, .36), transparent 24%);
+    animation: pageShadeLeft 1.18s ease .08s forwards;
+  }
+}
+
+.openPageRight {
+  right: 0;
+  transform-origin: left center;
+  background-position: right center;
+  transform: rotateY(-79deg) translateZ(16px);
+  filter: brightness(.69) saturate(.88);
+  animation: openRightPage 1.24s cubic-bezier(.16, .82, .2, 1) .13s forwards;
+
+  &::after {
+    background:
+      linear-gradient(270deg, rgba(255, 255, 255, .1), transparent 34%),
+      linear-gradient(90deg, rgba(29, 21, 14, .39), transparent 25%);
+    animation: pageShadeRight 1.24s ease .13s forwards;
+  }
+}
+
+.openingSpine {
+  position: absolute;
+  left: 49.5%;
+  top: 2%;
+  width: 1.25%;
+  height: 96%;
+  z-index: 8;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(28, 20, 13, .55), rgba(51, 39, 28, .22) 34%, transparent 70%);
+  filter: blur(2px);
+  opacity: .9;
+  transform: scaleX(1.45);
+  animation: spineRelax 1.28s cubic-bezier(.2, .72, .2, 1) .08s forwards;
+}
+
+.depthBackdrop,
+.depthForeground {
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+  overflow: hidden;
+  transform-style: preserve-3d;
+}
+
+.depthBackdrop {
+  z-index: 1;
+  color: rgba(41, 35, 28, .18);
+  animation: depthBackdropOut 1.48s cubic-bezier(.18, .72, .2, 1) both;
+}
+
+.depthBackdrop span,
+.depthForeground span {
+  position: absolute;
+  white-space: nowrap;
+}
+
+.depthLogo {
+  left: -2%;
+  top: 8%;
+  font: 400 clamp(86px, 13cqw, 190px)/.85 $editorial-serif;
+  letter-spacing: -.075em;
+  animation: depthLogoMove 1.4s cubic-bezier(.18, .72, .2, 1) both;
+}
+
+.depthJourney {
+  right: -3%;
+  bottom: 8%;
+  font: 700 clamp(68px, 10.5cqw, 150px)/.9 $intro-font;
+  letter-spacing: -.07em;
+  opacity: .5;
+  animation: depthJourneyMove 1.45s cubic-bezier(.18, .72, .2, 1) both;
+}
+
+.depthRemixed {
+  right: 7%;
+  top: 19%;
+  font: 650 clamp(12px, 1.3cqw, 19px)/1 $intro-font;
+  letter-spacing: .42em;
+  opacity: .68;
+  animation: depthSmallMove 1.34s cubic-bezier(.18, .72, .2, 1) both;
+}
+
+.depthForeground {
+  z-index: 8;
+  color: rgba(255, 253, 247, .9);
+  mix-blend-mode: screen;
+  animation: depthForegroundOut 1.1s cubic-bezier(.16, .78, .18, 1) .16s both;
+
+  span {
+    left: 5%;
+    bottom: 16%;
+    font: 720 clamp(24px, 4.8cqw, 70px)/1 $intro-font;
+    letter-spacing: -.045em;
+    transform: rotate(-4deg);
+  }
+}
+
+.magazineDecor {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  animation: editorialIn .48s ease 1.34s forwards;
+}
+
+.magText {
+  position: absolute;
+  color: rgba(55, 47, 39, .54);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .2);
+
+  b,
+  i {
+    font-weight: inherit;
+    font-style: normal;
+  }
+}
+
+.magIssue {
+  left: 58.6%;
+  top: 8.8%;
+  font: 500 clamp(9px, .75cqw, 12px)/1.1 $editorial-serif;
+  letter-spacing: .16em;
+
+  b {
+    display: inline-block;
+    margin-top: .28em;
+    font-family: $intro-font;
+    font-weight: 700;
+    letter-spacing: .25em;
+  }
+}
+
+.magEscape {
+  left: 39.6%;
+  top: 13.2%;
+  font: 400 clamp(10px, .88cqw, 14px)/1.02 $editorial-serif;
+  letter-spacing: .06em;
+  text-align: right;
+
+  b {
+    font-size: .84em;
+    letter-spacing: .11em;
+  }
+}
+
+.magJournal {
+  left: 44.5%;
+  top: 84.8%;
+  font: 650 clamp(8px, .64cqw, 11px)/1.25 $intro-font;
+  letter-spacing: .17em;
+
+  i {
+    display: inline-block;
+    margin-top: .32em;
+    font-family: $editorial-serif;
+    font-size: 1.15em;
+    letter-spacing: .08em;
+  }
+}
+
+.magRoute {
+  left: 56.7%;
+  top: 61.8%;
+  font: 450 clamp(8px, .62cqw, 10px)/1.25 $intro-font;
+  letter-spacing: .12em;
+
+  b {
+    font-family: $editorial-serif;
+    font-weight: 500;
+    letter-spacing: .07em;
+  }
+}
+
+
+.magChapter {
+  left: 15.7%;
+  top: 12.3%;
+  font: 650 clamp(8px, .72cqw, 11px)/1.18 $intro-font;
+  letter-spacing: .14em;
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.16em;
+    font-weight: 500;
+    letter-spacing: .055em;
+  }
+}
+
+.magSlow {
+  left: 7.8%;
+  top: 46.8%;
+  color: rgba(255, 252, 245, .78);
+  font: 500 clamp(13px, 1.25cqw, 19px)/.98 $editorial-serif;
+  letter-spacing: .02em;
+  text-shadow: 0 2px 12px rgba(39, 31, 24, .18);
+
+  b {
+    font-family: $intro-font;
+    font-size: .58em;
+    font-weight: 650;
+    letter-spacing: .18em;
+  }
+}
+
+.magPostcard {
+  left: 25.3%;
+  top: 69.8%;
+  color: rgba(255, 251, 242, .76);
+  font: 500 clamp(9px, .76cqw, 12px)/1.12 $intro-font;
+  letter-spacing: .17em;
+  text-shadow: 0 2px 10px rgba(40, 31, 22, .22);
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.08em;
+    font-weight: 500;
+    letter-spacing: .04em;
+  }
+}
+
+.magSmallKr {
+  left: 6.6%;
+  top: 74.4%;
+  font: 520 clamp(9px, .76cqw, 12px)/1.4 $intro-font;
+  letter-spacing: -.02em;
+  text-transform: none;
+
+  b {
+    font-weight: 720;
+  }
+}
+
+.magSideKr {
+  left: 78.6%;
+  top: 39.8%;
+  max-width: 14%;
+  font: 530 clamp(9px, .8cqw, 13px)/1.35 $intro-font;
+  letter-spacing: -.025em;
+  text-transform: none;
+  text-align: left;
+
+  b {
+    display: inline-block;
+    margin-top: .22em;
+    font-weight: 760;
+  }
+}
+
+.magFeature {
+  left: 76.7%;
+  top: 66.7%;
+  max-width: 15%;
+  font: 450 clamp(10px, .92cqw, 15px)/1.06 $editorial-serif;
+  letter-spacing: .025em;
+  text-transform: none;
+
+  b {
+    display: inline-block;
+    margin-bottom: .28em;
+    font-family: $intro-font;
+    font-size: 1.2em;
+    font-weight: 790;
+    letter-spacing: -.05em;
+  }
+}
+
+.magVertical {
+  left: 92.2%;
+  top: 27.5%;
+  transform: rotate(90deg);
+  transform-origin: left top;
+  font: 650 clamp(7px, .58cqw, 9px)/1 $intro-font;
+  letter-spacing: .26em;
+  white-space: nowrap;
+}
+
+.magTiny {
+  left: 54.2%;
+  top: 85.8%;
+  font: 600 clamp(7px, .56cqw, 9px)/1.25 $intro-font;
+  letter-spacing: .14em;
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.04em;
+    font-weight: 500;
+    letter-spacing: .07em;
+  }
+}
+
+.magChanged,
+.magChangedStrong {
+  animation: editorialSwap .34s cubic-bezier(.2, .78, .2, 1) both;
+}
+
+.magChanged {
+  color: rgba(57, 46, 36, .7);
+}
+
+.magChangedStrong {
+  color: rgba(53, 40, 30, .82);
+}
+
+.magStep2 .magSideKr,
+.magStep3 .magSideKr,
+.magStep4 .magSideKr {
+  transform: rotate(-1.2deg);
+}
+
+.magStep3 .magFeature,
+.magStep4 .magFeature {
+  transform: rotate(1.4deg) scale(1.03);
+}
+
+.copy {
+  position: absolute;
+  z-index: 10;
+  left: 53.6%;
+  top: 18%;
+  width: 32%;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(14px);
+  pointer-events: none;
+  animation: copyIn .54s cubic-bezier(.2, .74, .2, 1) 1.48s forwards;
+
+  h1 {
+    margin: 0;
+    color: $deep;
+    font: 500 clamp(27px, 3.2cqw, 49px)/1.14 $intro-font;
+    letter-spacing: -.055em;
+    word-break: keep-all;
+    outline: none;
+
+    strong {
+      display: inline-block;
+      margin-top: .08em;
+      font-weight: 780;
+    }
+  }
+}
+
+.bookReady .copy {
+  pointer-events: auto;
+}
+
+.choices {
+  display: grid;
+  justify-items: center;
+  gap: clamp(12px, 1.1cqw, 18px);
+  margin-top: clamp(24px, 2.3cqw, 36px);
+}
+
+.choiceButton {
+  width: min(100%, 310px);
+  min-height: clamp(54px, 5.1cqw, 72px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 0 clamp(18px, 1.55cqw, 26px);
+  border: 1px solid rgba(69, 59, 46, .24);
+  border-radius: 16px;
+  background: $paper;
+  color: $deep;
+  box-shadow:
+    0 10px 28px rgba(63, 52, 39, .09),
+    0 2px 6px rgba(63, 52, 39, .06);
+  text-align: left;
+  appearance: none;
+  transition:
+    transform .22s cubic-bezier(.2, .72, .22, 1),
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease,
+    opacity .2s ease;
+
+  span {
+    font: 690 clamp(14px, 1.3cqw, 20px)/1.3 $intro-font;
+    letter-spacing: -.035em;
+    white-space: nowrap;
+  }
+
+  b {
+    flex: 0 0 auto;
+    font: 450 clamp(18px, 1.5cqw, 24px)/1 $intro-font;
+    transition: transform .2s ease;
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px);
+    border-color: rgba(53, 46, 38, .5);
+    background: rgba(255, 253, 248, .99);
+    box-shadow:
+      0 14px 34px rgba(63, 52, 39, .13),
+      0 3px 8px rgba(63, 52, 39, .08);
+
+    b {
+      transform: translateX(4px);
+    }
+  }
+}
+
+.planButton {
+  background: #302b25;
+  border-color: #302b25;
+  color: #fff;
+  box-shadow:
+    0 13px 30px rgba(38, 32, 26, .2),
+    0 3px 8px rgba(38, 32, 26, .1);
+
+  &:hover,
+  &:focus-visible {
+    background: #221f1b;
+    border-color: #221f1b;
+    box-shadow:
+      0 16px 38px rgba(38, 32, 26, .25),
+      0 4px 10px rgba(38, 32, 26, .12);
+  }
+}
+
+.planGuided {
+  transform: scale(1.018);
+  box-shadow:
+    0 17px 42px rgba(38, 32, 26, .24),
+    0 4px 10px rgba(38, 32, 26, .12);
+
+  b {
+    transform: translateX(3px);
+  }
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-2px) scale(1.018);
+  }
+}
+
+.runawayArea {
+  position: relative;
+  left: 50%;
+  width: min(148%, 500px);
+  height: clamp(118px, 9.2cqw, 146px);
+  transform: translateX(-50%);
+  transition: height .32s ease, opacity .28s ease;
+  pointer-events: none;
+}
+
+.runawayButton {
+  --escape-x: 0px;
+  --escape-y: 0px;
+  --escape-rotate: 0deg;
+
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: 13;
+  pointer-events: auto;
+  clip-path: inset(0 0 0 0 round 16px);
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y))
+    rotate(var(--escape-rotate));
+  will-change: transform, opacity, clip-path;
+  transition:
+    transform .46s cubic-bezier(.16, .82, .2, 1),
+    opacity .2s ease,
+    filter .24s ease,
+    clip-path .2s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+// On the last pursuit, the button rushes to the book fold, is squeezed by it,
+// then vanishes as though it slipped behind the physical pages.
+.runawayHiding {
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(.65px) brightness(.94);
+  clip-path: inset(0 49.2% 0 49.2% round 16px);
+  box-shadow: 0 4px 12px rgba(46, 37, 28, .06);
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y))
+    rotate(var(--escape-rotate))
+    scale(.58);
+  transition:
+    transform .62s cubic-bezier(.18, .86, .2, 1),
+    clip-path .24s cubic-bezier(.4, 0, .2, 1) .34s,
+    opacity .18s ease .53s,
+    filter .2s ease .48s,
+    box-shadow .3s ease;
+}
+
+.spineTuckMask {
+  position: absolute;
+  z-index: 14;
+  left: 49.1%;
+  top: 3%;
+  width: 1.8%;
+  height: 94%;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    radial-gradient(ellipse at center, rgba(37, 27, 19, .55) 0%, rgba(55, 42, 30, .32) 35%, rgba(255, 252, 245, .08) 58%, transparent 76%);
+  filter: blur(1.2px);
+  transform: scaleX(.7);
+}
+
+.spineTuckMaskActive {
+  animation: spineTuckFlash .72s cubic-bezier(.2, .76, .22, 1) both;
+}
+
+.runawayAreaGone {
+  height: 0;
+  opacity: 0;
+}
+
+.runawayReaction {
+  position: absolute;
+  z-index: 12;
+  left: 82.4%;
+  top: 48.5%;
+  color: rgba(47, 40, 32, .7);
+  font: 500 clamp(18px, 2.1cqw, 31px)/.9 $editorial-serif;
+  letter-spacing: -.035em;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .45);
+  animation: reactionPop .28s cubic-bezier(.2, .76, .24, 1) both;
+}
+
+.reaction1 { transform: rotate(5deg); }
+.reaction2 { top: 51%; left: 80.4%; transform: rotate(-4deg); }
+.reaction3 { top: 45.5%; left: 81.2%; transform: rotate(7deg); }
+.reaction4 {
+  top: 53%;
+  left: 79.8%;
+  font-family: $intro-font;
+  font-weight: 760;
+  letter-spacing: -.08em;
+  transform: rotate(-5deg);
+}
+
+.reaction5 {
+  top: 43%;
+  left: 50.7%;
+  font-family: $intro-font;
+  font-weight: 780;
+  letter-spacing: -.07em;
+  transform: translateX(-50%) rotate(3deg) scale(.9);
+}
+
 .result {
   position: absolute;
   inset: 0;
   overflow: hidden;
+  background: #e6d9c5;
 }
+
+.result::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 42%, rgba(247, 238, 220, .12) 60%, rgba(247, 238, 220, .2) 100%);
+}
+
 .resultBackground {
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: right center;
+  animation: resultIn .58s cubic-bezier(.2, .7, .2, 1) both;
 }
+
 .resultCopy {
   position: absolute;
-  right: 6%;
-  bottom: 26%;
+  z-index: 2;
+  right: 7%;
+  bottom: 19.5%;
   width: 35%;
   color: #403321;
   text-align: left;
+  opacity: 0;
+  transform: translateY(14px);
+  animation: copyIn .5s ease .16s forwards;
+
   h1 {
-    width: 100%;
-    max-width: none;
     margin: 0;
-    font: 400 calc(clamp(24px, 2.2vw, 42px) + 3px)/1.35 $intro-title-font;
-    letter-spacing: -.045em;
-    word-break: keep-all;
     outline: none;
+    color: #342d25;
+    font: 780 clamp(31px, 3vw, 52px)/1.13 $intro-font;
+    letter-spacing: -.06em;
+    word-break: keep-all;
   }
+
   p {
-    margin: 24px 0;
-    color: #796c56;
-    font: 400 calc(clamp(13px, 1vw, 17px) + 3px)/1.7 $sans;
+    margin: 20px 0 24px;
+    color: #6d6253;
+    font: 480 clamp(14px, 1.05vw, 17px)/1.7 $intro-font;
+    letter-spacing: -.025em;
     word-break: keep-all;
   }
 }
-.resultAside {
-  display: block;
-  margin: -8px 0 28px;
-  color: #796c56;
-  font: 400 13px/1.6 $sans;
-  word-break: keep-all;
-}
-.resultButton {
-  max-width: 100%;
-  min-height: 48px;
-  padding: 12px 28px;
-  border: 1px solid #171714;
-  border-radius: 0;
-  background: #171714;
-  color: #fff;
-  font: 400 14px/1.5 $sans;
-  span { margin-left: 8px; }
-  &:hover {
-    background: #fff;
-    color: #171714;
-  }
-}
-@include mobile {
-  .resultBackground {
-    width: 200%;
-    max-width: none;
-    position: absolute;
-    right: 0;
-  }
-  .resultCopy {
-    right: 24px;
-    left: 24px;
-    bottom: max(22dvh, calc(env(safe-area-inset-bottom) + 32px));
-    width: auto;
-    text-align: center;
-    h1 {
-      font-size: calc(clamp(25px, 6.5vw, 34px) + 3px);
-      white-space: normal;
-      overflow-wrap: anywhere;
-    }
-    p { margin: 20px 0 24px; font-size: 17px; }
-  }
-}
-.book {
-  position: relative;
-  width: 100%;
-  min-height: 100dvh;
-  container-type: inline-size;
 
-}
-.magazineStage {
-  background: #efeade;
-  overflow-x: hidden;
-  &::backdrop { background: #efeade; }
-}
-.bookImage {
-  position: absolute;
-  display: block;
-  left: -2%;
-  top: -12%;
-  width: 104%;
-  height: 120%;
-  object-fit: cover;
-}
-@media (min-width: 641px) {
-  .magazineStage { overflow: hidden; }
-  .book {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    // Fit the printed book, excluding the asset's transparent outer margins.
-    width: min(calc((100vw - 12px) / .98), calc((100dvh - 12px) / .84 * 4 / 3));
-    min-height: 0;
-    aspect-ratio: 4 / 3;
-    transform: translate(-50%, -50%);
-    animation: magazineZoom $intro-zoom-duration cubic-bezier(.22, .61, .36, 1) both;
-  }
-  .bookImage {
-    position: static;
-    width: 100%;
-    height: auto;
-  }
 
-}
-.copy {
-  position: absolute;
-  left: 53%;
-  top: 18%;
-  width: 31%;
-  text-align: center;
-  h1 { margin: 3cqw -2cqw 0; font: 400 calc(3.7cqw + 3px)/1.25 $sans; letter-spacing: -.055em; outline: none; word-break: keep-all; }
-}
-.description { margin: 1.7cqw 0 1cqw; font-size: calc(1.5cqw + 3px); }
-.imageChoices {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  justify-items: center;
-  gap: 10px;
-  // Previous card width: (container - 10px gap) / 2, enlarged by 1.3.
-  > button { width: calc(65% - 6.5px); }
-}
-.plan {
-  position: relative;
-  display: block;
-  width: 100%;
-  min-height: 44px;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  appearance: none;
-  box-shadow: none;
-  border-radius: 0;
-  img { display: block; width: 100%; height: auto; }
-}
-// Crop only the image files' empty padding so the visible buttons sit together.
-.imageChoices > button { overflow: hidden; }
-.plan {
-  aspect-ratio: 1000 / 470;
-  color: $ink;
-  &::before {
-    content: "";
-    position: absolute;
-    top: 22.5px;
-    left: calc(5% + 2.5px);
-    right: calc(5% + 2.5px);
-    height: calc(64% - 5px);
-    box-sizing: border-box;
-    border: 4px double #695944;
-    background: #eee2cc;
-    transition: background-color .25s ease, border-color .25s ease;
-  }
-  &:focus-visible {
-    color: $paper;
-    &::before { background: #352e25; border-color: $sand; }
-  }
-}
-@media (hover: hover) and (pointer: fine) {
-  .imageChoices > .plan { transition: translate .2s ease; &:hover { translate: 0 -3px; } }
-}
-@include mobile {
-  .intro[open] { display: grid; place-items: center; overflow: hidden; }
-  .book {
-    width: var(--mobile-page-width);
-    max-width: 100%;
-    height: auto;
-    aspect-ratio: 812 / 992;
-    min-height: 0;
-    margin: 0;
+.resultProgress {
+  width: min(240px, 100%);
+  margin: 0;
+  height: 4px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(70, 56, 39, .12);
+
+  span {
     display: block;
-    overflow: hidden;
-    transform-origin: right center;
-    animation: magazineMobileCrop 3.8s linear both;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: #26221d;
+    animation: progressFill 1.68s cubic-bezier(.22, .7, .22, 1) .08s forwards;
   }
-  // Match the reference crop: a sliver of the spine and the entire right page.
+}
+
+@include mobile {
+  .intro[open] {
+    place-items: center;
+  }
+
+  .close {
+    top: 14px;
+    right: 14px;
+    min-height: 36px;
+    padding: 7px 11px;
+    font-size: 11px;
+  }
+
+  .book {
+    --mobile-page-width: min(calc(100vw - 12px), calc(94dvh * 812 / 992));
+    --mobile-page-height: calc(var(--mobile-page-width) * 992 / 812);
+    --mobile-image-top: calc(var(--mobile-page-height) * -.107);
+
+    position: relative;
+    left: auto;
+    top: auto;
+    width: var(--mobile-page-width);
+    height: var(--mobile-page-height);
+    aspect-ratio: 812 / 992;
+    transform: none;
+    perspective: 1200px;
+  }
+
+  .bookTilt,
+  .bookReady .bookTilt {
+    overflow: hidden;
+    transform: none;
+    transition: none;
+    animation: mobileSceneSettle 1.18s cubic-bezier(.16, .8, .2, 1) both;
+  }
+
+  .bookTilt::after {
+    background: linear-gradient(90deg, rgba(47, 37, 26, .08), transparent 9%, transparent 90%, rgba(47, 37, 26, .05));
+  }
+
   .bookImage {
-    position: absolute;
     left: auto;
     right: 0;
     top: var(--mobile-image-top);
     width: 194%;
     max-width: none;
     height: auto;
+    object-fit: initial;
+    opacity: 1;
     transform: none;
-    animation: magazinePanRight 3.8s cubic-bezier(.22,.61,.36,1) both;
+    animation: softMobileDrift 14s ease-in-out 1.35s both;
   }
-  .copy {
-    animation: magazineMobileReveal 3.8s linear both;
+
+  .pageOpening {
+    display: none;
+  }
+
+  .mobileCover {
     position: absolute;
-    left: 12%;
-    top: 12.4%;
-    width: 76%;
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    box-sizing: border-box;
-    h1 {
-      width: 100%;
-      max-width: none;
-      margin: 6cqw auto 0;
-      text-align: center;
-      font-size: calc(6.3cqw + 3px);
-      line-height: 1.35;
-      letter-spacing: -.045em;
+    inset: 0;
+    z-index: 18;
+    display: block;
+    overflow: hidden;
+    border: 1px solid rgba(73, 59, 43, .14);
+    border-radius: 2px 8px 8px 2px;
+    background:
+      radial-gradient(circle at 72% 18%, rgba(255, 255, 255, .56), transparent 24%),
+      linear-gradient(145deg, rgba(255, 253, 247, .98), rgba(231, 220, 201, .98));
+    box-shadow:
+      -8px 8px 24px rgba(50, 40, 28, .14),
+      inset 12px 0 18px rgba(93, 72, 49, .08),
+      inset -1px 0 rgba(255, 255, 255, .7);
+    color: #312b25;
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+    animation: mobileCoverOpen 1.08s cubic-bezier(.14, .78, .2, 1) .08s forwards;
+    will-change: transform, filter, opacity;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(47, 36, 25, .22), transparent 11%),
+        linear-gradient(270deg, rgba(255, 255, 255, .28), transparent 18%);
+      animation: mobileCoverShade 1.08s ease .08s forwards;
+      pointer-events: none;
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 3.5%;
+      top: 5%;
+      bottom: 5%;
+      width: 1px;
+      background: rgba(76, 58, 40, .18);
+      box-shadow: 4px 0 8px rgba(76, 58, 40, .08);
+    }
+
+    strong {
+      position: absolute;
+      left: 10%;
+      top: 13%;
+      font: 400 clamp(46px, 15cqw, 72px)/.86 $editorial-serif;
+      letter-spacing: -.065em;
+    }
+
+    em {
+      position: absolute;
+      left: 11%;
+      top: 25%;
+      font: 650 clamp(8px, 2.5cqw, 11px)/1 $intro-font;
+      font-style: normal;
+      letter-spacing: .31em;
     }
   }
-  .description { margin: 4.5cqw 0 0; font-size: calc(2.8cqw + 3px); }
-  .imageChoices { gap: 0; }
-  .imageChoices > .plan {
-    width: 57%; min-width: 0;
-    height: 10.5cqw; min-height: 44px;
-    margin-top: 5cqw;
-    aspect-ratio: auto;
-    &::before { inset: 0; height: 100%; }
+
+  .mobileCoverIssue {
+    position: absolute;
+    top: 7%;
+    right: 9%;
+    font: 650 clamp(7px, 2.2cqw, 9px)/1 $intro-font;
+    letter-spacing: .18em;
+  }
+
+  .mobileCoverLine {
+    position: absolute;
+    left: 10%;
+    top: 34%;
+    font: 500 clamp(11px, 3.2cqw, 15px)/1.15 $editorial-serif;
+    letter-spacing: .04em;
+  }
+
+  .mobileCoverPhoto {
+    position: absolute;
+    left: 9%;
+    right: 9%;
+    top: 42%;
+    height: 38%;
+    border: 8px solid rgba(255, 253, 248, .86);
+    box-shadow: 0 12px 26px rgba(54, 42, 29, .14);
+    background-image: url("../assets/images/intro/background02.png");
+    background-repeat: no-repeat;
+    background-size: 194% auto;
+    background-position: 18% 52%;
+    transform: rotate(-1.2deg);
+  }
+
+  .mobileCoverCorner {
+    position: absolute;
+    right: 10%;
+    bottom: 7%;
+    text-align: right;
+    font: 650 clamp(8px, 2.3cqw, 10px)/1.25 $intro-font;
+    letter-spacing: .16em;
+  }
+
+  .depthBackdrop,
+  .depthForeground {
+    inset: -4%;
+  }
+
+  .depthLogo {
+    left: -12%;
+    top: 4%;
+    font-size: clamp(62px, 23vw, 110px);
+    opacity: .72;
+  }
+
+  .depthJourney,
+  .depthRemixed,
+  .depthForeground {
+    display: none;
+  }
+
+  .magazineDecor {
+    animation-delay: 1.16s;
+  }
+
+  .magEscape,
+  .magJournal,
+  .magRoute,
+  .magChapter,
+  .magSlow,
+  .magPostcard,
+  .magSmallKr,
+  .magVertical,
+  .magTiny {
+    display: none;
+  }
+
+  .magIssue {
+    display: block;
+    left: 12%;
+    top: 8.8%;
+    color: rgba(57, 49, 41, .48);
+    font-size: clamp(8px, 2.5cqw, 11px);
+  }
+
+  .magSideKr {
+    display: block;
+    left: auto;
+    right: 8%;
+    top: 65%;
+    max-width: 31%;
+    font-size: clamp(8px, 2.4cqw, 10px);
+    opacity: .62;
+  }
+
+  .magFeature {
+    display: block;
+    left: 11%;
+    top: 78%;
+    max-width: 42%;
+    font-size: clamp(8px, 2.3cqw, 10px);
+    opacity: .58;
+  }
+
+  .copy {
+    left: 12%;
+    top: 14.5%;
+    width: 76%;
+    animation-delay: 1.3s;
+
+    h1 {
+      font-size: clamp(28px, 7.3cqw, 38px);
+      line-height: 1.15;
+    }
+  }
+
+  .choices {
+    gap: 12px;
+    margin-top: clamp(22px, 5.6cqw, 32px);
+  }
+
+  .choiceButton {
+    width: min(100%, 300px);
+    min-height: 54px;
+    padding: 0 18px;
+    border-radius: 14px;
+
+    span {
+      font-size: clamp(14px, 3.7cqw, 17px);
+    }
+  }
+
+  .runawayArea {
+    width: 118%;
+    height: 96px;
+  }
+
+  .runawayButton {
+    transform:
+      translateX(calc(-50% + clamp(-48px, var(--escape-x), 48px)))
+      translateY(clamp(0px, var(--escape-y), 24px))
+      rotate(var(--escape-rotate));
+  }
+
+  .runawayHiding {
+    transform:
+      translateX(calc(-50% + clamp(-48px, var(--escape-x), 48px)))
+      translateY(clamp(0px, var(--escape-y), 24px))
+      rotate(var(--escape-rotate))
+      scale(.84);
+    clip-path: inset(0 46% 0 46% round 14px);
+  }
+
+  .spineTuckMask {
+    display: none;
+  }
+
+  .runawayReaction {
+    left: 50%;
+    top: auto;
+    bottom: 18%;
+    max-width: 90%;
+    font-size: clamp(16px, 5cqw, 22px);
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  .reaction1,
+  .reaction2,
+  .reaction3,
+  .reaction4,
+  .reaction5 {
+    left: 50%;
+    top: auto;
+    bottom: 18%;
+    transform: translateX(-50%) rotate(-3deg);
+  }
+
+  .resultBackground {
+    position: absolute;
+    right: 0;
+    width: 200%;
+    max-width: none;
+  }
+
+  .resultCopy {
+    right: 24px;
+    left: 24px;
+    bottom: max(12dvh, calc(env(safe-area-inset-bottom) + 22px));
+    width: auto;
+    text-align: center;
+
+    h1 {
+      font-size: clamp(30px, 8vw, 40px);
+    }
+
+    p {
+      margin: 18px 0 24px;
+      font-size: 15px;
+    }
+  }
+
+
+  .resultProgress {
+    margin: 0 auto;
+    width: min(220px, 72vw);
   }
 }
+
+@keyframes bookCameraSettle {
+  0% {
+    transform: perspective(1600px) translateZ(-180px) scale(.9) rotateX(2.2deg);
+    filter: drop-shadow(0 8px 14px rgba(42, 34, 25, .08));
+  }
+  58% {
+    transform: perspective(1600px) translateZ(-18px) scale(.993) rotateX(.35deg);
+    filter: drop-shadow(0 22px 34px rgba(42, 34, 25, .18));
+  }
+  84% {
+    transform: perspective(1600px) translateZ(0) scale(1.004) rotateX(-.12deg);
+    filter: drop-shadow(0 18px 28px rgba(42, 34, 25, .15));
+  }
+  100% {
+    transform: perspective(1600px) translateZ(0) scale(1) rotateX(0deg);
+    filter: drop-shadow(0 16px 26px rgba(42, 34, 25, .13));
+  }
+}
+
+@keyframes openLeftPage {
+  0% {
+    transform: rotateY(77deg) translateZ(14px) scaleY(.985);
+    filter: brightness(.72) saturate(.9);
+  }
+  72% {
+    transform: rotateY(7deg) translateZ(2px) scaleY(.997);
+    filter: brightness(.94) saturate(.98);
+  }
+  90% {
+    transform: rotateY(-1.15deg) translateZ(0) scaleY(1.002);
+    filter: brightness(1) saturate(1);
+  }
+  100% {
+    transform: rotateY(0deg) translateZ(0) scaleY(1);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes openRightPage {
+  0% {
+    transform: rotateY(-79deg) translateZ(16px) scaleY(.983);
+    filter: brightness(.69) saturate(.88);
+  }
+  70% {
+    transform: rotateY(-8deg) translateZ(2px) scaleY(.997);
+    filter: brightness(.94) saturate(.98);
+  }
+  89% {
+    transform: rotateY(1.25deg) translateZ(0) scaleY(1.003);
+    filter: brightness(1) saturate(1);
+  }
+  100% {
+    transform: rotateY(0deg) translateZ(0) scaleY(1);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes pageShadeLeft {
+  from { opacity: 1; }
+  76% { opacity: .32; }
+  to { opacity: 0; }
+}
+
+@keyframes pageShadeRight {
+  from { opacity: 1; }
+  76% { opacity: .34; }
+  to { opacity: 0; }
+}
+
+@keyframes spineRelax {
+  0% { opacity: .92; transform: scaleX(1.7); filter: blur(2.7px); }
+  70% { opacity: .48; transform: scaleX(.9); filter: blur(1.8px); }
+  100% { opacity: .18; transform: scaleX(.62); filter: blur(1.4px); }
+}
+
+@keyframes openingLayerOut {
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+}
+
+@keyframes finalBookReveal {
+  from { opacity: 0; transform: scale(.996); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes surfaceCalm {
+  0% { opacity: .15; }
+  45% { opacity: .9; }
+  100% { opacity: .55; }
+}
+
+@keyframes depthBackdropOut {
+  0% { opacity: 0; transform: scale(1.14); }
+  18% { opacity: 1; }
+  72% { opacity: .75; }
+  100% { opacity: 0; transform: scale(.98); }
+}
+
+@keyframes depthLogoMove {
+  0% { transform: translate3d(-8%, 7%, 0) scale(1.08); }
+  100% { transform: translate3d(9%, -3%, 0) scale(.94); }
+}
+
+@keyframes depthJourneyMove {
+  0% { transform: translate3d(8%, -6%, 0) scale(.88); }
+  100% { transform: translate3d(-8%, 4%, 0) scale(1.04); }
+}
+
+@keyframes depthSmallMove {
+  0% { transform: translate3d(12%, 0, 0); }
+  100% { transform: translate3d(-16%, -5%, 0); }
+}
+
+@keyframes depthForegroundOut {
+  0% { opacity: 0; transform: scale(1.16) translate3d(-5%, 6%, 0); }
+  18% { opacity: .88; }
+  100% { opacity: 0; transform: scale(1.34) translate3d(12%, -10%, 0); }
+}
+
+@keyframes editorialIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes copyIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes reactionPop {
+  0% { opacity: 0; scale: .82; }
+  70% { opacity: 1; scale: 1.04; }
+  100% { opacity: 1; scale: 1; }
+}
+
+@keyframes softDrift {
+  from { scale: 1; }
+  to { scale: 1.012; }
+}
+
+@keyframes resultIn {
+  from { opacity: 0; transform: scale(1.012); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes progressFill {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes editorialSwap {
+  0% { opacity: .15; transform: translateY(4px) scale(.98); }
+  62% { opacity: 1; transform: translateY(-1px) scale(1.015); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes spineTuckFlash {
+  0% {
+    opacity: 0;
+    transform: scaleX(.55);
+  }
+  34% {
+    opacity: .82;
+    transform: scaleX(1.25);
+  }
+  72% {
+    opacity: .95;
+    transform: scaleX(.82);
+  }
+  100% {
+    opacity: 0;
+    transform: scaleX(.48);
+  }
+}
+
+@keyframes mobileCoverOpen {
+  0% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(0deg) translateZ(18px);
+    filter: brightness(.98) saturate(.96);
+  }
+  42% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(-38deg) translateZ(26px) translateX(-2%);
+    filter: brightness(.92) saturate(.94);
+  }
+  78% {
+    opacity: .96;
+    transform: perspective(1200px) rotateY(-92deg) translateZ(10px) translateX(-7%);
+    filter: brightness(.78) saturate(.9);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: perspective(1200px) rotateY(-112deg) translateZ(0) translateX(-10%);
+    filter: brightness(.7) saturate(.88);
+  }
+}
+
+@keyframes mobileCoverShade {
+  0% { opacity: .08; }
+  48% { opacity: .82; }
+  100% { opacity: .28; }
+}
+
+@keyframes mobileSceneSettle {
+  0% { transform: scale(.93) translateY(10px); filter: drop-shadow(0 8px 12px rgba(42, 34, 25, .06)); }
+  76% { transform: scale(1.006) translateY(0); filter: drop-shadow(0 16px 24px rgba(42, 34, 25, .14)); }
+  100% { transform: scale(1) translateY(0); filter: drop-shadow(0 14px 22px rgba(42, 34, 25, .12)); }
+}
+
+@keyframes mobileOpenPage {
+  0% {
+    transform: rotateY(-74deg) translateZ(14px) scale(.96);
+    filter: brightness(.7) saturate(.9);
+  }
+  72% {
+    transform: rotateY(-7deg) translateZ(1px) scale(.996);
+    filter: brightness(.95) saturate(.99);
+  }
+  90% {
+    transform: rotateY(1deg) translateZ(0) scale(1.002);
+    filter: brightness(1) saturate(1);
+  }
+  100% {
+    transform: rotateY(0deg) translateZ(0) scale(1);
+    filter: brightness(1) saturate(1);
+  }
+}
+
+@keyframes mobileSpineRelax {
+  from { opacity: .8; transform: scaleX(1.4); }
+  to { opacity: .12; transform: scaleX(.6); }
+}
+
+@keyframes mobileFinalBookReveal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes softMobileDrift {
+  from { scale: 1; }
+  to { scale: 1.008; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .book { animation: none; }
-  .imageChoices button { transition: none; }
+  .bookTilt,
+  .pageOpening,
+  .mobileCover,
+  .openPage,
+  .openingSpine,
+  .depthBackdrop,
+  .depthForeground,
+  .bookImage,
+  .magazineDecor,
+  .copy,
+  .resultBackground,
+  .resultCopy,
+  .resultProgress span {
+    animation: none !important;
+  }
+
+  .pageOpening,
+  .mobileCover,
+  .depthBackdrop,
+  .depthForeground {
+    display: none;
+  }
+
+  .bookImage,
+  .magazineDecor,
+  .copy,
+  .resultBackground,
+  .resultCopy {
+    opacity: 1;
+    transform: none;
+  }
+
+  .resultProgress span {
+    width: 100%;
+  }
+
+  .choiceButton,
+  .runawayArea,
+  .runawayReaction {
+    transition: none;
+    animation: none;
+  }
 }
 
-@keyframes magazineZoom {
-  from { transform: translate(-50%, -50%) scale($intro-zoom-start); }
-  to { transform: translate(-50%, -50%) scale(1); }
+/* ========================================================================== */
+/* Final editorial polish: keep type in paper whitespace, not over photography */
+/* ========================================================================== */
+
+.magChapter {
+  left: 14.1%;
+  top: 5.4%;
+  max-width: 8.5%;
+  color: rgba(55, 47, 39, .48);
+  font: 650 clamp(7px, .57cqw, 9px)/1.18 $intro-font;
+  letter-spacing: .15em;
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.1em;
+    font-weight: 500;
+    letter-spacing: .055em;
+  }
 }
 
+.magEscape {
+  left: 42.7%;
+  top: 6.2%;
+  width: 5.4%;
+  color: rgba(55, 47, 39, .48);
+  font: 450 clamp(8px, .62cqw, 10px)/1.08 $editorial-serif;
+  letter-spacing: .07em;
+  text-align: right;
 
-.planLabel {
-  position: absolute;
-  z-index: 1;
-  top: calc(20px + 32%);
-  left: 0;
-  width: 100%;
-  transform: translateY(-50%);
-  color: inherit;
-  transition: color .25s ease;
+  b {
+    font-family: $intro-font;
+    font-size: .78em;
+    font-weight: 600;
+    letter-spacing: .12em;
+  }
+}
+
+.magIssue {
+  left: 57.5%;
+  top: 5.2%;
+  width: 12%;
+  color: rgba(55, 47, 39, .48);
+  font: 500 clamp(8px, .66cqw, 11px)/1.1 $editorial-serif;
+  letter-spacing: .16em;
+  text-align: center;
+
+  b {
+    display: inline-block;
+    margin-top: .28em;
+    font-family: $intro-font;
+    font-weight: 700;
+    letter-spacing: .24em;
+  }
+}
+
+.magMicro {
+  left: 54.8%;
+  top: 47.1%;
+  width: 12.5%;
+  color: rgba(55, 47, 39, .48);
+  font: 620 clamp(7px, .55cqw, 9px)/1.3 $intro-font;
+  letter-spacing: .14em;
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.08em;
+    font-weight: 500;
+    letter-spacing: .055em;
+  }
+}
+
+.magHero {
+  left: 67.5%;
+  top: 48.4%;
+  width: 16.8%;
+  color: rgba(58, 48, 39, .68);
+  font: 400 clamp(32px, 3.8cqw, 58px)/.9 $editorial-serif;
+  letter-spacing: -.055em;
   text-align: center;
   white-space: nowrap;
-  font: 400 calc(clamp(12px, 1.5cqw, 24px) + 3px)/1.4 $intro-title-font;
-  pointer-events: none;
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .plan:hover {
-    color: $paper;
-    &::before { background: #352e25; border-color: $sand; }
+.magRoute {
+  left: 54.8%;
+  top: 58.2%;
+  width: 12.6%;
+  color: rgba(55, 47, 39, .5);
+  font: 620 clamp(7px, .55cqw, 9px)/1.32 $intro-font;
+  letter-spacing: .12em;
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.08em;
+    font-weight: 500;
+    letter-spacing: .045em;
   }
 }
-@media (prefers-reduced-motion: reduce) {
-  .plan::before, .planLabel { transition: none; }
+
+.magKorean {
+  left: 68.2%;
+  top: 60.1%;
+  width: 11.8%;
+  color: rgba(55, 47, 39, .48);
+  font: 560 clamp(8px, .64cqw, 10px)/1.35 $intro-font;
+  letter-spacing: -.025em;
+  text-transform: none;
+  word-break: keep-all;
+
+  b {
+    display: inline-block;
+    margin-top: .25em;
+    font-weight: 760;
+  }
+}
+
+.magOuter {
+  left: 87.4%;
+  top: 43.5%;
+  color: rgba(55, 47, 39, .42);
+  transform: rotate(90deg);
+  transform-origin: left top;
+  font: 650 clamp(6px, .46cqw, 8px)/1 $intro-font;
+  letter-spacing: .25em;
+  white-space: nowrap;
+}
+
+.magTiny {
+  left: 54.8%;
+  top: 63.4%;
+  color: rgba(55, 47, 39, .44);
+  font: 600 clamp(6px, .48cqw, 8px)/1.25 $intro-font;
+  letter-spacing: .13em;
+
+  b {
+    font-family: $editorial-serif;
+    font-size: 1.06em;
+    font-weight: 500;
+    letter-spacing: .055em;
+  }
+}
+
+.magStep1 .magHero,
+.magStep2 .magHero,
+.magStep3 .magHero,
+.magStep4 .magHero,
+.magStep5 .magHero {
+  color: rgba(50, 39, 29, .78);
+}
+
+.magStep3 .magHero,
+.magStep4 .magHero,
+.magStep5 .magHero {
+  letter-spacing: -.065em;
+}
+
+.magStep4 .magRoute,
+.magStep5 .magRoute,
+.magStep4 .magMicro,
+.magStep5 .magMicro {
+  color: rgba(52, 40, 29, .68);
+}
+
+/* The button is allowed to escape the book after the opening has completed. */
+.bookReady .bookTilt {
+  overflow: visible;
 }
 
 .runawayArea {
-  position: relative;
-  width: 100%;
-  height: clamp(110px, 14cqw, 190px);
-  min-width: 0;
+  overflow: visible;
 }
+
 .runawayButton {
-  position: absolute;
-  left: calc((100% - (65% - 6.5px)) / 2);
-  top: 0;
-  z-index: 2;
-  width: calc(65% - 6.5px);
-  min-width: 44px;
-  min-height: 44px;
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: 1000 / 470;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  touch-action: manipulation;
-  transition: transform .25s cubic-bezier(.22,.61,.36,1);
-  img {
-    width: 100%; height: 100%; position: absolute; inset: 0;
-    object-fit: contain; pointer-events: none;
-    animation: runawayPaperSwap .2s ease-out;
-  }
-}
-@keyframes runawayPaperSwap { from { opacity: .9; } to { opacity: 1; } }
-@media (min-width: 641px) {
-  .copy h1 { font-size: calc(3.7cqw - 2px); }
-  .plan { top: 10px; }
-  .runawayButton { top: -5px; }
-}
-@include mobile {
-  .runawayArea { height: clamp(120px, 22dvh, 160px); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .runawayButton { transition: none; img { animation: none; } }
+  transition:
+    transform .5s cubic-bezier(.16, .84, .2, 1),
+    opacity .2s ease,
+    filter .24s ease,
+    clip-path .2s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
 }
 
-@include mobile {
-  .planLabel { top: 50%; font-size: calc(2.8cqw + 3px); }
-  .runawayArea { margin-top: 0; height: 20cqw; }
-  .runawayButton { width: 65%; left: 17.5%; }
+.runawayHiding {
+  z-index: 12;
+  opacity: 0;
+  filter: blur(.75px) brightness(.9);
+  clip-path: inset(0 49.4% 0 49.4% round 16px);
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y))
+    rotate(var(--escape-rotate))
+    scaleX(.34)
+    scaleY(.72);
+  transition:
+    transform .64s cubic-bezier(.16, .88, .2, 1),
+    clip-path .24s cubic-bezier(.4, 0, .2, 1) .35s,
+    opacity .17s ease .56s,
+    filter .2s ease .5s,
+    box-shadow .3s ease;
 }
 
-@include mobile {
-  .intro {
-    // Fit both axes: height-based enlargement crops content on tall phones.
-    --mobile-page-width: min(calc(100vw - 12px), calc(94dvh * 812 / 992));
-    --mobile-page-height: calc(var(--mobile-page-width) * 992 / 812);
-    --mobile-image-top: calc(var(--mobile-page-height) * -.107);
-  }
+.spineTuckMaskActive {
+  z-index: 16;
 }
-@keyframes magazinePanRight {
-  0%, 20% {
-    width: 94vw;
-    right: 50%;
-    top: 50%;
-    transform: translate(50%, -50%);
+
+/* Mobile has a deliberately separate composition: fewer printed captions and
+   a contained touch dodge. The visible cover/page-opening animation above is
+   preserved, so the user actually sees a page open before the right page. */
+@include mobile {
+  .magChapter,
+  .magEscape,
+  .magMicro,
+  .magRoute,
+  .magKorean,
+  .magOuter,
+  .magTiny {
+    display: none;
   }
-  90%, 100% {
-    width: 194%;
-    right: 0;
-    top: var(--mobile-image-top);
+
+  .magIssue {
+    display: block;
+    left: 12.5%;
+    top: 8.7%;
+    width: 34%;
+    color: rgba(57, 49, 41, .48);
+    font-size: clamp(8px, 2.45cqw, 10px);
+    text-align: left;
+  }
+
+  .magHero {
+    display: block;
+    left: 13%;
+    top: 56.2%;
+    width: 74%;
+    color: rgba(56, 46, 38, .34);
+    font-size: clamp(20px, 6.4cqw, 29px);
+    line-height: .95;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .magStep2 .magHero,
+  .magStep3 .magHero,
+  .magStep4 .magHero,
+  .magStep5 .magHero {
+    color: rgba(52, 41, 31, .5);
+  }
+
+  .runawayArea {
+    left: auto;
+    width: 100%;
+    height: 82px;
     transform: none;
+    overflow: visible;
+  }
+
+  .runawayButton {
+    left: 50%;
+    max-width: calc(100% - 8px);
+    transform:
+      translateX(calc(-50% + clamp(-22px, var(--escape-x), 22px)))
+      translateY(clamp(0px, var(--escape-y), 16px))
+      rotate(var(--escape-rotate));
+  }
+
+  .runawayHiding {
+    opacity: 0;
+    transform:
+      translateX(calc(-50% + clamp(-12px, var(--escape-x), 12px)))
+      translateY(clamp(0px, var(--escape-y), 12px))
+      rotate(var(--escape-rotate))
+      scale(.86);
+    clip-path: inset(0 47% 0 47% round 14px);
+  }
+
+  .planGuided {
+    transform: scale(1.008);
   }
 }
-@keyframes magazineMobileCrop {
-  0%, 89% { overflow: visible; }
-  90%, 100% { overflow: hidden; }
+
+@include mobile {
+  .bookTilt,
+  .bookReady .bookTilt {
+    overflow: hidden;
+  }
 }
-@keyframes magazineMobileReveal {
-  0%, 90% { opacity: 0; visibility: hidden; }
-  91% { opacity: 0; visibility: visible; }
-  100% { opacity: 1; visibility: visible; }
+
+/* ========================================================================== */
+/* 2026-09-11 FINAL PRESENTATION PASS                                         */
+/* - left-aligned prompt + perfectly matched CTAs                             */
+/* - richer typography only in real paper whitespace                         */
+/* - staged desktop chase + vertical mobile chase                             */
+/* - final escape hides behind OUTER book edge, never the center spine        */
+/* ========================================================================== */
+
+/* ---------- Editorial additions: use the empty paper areas marked in review ---------- */
+.magEdition {
+  left: 76.2%;
+  top: 7.4%;
+  width: 11.2%;
+  color: rgba(55, 47, 39, .48);
+  font: 500 clamp(9px, .78cqw, 13px)/1.08 $editorial-serif;
+  letter-spacing: .055em;
+  text-align: left;
+  text-transform: none;
+
+  b {
+    display: inline-block;
+    margin-top: .28em;
+    font-family: $intro-font;
+    font-size: .82em;
+    font-weight: 650;
+    letter-spacing: -.015em;
+  }
 }
-@media (prefers-reduced-motion: reduce) {
-  .book, .bookImage, .copy { animation: none; }
+
+.magSlowDays {
+  left: 59.2%;
+  top: 52.5%;
+  width: 11.6%;
+  color: rgba(58, 48, 39, .54);
+  font: 400 clamp(16px, 1.55cqw, 24px)/.95 $editorial-serif;
+  letter-spacing: -.025em;
+  text-transform: none;
+
+  b {
+    display: inline-block;
+    margin-top: .32em;
+    font-family: $intro-font;
+    font-size: .48em;
+    font-weight: 650;
+    line-height: 1.35;
+    letter-spacing: -.025em;
+  }
+}
+
+.magPostcardNote {
+  left: 80.1%;
+  top: 59.1%;
+  width: 10.2%;
+  color: rgba(55, 47, 39, .5);
+  font: 500 clamp(12px, 1.15cqw, 18px)/1 $editorial-serif;
+  letter-spacing: .01em;
+  text-transform: none;
+  text-align: left;
+
+  b {
+    display: inline-block;
+    margin-top: .34em;
+    font-family: $intro-font;
+    font-size: .58em;
+    font-weight: 620;
+    line-height: 1.42;
+    letter-spacing: -.03em;
+  }
+}
+
+.magNextStop {
+  left: 38.2%;
+  top: 84.2%;
+  width: 9.2%;
+  color: rgba(55, 47, 39, .5);
+  font: 500 clamp(11px, 1cqw, 16px)/1.02 $editorial-serif;
+  letter-spacing: .015em;
+  text-transform: none;
+  text-align: center;
+
+  b {
+    display: inline-block;
+    margin-top: .32em;
+    font-family: $intro-font;
+    font-size: .55em;
+    font-weight: 660;
+    line-height: 1.35;
+    letter-spacing: -.025em;
+  }
+}
+
+/* The already-large WANDER/REACTION headline stays the primary magazine beat. */
+.magHero {
+  left: 67.2%;
+  top: 48.2%;
+  width: 17.5%;
+  font-size: clamp(36px, 4.05cqw, 62px);
+}
+
+/* Give the normal page more texture without touching photography or the fold. */
+.magMicro {
+  left: 54.8%;
+  top: 45.7%;
+}
+
+.magRoute {
+  left: 54.8%;
+  top: 59.5%;
+}
+
+.magKorean {
+  left: 68.2%;
+  top: 60.8%;
+}
+
+.magTiny {
+  left: 54.8%;
+  top: 64.2%;
+}
+
+/* ---------- Prompt / CTA alignment ---------- */
+.copy {
+  left: 58.7%;
+  top: 16.8%;
+  width: 28.4%;
+  text-align: left;
+}
+
+.copy h1 {
+  text-align: left;
+}
+
+.choices {
+  width: 100%;
+  justify-items: stretch;
+  gap: clamp(12px, 1.05cqw, 17px);
+  margin-top: clamp(24px, 2.15cqw, 34px);
+}
+
+.choiceButton {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-height: clamp(56px, 5.05cqw, 72px);
+  padding-inline: clamp(20px, 1.55cqw, 26px);
+}
+
+.runawayArea {
+  left: auto;
+  width: 100%;
+  height: clamp(56px, 5.05cqw, 72px);
+  transform: none;
+  overflow: visible;
+}
+
+.runawayButton {
+  width: 100%;
+  max-width: none;
+  left: 50%;
+  top: 0;
+}
+
+/* ---------- Desktop final tuck: OUTER LEFT EDGE, not the center fold ---------- */
+.runawayHiding {
+  z-index: 13;
+  pointer-events: none;
+  opacity: 0;
+  filter: blur(.35px) brightness(.94);
+  /* Approaching the book from the left: the RIGHT side gets swallowed first. */
+  clip-path: inset(0 98% 0 0 round 16px);
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y))
+    rotate(var(--escape-rotate))
+    scale(.92);
+  transition:
+    transform .72s cubic-bezier(.16, .88, .2, 1),
+    clip-path .24s cubic-bezier(.4, 0, .2, 1) .43s,
+    opacity .16s ease .62s,
+    filter .18s ease .56s,
+    box-shadow .3s ease;
+}
+
+/* Re-purpose the old fold mask as a subtle OUTER-EDGE occluder. */
+.spineTuckMask {
+  left: -0.8%;
+  top: 2.5%;
+  width: 4.2%;
+  height: 95%;
+  z-index: 16;
+  border-radius: 8px 40% 40% 8px;
+  background:
+    linear-gradient(90deg,
+      rgba(231, 224, 212, .02) 0%,
+      rgba(108, 79, 55, .38) 28%,
+      rgba(248, 244, 236, .97) 58%,
+      rgba(248, 244, 236, .42) 78%,
+      transparent 100%);
+  filter: blur(.25px);
+  transform: none;
+  opacity: 0;
+}
+
+.spineTuckMaskActive {
+  animation: outerEdgeTuckFlash .74s cubic-bezier(.2, .78, .2, 1) both;
+}
+
+/* ---------- Mobile: visible page opening stays, chase becomes VERTICAL ---------- */
+@include mobile {
+  .book {
+    overflow: visible;
+  }
+
+  /* Let the runaway button leave the book. Crop the oversized right-page image
+     itself instead of clipping every child of bookTilt. */
+  .bookTilt,
+  .bookReady .bookTilt {
+    overflow: visible;
+  }
+
+  .bookImage {
+    clip-path: inset(0 0 0 48.45%);
+  }
+
+  .copy {
+    left: 11.5%;
+    top: 14.8%;
+    width: 77%;
+    text-align: left;
+  }
+
+  .copy h1 {
+    text-align: left;
+    font-size: clamp(27px, 7.15cqw, 37px);
+  }
+
+  .choices {
+    width: 100%;
+    justify-items: stretch;
+    gap: 12px;
+    margin-top: clamp(22px, 5.4cqw, 30px);
+  }
+
+  .choiceButton {
+    width: 100%;
+    max-width: none;
+    min-height: 54px;
+    padding-inline: 18px;
+  }
+
+  .runawayArea {
+    left: auto;
+    width: 100%;
+    height: 54px;
+    transform: none;
+    overflow: visible;
+  }
+
+  .runawayButton {
+    left: 50%;
+    width: 100%;
+    max-width: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y))
+      rotate(var(--escape-rotate));
+    transition:
+      transform .48s cubic-bezier(.16, .84, .2, 1),
+      opacity .18s ease,
+      filter .22s ease,
+      clip-path .22s ease,
+      background .22s ease,
+      border-color .22s ease,
+      box-shadow .22s ease;
+  }
+
+  /* Stage 5 comes UP from below the book. The TOP of the button disappears
+     first, so it reads as slipping behind the book's bottom page edge. */
+  .runawayHiding {
+    opacity: 0;
+    filter: blur(.3px) brightness(.94);
+    clip-path: inset(96% 0 0 0 round 14px);
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y))
+      rotate(var(--escape-rotate))
+      scale(.94);
+    transition:
+      transform .62s cubic-bezier(.16, .88, .2, 1),
+      clip-path .22s cubic-bezier(.4, 0, .2, 1) .36s,
+      opacity .16s ease .52s,
+      filter .18s ease .48s;
+  }
+
+  /* Mobile magazine is intentionally sparse. Keep only a few safe paper notes. */
+  .magEdition,
+  .magSlowDays,
+  .magPostcardNote,
+  .magNextStop {
+    display: none;
+  }
+
+  .magHero {
+    left: 13%;
+    top: 57.2%;
+    width: 74%;
+    font-size: clamp(20px, 6.2cqw, 28px);
+    text-align: center;
+  }
+
+  /* Bottom-edge occluder for the final mobile hide. */
+  .spineTuckMask {
+    display: block;
+    left: 4%;
+    right: 4%;
+    top: auto;
+    bottom: -1.4%;
+    width: auto;
+    height: 5.5%;
+    border-radius: 0 0 10px 10px;
+    background:
+      linear-gradient(180deg,
+        rgba(247, 243, 235, .04) 0%,
+        rgba(126, 91, 61, .22) 28%,
+        rgba(71, 50, 34, .42) 49%,
+        rgba(235, 228, 216, .96) 58%,
+        rgba(233, 227, 215, .98) 100%);
+    filter: blur(.15px);
+    opacity: 0;
+  }
+
+  .spineTuckMaskActive {
+    animation: mobileBottomTuckFlash .64s cubic-bezier(.2, .8, .2, 1) both;
+  }
+}
+
+@keyframes outerEdgeTuckFlash {
+  0% { opacity: 0; transform: translateX(-3px); }
+  38% { opacity: .18; transform: translateX(0); }
+  62% { opacity: .96; transform: translateX(0); }
+  100% { opacity: 0; transform: translateX(2px); }
+}
+
+@keyframes mobileBottomTuckFlash {
+  0% { opacity: 0; transform: translateY(4px); }
+  34% { opacity: .18; transform: translateY(1px); }
+  64% { opacity: .95; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-1px); }
+}
+
+/* ========================================================================== */
+/* 2026-09-11 LATEST LOCKED PASS                                              */
+/* - shift prompt/CTA column farther left                                     */
+/* - richer whitespace typography with real magazine size hierarchy           */
+/* - desktop: 80deg full escape -> outer-edge physical tuck (NO fade)         */
+/* - mobile: polished L:CODE page reveal + safe staged touch chase             */
+/* ========================================================================== */
+
+/* ---------- More editorial typography in the reviewed PAPER whitespace ---------- */
+.magDeparture {
+  left: 36.8%;
+  top: 8.3%;
+  width: 9.2%;
+  color: rgba(55, 47, 39, .50);
+  font: 500 clamp(15px, 1.42cqw, 22px)/.96 $editorial-serif;
+  letter-spacing: -.018em;
+  text-transform: none;
+  text-align: center;
+
+  b {
+    display: inline-block;
+    margin-top: .34em;
+    font-family: $intro-font;
+    font-size: .48em;
+    font-weight: 680;
+    line-height: 1.35;
+    letter-spacing: -.025em;
+  }
+}
+
+.magOpenRoad {
+  left: 52.7%;
+  top: 8.1%;
+  width: 12.8%;
+  color: rgba(53, 45, 37, .54);
+  font: 400 clamp(21px, 2.15cqw, 34px)/.9 $editorial-serif;
+  letter-spacing: -.04em;
+  text-transform: none;
+  text-align: center;
+
+  b {
+    display: inline-block;
+    margin-top: .42em;
+    font-family: $intro-font;
+    font-size: .36em;
+    font-weight: 660;
+    line-height: 1.35;
+    letter-spacing: -.025em;
+  }
+}
+
+.magMemory {
+  left: 58.4%;
+  top: 54.2%;
+  width: 10.6%;
+  color: rgba(55, 47, 39, .50);
+  font: 500 clamp(15px, 1.42cqw, 22px)/.96 $editorial-serif;
+  letter-spacing: -.018em;
+  text-transform: none;
+
+  b {
+    display: inline-block;
+    margin-top: .32em;
+    font-family: $intro-font;
+    font-size: .48em;
+    font-weight: 640;
+    line-height: 1.38;
+    letter-spacing: -.025em;
+  }
+}
+
+.magBreeze {
+  left: 80.5%;
+  top: 61.2%;
+  width: 11.6%;
+  color: rgba(55, 47, 39, .53);
+  font: 400 clamp(18px, 1.72cqw, 27px)/.9 $editorial-serif;
+  letter-spacing: -.035em;
+  text-transform: none;
+  text-align: left;
+
+  b {
+    display: inline-block;
+    margin-top: .36em;
+    font-family: $intro-font;
+    font-size: .42em;
+    font-weight: 650;
+    line-height: 1.38;
+    letter-spacing: -.03em;
+  }
+}
+
+/* Make the reviewed lower-left note read more like a real magazine subhead. */
+.magNextStop {
+  left: 38.4%;
+  top: 84.1%;
+  width: 9.8%;
+  font-size: clamp(13px, 1.22cqw, 19px);
+}
+
+/* Give the main editorial headline enough scale to contrast all small captions. */
+.magHero {
+  left: 67.0%;
+  top: 48.0%;
+  width: 18%;
+  font-size: clamp(40px, 4.35cqw, 66px);
+}
+
+/* Re-space the tiny copy beneath the new medium headline so it stays breathable. */
+.magRoute { top: 60.8%; }
+.magKorean { top: 62.0%; }
+.magTiny { top: 65.2%; }
+
+/* ---------- Web prompt / CTA: keep the clean left alignment, move group left ---------- */
+.copy {
+  left: 55.4%;
+  top: 16.8%;
+  width: 30.2%;
+  text-align: left;
+}
+
+.copy h1,
+.choices {
+  text-align: left;
+}
+
+.choices,
+.choiceButton,
+.runawayArea,
+.runawayButton {
+  box-sizing: border-box;
+}
+
+.choiceButton,
+.runawayButton {
+  width: 100%;
+  max-width: none;
+}
+
+/* ---------- Desktop final escape: visible 80deg flight, then physical outer-edge tuck ---------- */
+.runawayButton {
+  transition:
+    transform .54s cubic-bezier(.14, .86, .18, 1),
+    filter .22s ease,
+    clip-path .24s ease,
+    background .22s ease,
+    border-color .22s ease,
+    box-shadow .22s ease;
+}
+
+/* Stage 5 reaches the OUTER edge first. Only after that does the book occlude it.
+   No opacity fade: the button disappears because the page physically covers it. */
+.runawayHiding {
+  z-index: 13;
+  pointer-events: none;
+  opacity: 1;
+  filter: none;
+  clip-path: inset(0 100% 0 0 round 16px);
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y))
+    rotate(var(--escape-rotate));
+  transition:
+    transform .52s cubic-bezier(.12, .9, .16, 1),
+    clip-path .26s cubic-bezier(.45, 0, .2, 1) .52s,
+    filter .18s ease;
+}
+
+/* The left book edge becomes the occluder during the last 0.3s. */
+.spineTuckMask {
+  left: -1.05%;
+  top: 2.4%;
+  width: 5.1%;
+  height: 95.2%;
+  z-index: 18;
+  border-radius: 10px 45% 45% 10px;
+  background:
+    linear-gradient(90deg,
+      rgba(231, 224, 212, 0) 0%,
+      rgba(88, 62, 42, .28) 25%,
+      rgba(247, 243, 235, .985) 51%,
+      rgba(247, 243, 235, .76) 70%,
+      rgba(247, 243, 235, 0) 100%);
+  filter: blur(.18px);
+}
+
+.spineTuckMaskActive {
+  animation: outerEdgeTuckLatest .86s cubic-bezier(.18, .82, .2, 1) both;
+}
+
+/* ---------- Mobile ---------- */
+@include mobile {
+  /* L:CODE page: slide into view softly, hold for a beat, then whip-turn with
+     continuous curvature/shadow instead of snapping. */
+  .mobileCover {
+    opacity: 0;
+    animation: mobileCoverOpenLatest 1.04s cubic-bezier(.16, .78, .14, 1) .02s both;
+  }
+
+  .mobileCover::before {
+    animation: mobileCoverShadeLatest 1.04s ease .02s both;
+  }
+
+  .bookTilt,
+  .bookReady .bookTilt {
+    animation: mobileSceneSettleLatest 1.08s cubic-bezier(.16, .8, .2, 1) both;
+  }
+
+  .magazineDecor {
+    animation-delay: 1.02s;
+  }
+
+  /* A little farther left than the previous pass, but still safe from the fold. */
+  .copy {
+    left: 9.4%;
+    top: 14.8%;
+    width: 79.2%;
+    animation-delay: 1.08s;
+    text-align: left;
+  }
+
+  .copy h1,
+  .choices {
+    text-align: left;
+  }
+
+  .choiceButton,
+  .runawayButton {
+    width: 100%;
+    max-width: none;
+  }
+
+  /* Keep the richer desktop magazine set out of the narrow mobile page. */
+  .magDeparture,
+  .magOpenRoad,
+  .magMemory,
+  .magBreeze,
+  .magEdition,
+  .magSlowDays,
+  .magPostcardNote,
+  .magNextStop {
+    display: none;
+  }
+
+  /* Mobile is NOT a desktop hover chase. Each tap gets one clean, safe move. */
+  .runawayArea {
+    height: 54px;
+    overflow: visible;
+  }
+
+  .runawayButton {
+    left: 50%;
+    max-width: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y))
+      rotate(var(--escape-rotate));
+    transition:
+      transform .46s cubic-bezier(.14, .86, .18, 1),
+      filter .2s ease,
+      background .22s ease,
+      border-color .22s ease,
+      box-shadow .22s ease;
+  }
+
+  /* Final mobile step intentionally FLIES out of the viewport. Do not clip/fade
+     it into the book: the viewport itself becomes the disappearance. */
+  .runawayHiding {
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y))
+      rotate(var(--escape-rotate));
+    transition: transform .62s cubic-bezier(.12, .88, .14, 1);
+  }
+
+  .spineTuckMask,
+  .spineTuckMaskActive {
+    display: none;
+    animation: none;
+  }
+}
+
+@keyframes outerEdgeTuckLatest {
+  0%, 54% {
+    opacity: 0;
+    transform: translateX(-5px);
+  }
+  68% {
+    opacity: .38;
+    transform: translateX(-1px);
+  }
+  82% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: .92;
+    transform: translateX(1px);
+  }
+}
+
+@keyframes mobileCoverOpenLatest {
+  0% {
+    opacity: 0;
+    transform: perspective(1200px) translateY(8px) scale(.985) rotateY(0deg);
+    filter: brightness(.99) saturate(.97);
+  }
+  15% {
+    opacity: 1;
+    transform: perspective(1200px) translateY(0) scale(1) rotateY(0deg);
+    filter: brightness(1) saturate(1);
+  }
+  30% {
+    opacity: 1;
+    transform: perspective(1200px) translateY(0) scale(1) rotateY(-1.2deg);
+    filter: brightness(1) saturate(1);
+  }
+  62% {
+    opacity: 1;
+    transform: perspective(1200px) rotateY(-58deg) translateZ(26px) translateX(-3.5%);
+    filter: brightness(.9) saturate(.95);
+  }
+  84% {
+    opacity: .98;
+    transform: perspective(1200px) rotateY(-96deg) translateZ(10px) translateX(-8%);
+    filter: brightness(.77) saturate(.91);
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+    transform: perspective(1200px) rotateY(-112deg) translateZ(0) translateX(-11%);
+    filter: brightness(.72) saturate(.89);
+  }
+}
+
+@keyframes mobileCoverShadeLatest {
+  0% { opacity: .03; }
+  22% { opacity: .12; }
+  58% { opacity: .84; }
+  82% { opacity: .62; }
+  100% { opacity: .16; }
+}
+
+@keyframes mobileSceneSettleLatest {
+  0% {
+    transform: scale(.975) translateY(5px);
+    filter: drop-shadow(0 6px 10px rgba(42, 34, 25, .05));
+  }
+  72% {
+    transform: scale(1.004) translateY(0);
+    filter: drop-shadow(0 15px 23px rgba(42, 34, 25, .13));
+  }
+  100% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 14px 22px rgba(42, 34, 25, .12));
+  }
+}
+
+/* ========================================================================== */
+/* FINAL LOCK — presentation day corrections                                  */
+/* 1) no 80deg / no book-tuck: both platforms ultimately whip off-screen      */
+/* 2) mobile dodge is vertical and never overlaps the plan CTA                 */
+/* 3) web prompt column moves farther left                                    */
+/* 4) reaction typography is re-spaced inside the actual paper                */
+/* ========================================================================== */
+
+/* Move the whole web prompt/CTA column left without breaking its internal grid. */
+.copy {
+  left: 53.8%;
+  top: 16.8%;
+  width: 30.2%;
+}
+
+/* Keep both CTAs perfectly matched before the runaway begins. */
+.choiceButton,
+.runawayButton {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+}
+
+/* The final desktop step is a pure flight out of the viewport. Never clip it
+   into the page and never rotate it vertically. */
+.runawayHiding {
+  z-index: 13;
+  pointer-events: none;
+  opacity: 1;
+  filter: none;
+  clip-path: none;
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y))
+    rotate(var(--escape-rotate));
+  transition:
+    transform .66s cubic-bezier(.10, .86, .12, 1),
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+/* The old book-edge/fold occluder is no longer used in the final behaviour. */
+.spineTuckMask,
+.spineTuckMaskActive {
+  display: none !important;
+  animation: none !important;
+}
+
+/* ---------------- Editorial collision fixes ---------------- */
+/* Large reaction headline: slightly higher. */
+.magHero {
+  top: 45.8%;
+}
+
+/* Vertical JOURNEY NOTES / L:CODE line: farther right from the hero word. */
+.magOuter {
+  left: 90.4%;
+}
+
+/* HOLD ON / 일단 계획부터요: left + up, clear of the big PLAN FIRST beat. */
+.magPostcardNote {
+  left: 76.6%;
+  top: 55.8%;
+}
+
+/* Upper reactions must read as printed INSIDE the page, not stuck above it. */
+.magDeparture {
+  left: 35.8%;
+  top: 12.4%;
+}
+
+/* COME BACK / 한 번만 생각해요 only needs a modest drop. */
+.magOpenRoad {
+  left: 52.2%;
+  top: 10.4%;
+}
+
+/* Upper-right PLAN FIRST reaction: clearly below the book's top edge. */
+.magEdition {
+  left: 76.0%;
+  top: 12.0%;
+}
+
+/* Give the lower reaction clusters a little more breathing room. */
+.magMemory {
+  left: 56.0%;
+  top: 55.8%;
+}
+
+.magBreeze {
+  left: 79.0%;
+  top: 62.4%;
+}
+
+/* ---------------- Mobile final lock ---------------- */
+@include mobile {
+  /* Keep the subtle left shift that already tested well. */
+  .copy {
+    left: 9.4%;
+    top: 14.8%;
+    width: 79.2%;
+  }
+
+  /* Touch chase uses the exact transforms calculated in JS. Do not clamp the
+     vertical travel back into the original button slot. */
+  .runawayButton {
+    left: 50%;
+    width: 100%;
+    max-width: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y))
+      rotate(var(--escape-rotate));
+    transition:
+      transform .48s cubic-bezier(.14, .86, .18, 1),
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease;
+  }
+
+  /* Final mobile step also flies out; there is no book-hide or clipping. */
+  .runawayHiding {
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y))
+      rotate(var(--escape-rotate));
+    transition: transform .64s cubic-bezier(.10, .86, .12, 1);
+  }
+}
+
+/* ========================================================================== */
+/* 2026-09-11 — latest requested micro-tuning                                 */
+/* ========================================================================== */
+
+/* Web: SLOW DAYS / 천천히 머무는 법 — exactly a little higher. */
+.magSlowDays {
+  top: calc(52.5% - 10px);
+}
+
+/* Keep COASTAL BREEZE where it is. The Korean line becomes a larger,
+   left-lower editorial subhead instead of the old "가볍게 떠나는 오후". */
+.magStep0 .magBreeze b {
+  position: relative;
+  left: -1.7cqw;
+  top: .34em;
+  margin-top: .42em;
+  font-size: .66em;
+  font-weight: 680;
+  letter-spacing: -.035em;
+}
+
+/* Web prompt + both CTAs: only 5px farther left; preserve all internal lines. */
+.copy {
+  left: calc(53.8% - 5px);
+}
+
+/* Desktop runaway: no vertical/80deg rotation, no tuck, no clipping.
+   It dodges several times and the final step simply accelerates off-screen. */
+.runawayHiding {
+  opacity: 1;
+  filter: none;
+  clip-path: none;
+  pointer-events: none;
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y));
+  transition: transform .64s cubic-bezier(.08, .88, .12, 1);
+}
+
+.spineTuckMask,
+.spineTuckMaskActive {
+  display: none !important;
+  animation: none !important;
+}
+
+@include mobile {
+  /* Keep the mobile prompt position from the approved pass; the -5px request
+     above is web-only. */
+  .copy {
+    left: 9.4%;
+  }
+
+  /* The large reaction word was getting clipped. Move it to a safer blank
+     paper pocket and reduce it one visual step while keeping editorial weight. */
+  .magHero {
+    left: 14%;
+    top: 59%;
+    width: 60%;
+    font-size: clamp(17px, 5.1cqw, 23px);
+    line-height: .95;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  /* Mobile must visibly travel UP / DOWN / UP / DOWN. Use the JS offsets as-is;
+     never clamp it back into the original button slot. */
+  .runawayArea {
+    height: 54px;
+    overflow: visible;
+  }
+
+  .runawayButton {
+    left: 50%;
+    width: 100%;
+    max-width: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y));
+    transition:
+      transform .48s cubic-bezier(.12, .86, .16, 1),
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease;
+  }
+
+  /* Final mobile step: same button shape, then a fast whip beyond the viewport. */
+  .runawayHiding {
+    opacity: 1;
+    filter: none;
+    clip-path: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y));
+    transition: transform .62s cubic-bezier(.08, .88, .12, 1);
+  }
+}
+
+/* ========================================================================== */
+/* HOTFIX — mobile runaway must actually keep moving on every tap             */
+/* 2026-09-11                                                                */
+/* ========================================================================== */
+@include mobile {
+  /* Old book-tuck/clip experiments must never crop the moving CTA. */
+  .runawayArea {
+    overflow: visible !important;
+    pointer-events: none;
+  }
+
+  .runawayButton {
+    pointer-events: auto !important;
+    clip-path: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y)) !important;
+    transition:
+      transform .48s cubic-bezier(.12, .86, .16, 1),
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease !important;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* Last step is a real off-screen flight, not a clip/fade/tuck. */
+  .runawayHiding {
+    clip-path: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    pointer-events: none !important;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y)) !important;
+    transition: transform .62s cubic-bezier(.08, .88, .12, 1) !important;
+  }
+}
+
+/* ========================================================================== */
+/* 2026-09-11 — clean final chase + mobile spacing hotfix                     */
+/* ========================================================================== */
+
+/*
+ * IMPORTANT: final escape now uses a NEW class rather than the old
+ * `runawayHiding` experiment.  This deliberately bypasses every historical
+ * clip-path / book-tuck rule so the CTA cannot split into a leftover half.
+ * The same one DOM button moves intact until it is fully outside the viewport.
+ */
+.runawayFlyingOut {
+  pointer-events: none !important;
+  opacity: 1 !important;
+  filter: none !important;
+  clip-path: none !important;
+  -webkit-clip-path: none !important;
+  mask: none !important;
+  -webkit-mask: none !important;
+  overflow: visible !important;
+  transform:
+    translateX(calc(-50% + var(--escape-x)))
+    translateY(var(--escape-y)) !important;
+  transition:
+    transform .66s cubic-bezier(.08, .88, .12, 1),
+    background .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease !important;
+}
+
+/* Web: keep the approved 5px left shift and all current internal alignment. */
+@media (min-width: 768px) {
+  .copy {
+    left: calc(53.8% - 5px);
+  }
+}
+
+@include mobile {
+  /*
+   * Mobile WANDER / SERIOUSLY reaction: lower by roughly half a character
+   * height so it no longer disappears behind the runaway CTA.  The already
+   * reduced mobile size is preserved.
+   */
+  .magHero {
+    left: 14%;
+    top: calc(59% + 11px);
+    width: 60%;
+    font-size: clamp(17px, 5.1cqw, 23px);
+    line-height: .95;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  /* Let JS use the full safe X/Y route: down-right -> up-left -> down-left. */
+  .runawayArea {
+    overflow: visible !important;
+    pointer-events: none;
+  }
+
+  .runawayButton {
+    pointer-events: auto !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    max-width: none;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y)) !important;
+    transition:
+      transform .48s cubic-bezier(.12, .86, .16, 1),
+      background .2s ease,
+      border-color .2s ease,
+      box-shadow .2s ease !important;
+  }
+
+  .runawayFlyingOut {
+    pointer-events: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
+    mask: none !important;
+    -webkit-mask: none !important;
+    transform:
+      translateX(calc(-50% + var(--escape-x)))
+      translateY(var(--escape-y)) !important;
+    transition: transform .64s cubic-bezier(.08, .88, .12, 1) !important;
+  }
+
+  /*
+   * Result copy stays centered but is lifted into the large ivory breathing
+   * space instead of sitting on the lower illustration / cup area.
+   */
+  .resultCopy {
+    left: 0;
+    right: 0;
+    top: 55%;
+    bottom: auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding-inline: 24px;
+    text-align: center;
+  }
+
+  .resultProgress {
+    margin-inline: auto;
+  }
+}
+
+/* Final mobile result alignment fix — horizontal only; keep current vertical position. */
+@include mobile {
+  .resultCopy {
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    box-sizing: border-box;
+    padding-inline: 24px;
+    text-align: center !important;
+  }
+
+  .resultCopy h1,
+  .resultCopy p {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .resultProgress {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
 }
