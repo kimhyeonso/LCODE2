@@ -134,7 +134,8 @@ export default function App() {
   const isBalancePage = pathname === "/balance";
   const isShopPage = pathname === "/shop" || pathname.startsWith("/shop/");
   const eventStep = new URLSearchParams(search).get("event");
-  const isEventPlayPage = pathname === "/event" && (eventStep === "gacha" || eventStep === "mystery" || eventStep === "magazine");
+  const isEventPlayPage = pathname === "/event" && (eventStep === "gacha" || eventStep === "mystery");
+  const isEventDetailPage = pathname === "/event" && (eventStep === "gacha" || eventStep === "mystery" || eventStep === "magazine");
   const isHomePage = pathname === "/";
   const finishIntro = useCallback(() => setShowIntro(false), []);
 
@@ -234,7 +235,7 @@ export default function App() {
         </Routes>
       </div>
       {!isImmersivePage && <Footer />}
-      {!isImmersivePage && !isEventPlayPage && <BottomNav />}
+      {!isImmersivePage && !isEventDetailPage && <BottomNav />}
       <TopButton />
     </div>
   );
