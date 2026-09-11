@@ -1755,6 +1755,143 @@ $type-display: 36px;
    TABLET
 ======================================== */
 
+@include mobile {
+  .section {
+    margin-top: 40px;
+  }
+
+  .rowTitle {
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .rowTitle > div {
+    min-width: 0;
+  }
+
+  .textLink {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    margin-left: auto;
+    letter-spacing: .06em;
+    font-size: 12px;
+  }
+
+  .upcomingMain {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .upcomingMain > div:first-child {
+    padding: 24px 20px;
+  }
+
+  .upcomingImage {
+    grid-row: 1;
+    aspect-ratio: 16 / 9;
+  }
+
+  .upcomingMain h2,
+  .upcomingEmpty h2,
+  .pickGrid p,
+  .productInfo h3,
+  .journalLink > h3,
+  .filmHeading h2 {
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+    line-height: 1.5;
+  }
+
+  .tripMeta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 0;
+    padding: 20px;
+  }
+
+  .tripMeta div {
+    min-width: 0;
+  }
+
+  .tripMeta div:first-child {
+    grid-column: 1 / -1;
+    padding-bottom: 14px;
+    border-bottom: 1px solid $home-line;
+  }
+
+  .tripMeta div:nth-child(2) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .tripMeta dd {
+    overflow-wrap: anywhere;
+  }
+
+  .exchangeCard > div,
+  .exchangeCard footer {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .exchangeCard > div {
+    align-items: center;
+    padding-bottom: 16px;
+  }
+
+  .essentialGrid {
+    --shop-gap: 12px;
+    scroll-snap-type: x proximity;
+    padding-bottom: 8px;
+  }
+
+  .productCard {
+    flex-basis: 70%;
+    scroll-snap-align: start;
+  }
+
+  .productWish,
+  .productAdd {
+    width: 44px;
+    height: 44px;
+  }
+
+  .productBadge {
+    max-width: calc(100% - 66px);
+    min-height: 26px;
+    line-height: 1.4;
+    padding-block: 4px;
+  }
+
+  .destinationList a > div:first-child {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    min-width: 0;
+  }
+
+  .destinationList h3 {
+    font-size: clamp(28px, 8vw, 36px);
+  }
+
+  .filmFooter {
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    line-height: 1.6;
+  }
+
+  .filmFooter a {
+    min-height: 44px;
+    margin-left: auto;
+  }
+
+  .journalMeta {
+    flex-wrap: wrap;
+    line-height: 1.6;
+  }
+}
+
 @media (min-width: 641px) {
   .home {
     padding-bottom: 0;

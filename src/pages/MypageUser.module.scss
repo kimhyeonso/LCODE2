@@ -403,3 +403,14 @@
   .mypageUser { min-height: calc(100dvh - 129px); padding: 22px 0 0; }
   .content { width: calc(100% - 32px); margin-inline: auto; transform: none; }
 }
+
+@media (max-width: 640px) {
+  .profile h1, .profile .email { max-width: 100%; overflow-wrap: anywhere; }
+  .profile h1 { word-break: keep-all; line-height: 1.25; }
+  .profile .profileTools { display: flex; flex-wrap: wrap; gap: 10px; }
+  .profile .edit, .profile .signout { min-height: 44px; padding: 10px 14px; font-size: 12px; }
+  .summary { height: auto; grid-template-rows: repeat(2, minmax(156px, auto)); }
+  .summary article { min-width: 0; }
+  .summary .recent h2 { font-size: clamp(20px, 6vw, 27px); line-height: 1.3; overflow-wrap: anywhere; }
+  .menuList a, .menuList button { grid-template-columns: 26px minmax(0, 1fr) auto; padding-inline: 16px; }
+}

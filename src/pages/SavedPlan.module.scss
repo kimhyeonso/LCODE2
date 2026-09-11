@@ -871,3 +871,11 @@
     gap: 20px;
   }
 }
+
+@media (max-width: 640px) {
+  .modalActions { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+  .modalActions button, .modalActions a { height: auto; min-height: 50px; padding: 12px; line-height: 1.5; text-align: center; word-break: keep-all; }
+  .durationChoices button { height: auto; min-height: 48px; flex-wrap: wrap; gap: 8px; }
+  .deleteModal { max-height: calc(100dvh - 40px); overflow-y: auto; }
+  .deleteModal h2, .deleteModal > span { word-break: keep-all; overflow-wrap: anywhere; line-height: 1.5; }
+}

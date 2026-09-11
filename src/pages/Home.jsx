@@ -169,7 +169,7 @@ const SectionLabel = ({ number, children }) => (
 const ViewerBadge = ({ count }) => (
   <p className={styles.viewerBadge} title="최근 60초 동안 홈 화면을 연 브라우저 수입니다. 같은 브라우저의 여러 탭은 한 번만 집계합니다.">
     <img src={viewerIcon} alt="" aria-hidden="true" />
-    <span>최근 1분 홈 접속 <strong>{count.toLocaleString("ko-KR")}</strong></span>
+    <span>최근 방문 <strong>{count.toLocaleString("ko-KR")}</strong></span>
   </p>
 );
 
