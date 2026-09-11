@@ -1100,6 +1100,25 @@ h1 {
     gap: 19px 8px;
   }
 
+  // 모바일 카드가 지나치게 길어지지 않도록 이미지 높이를 약 2rem 줄인다.
+  .shopping .productImage {
+    aspect-ratio: 1 / 0.81;
+  }
+
+  .shopping .productCard footer a {
+    padding: 0 4px;
+    font-size: 11px;
+  }
+
+  .shopping .productCategory {
+    font-size: 0.38rem;
+    padding-top: 0.2rem;
+  }
+
+  .shopping .productCard h2 {
+    font-size: 0.58rem;
+  }
+
   .modalBackdrop {
     padding: 18px;
   }

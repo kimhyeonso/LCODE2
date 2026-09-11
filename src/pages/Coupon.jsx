@@ -23,6 +23,16 @@ const gachaCouponSlides = [
   { image: "/Mypage-img/couponBanner03.png", to: "/event?event=magazine", label: "리뷰 매거진 이벤트로 이동" },
 ];
 
+// 가챠에서 발급한 쿠폰은 결과 화면에서 보여준 원본 이미지를 쿠폰함에서도
+// 그대로 사용한다. Firestore에는 당첨 등수(prizeId)만 저장되므로, 이미지의
+// 출처를 한 곳에서 명확히 매핑한다.
+const gachaPrizeImages = {
+  "event-first": "/event/event02/coupon01.svg",
+  "event-second": "/event/event02/coupon02.webp",
+  "event-third": "/event/event02/coupon03.webp",
+  "event-fourth": "/event/event02/coupon04.webp",
+};
+
 function CouponTicket({ coupon }) {
   // 가차 이벤트에서 실제로 당첨된 쿠폰(source: "event")은 일반 쿠폰 티켓으로 표시하고,
   // 홍보용 "가차 돌리기" 쿠폰만 배너 슬라이드가 있는 이벤트 티켓으로 렌더링합니다.
@@ -40,6 +50,19 @@ function CouponTicket({ coupon }) {
   const displayCoupon = isPromoCoupon
     ? { ...coupon, type: "EVENT", title: "가차 돌리기", description: "가차 돌리고 쿠폰받자!" }
     : coupon;
+  const eventPrizeImage = coupon.source === "event" && coupon.eventId === "gacha-2026"
+    ? gachaPrizeImages[coupon.prizeId]
+    : null;
+
+  if (eventPrizeImage) {
+    const prizeClassName = coupon.prizeId === "event-fourth" ? styles.eventPrizeFourth : "";
+    return (
+      <article className={`${styles.ticket} ${styles.eventPrizeTicket} ${prizeClassName}`}>
+        <img src={eventPrizeImage} alt={`${coupon.type} 당첨 쿠폰`} />
+      </article>
+    );
+  }
+
   return (
     <article
       className={`${styles.ticket} ${displayCoupon.used ? styles.used : ""} ${isPromoCoupon ? styles.eventTicket : ""}`}

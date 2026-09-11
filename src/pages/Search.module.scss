@@ -134,9 +134,36 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  // Search 결과 사진 위로만 유광 반사광이 지나가도록 한다.
+  .results > div > a > div:first-child::after {
+    position: absolute;
+    z-index: 1;
+    top: -50%;
+    left: -70%;
+    width: 35%;
+    height: 200%;
+    background: linear-gradient(
+      110deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+    content: "";
+    opacity: 0.2;
+    pointer-events: none;
+    transform: rotate(15deg);
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   .results > div:hover > a > div:first-child {
     transform: scale(1.035);
     filter: brightness(0.96);
+  }
+
+  .results > div:hover > a > div:first-child::after {
+    left: 140%;
   }
 
   .results > div > button:hover {
