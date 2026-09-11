@@ -1,26 +1,83 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { deleteFavoritePlace, getFavoritePlaces } from "../services/firestoreService";
+import { deleteFavoritePlace, deleteFavoriteTrip, getFavoritePlaces, getFavoriteTrips, subscribeFavoritePlaces } from "../services/firestoreService";
+import tripRoad from "../data/trip_road.json";
 import styles from "./FavoritePlaces.module.scss";
 import { resolveImageUrl as imageUrl, useImageFallback } from "../utils/imageUtils";
 import MypageBackLink from "../components/MypageBackLink";
 export default function FavoritePlaces() {
   const { user } = useAuth();
   const [state, setState] = useState({ loading: true, places: [], error: "" });
+  const [favoriteTripIds, setFavoriteTripIds] = useState([]);
 
   useEffect(() => {
     let active = true;
-    getFavoritePlaces(user.uid)
+    getFavoritePlaces(user?.uid)
       .then((places) => active && setState({ loading: false, places, error: "" }))
       .catch(() => active && setState({ loading: false, places: [], error: "찜한 목록을 불러오지 못했습니다." }));
     return () => { active = false; };
   }, [user]);
 
+  useEffect(() => {
+    if (!user?.uid) return undefined;
+
+    return subscribeFavoritePlaces(
+      user.uid,
+      (places) => setState({ loading: false, places, error: "" }),
+      () => setState((current) => ({ ...current, loading: false, error: "찜한 장소를 불러오지 못했습니다." })),
+    );
+  }, [user?.uid]);
+
+  useEffect(() => {
+    if (!user?.uid) {
+      setFavoriteTripIds([]);
+      return undefined;
+    }
+
+    let active = true;
+    getFavoriteTrips(user.uid)
+      .then((ids) => { if (active) setFavoriteTripIds(ids); })
+      .catch(() => { if (active) setFavoriteTripIds([]); });
+    return () => { active = false; };
+  }, [user?.uid]);
+
+  const places = useMemo(() => {
+    const placeKeys = new Set(state.places.map((place) => `${place.city || ""}:${place.name || ""}`));
+    const tripPlaces = favoriteTripIds
+      .map((id) => tripRoad.trips.find((trip) => trip.id === id))
+      .filter(Boolean)
+      .map((trip) => {
+        const firstPlace = trip.days.flatMap((day) => day.items).find((item) => item.type === "place");
+        return {
+          id: `trip-${trip.id}`,
+          tripId: trip.id,
+          name: firstPlace?.place || trip.city,
+          city: trip.city,
+          category: "TRAVEL PACKAGE",
+          recommendation: trip.title,
+          image: firstPlace?.image || trip.image || "",
+        };
+      })
+      .filter((place) => !placeKeys.has(`${place.city || ""}:${place.name || ""}`));
+    return [...state.places, ...tripPlaces];
+  }, [favoriteTripIds, state.places]);
+
+  useEffect(() => {
+    if (!favoriteTripIds.length) return;
+    setState((current) => ({ ...current, places }));
+  }, [favoriteTripIds]);
+
   const remove = async (place) => {
     try {
-      await deleteFavoritePlace(user.uid, place.id);
-      setState((current) => ({ ...current, error: "", places: current.places.filter((item) => item.id !== place.id) }));
+      if (place.tripId) {
+        await deleteFavoriteTrip(user.uid, place.tripId);
+        setFavoriteTripIds((current) => current.filter((id) => id !== place.tripId));
+        setState((current) => ({ ...current, places: current.places.filter((item) => item.tripId !== place.tripId) }));
+      } else {
+        await deleteFavoritePlace(user.uid, place.id);
+        setState((current) => ({ ...current, error: "", places: current.places.filter((item) => item.id !== place.id) }));
+      }
       window.dispatchEvent(new Event("favorite-places-changed"));
     } catch {
       setState((current) => ({ ...current, error: "찜한 장소를 삭제하지 못했습니다." }));
