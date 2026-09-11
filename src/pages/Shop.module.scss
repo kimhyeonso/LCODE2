@@ -1714,7 +1714,7 @@
 }
 
 @include mobile {
-  .detailPage { padding: 28px 16px 72px; }
+  .detailPage { padding: 28px 16px 0; }
   .detailSpread { row-gap: 32px; }
   .productGallery { width: 100%; }
 
@@ -2640,7 +2640,7 @@
 
 
   .detailPage {
-    padding: 22px 16px 72px;
+    padding: 22px 16px 0;
   }
 
 
