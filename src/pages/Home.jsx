@@ -61,7 +61,8 @@ const heroSlides = [
     serviceIntro: true,
     description: "취향에 맞는 여행을 추천하고, 여행 중 예상치 못한 상황에서도 일정을 다시 설계하는 여행 일정 리믹스 플랫폼",
     cta: "나에게 맞는 여행 찾기",
-    to: "/destinations",
+    to: "/balance",
+    viewerCount: 128,
   },
   {
     desktop: bannerPC1,

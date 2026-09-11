@@ -85,8 +85,6 @@ export default function MagazineEvent({ onExit }) {
   }, [presentOpen]);
 
   const movePreviewCursor = (event) => {
-    if (event.pointerType === "touch") return;
-
     const bounds = event.currentTarget.getBoundingClientRect();
     const localX = event.clientX - bounds.left;
     const localY = event.clientY - bounds.top;
@@ -98,6 +96,13 @@ export default function MagazineEvent({ onExit }) {
       y: localY,
       page,
     });
+  };
+
+  const startPreviewCursor = (event) => {
+    if (event.pointerType === "touch") {
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+    }
+    movePreviewCursor(event);
   };
 
   const hidePreviewCursor = () => {
@@ -161,8 +166,11 @@ export default function MagazineEvent({ onExit }) {
             <figure
               className={styles.preview}
               onPointerEnter={movePreviewCursor}
+              onPointerDown={startPreviewCursor}
               onPointerMove={movePreviewCursor}
               onPointerLeave={hidePreviewCursor}
+              onPointerUp={hidePreviewCursor}
+              onPointerCancel={hidePreviewCursor}
             >
               <img loading="lazy" src={asset.spread} alt="여행 매거진 내지 미리보기" />
               {previewCursor.visible && (

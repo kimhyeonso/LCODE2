@@ -471,6 +471,7 @@ export default function Products() {
               const stock = hasStock ? Number(product.stock) : null;
               const soldOut = stock === 0;
               const lowStock = stock !== null && stock > 0 && stock <= 5;
+              const hoverImage = getDetailImage(product.imageNumber, "_2");
 
               return (
                 <article
@@ -536,6 +537,7 @@ export default function Products() {
                       </span>
 
                       {product.thumbnail ? (
+                        <>
                         <img
                           className={
                             styles.productThumb
@@ -560,6 +562,16 @@ export default function Products() {
                             }
                           }}
                         />
+                        {hoverImage && (
+                          <img
+                            className={styles.productHoverThumb}
+                            src={hoverImage}
+                            alt=""
+                            loading={productIndex < 6 ? "eager" : "lazy"}
+                            decoding="async"
+                          />
+                        )}
+                        </>
                       ) : (
                         <b>
                           {product.name.slice(

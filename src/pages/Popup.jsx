@@ -6,6 +6,7 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 const popupItems = [
   { id: "popup01", image: "/Mypage-img/popup01.webp", event: "mystery" },
   { id: "popup02", image: "/Mypage-img/popup02.webp", event: "gacha" },
+  { id: "popup03", image: "/Mypage-img/popup03.webp", event: "ai-remix" },
 ];
 
 const storageKey = (id) => `lcode-${id}-hidden-until`;
@@ -50,7 +51,7 @@ export default function Popup() {
               type="button"
               onClick={() => {
                 setVisibleIds([]);
-                navigate(`/event?event=${event}`);
+                navigate(event === "ai-remix" ? "/ai-remix" : `/event?event=${event}`);
               }}
               aria-label={event === "mystery" ? "비행기 살인사건 이벤트로 이동" : "가챠 뽑기 이벤트로 이동"}
             >
