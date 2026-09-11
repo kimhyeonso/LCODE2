@@ -19,16 +19,18 @@
 }
 
 .shopApp {
-  background: #efeade;
-}
-
-.shopApp :global(footer) {
-  margin-top: 0;
+  background: #f6f3ec;
 }
 
 .main {
   min-height: 60vh;
   flex: 1 0 auto;
+}
+
+@media (min-width: 641px) {
+  .shopApp :global(footer) {
+    margin-top: 0;
+  }
 }
 
 // 모바일 전용: 콘텐츠 ↔ 풋터 간격을 마이페이지 기준으로 통일합니다.

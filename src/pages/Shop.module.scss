@@ -1690,7 +1690,7 @@
 }
 
 @include mobile {
-  .detailPage { padding: 28px 16px 72px; }
+  .detailPage { padding: 28px 16px 0; }
   .detailSpread { row-gap: 32px; }
   .productGallery { width: 100%; }
 
@@ -2569,7 +2569,7 @@
     width: calc(100% - 32px);
 
     padding-top: 38px;
-    // 하단 여백 제거 → 풋터 간격은 공통 규칙(풋터 margin-top)에 맡깁니다.
+    // Footer spacing follows the shared my-page mobile rule.
     padding-bottom: 0;
   }
 
@@ -2602,7 +2602,7 @@
 
 
   .detailPage {
-    padding: 22px 16px 72px;
+    padding: 22px 16px 0;
   }
 
 
