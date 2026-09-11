@@ -6451,6 +6451,20 @@ button {
   border-color: rgba(245,239,232,.25);
 }
 
+/* 1차 지목 실패는 안내문과 다음 단계 버튼을 한 줄씩 깔끔하게 쌓는다. */
+.verdictFailActionsFirst {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+}
+
+.verdictFailActionsFirst > p,
+.verdictFailActionsFirst > button {
+  grid-column: 1;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
 @keyframes verdictNoiseMove {
   0% { opacity: .18; transform: translate(0,0); }
   50% { opacity: .72; transform: translate(1.6%,-1%); }
@@ -6754,7 +6768,7 @@ button {
 .culpritConfirmModal p {
   margin: 0 !important;
   font-size: 14px !important;
-  line-height: 1.7 !important;
+  line-height: 1.55 !important;
 }
 
 .culpritConfirmModal button {
@@ -6859,7 +6873,7 @@ button {
 }
 
 .verdictNext {
-  min-height: 56px !important;
+  min-height: 50px !important;
   font-size: 15px !important;
   letter-spacing: .03em;
   background:
@@ -9789,4 +9803,85 @@ button {
   padding: 0 !important;
   line-height: 1 !important;
   transform: none !important;
+}
+
+/* =========================================================
+   FIRST VERDICT · RETRY CARD
+   1차 지목 실패 안내는 기존 2열 액션과 분리해 하나의 카드로 정리.
+========================================================= */
+.firstVerdictRetryCard {
+  position: relative;
+  z-index: 12;
+  width: min(520px, 92vw);
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 12px 14px;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  gap: 8px;
+  border: 1px solid rgba(214, 170, 97, .24);
+  border-top-color: rgba(214, 170, 97, .72);
+  background:
+    linear-gradient(180deg, rgba(214, 170, 97, .07), rgba(5, 7, 12, .95) 42%),
+    rgba(5, 7, 12, .95);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, .28);
+  text-align: left;
+}
+
+.firstVerdictRetryCard > p {
+  display: block;
+  width: 100%;
+  margin: 0 !important;
+  color: rgba(245, 239, 232, .78);
+  font-size: 13px !important;
+  line-height: 1.55 !important;
+  text-align: left !important;
+}
+
+.firstVerdictRetryCard > button {
+  position: static !important;
+  width: 100% !important;
+  min-height: 50px !important;
+  margin: 0 !important;
+  padding: 0 18px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  border: 1px solid rgba(214, 170, 97, .58) !important;
+  background: #f5efe8 !important;
+  color: #070a12 !important;
+  font: inherit;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.firstVerdictRetryCard > button strong {
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: -.02em;
+}
+
+.firstVerdictRetryCard > button b {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+@media (max-width: 640px) {
+  .firstVerdictRetryCard {
+    width: min(100%, 520px);
+    margin-top: 8px;
+    padding: 11px 12px;
+    gap: 7px;
+  }
+
+  .firstVerdictRetryCard > p {
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+  }
+
+  .firstVerdictRetryCard > button {
+    min-height: 48px !important;
+  }
 }
