@@ -4850,3 +4850,48 @@ header > button {
     animation: none !important;
   }
 }
+
+// Keep the fullscreen mobile event usable on narrow and short viewports.
+@media (max-width: 600px) {
+  .gachaExperience {
+    width: 100%;
+    height: 100dvh;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+  .intro, .capsuleScene, .openScene, .result {
+    height: auto;
+    min-height: 100dvh;
+  }
+  .introInner {
+    height: auto;
+    min-height: calc(100dvh - 100px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    grid-template-rows: auto 1fr auto;
+    gap: 24px;
+  }
+  .introCopy { transform: none; padding-top: 16px; min-width: 0; }
+  .intro h1 {
+    transform: none;
+    font-size: clamp(26px, 7.4vw, 37px);
+    line-height: 1.25;
+    white-space: normal;
+    word-break: keep-all;
+    overflow-wrap: anywhere;
+  }
+  .introHero { transform: none; gap: 12px; }
+  .heroButton { width: min(100%, 350px); max-height: none; }
+  .heroHint { margin: 0; white-space: normal; line-height: 1.6; word-break: keep-all; }
+  .mobileInfoButton { height: auto; min-height: 104px; }
+  .mobileBackButton { min-height: 32px; }
+  .machineOverlay { overflow-y: auto; }
+  .machineFloat { max-width: 100%; max-height: none; margin-block: auto; }
+  .prizePanel, .noticePanel, .eventAlertCard {
+    max-height: calc(100dvh - 48px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  .result { gap: 16px; }
+  .resultActions { flex-shrink: 0; }
+  .primaryButton, .secondaryButton { min-height: 44px; }
+}
