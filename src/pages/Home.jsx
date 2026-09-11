@@ -31,7 +31,6 @@ import journalTokyoImage from "../assets/images/journal_tokyo.webp";
 import { homeVideos } from "../data/homeVideo";
 import { getUpcomingPlans } from "../utils/upcomingPlans";
 import HomeExchange from "../components/HomeExchange";
-import { useHomeViewers } from "../hooks/useHomeViewers";
 import viewerIcon from "../assets/icons/menu_bar/05user.svg";
 
 import styles from "./Home.module.scss";
@@ -62,7 +61,6 @@ const heroSlides = [
     description: "취향에 맞는 여행을 추천하고, 여행 중 예상치 못한 상황에서도 일정을 다시 설계하는 여행 일정 리믹스 플랫폼",
     cta: "나에게 맞는 여행 찾기",
     to: "/balance",
-    viewerCount: 128,
   },
   {
     desktop: bannerPC1,
@@ -168,9 +166,9 @@ const SectionLabel = ({ number, children }) => (
 );
 
 const ViewerBadge = ({ count }) => (
-  <p className={styles.viewerBadge} title="최근 60초 동안 홈 화면을 연 브라우저 수입니다. 같은 브라우저의 여러 탭은 한 번만 집계합니다.">
+  <p className={styles.viewerBadge} title="포트폴리오 시연용 예시 수치입니다.">
     <img src={viewerIcon} alt="" aria-hidden="true" />
-    <span>최근 방문 <strong>{count.toLocaleString("ko-KR")}</strong></span>
+    <span><strong>{count.toLocaleString("ko-KR")}</strong>명이 보고 있어요</span>
   </p>
 );
 
@@ -237,7 +235,7 @@ const TextLink = ({ to, children, ...props }) => (
 );
 
 export default function Home() {
-  const viewerCount = useHomeViewers();
+  const viewerCount = 128; // Portfolio preview count, not live analytics.
   const page = useRef(null);
   const heroTouchStart = useRef(null);
   const shopRowRef = useRef(null);
