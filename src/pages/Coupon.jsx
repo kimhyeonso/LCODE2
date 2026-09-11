@@ -23,6 +23,13 @@ const gachaCouponSlides = [
   { image: "/Mypage-img/couponBanner03.png", to: "/event?event=magazine", label: "리뷰 매거진 이벤트로 이동" },
 ];
 
+const gachaPrizeImages = {
+  "event-first": "/event/event02/coupon01.svg",
+  "event-second": "/event/event02/coupon02.webp",
+  "event-third": "/event/event02/coupon03.webp",
+  "event-fourth": "/event/event02/coupon04.webp",
+};
+
 const EVENT_COUPON_STORAGE_KEY = "lcode-event-coupons";
 
 function readCouponList(key) {
