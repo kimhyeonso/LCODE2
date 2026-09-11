@@ -107,3 +107,8 @@
 @media (hover: hover) and (pointer: fine) {
   .aiButton:hover { animation: none; }
 }
+
+:global(body.lcode-hide-ai-remix) .aiButton,
+:global(body.lcode-hide-ai-remix-mystery) .aiButton {
+  display: none !important;
+}

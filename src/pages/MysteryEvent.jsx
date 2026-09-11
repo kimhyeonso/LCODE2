@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import styles from "./MysteryEvent.module.scss";
@@ -93,13 +93,13 @@ const suspects = [
     pose2: asset.jiyoungPose2,
     face: asset.jiyoungFace,
 
-    firstMotive: "여행비 정산 문제",
+    firstMotive: "아끼는 인형을 두고 반복된 장난",
 
     claimedAlibi:
-      "사진 촬영 이후 자신의 자리에서 영화를 보고 있었다.",
+      "사진 촬영 이후 자신의 자리에서 영상을 보고 있었다.",
 
     secondSummary:
-      "단체사진 뒤 자신의 자리로 돌아갔다고 진술했다. 기내 화면의 재생 기록과 주변 증언을 함께 확인할 필요가 있다.",
+      "단체사진 뒤 자신의 자리로 돌아가 영상을 봤고, 기내 화면 재생 기록이 사건 시간대까지 이어져 알리바이를 뒷받침한다.",
   },
 
   {
@@ -118,7 +118,7 @@ const suspects = [
       "화장실을 다녀오던 중 평소보다 조용한 승근에게 말을 걸었고, 그때 처음 이상을 알아챘다.",
 
     secondSummary:
-      "피해자와 말다툼한 사실을 숨겼다. 사건 전후 기내 뒤쪽으로 이동한 정황과 정확한 시각을 대조할 필요가 있다.",
+      "무용 전공 이야기를 두고 피해자와 말다툼한 사실을 숨겼다. 사건 전후 기내 뒤쪽 이동 시각을 대조할 필요가 있다.",
   },
 
   {
@@ -131,7 +131,7 @@ const suspects = [
     pose2: asset.jeongeunPose2,
     face: asset.jeongeunFace,
 
-    firstMotive: "촬영용 액세서리 분실",
+    firstMotive: "프로젝트 조율 과정의 충돌",
 
     claimedAlibi:
       "커피가 전달될 무렵 승무원에게 따뜻한 물을 받고 있었다.",
@@ -201,19 +201,19 @@ const chapterSummaries = {
     title: "첫 번째 조사 정리",
     copy: "네 사람의 첫 진술에서 확인된 핵심만 정리했습니다.",
     items: [
-      { label: "유지영", text: "여행비 정산 문제와 쌓인 불만이 있었다.", image: asset.jiyoungPose2 },
-      { label: "전소희", text: "가족 사이 오래된 갈등과 사건 전 말다툼이 있었다.", image: asset.soheePose2 },
-      { label: "최정은", text: "촬영용 액세서리 문제로 승근에게 불만이 있었다.", image: asset.jeongeunPose2 },
-      { label: "김현수", text: "피날레 메인 모델 자리를 두고 승근과 경쟁했다.", image: asset.hyeonsuPose2 },
+      { label: "유지영", text: "아끼는 인형을 승근이 멋대로 가져가 장난치는 것에 불만이 있었다.", image: asset.jiyoungPose2 },
+      { label: "전소희", text: "가족 사이 오래된 갈등은 있었지만 이번 여행에서 큰 충돌은 없었다고 진술했다.", image: asset.soheePose2 },
+      { label: "최정은", text: "프로젝트를 조율하는 과정에서 승근과 몇 차례 의견이 충돌했다.", image: asset.jeongeunPose2 },
+      { label: "김현수", text: "프로젝트 마무리와 피날레 메인 자리를 두고 승근에게 불만이 있었다.", image: asset.hyeonsuPose2 },
     ],
   },
   round2: {
     eyebrow: "CONTRADICTION FILE",
     title: "추가 조사 정리",
-    copy: "숨긴 사실과 사건 순간의 실제 위치를 비교했습니다.",
+    copy: "진술과 사건 순간의 실제 위치, 남은 기록을 비교했습니다.",
     items: [
-      { label: "유지영", text: "단체사진 뒤 좌석으로 돌아갔다고 진술했다. 재생 기록의 시간대를 확인해야 한다.", image: asset.jiyoungPose2 },
-      { label: "전소희", text: "말다툼을 숨겼고 사건 전후 기내 뒤쪽으로 이동한 정황이 있다.", image: asset.soheePose2 },
+      { label: "유지영", text: "단체사진 뒤 자리로 돌아가 영상을 봤고, 좌석 화면 재생 기록이 사건 시간대까지 이어졌다.", image: asset.jiyoungPose2 },
+      { label: "전소희", text: "무용 전공 이야기를 두고 말다툼한 사실을 숨겼고 사건 전후 기내 뒤쪽으로 이동했다.", image: asset.soheePose2 },
       { label: "최정은", text: "컵을 만진 사실을 숨겼다. 컵과 따뜻한 물 기록의 시각을 비교해야 한다.", image: asset.jeongeunPose2 },
       { label: "김현수", text: "팔찌 제거 시점과 피해자 접근 여부에 관한 진술에 모순이 남아 있다.", image: asset.hyeonsuPose2 },
     ],
@@ -457,23 +457,19 @@ const firstInterviews = {
     {
       speaker: "유지영",
       background: asset.cabin,
-
       character: asset.jiyoung,
       position: "right",
-
       text:
-        "여행비 때문에 좀 다툰 건 맞아요. 정산이 계속 안 맞았거든요.",
+        "승근이가 제가 아끼는 인형을 허락도 없이 가져가서 장난치는 걸 되게 좋아했어요.",
     },
 
     {
       speaker: "유지영",
       background: asset.cabin,
-
       character: asset.jiyoungProfile,
       position: "left",
-
       text:
-        "그래도 그게 끝이에요. 사진 찍고 나서는 계속 자리에서 영화 보고 있었어요.",
+        "싫다고 몇 번 말했는데도 장난으로 받아들이니까... 솔직히 짜증은 많이 났어요. 그래도 그게 다예요.",
     },
 
     {
@@ -482,18 +478,15 @@ const firstInterviews = {
       character: asset.jiyoungProfile,
       fixedPosition: "left",
       emphasis: true,
-      text: "아, 마지막 단체사진. 그때 승근이 표정이 평소랑 조금 달랐어요.",
+      text: "사진 찍고 나서는 바로 제 자리로 돌아가서 보던 영상을 계속 봤어요.",
     },
 
     {
       speaker: "유지영",
       background: asset.cabinAlt,
-
       character: asset.jiyoung,
       position: "right",
-
-      text:
-        "사건이 일어날 때까지 거의 자리에서 안 움직였어요. 그게 제가 말할 수 있는 전부예요.",
+      text: "아, 마지막 단체사진. 그때 승근이 표정이 평소랑 조금 달랐어요.",
     },
   ],
 
@@ -501,10 +494,8 @@ const firstInterviews = {
     {
       speaker: "전소희",
       background: asset.cabin,
-
       character: asset.sohee,
       position: "left",
-
       text:
         "집안끼리 오래된 문제 때문에 승근이랑 몇 번 부딪힌 적은 있어.",
     },
@@ -512,10 +503,8 @@ const firstInterviews = {
     {
       speaker: "전소희",
       background: asset.cabin,
-
       character: asset.soheeProfile,
       position: "right",
-
       text:
         "그래도 이번 여행에서 크게 싸우거나 한 건 없어.",
     },
@@ -541,7 +530,15 @@ const firstInterviews = {
       background: asset.cabin,
       character: asset.jeongeun,
       position: "right",
-      text: "예전에 악세서리 하나를 빌려줬다가 잃어버려서 어쩔 수 없이 넘어갔던 적은 있습니다.",
+      text: "프로젝트 할 때 승근이랑 의견이 부딪힌 적은 몇 번 있습니다. 승근이가 자기 의견이 강한 편이었거든요.",
+    },
+
+    {
+      speaker: "최정은",
+      background: asset.cabinAlt,
+      character: asset.jeongeunProfile,
+      position: "left",
+      text: "그래도 제가 팀장이었으니까 조율했고, 승근이도 결국 양보했습니다. 계속 감정이 남아 있던 건 아닙니다.",
     },
 
     {
@@ -566,10 +563,8 @@ const firstInterviews = {
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsu,
       position: "left",
-
       text:
         "승근이랑 메인 자리 때문에 조금 경쟁했던 건 맞아. 원래 나도 후보였으니까.",
     },
@@ -577,21 +572,54 @@ const firstInterviews = {
     {
       speaker: "김현수",
       background: asset.cabin,
-
       character: asset.hyeonsuProfile,
       position: "right",
-
       text:
-        "기분이 아예 안 나빴다고 하면 거짓말이겠지만, 여행까지 와서 계속 그걸로 싸운 건 아니야.",
+        "내가 불만이었던 건 그것만이 아니야. 프로젝트도 다 안 끝났는데 발표 직전 이틀을 빠졌잖아.",
     },
 
     {
       speaker: "김현수",
       background: asset.cabinAlt,
-
       character: asset.hyeonsu,
       position: "left",
+      text:
+        "그동안 남은 사람들이 마무리를 다 메웠고. 그런데 피날레 메인은 결국 승근이가 가져갔지. 나도 원래 유력한 후보였어.",
+    },
 
+    {
+      speaker: "김현수",
+      background: asset.cabinAlt,
+      character: asset.hyeonsuProfile,
+      position: "right",
+      emphasis: true,
+      text:
+        "솔직히 기분 좋을 리 없지. 내가 한 만큼은 인정받고 싶었으니까.",
+    },
+
+    {
+      speaker: "김현수",
+      background: asset.cabin,
+      character: asset.hyeonsu,
+      position: "left",
+      text:
+        "그래도 그걸로 계속 싸우고 다닌 건 아니야. 마지막 리허설 끝나고는 승근이랑 둘이 쌀국수도 먹으러 갔어.",
+    },
+
+    {
+      speaker: "김현수",
+      background: asset.cabin,
+      character: asset.hyeonsuProfile,
+      position: "right",
+      text:
+        "불만이 있었다고 해서 내가 승근이를 죽였다는 건 아니잖아.",
+    },
+
+    {
+      speaker: "김현수",
+      background: asset.cabinAlt,
+      character: asset.hyeonsu,
+      position: "left",
       text:
         "사진 찍고 나서는 내 자리 쪽에서 쉬었어. 승근이 쪽으로는 안 갔고.",
     },
@@ -602,191 +630,7 @@ const firstInterviews = {
    HIDDEN FILE
 ========================================================= */
 
-const hiddenFiles = {
-  jiyoung: [
-    {
-      speaker: "유지영",
-      background: asset.cabin,
-      character: asset.jiyoung,
-      position: "right",
-      text: "사실... 제가 영화 보고 있었다고 했잖아요.",
-    },
-    {
-      speaker: "유지영",
-      background: asset.cabin,
-      character: asset.jiyoung,
-      position: "right",
-      animation: "none",
-      text: "그게 뭐였냐면요...",
-    },
-    {
-      speaker: "유지영",
-      background: asset.cabin,
-      character: asset.jiyoung,
-      position: "right",
-      animation: "none",
-      text: "......",
-    },
-    {
-      speaker: "유지영",
-      background: asset.cabin,
-      character: asset.jiyoungProfile,
-      position: "left",
-      emphasis: true,
-      text: "뿌이뿌이 모루카라는 만화였어요.",
-    },
-    {
-      speaker: "유지영",
-      background: asset.cabin,
-      character: asset.jiyoung,
-      position: "right",
-      text: "기니피그가 자동차가 되는 건데요... 아니, 제가 왜 설명하고 있죠.",
-    },
-    {
-      speaker: "유지영",
-      background: asset.cabinAlt,
-      character: asset.jiyoung,
-      position: "right",
-      text: "승근이가 제 인형 가져가서 장난치는 것도 솔직히 진짜 싫었어요.",
-      note: "돈 문제 말고도 오래 쌓인 불만이 많아보였다.",
-    },
-  ],
-
-  sohee: [
-    {
-      speaker: "전소희",
-      background: asset.cabin,
-
-      character: asset.sohee,
-      position: "left",
-
-      text:
-        "사실 모델과로 입학하기 전에는 무용을 전공했었어.",
-    },
-
-    {
-      speaker: "전소희",
-      background: asset.cabin,
-
-      character: asset.soheeProfile,
-      position: "right",
-
-      text:
-        "근데 그걸 학교에서 굳이 말하고 다니고 싶진 않았거든.",
-    },
-
-    {
-      speaker: "전소희",
-      background: asset.cabinAlt,
-
-      character: asset.sohee,
-      position: "left",
-
-      text:
-        "같이 수업 들을 때 승근이가 내가 무용 했었다는 걸 되게 자랑스럽게 얘기하고 다녔어.",
-    },
-
-    {
-      speaker: "전소희",
-      background: asset.cabinAlt,
-
-      character: asset.soheeProfile,
-      position: "right",
-
-      text:
-        "처음엔 좀 곤란했지. 승근아, 그 얘기 굳이 안 해도 된다고 말한 적도 있었고.",
-    },
-
-    {
-      speaker: "전소희",
-      background: asset.cabin,
-
-      character: asset.sohee,
-      position: "left",
-
-      text:
-        "근데 같이 수업 듣고 지내면서 그런 건 아무렇지 않아졌어. 지금 와서 그걸 원한이라고 하면 나도 억울하지.",
-    },
-  ],
-
-  jeongeun: [
-    {
-      speaker: "최정은",
-      background: asset.cabin,
-      character: asset.jeongeun,
-      position: "right",
-      text: "승근이는 자기 의견이 강한 편이었습니다.",
-    },
-    {
-      speaker: "최정은",
-      background: asset.cabin,
-      character: asset.jeongeun,
-      position: "right",
-      text: "조율할 때 부딪힌 적도 종종 있었습니다.",
-    },
-    {
-      speaker: "최정은",
-      background: asset.cabinAlt,
-      character: asset.jeongeunProfile,
-      position: "left",
-      emphasis: true,
-      text: "그래도 제가 당시에 팀장이니까 제 선에서 정리해야 했습니다.",
-    },
-    {
-      speaker: "최정은",
-      background: asset.cabin,
-      character: asset.jeongeun,
-      position: "right",
-      text: "승근이도 결국 양보했습니다. 그 마음은 알고 있었고요.",
-    },
-  ],
-
-  hyeonsu: [
-    {
-      speaker: "김현수",
-      background: asset.cabin,
-      character: asset.hyeonsu,
-      position: "left",
-      text: "내가 불만이었던 건 프로젝트 마무리랑 피날레 자리였어.",
-    },
-    {
-      speaker: "김현수",
-      background: asset.cabin,
-      character: asset.hyeonsuProfile,
-      position: "right",
-      text: "프로젝트도 다 안 끝났는데 발표 직전 이틀을 빠졌잖아. 그동안 남은 사람들이 마무리를 다 메웠고.",
-    },
-    {
-      speaker: "김현수",
-      background: asset.cabinAlt,
-      character: asset.hyeonsu,
-      position: "left",
-      emphasis: true,
-      text: "그런데 피날레 메인은 결국 승근이가 가져갔지. 나도 원래 유력한 후보였어.",
-    },
-    {
-      speaker: "김현수",
-      background: asset.cabinAlt,
-      character: asset.hyeonsuProfile,
-      position: "right",
-      text: "솔직히 기분 좋을 리 없지. 내가 한 만큼은 인정받고 싶었으니까.",
-    },
-    {
-      speaker: "김현수",
-      background: asset.cabin,
-      character: asset.hyeonsu,
-      position: "left",
-      text: "그래도 마지막 리허설 끝나고 승근이랑 둘이 쌀국수도 먹으러 갔어.",
-    },
-    {
-      speaker: "김현수",
-      background: asset.cabin,
-      character: asset.hyeonsuProfile,
-      position: "right",
-      text: "불만이 있었다고 해서 내가 승근이를 죽였다는 건 아니잖아.",
-    },
-  ],
-};
+const hiddenFiles = {};
 
 /* =========================================================
    SECOND INVESTIGATION
@@ -802,9 +646,16 @@ const secondInterviews = {
       text: "단체사진 찍고 바로 자리로 돌아갔어요.",
     },
     {
+      speaker: "유지영",
+      background: asset.cabin,
+      character: asset.jiyoungProfile,
+      fixedPosition: "right",
+      text: "기니피그가 나오는 스톱모션 애니메이션을 보고 있었어요. 사진 찍기 전에 보다가 잠깐 멈춰둔 거였고요.",
+    },
+    {
       speaker: "사건 기록",
       background: asset.cabinAlt,
-      text: "단체사진 직후 지영의 좌석 화면에서 영상 재생이 다시 시작됐다.",
+      text: "단체사진 직후 지영의 좌석 화면에서 영상 재생이 다시 시작됐고, 재생 기록은 사건 시간대까지 이어져 있었다.",
     },
     {
       speaker: "유지영",
@@ -828,7 +679,14 @@ const secondInterviews = {
       character: asset.soheeProfile,
       fixedPosition: "right",
       emphasis: true,
-      text: "...잠깐 말다툼한 건 맞아. 괜히 이런 상황에서 더 의심받기 싫어서 말 안 했어.",
+      text: "...잠깐 말다툼한 건 맞아. 나 모델과 들어오기 전에는 무용을 전공했는데, 그 얘길 굳이 하고 다니고 싶진 않았거든.",
+    },
+    {
+      speaker: "전소희",
+      background: asset.cabin,
+      character: asset.sohee,
+      fixedPosition: "left",
+      text: "근데 승근이가 다른 사람들한테 또 그 얘기를 하고 있어서 하지 말라고 했어. 괜히 이런 상황에서 더 의심받기 싫어서 말 안 한 거야.",
     },
     {
       speaker: "사건 기록",
@@ -924,7 +782,7 @@ const truthScenes = [
     fixedPosition: "right",
 
     text:
-      "지영, 소희, 정은이 숨긴 것은 의심받을 만한 감정이나 행동이었다. 현수가 숨긴 것은 사건 당일의 시간과 동선이었다.",
+      "지영, 소희, 정은에게도 의심받을 만한 감정이나 행동은 있었다. 하지만 현수에게만 사건 당일의 시간과 동선을 설명하지 못하는 모순이 남았다.",
   },
 
   {
@@ -1100,7 +958,7 @@ const wrongCopy = {
     reaction: ["제가 범인이라고요??", "스트레스 받네요."],
 
     body:
-      "지영의 진술에는 숨긴 부분이 있었지만, 좌석 화면 기록과 주변 진술까지 함께 놓으면 그것만으로 범행을 설명하기 어렵다.",
+      "지영에게 승근을 향한 불만은 있었지만, 좌석 화면의 영상 재생 기록이 사건 시간대까지 이어져 범행 동선과 맞지 않는다.",
   },
 
   sohee: {
@@ -1277,6 +1135,11 @@ const canEnterFocus = (visited) => visited.length >= MIN_INVESTIGATED;
 export default function MysteryEvent({ onExit }) {
   const isMobile = useMysteryMobile();
 
+  useLayoutEffect(() => {
+    document.body.classList.add("lcode-hide-ai-remix-mystery");
+    return () => document.body.classList.remove("lcode-hide-ai-remix-mystery");
+  }, []);
+
   const [phase, setPhase] = useState("cover");
 
   const [storyIndex, setStoryIndex] = useState(0);
@@ -1310,6 +1173,10 @@ export default function MysteryEvent({ onExit }) {
 
   const [verdictSuspect, setVerdictSuspect] =
     useState(null);
+
+  // 1차 조사 뒤 첫 지목 / 2차 조사 뒤 최종 지목을 구분한다.
+  const [accusationAttempt, setAccusationAttempt] =
+    useState(1);
 
   const [warning, setWarning] =
     useState(null);
@@ -1386,6 +1253,7 @@ export default function MysteryEvent({ onExit }) {
     setPendingCulprit(null);
     setPendingSelection(null);
     setVerdictSuspect(null);
+    setAccusationAttempt(1);
 
     setWarning(null);
 
@@ -1423,6 +1291,7 @@ export default function MysteryEvent({ onExit }) {
     "round2Intro",
     "round2Hub",
     "round2Story",
+    "truth",
   ].includes(phase);
 
   const confirmSkipChapter = () => {
@@ -1436,7 +1305,8 @@ export default function MysteryEvent({ onExit }) {
 
     if (phase === "round1Hub" || phase === "round1Story") {
       setVisitedRound1(suspects.map((suspect) => suspect.id));
-      openSummary("round1", "round2Intro");
+      setAccusationAttempt(1);
+      openSummary("round1", "finalChoice");
       return;
     }
 
@@ -1446,7 +1316,14 @@ export default function MysteryEvent({ onExit }) {
       phase === "round2Story"
     ) {
       setVisitedRound2(suspects.map((suspect) => suspect.id));
+      setAccusationAttempt(2);
       openSummary("round2", "reconstruction");
+      return;
+    }
+
+    if (phase === "truth") {
+      setStoryIndex(0);
+      setPhase("culprit");
     }
   };
 
@@ -1777,7 +1654,7 @@ export default function MysteryEvent({ onExit }) {
      * -> FINAL RECONSTRUCTION
      */
     if (phase === "finalChoice") {
-      setPhase("reconstruction");
+      setPhase(accusationAttempt === 1 ? "round1Hub" : "reconstruction");
       return;
     }
 
@@ -1895,16 +1772,15 @@ export default function MysteryEvent({ onExit }) {
   };
 
   const requestFocus1 = () => {
-    // 2명 이상 조사하면 즉시 집중 조사 대상 선택 단계로 진행한다.
-    // 미조사 인물은 focus 화면에서 "정보 없음"으로 표시되므로
-    // 별도의 중간 경고가 진행을 막지 않게 한다.
+    // 집중 조사 단계를 제거하고, 기존 최소 조사 조건을 충족하면 바로 1차 조사 정리로 진행한다.
     if (!canEnterFocus(visitedRound1)) {
       return;
     }
 
     setWarning(null);
     setPendingSelection(null);
-    setPhase("focus1");
+    setAccusationAttempt(1);
+    openSummary("round1", "finalChoice");
   };
 
   const chooseFirstFocus = (id) => {
@@ -1932,14 +1808,15 @@ export default function MysteryEvent({ onExit }) {
   };
 
   const requestFocus2 = () => {
-    // 2명 이상 확인하면 즉시 두 번째 집중 조사 대상 선택 단계로 진행한다.
+    // 집중 조사 단계를 제거하고, 기존 최소 확인 조건을 충족하면 바로 2차 조사 정리로 진행한다.
     if (!canEnterFocus(visitedRound2)) {
       return;
     }
 
     setWarning(null);
     setPendingSelection(null);
-    setPhase("focus2");
+    setAccusationAttempt(2);
+    openSummary("round2", "reconstruction");
   };
 
   const chooseSecondFocus = (id) => {
@@ -2007,6 +1884,22 @@ export default function MysteryEvent({ onExit }) {
   const continueFromCorrectVerdict = () => {
     setStoryIndex(0);
     setPhase("truth");
+  };
+
+  const continueFromWrongVerdict = () => {
+    // 첫 지목 실패 시에만 2차 조사를 연다.
+    if (accusationAttempt === 1) {
+      setWrongSuspect(null);
+      setVerdictSuspect(null);
+      setPendingCulprit(null);
+      setStoryIndex(0);
+      setAccusationAttempt(2);
+      setPhase("round2Intro");
+      return;
+    }
+
+    // 2차 조사 뒤 최종 지목까지 틀리면 처음부터 다시 시작한다.
+    restart();
   };
 
   /* =======================================================
@@ -2138,7 +2031,7 @@ export default function MysteryEvent({ onExit }) {
             visitedRound1
           }
           onOpen={(id) => requestSelection("round1", id)}
-          proceedLabel="1차 집중 대상 선정"
+          proceedLabel="범인 지목하기"
           proceedEnabled={
             canEnterFocus(visitedRound1)
           }
@@ -2193,7 +2086,7 @@ export default function MysteryEvent({ onExit }) {
             visitedRound2
           }
           onOpen={(id) => requestSelection("round2", id)}
-          proceedLabel="2차 집중 대상 선정"
+          proceedLabel="사건 재구성으로 진행"
           proceedEnabled={
             canEnterFocus(visitedRound2)
           }
@@ -2252,6 +2145,7 @@ export default function MysteryEvent({ onExit }) {
         "finalChoice" && (
         <FinalChoice
           suspects={suspects}
+          attempt={accusationAttempt}
           firstFocus={
             firstFocus
           }
@@ -2263,7 +2157,7 @@ export default function MysteryEvent({ onExit }) {
           }
           onBack={() =>
             setPhase(
-              "reconstruction"
+              accusationAttempt === 1 ? "round1Hub" : "reconstruction"
             )
           }
         />
@@ -2273,7 +2167,9 @@ export default function MysteryEvent({ onExit }) {
         <VerdictScreen
           suspect={suspectMap[verdictSuspect]}
           correct={verdictSuspect === CORRECT_ID}
+          attempt={accusationAttempt}
           onCorrectNext={continueFromCorrectVerdict}
+          onWrongNext={continueFromWrongVerdict}
           onRestart={restart}
           onExit={onExit}
         />
@@ -2328,6 +2224,7 @@ export default function MysteryEvent({ onExit }) {
       {pendingCulprit && (
         <CulpritConfirmModal
           suspect={suspectMap[pendingCulprit]}
+          attempt={accusationAttempt}
           onCancel={cancelCulpritConfirmation}
           onConfirm={confirmCulpritChoice}
         />
@@ -2342,6 +2239,7 @@ export default function MysteryEvent({ onExit }) {
 
       {skipConfirm && (
         <SkipConfirmModal
+          truthSkip={phase === "truth"}
           onCancel={() => setSkipConfirm(false)}
           onConfirm={confirmSkipChapter}
         />
@@ -3217,14 +3115,14 @@ function RoundTwoIntro({
 }
 
 const reconstructionSummaries = {
-  jiyoung: "단체사진 뒤 자리로 돌아갔다. 재생 기록이 남아 있다.",
+  jiyoung: "단체사진 뒤 자리로 돌아갔다. 사건 시간대까지 영상 재생 기록이 이어져 있다.",
   sohee: "사건 전후 기내 뒤쪽으로 이동했다. 정확한 시각은 불분명하다.",
   jeongeun: "피해자의 컵을 만진 사실을 숨겼다.",
   hyeonsu: "팔찌 제거 시점과 동선에 모순이 남아 있다.",
 };
 
 const reconstructionWebSummaries = {
-  jiyoung: "단체사진 촬영 후 자신의 자리로 돌아갔다고 진술했다. 기내 화면의 재생 기록은 사건 핵심 시간대까지 이어져 있다. 다만 사진 촬영 직후의 이동 시각은 다른 기록과 함께 확인할 필요가 있다.",
+  jiyoung: "단체사진 촬영 후 자신의 자리로 돌아가 영상을 봤다고 진술했다. 기내 화면의 재생 기록은 사건 핵심 시간대까지 이어져 있어 자리 알리바이를 뒷받침한다.",
   sohee: "사건 전후 기내 뒤쪽으로 이동한 정황이 있다. 화장실에서 돌아오다 평소보다 조용한 승근에게 말을 걸었다고 진술했다. 승근을 확인한 시점과 이동 시간은 주변 진술과 대조해야 한다.",
   jeongeun: "피해자의 컵을 만진 사실은 인정했다. 다만 컵을 만진 시점과 따뜻한 물을 요청한 시각은 서로 다른 행동이라고 진술했다. 컵의 이동 경로와 주변 승객의 기억을 다시 확인할 필요가 있다.",
   hyeonsu: "팔찌 제거 시점과 피해자 접근 여부에 관한 진술에 일부 모순이 남아 있다. 커피 주문과 분배 시간대의 동선 역시 완전히 일치하지 않는다. 사건 핵심 시간대의 동선을 다른 인물의 진술과 직접 대조해야 한다.",
@@ -3248,8 +3146,8 @@ function Reconstruction({
       <div className={styles.reconstructionInner}>
         <header className={styles.reconstructionHeader}>
           <span>FINAL RECONSTRUCTION</span>
-          <h2>모두가 거짓말했다.</h2>
-          <p>하지만 모두가 같은 것을 숨긴 것은 아니었다.</p>
+          <h2>모두에게 의심스러운 구석은 있었다.</h2>
+          <p>하지만 결정적인 모순은 하나뿐이었다.</p>
         </header>
 
         <div className={styles.reconstructionList}>
@@ -3306,6 +3204,7 @@ function Reconstruction({
 
 function FinalChoice({
   suspects,
+  attempt = 2,
   firstFocus,
   secondFocus,
   onChoose,
@@ -3328,7 +3227,7 @@ function FinalChoice({
           }
         >
           <span>
-            FINAL ACCUSATION
+            {attempt === 1 ? "FIRST ACCUSATION" : "FINAL ACCUSATION"}
           </span>
 
           <h2>
@@ -3450,7 +3349,7 @@ function SelectionConfirmModal({ selection, suspect, onCancel, onConfirm }) {
   );
 }
 
-function CulpritConfirmModal({ suspect, onCancel, onConfirm }) {
+function CulpritConfirmModal({ suspect, attempt = 2, onCancel, onConfirm }) {
   if (!suspect) return null;
 
   return (
@@ -3461,11 +3360,22 @@ function CulpritConfirmModal({ suspect, onCancel, onConfirm }) {
         aria-modal="true"
         onMouseDown={(event) => event.stopPropagation()}
       >
-        <span>FINAL ACCUSATION</span>
+        <span>{attempt === 1 ? "FIRST ACCUSATION" : "FINAL ACCUSATION"}</span>
         <h2>정말 {suspect.name}님을 범인으로 지목하시겠습니까?</h2>
         <p>
-          최종 지목입니다. 오답일 경우 이번 조사는 실패 처리되며
-          처음부터 다시 도전해야 합니다.
+          {attempt === 1 ? (
+            <>
+              1차 조사 결과를 바탕으로 한 첫 지목입니다.
+              <br />
+              오답이면 추가 단서를 확인하기 위한 2차 조사가 시작됩니다.
+            </>
+          ) : (
+            <>
+              최종 지목입니다. 오답일 경우 이번 조사는 실패 처리되며
+              <br />
+              처음부터 다시 도전해야 합니다.
+            </>
+          )}
         </p>
         <button type="button" onClick={onConfirm}>범인 지목 확정</button>
         <button type="button" onClick={onCancel}>취소</button>
@@ -3477,7 +3387,9 @@ function CulpritConfirmModal({ suspect, onCancel, onConfirm }) {
 function VerdictScreen({
   suspect,
   correct,
+  attempt = 2,
   onCorrectNext,
+  onWrongNext,
   onRestart,
   onExit,
 }) {
@@ -3520,7 +3432,7 @@ function VerdictScreen({
             ))}
           </div>
           <div className={styles.verdictTarget}>
-            <span>FINAL ACCUSATION</span>
+            <span>{attempt === 1 ? "FIRST ACCUSATION" : "FINAL ACCUSATION"}</span>
             <strong>{suspect.name}님은</strong>
             <small>THE CULPRIT?</small>
           </div>
@@ -3530,7 +3442,11 @@ function VerdictScreen({
       {revealed && (
         <div className={styles.verdictResult}>
           <div className={styles.verdictHeadline}>
-            <span>{correct ? "FINAL VERDICT · CULPRIT CONFIRMED" : "FINAL VERDICT · ACCUSATION FAILED"}</span>
+            <span>
+              {attempt === 1
+                ? (correct ? "FIRST VERDICT · CULPRIT CONFIRMED" : "FIRST VERDICT · ACCUSATION FAILED")
+                : (correct ? "FINAL VERDICT · CULPRIT CONFIRMED" : "FINAL VERDICT · ACCUSATION FAILED")}
+            </span>
             <h2 className={correct ? styles.verdictCorrectTitle : styles.verdictWrongTitle}>
               <b>범인이</b>
               <i className={styles.verdictLetterRun}>
@@ -3564,9 +3480,21 @@ function VerdictScreen({
             >
               진실 확인하기
             </button>
+          ) : attempt === 1 ? (
+            <div className={styles.firstVerdictRetryCard}>
+              <p>
+                첫 번째 지목은 빗나갔습니다.
+                <br />
+                추가 단서를 확인해 다시 추리하세요.
+              </p>
+              <button type="button" onClick={onWrongNext}>
+                <strong>2차 조사로</strong>
+                <b aria-hidden="true">→</b>
+              </button>
+            </div>
           ) : (
             <div className={styles.verdictFailActions}>
-              <p>잘못된 최종 지목입니다. 이번 조사는 여기서 종료됩니다.</p>
+              <p>2차 조사 뒤 최종 지목도 빗나갔습니다. 처음부터 다시 도전해야 합니다.</p>
               <button type="button" onClick={onRestart}>처음부터</button>
               <button type="button" onClick={onExit}>나가기</button>
             </div>
@@ -3943,7 +3871,7 @@ function HomeConfirmModal({ onCancel, onConfirm }) {
   );
 }
 
-function SkipConfirmModal({ onCancel, onConfirm }) {
+function SkipConfirmModal({ truthSkip = false, onCancel, onConfirm }) {
   return (
     <div className={styles.modalOverlay} onMouseDown={onCancel}>
       <section
@@ -3953,10 +3881,16 @@ function SkipConfirmModal({ onCancel, onConfirm }) {
         onMouseDown={(event) => event.stopPropagation()}
       >
         <span>SKIP</span>
-        <h2>이 챕터를 건너뛸까요?</h2>
+        <h2>{truthSkip ? "사건의 진실을 건너뛸까요?" : "이 챕터를 건너뛸까요?"}</h2>
         <p>
-          남은 대사와 조사는 건너뛰고 핵심 내용 정리 화면으로 이동합니다.<br />
-          중요한 단서는 정리 화면에서 다시 확인할 수 있습니다.
+          {truthSkip ? (
+            <>남은 사건 해설을 건너뛰고 범인 공개 화면으로 바로 이동합니다.</>
+          ) : (
+            <>
+              남은 대사와 조사는 건너뛰고 핵심 내용 정리 화면으로 이동합니다.<br />
+              중요한 단서는 정리 화면에서 다시 확인할 수 있습니다.
+            </>
+          )}
         </p>
         <button type="button" onClick={onConfirm}>스킵하기</button>
         <button type="button" onClick={onCancel}>취소</button>

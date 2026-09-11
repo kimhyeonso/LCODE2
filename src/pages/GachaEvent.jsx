@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { drawEventCoupon } from "../services/eventService";
@@ -353,6 +353,11 @@ const wait = (milliseconds) =>
 export default function GachaEvent({ onExit }) {
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useLayoutEffect(() => {
+    document.body.classList.add("lcode-hide-ai-remix");
+    return () => document.body.classList.remove("lcode-hide-ai-remix");
+  }, []);
 
   const [step, setStep] = useState("intro");
   const [machineOpen, setMachineOpen] = useState(false);
