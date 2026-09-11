@@ -87,6 +87,8 @@ export default function Review() {
   const [processingPhotos, setProcessingPhotos] = useState(false);
   const [status, setStatus] = useState({ saving: false, message: "", error: "" });
   const [noticeMessage, setNoticeMessage] = useState("");
+  const reviewBackTo = state?.reviewBackTo || "/mystories";
+  const reviewBackLabel = state?.reviewBackLabel || "나의 리뷰로 돌아가기";
   const productName = isProductReview ? purchase?.name || state?.productName || editingReview?.productName || "상품 리뷰" : "";
   const [tripId, setTripId] = useState(initialReview.tripId || state?.tripId || "");
   const [trips, setTrips] = useState([]);
@@ -250,7 +252,7 @@ export default function Review() {
     <main className={styles.review}>
       <div className={styles.page}>
         <header className={styles.heading}>
-          <MypageBackLink to="/mystories" label="나의 리뷰로 돌아가기" />
+          <MypageBackLink to={reviewBackTo} label={reviewBackLabel} />
           <div><p>{isProductReview ? "SHOPPING REVIEW" : "MY JOURNEY"}</p><h1>REVIEW</h1><p className={styles.description}>{isProductReview ? "구매한 상품의 이용 후기를 남겨보세요." : "여행 후기를 남겨보세요."}</p></div>
         </header>
 

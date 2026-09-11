@@ -658,19 +658,22 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     });
 
   const addSelectedPlace = () => {
-    if (!selectedCandidate || !selectedPlaceTime) return;
+    if (!selectedCandidate) return;
     if (!placeCandidates.some((place) => place.place === selectedCandidate.place)) {
       setSelectedCandidate(null);
       setPlaceAdditionError("검색 결과에서 장소를 다시 선택해 주세요.");
       return;
     }
-    const timeError = validateVisitTimes(stops, [{ time: selectedPlaceTime }]);
-    if (timeError) { setPlaceAdditionError(timeError); return; }
+    if (selectedPlaceTime) {
+      const timeError = validateVisitTimes(stops, [{ time: selectedPlaceTime }]);
+      if (timeError) { setPlaceAdditionError(timeError); return; }
+    }
     const addedId = `added-${Date.now()}`;
+    const time = isVisitTime(selectedPlaceTime) ? selectedPlaceTime : "시간 미정";
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
       ? updateRouteInformation(dayStops, sortStopsByTime([...dayStops, {
         id: addedId,
-        time: selectedPlaceTime,
+        time,
         icon: categoryIcons[selectedCandidate.category] || pinIcon,
         name: selectedCandidate.place,
         city: selectedCandidate.city || selectedTrip.city,
@@ -697,7 +700,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     setPlaceQuery("");
     setPlaceCategory("all");
     setSelectedCandidate(place);
-    setSelectedPlaceTime("");
+    setSelectedPlaceTime("10:00");
     setPlaceAdditionError("");
     setIsPlaceAddOpen(true);
   };
@@ -970,7 +973,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           <button
             type="button"
             onClick={() => {
-              setSelectedPlaceTime("");
+              setSelectedPlaceTime("10:00");
               setSelectedCandidate(null);
               setPlaceQuery("");
               setPlaceCategory("all");
@@ -1111,10 +1114,10 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <footer className={styles.placeAddFooter}>
               <div className={styles.selectionSummary} aria-live="polite" aria-atomic="true">
                 <strong>{selectedCandidate?.place || "장소를 선택해 주세요"}</strong>
-                <small>{selectedCandidate ? `방문 시간 ${selectedPlaceTime || "선택 필요"}` : "선택한 장소 0곳"}</small>
+                <small>{selectedCandidate ? `방문 시간 ${selectedPlaceTime || "시간 미정"}` : "선택한 장소 0곳"}</small>
                 {placeAdditionError && <p className={styles.additionError} role="alert">{placeAdditionError}</p>}
               </div>
-              <button type="button" disabled={!selectedCandidate || !isVisitTime(selectedPlaceTime)} onClick={addSelectedPlace}>1곳 추가하기</button>
+              <button type="button" disabled={!selectedCandidate} onClick={addSelectedPlace}>추가하기</button>
             </footer>
           </section>
         </div>

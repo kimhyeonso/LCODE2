@@ -217,7 +217,7 @@ export default function Buy() {
                 <div className={styles.orderMeta}><span>주문일</span><strong>{order.date}</strong><span>주문번호</span><strong>{order.id}</strong></div>
                 {order.image ? <img loading="lazy" className={styles.orderImage} src={order.image} alt={order.name} /> : <div className={styles.orderImage} aria-hidden="true" />}
                 <div className={styles.orderInfo}><h2>{order.name}</h2><p>{order.option}</p><strong>{order.price.toLocaleString("ko-KR")}원</strong></div>
-                <div className={styles.orderActionsRow}><span className={styles.status}>{order.status}</span><div className={styles.orderButtons}><Link to={`/shop/${order.productId}`}>상품 상세</Link>{order.reviewDone ? <span className={styles.reviewDone}>리뷰 완료</span> : order.canReview && <Link className={styles.reviewLink} to={`/review?productId=${encodeURIComponent(order.productId)}`} state={{ productName: order.name }}>리뷰 쓰기</Link>}</div></div>
+                <div className={styles.orderActionsRow}><span className={styles.status}>{order.status}</span><div className={styles.orderButtons}><Link to={`/shop/${order.productId}`}>상품 상세</Link>{order.reviewDone ? <span className={styles.reviewDone}>리뷰 완료</span> : order.canReview && <Link className={styles.reviewLink} to={`/review?productId=${encodeURIComponent(order.productId)}`} state={{ productName: order.name, reviewBackTo: "/buy", reviewBackLabel: "상품 주문내역으로 돌아가기" }}>리뷰 쓰기</Link>}</div></div>
               </article>
             ))}
             {!ordersLoading && !ordersError && !visibleOrders.length && <div className={styles.emptyState}><p>{orders.length ? "해당 배송 상태의 주문이 없어요." : "주문한 상품이 아직 존재하지 않아요."}</p><Link to="/shop">상품 보러가기 <span aria-hidden="true">→</span></Link></div>}
