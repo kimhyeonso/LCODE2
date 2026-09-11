@@ -2254,3 +2254,23 @@
     padding: 36px 0 0;
   }
 }
+
+// The completion state is an immersive panel on phones: keep its black canvas
+// edge-to-edge while retaining a readable inset for its copy and back control.
+@media (max-width: 640px) {
+  .page.page.completionPage {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .page.page.completionPage > .backButton {
+    margin-left: 16px;
+  }
+
+  .page.page.completionPage > .complete.completionScreen {
+    min-height: calc(100dvh - 114px - env(safe-area-inset-bottom));
+    padding-right: 16px;
+    padding-left: 16px;
+  }
+}
