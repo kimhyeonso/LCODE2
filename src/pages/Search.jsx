@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import products from "../data/products.json";
 import searchIcon from "../assets/icons/search.svg";
@@ -9,6 +9,7 @@ import styles from "./Search.module.scss";
 import { resolveImageUrl as getImageUrl } from "../utils/imageUtils";
 import { useAuth } from "../hooks/useAuth";
 import { useManagedCollection } from "../hooks/useManagedCollection";
+import { matchesTripFilters } from "../utils/tripFilters";
 import {
   deleteFavoriteTrip,
   getFavoriteTrips,
@@ -78,11 +79,6 @@ const assignRepresentativeImages = (trips) => {
   }));
 };
 
-const countPlaces = (trip) => trip.days.reduce(
-  (total, day) => total + day.items.filter((item) => item.type === "place").length,
-  0,
-);
-
 const getFirstPlace = (trip) => trip.days
   .flatMap((day) => day.items)
   .find((item) => item.type === "place");
@@ -93,16 +89,18 @@ export default function Search() {
   const { user } = useAuth();
   const [params] = useSearchParams();
   const navigate = useNavigate();
+  const location = useLocation();
   const initialQuery = params.get("city") || "";
-  const [query, setQuery] = useState(initialQuery);
   const [country, setCountry] = useState("all");
   const [sort, setSort] = useState("recommended");
   const [filterOpen, setFilterOpen] = useState(false);
   const [durationModal, setDurationModal] = useState(null);
   const [selectedDurationId, setSelectedDurationId] = useState("");
-  const [favoriteTripIds, setFavoriteTripIds] = useState(
-    () => user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : [],
-  );
+  const [favoriteState, setFavoriteState] = useState(() => ({
+    userId: user?.uid || null,
+    ids: user?.uid ? (getStoredFavoriteTrips(user.uid) ?? []) : [],
+  }));
+  const favoriteTripIds = user?.uid && favoriteState.userId === user.uid ? favoriteState.ids : [];
   const favoriteMutationRef = useRef(0);
   const favoriteLock = useRef(false);
   const [filters, setFilters] = useState({ duration: "all", companion: "all", styles: [], pace: "all", season: "all" });
@@ -114,18 +112,7 @@ export default function Search() {
     const filtered = managedTrips.filter((trip) => {
       const matchesQuery = !normalizedQuery
         || `${trip.city} ${trip.country} ${trip.title}`.toLowerCase().includes(normalizedQuery);
-      const matchesDuration = filters.duration === "all"
-        || (filters.duration === "5박 이상" ? trip.days.length >= 6 : trip.duration === filters.duration);
-      const categories = new Set(trip.days.flatMap((day) => day.items).map((item) => item.category));
-      const styleMap = { "유명 관광지": "attraction", "맛집": "restaurant", "카페": "restaurant", "현지 문화": "attraction", "쇼핑": "attraction", "자연": "attraction", "액티비티": "attraction", "휴양": "hotel" };
-      const matchesStyles = !filters.styles.length || filters.styles.every((item) => categories.has(styleMap[item]));
-      const spotsPerDay = countPlaces(trip) / Math.max(trip.days.length, 1);
-      const pace = spotsPerDay <= 3 ? "slow" : spotsPerDay <= 5 ? "balance" : "full";
-      const matchesPace = filters.pace === "all" || filters.pace === pace;
-      const month = Number(trip.dateRange?.start?.slice(5, 7));
-      const season = [3, 4, 5].includes(month) ? "봄" : [6, 7, 8].includes(month) ? "여름" : [9, 10, 11].includes(month) ? "가을" : "겨울";
-      const matchesSeason = filters.season === "all" || filters.season === season;
-      return matchesQuery && (country === "all" || trip.country === country) && matchesDuration && matchesStyles && matchesPace && matchesSeason;
+      return matchesQuery && (country === "all" || trip.country === country) && matchesTripFilters(trip, filters);
     });
     return sort === "name"
       ? [...filtered].sort((a, b) => a.city.localeCompare(b.city, "ko"))
@@ -167,6 +154,8 @@ export default function Search() {
   }, [durationModal]);
 
   useEffect(() => {
+    favoriteMutationRef.current += 1;
+    favoriteLock.current = false;
     if (!user?.uid) {
       return undefined;
     }
@@ -178,13 +167,13 @@ export default function Search() {
       .then((firebaseIds) => {
         if (!active || favoriteMutationRef.current !== mutationAtStart) return;
         const ids = firebaseIds;
-        setFavoriteTripIds(ids);
+        setFavoriteState({ userId: user.uid, ids });
         storeFavoriteTrips(user.uid, ids);
 
       })
       .catch((error) => {
         if (active && storedIds !== null && favoriteMutationRef.current === mutationAtStart) {
-          setFavoriteTripIds(storedIds);
+          setFavoriteState({ userId: user.uid, ids: storedIds });
         }
         console.error("찜한 일정을 불러오지 못했습니다.", error);
       });
@@ -203,7 +192,7 @@ export default function Search() {
 
   const submitSearch = (event) => {
     event.preventDefault();
-    const value = query.trim();
+    const value = String(new FormData(event.currentTarget).get("city") || "").trim();
     navigate(value ? `/search?city=${encodeURIComponent(value)}` : "/search");
   };
 
@@ -214,28 +203,29 @@ export default function Search() {
     }
 
     if (favoriteLock.current) return;
-    favoriteLock.current = true;
+    const ownerId = user.uid;
     const wasFavorite = favoriteTripIds.includes(tripId);
-    favoriteMutationRef.current += 1;
+    const mutation = ++favoriteMutationRef.current;
+    favoriteLock.current = mutation;
     const nextIds = wasFavorite
       ? favoriteTripIds.filter((id) => id !== tripId)
       : [...favoriteTripIds, tripId];
-    setFavoriteTripIds((current) => (
-      wasFavorite ? current.filter((id) => id !== tripId) : [...current, tripId]
-    ));
-    storeFavoriteTrips(user.uid, nextIds);
+    setFavoriteState({ userId: ownerId, ids: nextIds });
+    storeFavoriteTrips(ownerId, nextIds);
 
     try {
-      if (wasFavorite) await deleteFavoriteTrip(user.uid, tripId);
-      else await saveFavoriteTrip(user.uid, tripId);
+      if (wasFavorite) await deleteFavoriteTrip(ownerId, tripId);
+      else await saveFavoriteTrip(ownerId, tripId);
       window.dispatchEvent(new Event("favorite-trips-changed"));
     } catch (error) {
-      setFavoriteTripIds(favoriteTripIds);
-      storeFavoriteTrips(user.uid, favoriteTripIds);
-      window.alert("일정 찜을 저장하지 못했습니다. 다시 시도해 주세요.");
+      storeFavoriteTrips(ownerId, favoriteTripIds);
+      if (favoriteMutationRef.current === mutation) {
+        setFavoriteState((current) => current.userId === ownerId ? { userId: ownerId, ids: favoriteTripIds } : current);
+        window.alert("일정 찜을 저장하지 못했습니다. 다시 시도해 주세요.");
+      }
       console.error("일정 찜 상태를 저장하지 못했습니다.", error);
     } finally {
-      favoriteLock.current = false;
+      if (favoriteLock.current === mutation) favoriteLock.current = false;
     }
   };
 
@@ -255,13 +245,7 @@ export default function Search() {
       <section className={styles.searchIntro}>
         <form role="search" onSubmit={submitSearch}>
           <img loading="lazy" src={searchIcon} alt="" aria-hidden="true" />
-          <input
-            type="search"
-            value={query}
-            placeholder="여행지 또는 패키지를 검색하세요."
-            aria-label="여행지 또는 패키지 검색"
-            onChange={(event) => setQuery(event.target.value)}
-          />
+          <SearchQueryInput key={location.key} initialQuery={initialQuery} />
         </form>
         <p>어디로 떠나볼까요?</p>
         <nav className={styles.tabs} aria-label="여행 국가">
@@ -283,7 +267,8 @@ export default function Search() {
       </Link>
 
       <section className={styles.archive} aria-labelledby="package-archive-title">
-        <h2 id="package-archive-title" className="whereToNextTitle">PACKAGE ARCHIVE <b>{cityCards.length}</b></h2>
+        <h2 id="package-archive-title" className="whereToNextTitle">PACKAGE ARCHIVE</h2>
+        <p className={styles.resultCount} role="status">여행지 {cityCards.length}곳 · 일정 {trips.length}개</p>
         <div className={styles.results}>
           {cityCards.map(({ trip, variants }, index) => {
             const image = representativeImages.get(trip.id);
@@ -327,11 +312,13 @@ export default function Search() {
             <header><h2 id="filter-title">FILTER</h2><button type="button" aria-label="필터 닫기" onClick={() => setFilterOpen(false)}>×</button></header>
             <FilterGroup title="여행 지역" values={[["all", "전체"], ["korea", "국내"], ["japan", "일본"], ["china", "중국"]]} selected={country} onSelect={setCountry} />
             <FilterGroup title="여행 기간" values={["all", "1박 2일", "2박 3일", "3박 4일", "4박 5일", "5박 이상"]} selected={filters.duration} onSelect={(value) => selectFilter("duration", value)} allLabel="전체" />
-            <FilterGroup title="동행 유형" values={["all", "혼자", "친구", "연인", "가족"]} selected={filters.companion} onSelect={(value) => selectFilter("companion", filters.companion === value ? "all" : value)} allLabel="전체" hideAll />
+            <p className={styles.filterHelp}>동행과 여행 스타일은 일정에 포함된 장소를 기준으로 추천합니다. 여행 스타일을 여러 개 고르면 모두 포함된 일정을 보여드려요.</p>
+            <FilterGroup title="추천 동행 유형" values={["all", "혼자", "친구", "연인", "가족"]} selected={filters.companion} onSelect={(value) => selectFilter("companion", filters.companion === value ? "all" : value)} allLabel="전체" hideAll />
             <FilterGroup title="여행 스타일 다중 선택" values={["유명 관광지", "맛집", "카페", "현지 문화", "쇼핑", "자연", "액티비티", "휴양"]} selected={filters.styles} onSelect={toggleStyle} multiple />
             <div className={styles.filterGroup}><h3>일정 강도</h3><div className={styles.paceOptions}>{[["slow", "SLOW", "여유로운 일정"], ["balance", "BALANCE", "적당한 일정"], ["full", "FULL", "알찬 일정"]].map(([value, label, copy]) => <button className={filters.pace === value ? styles.selected : ""} type="button" key={value} onClick={() => selectFilter("pace", filters.pace === value ? "all" : value)}><b>{label}</b><span>{copy}</span></button>)}</div></div>
             <FilterGroup title="계절" values={["봄", "여름", "가을", "겨울"]} selected={filters.season} onSelect={(value) => selectFilter("season", filters.season === value ? "all" : value)} />
-            <footer><button type="button" onClick={resetFilters}>초기화</button><button type="button" onClick={() => setFilterOpen(false)}>{trips.length}개의 패키지 보기</button></footer>
+            <p className={styles.filterHelp}>계절은 등록된 계절 정보 또는 일정 시작일을 기준으로 합니다. 날짜·계절 정보가 없는 일정은 계절 선택 시 제외됩니다.</p>
+            <footer><button type="button" onClick={resetFilters}>초기화</button><button type="button" onClick={() => setFilterOpen(false)}>여행지 {cityCards.length}곳 · 일정 {trips.length}개 보기</button></footer>
           </section>
         </div>
       )}
@@ -374,6 +361,12 @@ export default function Search() {
       )}
     </main>
   );
+}
+
+function SearchQueryInput({ initialQuery }) {
+  const [query, setQuery] = useState(initialQuery);
+  return <input name="city" type="search" value={query} onChange={(event) => setQuery(event.target.value)}
+    placeholder="여행지 또는 패키지를 검색하세요." aria-label="여행지 또는 패키지 검색" />;
 }
 
 function FilterGroup({ title, values, selected, onSelect, multiple = false, allLabel = "", hideAll = false }) {

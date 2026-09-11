@@ -85,12 +85,52 @@ $plan-muted: #8b8780;
 }
 .hero {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   height: 510px;
   padding: 68px 40px 34px;
   background: linear-gradient(#b6b6b6, #303030);
   background-position: center;
   background-size: cover;
   color: #eee;
+}
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.hero::before {
+  z-index: -2;
+  background-image: var(--hero-image, none);
+  background-position: center;
+  background-size: cover;
+  filter: none;
+  transition: filter .6s ease;
+}
+.hero::after {
+  z-index: -1;
+  background:
+    linear-gradient(180deg, rgba(0, 0, 0, .15), rgba(0, 0, 0, .7)),
+    linear-gradient(180deg, rgba(235, 240, 242, var(--weather-haze, 0)), transparent 75%);
+}
+.hero[data-weather="clear"]::before {
+  filter: brightness(1.08) saturate(1.03);
+}
+.hero[data-weather="cloudy"]::before {
+  filter: brightness(.92) saturate(.94);
+}
+.hero[data-weather="hazy"] {
+  --weather-haze: .12;
+}
+.hero[data-weather="hazy"]::before {
+  filter: contrast(.92) brightness(1.02) saturate(.94);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero::before {
+    transition: none;
+  }
 }
 .backButton {
   position: absolute;

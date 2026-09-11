@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import tripRoad from "../data/trip_road.json";
 import { useCurrentWeather } from "../hooks/useCurrentWeather";
 import { useAuth } from "../hooks/useAuth";
@@ -22,6 +22,7 @@ import heartIcon from "../assets/icons/heart.svg";
 import addIcon from "../assets/icons/menu_bar/03add.svg";
 import { resolveImageUrl as getImageUrl, useImageFallback } from "../utils/imageUtils";
 import { getPlaceImagePath } from "../utils/placeImageUtils";
+import { getCityPlaces, getRecommendedPlaces, isVisitTime, updateRouteInformation, validateVisitTimes } from "../utils/itineraryEditing";
 
 const categoryNames = {
   airport: "공항",
@@ -72,6 +73,7 @@ const countryExchangeInfo = {
 };
 
 const getTransportIcon = (transport = "") => {
+  if (transport === "이동 정보 미확인") return pinIcon;
   if (/도보/.test(transport)) return walkIcon;
   if (/지하철|전철|열차|신칸센/.test(transport)) return subwayIcon;
   if (/자동차|택시|버스/.test(transport)) return carIcon;
@@ -181,25 +183,7 @@ const resequenceStopTimes = (items) => {
     .map((item) => /^\d{2}:\d{2}$/.test(item.time || "") ? item.time : null)
     .filter(Boolean)
     .sort();
-  let nextMinutes = timeSlots.length
-    ? (() => {
-      const [hour, minute] = timeSlots.at(-1).split(":").map(Number);
-      return hour * 60 + minute + 90;
-    })()
-    : 9 * 60;
-
-  while (timeSlots.length < items.length) {
-    const minutes = Math.min(nextMinutes, 23 * 60 + 30);
-    timeSlots.push(`${String(Math.floor(minutes / 60)).padStart(2, "0")}:${String(minutes % 60).padStart(2, "0")}`);
-    nextMinutes += 90;
-  }
-
-  return items.map((item, index) => ({ ...item, time: timeSlots[index] }));
-};
-
-const getDefaultTravelTime = (placeName = "", offset = 0) => {
-  const seed = [...String(placeName)].reduce((total, character) => total + character.charCodeAt(0), offset * 7);
-  return `자동차 · 약 ${10 + (seed % 16)}분`;
+  return items.map((item, index) => ({ ...item, time: timeSlots[index] || "시간 미정" }));
 };
 
 const createStops = (trip) =>
@@ -212,6 +196,8 @@ const createStops = (trip) =>
         time: item.time || "시간 미정",
         icon: categoryIcons[item.category] || pinIcon,
         name: item.place,
+        city: item.city || trip.city,
+        country: item.country || trip.country,
         place: item.place,
         type: categoryNames[item.category] || item.category,
         note: item.recommendation || "",
@@ -273,6 +259,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [selectedStop, setSelectedStop] = useState(null);
   const [savedPlaces, setSavedPlaces] = useState([]);
+  const [favoriteFeedback, setFavoriteFeedback] = useState("");
   const [favoriteState, setFavoriteState] = useState({ loading: false, saving: false, error: "" });
   const [memoTarget, setMemoTarget] = useState(null);
   const [memoDraft, setMemoDraft] = useState("");
@@ -314,6 +301,10 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const [selectedPlaceTime, setSelectedPlaceTime] = useState("10:00");
   const [isWishlistOpen, setIsWishlistOpen] = useState(false);
   const [wishlistCategory, setWishlistCategory] = useState("all");
+  const [wishlistCity, setWishlistCity] = useState("current");
+  const [wishlistTimes, setWishlistTimes] = useState({});
+  const [placeAdditionError, setPlaceAdditionError] = useState("");
+  const [wishlistAdditionError, setWishlistAdditionError] = useState("");
   const [wishlistSelections, setWishlistSelections] = useState([]);
   const [addedStopIds, setAddedStopIds] = useState([]);
   const stopElements = useRef(new Map());
@@ -357,11 +348,9 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     defaultAmount: 500,
   };
   const exchangeRateLink = `/destination?currency=${encodeURIComponent(exchangeInfo.code)}`;
-  const recommendationPlaces = selectedTrip.days
-    .flatMap((day) => day.items)
-    .filter((item) => item.type === "place" && item.image && !stops.some((stop) => stop.name === item.place))
-    .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
-    .slice(0, 4);
+  const cityPlaces = useMemo(() => getCityPlaces(tripRoad.trips, selectedTrip)
+    .map((item) => ({ ...item, image: getPlaceImagePath(item, item.city || selectedTrip.city) })), [selectedTrip]);
+  const recommendationPlaces = getRecommendedPlaces(cityPlaces, stopsByDay[activeDay] || [], 4, stopsByDay);
   const suggestedTitles = [
     `맛집 따라 ${selectedTrip.city}`,
     `카페와 골목을 걷는 ${selectedTrip.city} 여행`,
@@ -385,9 +374,11 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     return () => { active = false; };
   }, [user]);
 
-  const favoriteKey = (place) => encodeURIComponent(`${selectedTrip.city}::${place.name || place.place}`);
+  const favoriteKey = (place) => encodeURIComponent(`${place.city || selectedTrip.city}::${place.name || place.place}`);
+  const isPlaceSaved = (place) => savedPlaces.some((item) => item.id === favoriteKey(place) || item.key === favoriteKey(place));
 
   const toggleFavorite = async (place) => {
+    setFavoriteFeedback("");
     if (!user || favoriteState.loading || favoriteState.saving) {
       if (!user) setFavoriteState((current) => ({ ...current, error: "로그인 후 장소를 찜할 수 있습니다." }));
       return;
@@ -399,12 +390,13 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       if (existing) {
         await deleteFavoritePlace(user.uid, existing.id || key);
         setSavedPlaces((current) => current.filter((item) => item.id !== (existing.id || key)));
+        setFavoriteFeedback(`${place.name || place.place}의 찜을 해제했어요.`);
       } else {
         const favorite = await saveFavoritePlace(user.uid, {
           key,
           name: place.name || place.place,
-          city: selectedTrip.city,
-          country: selectedTrip.country,
+          city: place.city || selectedTrip.city,
+          country: place.country || selectedTrip.country,
           category: place.category || "attraction",
           recommendation: place.recommendation || place.note || "",
           image: place.imagePath || place.image || "",
@@ -412,6 +404,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           longitude: place.longitude ?? null,
         });
         setSavedPlaces((current) => [...current, favorite]);
+        setFavoriteFeedback(`${place.name || place.place}을(를) 찜했어요. 다른 날짜의 ‘찜한 장소 추가’에서 일정에 담을 수 있어요.`);
       }
       window.dispatchEvent(new Event("favorite-places-changed"));
       setFavoriteState({ loading: false, saving: false, error: "" });
@@ -421,7 +414,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   };
 
   const removeStop = (id) => setStopsByDay((current) => current.map((dayStops, index) =>
-    index === activeDay ? dayStops.filter((stop) => stop.id !== id) : dayStops,
+    index === activeDay ? updateRouteInformation(dayStops, dayStops.filter((stop) => stop.id !== id)) : dayStops,
   ));
 
   const buildPlanPayload = () => {
@@ -437,6 +430,8 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           type: "place",
           time: stop.time,
           place: stop.name,
+          city: stop.city || selectedTrip.city,
+          country: stop.country || selectedTrip.country,
           category: stop.category,
           recommendation: stop.note || stop.recommendation || "",
           image: original.image || stop.imagePath || null,
@@ -596,7 +591,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       const nextStops = [...dayStops];
       const [movedStop] = nextStops.splice(sourceIndex, 1);
       nextStops.splice(targetIndex, 0, movedStop);
-      return resequenceStopTimes(nextStops);
+      return updateRouteInformation(dayStops, resequenceStopTimes(nextStops));
     }));
   };
 
@@ -644,18 +639,16 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         if (dayIndex !== flightArrivalDayIndex) return dayStops;
         const firstDestinationIndex = dayStops.findIndex((stop) => stop.category !== "airport");
         if (firstDestinationIndex < 0) return dayStops;
-        return sortStopsByTime(dayStops.map((stop, stopIndex) => stopIndex === firstDestinationIndex
+        return updateRouteInformation(dayStops, sortStopsByTime(dayStops.map((stop, stopIndex) => stopIndex === firstDestinationIndex
           ? { ...stop, time: adjustedArrivalTime }
-          : stop));
+          : stop)));
       }));
     }
     setFlightError("");
     setIsFlightOpen(false);
   };
 
-  const placeCandidates = selectedTrip.days
-    .flatMap((day) => day.items)
-    .filter((item) => item.type === "place")
+  const placeCandidates = cityPlaces
     .filter((item, index, items) => items.findIndex((candidate) => candidate.place === item.place) === index)
     .filter((item) => !stops.some((stop) => stop.name === item.place))
     .filter((item) => placeCategory === "all" || item.category === placeCategory)
@@ -666,17 +659,26 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
 
   const addSelectedPlace = () => {
     if (!selectedCandidate || !selectedPlaceTime) return;
+    if (!placeCandidates.some((place) => place.place === selectedCandidate.place)) {
+      setSelectedCandidate(null);
+      setPlaceAdditionError("검색 결과에서 장소를 다시 선택해 주세요.");
+      return;
+    }
+    const timeError = validateVisitTimes(stops, [{ time: selectedPlaceTime }]);
+    if (timeError) { setPlaceAdditionError(timeError); return; }
     const addedId = `added-${Date.now()}`;
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? resequenceStopTimes(sortStopsByTime([...dayStops, {
+      ? updateRouteInformation(dayStops, sortStopsByTime([...dayStops, {
         id: addedId,
         time: selectedPlaceTime,
         icon: categoryIcons[selectedCandidate.category] || pinIcon,
         name: selectedCandidate.place,
+        city: selectedCandidate.city || selectedTrip.city,
+        country: selectedCandidate.country || selectedTrip.country,
         type: categoryNames[selectedCandidate.category] || selectedCandidate.category,
         note: selectedCandidate.recommendation || "",
-        travel: getDefaultTravelTime(selectedCandidate.place),
-        image: getImageUrl(selectedCandidate.image),
+        travel: "이동 정보 미확인",
+        image: getImageUrl(selectedCandidate.image, ""),
         imagePath: selectedCandidate.image || "",
         category: selectedCandidate.category,
         recommendation: selectedCandidate.recommendation || "",
@@ -692,31 +694,21 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   };
 
   const addRecommendedPlace = (place) => {
-    setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? resequenceStopTimes(sortStopsByTime([...dayStops, {
-        id: `recommended-${Date.now()}`,
-        time: "시간 미정",
-        icon: categoryIcons[place.category] || pinIcon,
-        name: place.place,
-        type: categoryNames[place.category] || place.category,
-        note: place.recommendation || "",
-        travel: getDefaultTravelTime(place.place),
-        image: getImageUrl(place.image),
-        imagePath: place.image || "",
-        category: place.category,
-        recommendation: place.recommendation || "",
-        latitude: place.latitude,
-        longitude: place.longitude,
-      }]))
-      : dayStops));
+    setPlaceQuery("");
+    setPlaceCategory("all");
+    setSelectedCandidate(place);
+    setSelectedPlaceTime("");
+    setPlaceAdditionError("");
+    setIsPlaceAddOpen(true);
   };
 
   const availableWishlistPlaces = savedPlaces
     .map((item) => ({ ...item, place: item.name, image: item.image || "" }))
-    .filter((item) => !stops.some((stop) => stop.name === item.place));
+    .filter((item) => !stops.some((stop) => stop.name === item.place && (stop.city || selectedTrip.city) === item.city));
   const wishlistPlaces = availableWishlistPlaces
+    .filter((item) => wishlistCity === "all" || String(selectedTrip.city || "").split("·").map((city) => city.trim()).includes(item.city))
     .filter((item) => wishlistCategory === "all" || item.category === wishlistCategory);
-  const selectedWishlistPlaces = availableWishlistPlaces.filter((place) => wishlistSelections.includes(place.id));
+  const selectedWishlistPlaces = wishlistPlaces.filter((place) => wishlistSelections.includes(place.id));
 
   const toggleWishlistSelection = (place) => {
     setWishlistSelections((current) => current.includes(place.id)
@@ -733,6 +725,9 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
     }
 
     setWishlistCategory("all");
+    setWishlistCity("current");
+    setWishlistTimes({});
+    setWishlistAdditionError("");
     setWishlistSelections([]);
     setIsWishlistOpen(true);
     setFavoriteState((current) => ({ ...current, loading: true, error: "" }));
@@ -749,16 +744,20 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
   const addWishlistPlaces = () => {
     const selectedItems = selectedWishlistPlaces;
     if (!selectedItems.length) return;
+    const timeError = validateVisitTimes(stops, selectedItems.map((place) => ({ time: wishlistTimes[place.id] })));
+    if (timeError) { setWishlistAdditionError(timeError); return; }
     const addedIds = selectedItems.map((_, index) => `wishlist-${Date.now()}-${index}`);
     setStopsByDay((current) => current.map((dayStops, index) => index === activeDay
-      ? resequenceStopTimes(sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
+      ? updateRouteInformation(dayStops, sortStopsByTime([...dayStops, ...selectedItems.map((place, placeIndex) => ({
         id: addedIds[placeIndex],
-        time: "시간 미정",
+        time: wishlistTimes[place.id],
         icon: categoryIcons[place.category] || pinIcon,
         name: place.place,
+        city: place.city || selectedTrip.city,
+        country: place.country || selectedTrip.country,
         type: categoryNames[place.category] || place.category,
         note: place.recommendation || "",
-        travel: getDefaultTravelTime(place.place, placeIndex),
+        travel: "이동 정보 미확인",
         image: getImageUrl(place.image),
         imagePath: place.image || "",
         category: place.category,
@@ -901,7 +900,14 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               >
                 <time>{stop.time}</time>
                 <span className={styles.placeIcon}><img loading="lazy" src={stop.icon} alt="" /></span>
-                <div className={styles.placeCopy}><strong>{stop.name}</strong><small>{stop.type}</small><button type="button" onClick={() => setSelectedStop(stop)}>자세히 보기 &gt;</button></div>
+                <div className={styles.placeCopy}>
+                  <strong>{stop.name}</strong><small>{stop.type}</small>
+                  <button type="button" onClick={() => setSelectedStop(stop)}>자세히 보기 &gt;</button>
+                  <button className={styles.placeSaveButton} type="button" disabled={favoriteState.loading || favoriteState.saving}
+                    aria-label={`${stop.name} ${isPlaceSaved(stop) ? "찜 해제" : "찜하기"}`} aria-pressed={isPlaceSaved(stop)} onClick={() => toggleFavorite(stop)}>
+                    {isPlaceSaved(stop) ? "♥ 찜한 장소" : "♡ 찜하기"}
+                  </button>
+                </div>
                 <span
                   className={styles.drag}
                   role="button"
@@ -964,7 +970,11 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           <button
             type="button"
             onClick={() => {
-              setSelectedPlaceTime("10:00");
+              setSelectedPlaceTime("");
+              setSelectedCandidate(null);
+              setPlaceQuery("");
+              setPlaceCategory("all");
+              setPlaceAdditionError("");
               setIsPlaceAddOpen(true);
             }}
           >
@@ -978,9 +988,14 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             찜한 장소 추가
           </button>
         </div>
+        <div className={styles.favoriteGuide}>
+          <p>장소 카드의 ♡ 찜하기로 저장해 두세요. ‘찜한 장소 추가’에서 선택하면 현재 날짜의 일정에 추가할 수 있어요.</p>
+          {user ? <Link to="/favorite-places" target="_blank" rel="noopener noreferrer">내 찜한 장소 전체 보기 ↗ <span>(새 탭)</span></Link> : <p>찜한 장소는 로그인한 계정에 저장돼요.</p>}
+          {!selectedStop && <p role="status">{favoriteFeedback}</p>}
+          {!selectedStop && favoriteState.error && <p role="alert">{favoriteState.error}</p>}
+        </div>
       </section>
 
-      {recommendationPlaces.length > 0 && (
         <section
           className={styles.recommendations}
           aria-labelledby="recommendation-title"
@@ -995,47 +1010,30 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             </h2>
 
             <p>
-              현재 일정과 동선을 기준으로
-              <br />
-              함께 들르기 좋은 장소를 추천해드려요.
+              {selectedTrip.city} 여행의 {activeDay + 1}일차에 둘러볼 만한 장소예요.
+              추가할 장소의 방문 시간을 선택해 주세요.
             </p>
 
+            {recommendationPlaces.length === 0 && (
+              <p role="status">현재 날짜에 추가로 추천할 장소가 없어요. 다른 날짜를 선택하거나 찜한 장소를 추가해 보세요.</p>
+            )}
             <div className={styles.recommendationGrid}>
               {recommendationPlaces.map((place) => (
                 <article key={place.place}>
                   <span className={styles.recommendationImage}>
-                    <img loading="lazy"
-                      src={getImageUrl(place.image)}
-                      alt=""
-                      onError={useImageFallback}
-                    />
+                    <PlaceCandidateImage key={place.image || place.place} place={place} />
                   </span>
 
                   <small>
                     {categoryNames[place.category] || place.category}
+                    {place.scheduledDays.length > 0 && ` · ${place.scheduledDays.map((day) => `${day}일차`).join(", ")}에 포함`}
                   </small>
 
-                  <strong>{place.place}</strong>
-
-                  <p>
-                    {place.recommendation ||
-                      `${selectedTrip.city}에서 함께 둘러보기 좋은 장소`}
-                  </p>
-
-                  <dl>
-                    <div>
-                      <dt>현재 위치에서</dt>
-                      <dd>약 1 km</dd>
-                    </div>
-
-                    <div>
-                      <dt>예상 비용</dt>
-                      <dd>약 ₩7,000</dd>
-                    </div>
-                  </dl>
+                  <h3>{place.place}</h3>
 
                   <button
                     type="button"
+                    aria-label={`${place.place}, ${activeDay + 1}일차에 추가할 시간 선택`}
                     onClick={() => addRecommendedPlace(place)}
                   >
                     + 일정에 추가
@@ -1045,7 +1043,6 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             </div>
           </div>
         </section>
-      )}
 
       <div className={styles.saveActions}>
         {hasUnsavedChanges && !draftLoading && <p className={styles.unsavedNotice} role="status">저장되지 않은 변경 사항이 있습니다.</p>}
@@ -1075,7 +1072,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
         <div className={styles.placeAdder} role="presentation" onMouseDown={() => setIsPlaceAddOpen(false)}>
           <section className={styles.placeAdderInner} role="dialog" aria-modal="true" aria-labelledby="place-adder-title" onMouseDown={(event) => event.stopPropagation()}>
             <header><button type="button" aria-label="뒤로 가기" onClick={() => setIsPlaceAddOpen(false)}><img loading="lazy" src={backIcon} alt="" /></button><h2 id="place-adder-title">장소 추가하기</h2><button type="button" aria-label="장소 추가 닫기" onClick={() => setIsPlaceAddOpen(false)}><img loading="lazy" src={closeIcon} alt="" /></button></header>
-            <p className={styles.adderDescription}>일정에 추가할 장소와 방문 시간을 설정하세요 · {selectedTrip.city}</p>
+            <p className={styles.adderDescription}>{selectedTrip.city}의 등록된 장소에서 검색하고 방문 시간을 선택하세요. 현재 일정 밖의 장소도 찾을 수 있어요.</p>
             <p className={styles.additionDate}>{activeDay + 1}일차 · {additionDateLabel}에 추가</p>
             <section className={styles.placeMapArea}>
               <PlaceMap
@@ -1084,17 +1081,17 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                 selectedPlace={selectedCandidate}
                 onSelect={setSelectedCandidate}
               />
-              <span className={styles.mapDay}>⌖ DAY {String(activeDay + 1).padStart(2, "0")} 기준 주변</span>
+              <span className={styles.mapDay}>⌖ {selectedTrip.city} 등록 장소</span>
               <div className={styles.mapFilters}>
                 {[["all", "전체"], ["attraction", "관광지"], ["restaurant", "맛집"], ["hotel", "숙소"], ["station", "교통"]].map(([value, label]) => (
-                  <button className={placeCategory === value ? styles.mapFilterActive : ""} type="button" key={value} onClick={() => setPlaceCategory(value)}>{label}</button>
+                  <button className={placeCategory === value ? styles.mapFilterActive : ""} type="button" key={value} onClick={() => { setPlaceCategory(value); setSelectedCandidate(null); setPlaceAdditionError(""); }}>{label}</button>
                 ))}
               </div>
             </section>
-            <label className={styles.placeSearch}><span>⌕</span><input value={placeQuery} onChange={(event) => setPlaceQuery(event.target.value)} placeholder="관광지, 맛집, 쇼핑 검색하기" /></label>
+            <label className={styles.placeSearch}><span>⌕</span><input value={placeQuery} onChange={(event) => { setPlaceQuery(event.target.value); setSelectedCandidate(null); setPlaceAdditionError(""); }} placeholder="관광지, 맛집, 쇼핑 검색하기" /></label>
             <label className={styles.placeTime}>
               <span>방문 시간</span>
-              <input type="time" value={selectedPlaceTime} onChange={(event) => setSelectedPlaceTime(event.target.value)} required />
+              <input type="time" value={selectedPlaceTime} onChange={(event) => { setSelectedPlaceTime(event.target.value); setPlaceAdditionError(""); }} required />
             </label>
             <section className={styles.placeResults}>
               <h3>검색 결과</h3>
@@ -1103,7 +1100,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   const selected = selectedCandidate?.place === place.place;
                   return <button className={selected ? styles.placeSelected : ""} type="button" aria-pressed={selected} key={place.place} onClick={() => setSelectedCandidate(place)}>
                     <span className={styles.resultNumber}>{index + 1}</span>
-                    <span className={styles.resultImage}>{getImageUrl(place.image) && <img loading="lazy" src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
+                    <span className={styles.resultImage}><PlaceCandidateImage key={place.image || place.place} place={place} /></span>
                     <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
                     {selected && <span className={styles.selectedCheck}>✓</span>}
                   </button>;
@@ -1115,8 +1112,9 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
               <div className={styles.selectionSummary} aria-live="polite" aria-atomic="true">
                 <strong>{selectedCandidate?.place || "장소를 선택해 주세요"}</strong>
                 <small>{selectedCandidate ? `방문 시간 ${selectedPlaceTime || "선택 필요"}` : "선택한 장소 0곳"}</small>
+                {placeAdditionError && <p className={styles.additionError} role="alert">{placeAdditionError}</p>}
               </div>
-              <button type="button" disabled={!selectedCandidate || !selectedPlaceTime} onClick={addSelectedPlace}>1곳 추가하기</button>
+              <button type="button" disabled={!selectedCandidate || !isVisitTime(selectedPlaceTime)} onClick={addSelectedPlace}>1곳 추가하기</button>
             </footer>
           </section>
         </div>
@@ -1126,10 +1124,14 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
           <section className={styles.wishlistAdderInner} role="dialog" aria-modal="true" aria-labelledby="wishlist-adder-title" onMouseDown={(event) => event.stopPropagation()}>
             <header>
               <button type="button" aria-label="뒤로 가기" onClick={() => setIsWishlistOpen(false)}><img loading="lazy" src={backIcon} alt="" /></button>
-              <h2 id="wishlist-adder-title">찜한 장소 불러오기</h2>
+              <h2 id="wishlist-adder-title">찜한 장소 추가</h2>
               <button type="button" aria-label="찜한 장소 닫기" onClick={() => setIsWishlistOpen(false)}><img loading="lazy" src={closeIcon} alt="" /></button>
             </header>
-            <p className={styles.adderDescription}>지도에 저장해둔 장소를 일정에 담아보세요</p>
+            <div className={styles.favoriteGuide}>
+              <p>장소 카드나 상세 화면에서 ♡ 찜한 장소를 불러왔어요. 원하는 장소를 선택한 뒤 아래 ‘추가하기’를 눌러 주세요.</p>
+              <p>현재 날짜의 일정에 이미 들어간 장소는 제외됩니다. 추가해도 찜 목록에는 그대로 남아요.</p>
+              <Link to="/favorite-places" target="_blank" rel="noopener noreferrer">내 찜한 장소 전체 보기 ↗ <span>(새 탭)</span></Link>
+            </div>
             <p className={styles.additionDate}>{activeDay + 1}일차 · {additionDateLabel}에 추가</p>
             <section className={styles.wishlistMapArea}>
               <PlaceMap
@@ -1138,18 +1140,30 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                 selectedPlace={wishlistPlaces.find((place) => wishlistSelections.includes(place.id)) || null}
                 onSelect={toggleWishlistSelection}
               />
-              <span className={styles.savedCount}>♡ 저장된 장소 {wishlistPlaces.length}곳</span>
+              <span className={styles.savedCount}>♡ 전체 {savedPlaces.length}곳 · 현재 표시 {wishlistPlaces.length}곳</span>
             </section>
             <div className={styles.wishlistFilters}>
+              <button className={wishlistCity === "current" ? styles.wishlistFilterActive : ""} type="button" aria-pressed={wishlistCity === "current"}
+                onClick={() => { setWishlistCity("current"); setWishlistSelections([]); setWishlistAdditionError(""); }}>{selectedTrip.city}</button>
+              <button className={wishlistCity === "all" ? styles.wishlistFilterActive : ""} type="button" aria-pressed={wishlistCity === "all"}
+                onClick={() => { setWishlistCity("all"); setWishlistSelections([]); setWishlistAdditionError(""); }}>전체 도시</button>
+            </div>
+            <p className={styles.adderDescription}>선택한 장소마다 방문 시간을 지정해 주세요. 같은 시간의 일정은 추가되지 않습니다.</p>
+            <div className={styles.wishlistFilters}>
               {[["all", "전체"], ["attraction", "관광지"], ["restaurant", "맛집"], ["hotel", "숙소"], ["station", "교통"]].map(([value, label]) => (
-                <button className={wishlistCategory === value ? styles.wishlistFilterActive : ""} type="button" key={value} onClick={() => setWishlistCategory(value)}>{label}</button>
+                <button className={wishlistCategory === value ? styles.wishlistFilterActive : ""} type="button" key={value} onClick={() => { setWishlistCategory(value); setWishlistSelections([]); setWishlistAdditionError(""); }}>{label}</button>
               ))}
             </div>
             <section className={styles.wishlistResults}>
               <h3>검색 결과</h3>
               {favoriteState.loading && <p className={styles.noPlaces}>찜한 장소를 불러오는 중…</p>}
-              {!favoriteState.loading && favoriteState.error && <p className={styles.noPlaces} role="alert">{favoriteState.error}</p>}
-              {!favoriteState.loading && !favoriteState.error && !wishlistPlaces.length && <p className={styles.noPlaces}>일정에 추가할 찜한 장소가 없습니다.</p>}
+              {!favoriteState.loading && favoriteState.error && <div className={styles.favoriteGuide}><p role="alert">{favoriteState.error}</p><button type="button" onClick={openWishlist}>다시 불러오기</button></div>}
+              {!favoriteState.loading && !favoriteState.error && !wishlistPlaces.length && (
+                <div className={styles.favoriteGuide}>
+                  <p>{!savedPlaces.length ? "아직 찜한 장소가 없어요. 일정의 장소 카드에서 ♡ 찜하기를 눌러 먼저 저장해 주세요." : !availableWishlistPlaces.length ? "찜한 장소가 모두 현재 날짜의 일정에 들어 있어요. 다른 날짜를 선택하면 다시 불러올 수 있어요." : "선택한 도시와 카테고리에 추가할 장소가 없어요. 전체 목록을 확인해 주세요."}</p>
+                  {availableWishlistPlaces.length ? <button type="button" onClick={() => { setWishlistCategory("all"); setWishlistCity("all"); setWishlistSelections([]); }}>전체 찜한 장소 보기</button> : <button type="button" onClick={() => setIsWishlistOpen(false)}>일정으로 돌아가기</button>}
+                </div>
+              )}
               <div>
                 {!favoriteState.loading && wishlistPlaces.map((place, index) => {
                   const selected = wishlistSelections.includes(place.id);
@@ -1157,11 +1171,18 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                     <article key={place.id}>
                       <span className={styles.resultNumber}>{index + 1}</span>
                       <span className={styles.resultImage}>{getImageUrl(place.image) && <img loading="lazy" src={getImageUrl(place.image)} alt="" onError={useImageFallback} />}</span>
-                      <span className={styles.resultCopy}><strong>{place.place}</strong><small>{categoryNames[place.category] || place.category}</small><b>자세히 보기 &gt;</b><em>{place.recommendation || `${selectedTrip.city} 추천 장소`}</em></span>
+                      <span className={styles.resultCopy}><strong>{place.place}</strong><small>{place.city || "도시 미정"} · {categoryNames[place.category] || place.category}</small><em>{place.recommendation || "찜한 장소"}</em></span>
                       <label className={styles.wishlistCheckbox}>
                         <input type="checkbox" checked={selected} onChange={() => toggleWishlistSelection(place)} aria-label={`${place.place} 선택`} />
                         <span>{selected ? "선택됨" : "선택"}</span>
                       </label>
+                      {selected && <label className={styles.wishlistVisitTime}>
+                        <span>{place.place} 방문 시간</span>
+                        <input type="time" value={wishlistTimes[place.id] || ""} onChange={(event) => {
+                          setWishlistTimes((current) => ({ ...current, [place.id]: event.target.value }));
+                          setWishlistAdditionError("");
+                        }} />
+                      </label>}
                     </article>
                   );
                 })}
@@ -1170,6 +1191,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             <footer className={styles.wishlistFooter}>
               <div className={styles.selectionSummary}>
                 <strong role="status">선택한 장소 {selectedWishlistPlaces.length}곳</strong>
+                {wishlistAdditionError && <p className={styles.additionError} role="alert">{wishlistAdditionError}</p>}
                 {selectedWishlistPlaces.length > 0 ? (
                   <ul className={styles.selectedPlaceList} aria-label="추가할 찜한 장소">
                     {selectedWishlistPlaces.map((place) => <li key={place.id}>
@@ -1179,7 +1201,7 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
                   </ul>
                 ) : <small>추가할 장소를 선택해 주세요</small>}
               </div>
-              <button type="button" disabled={!selectedWishlistPlaces.length} onClick={addWishlistPlaces}>{selectedWishlistPlaces.length}곳 추가하기</button>
+              <button type="button" disabled={!selectedWishlistPlaces.length || selectedWishlistPlaces.some((place) => !isVisitTime(wishlistTimes[place.id]))} onClick={addWishlistPlaces}>{selectedWishlistPlaces.length}곳 추가하기</button>
             </footer>
           </section>
         </div>
@@ -1339,14 +1361,19 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
             </dl>
           </section>
           <div className={styles.detailActions}>
-            <button type="button" onClick={() => setSelectedStop(null)}>일정 추가</button>
+            <button type="button" onClick={() => setSelectedStop(null)}>일정으로 돌아가기</button>
             <button
               type="button"
               disabled={favoriteState.loading || favoriteState.saving}
               onClick={() => toggleFavorite(selectedStop)}
+              aria-pressed={isPlaceSaved(selectedStop)}
             >
-              {savedPlaces.some((place) => place.id === favoriteKey(selectedStop) || place.key === favoriteKey(selectedStop)) ? "찜 취소" : "장소 찜하기"}
+              {favoriteState.saving ? "저장 중…" : isPlaceSaved(selectedStop) ? "♥ 찜 해제" : "♡ 장소 찜하기"}
             </button>
+          </div>
+          <div className={styles.favoriteGuide}>
+            <p>찜한 장소는 계정에 저장되며, ‘찜한 장소 추가’에서 다른 날짜의 일정에 추가할 수 있어요.</p>
+            <p role="status">{favoriteFeedback}</p>
           </div>
           {favoriteState.error && <p className={styles.favoriteError} role="alert">{favoriteState.error}</p>}
         </section>
@@ -1354,4 +1381,12 @@ export default function TravelForm({ onSubmit, onDraftSave, onDirtyChange, loadi
       )}
     </form>
   );
+}
+
+function PlaceCandidateImage({ place }) {
+  const [failed, setFailed] = useState(false);
+  const image = getImageUrl(place.image, "");
+  return image && !failed
+    ? <img loading="lazy" src={image} alt={place.place} onError={() => setFailed(true)} />
+    : <span className={styles.resultImageEmpty}>사진 준비 중</span>;
 }
