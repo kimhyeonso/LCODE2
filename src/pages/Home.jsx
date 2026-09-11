@@ -548,8 +548,18 @@ export default function Home() {
         <HomeExchange />
       </section>
 
+      <section className={`${styles.section} ${styles.filmSection}`} aria-labelledby="home-film-title">
+        <SectionLabel number="03">L:CODE ON YOUTUBE</SectionLabel>
+        <div className={styles.filmHeading}>
+          <div>
+            <h2 id="home-film-title">화면 너머, 여행의 시작</h2>
+          </div>
+        </div>
+        <HomeVideoCarousel />
+      </section>
+
       <section className={`${styles.section} ${styles.pickSection}`}>
-        <SectionLabel number="03">EDITOR&apos;S PICK</SectionLabel>
+        <SectionLabel number="04">EDITOR&apos;S PICK</SectionLabel>
         <div className={styles.rowTitle}>
           <p>추천하는 패키지</p>
           <TextLink to="/desrinationAll">VIEW ALL</TextLink>
@@ -598,7 +608,7 @@ export default function Home() {
       </section>
 
       <section className={`${styles.section} ${styles.destinationSection}`}>
-        <SectionLabel number="04">DESTINATIONS</SectionLabel>
+        <SectionLabel number="05">DESTINATIONS</SectionLabel>
         <h2 className={`${styles.scriptTitle} whereToNextTitle`}>Where to Next?</h2>
         <div className={styles.destinationHero}>
           <img src={destinationBanner} alt="" loading="lazy" className={styles.bgFillImage} />
@@ -624,7 +634,7 @@ export default function Home() {
       </section>
 
       <section className={styles.section}>
-        <SectionLabel number="05">TRAVEL SHOPPING</SectionLabel>
+        <SectionLabel number="06">TRAVEL SHOPPING</SectionLabel>
 
         <div className={styles.rowTitle}>
           <p>여행 필수템</p>
@@ -731,17 +741,6 @@ export default function Home() {
         <div className={styles.shopDragCursor} ref={shopCursorRef} aria-hidden="true">
           DRAG
         </div>
-      </section>
-
-      <section className={`${styles.section} ${styles.filmSection}`} aria-labelledby="home-film-title">
-        <SectionLabel number="06">TRAVEL FILM</SectionLabel>
-        <div className={styles.filmHeading}>
-          <div>
-            <span className={styles.filmEyebrow}>L:CODE ON YOUTUBE</span>
-            <h2 id="home-film-title">화면 너머, 여행의 시작</h2>
-          </div>
-        </div>
-        <HomeVideoCarousel />
       </section>
 
       <section className={`${styles.section} ${styles.journal}`}>
