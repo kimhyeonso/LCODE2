@@ -375,7 +375,7 @@
 }
 
 .stopGroup {
-  margin-bottom: 13px;
+  margin-bottom: 18px;
   transition:
     transform 220ms cubic-bezier(0.2, 0.8, 0.2, 1),
     opacity 180ms ease,
@@ -402,9 +402,11 @@
 
 .stopCard {
   display: grid;
-  grid-template-columns: 46px 42px 1fr 20px 20px;
+  grid-template-columns: 42px 34px minmax(0, 1fr) 28px 24px;
+  column-gap: 6px;
   align-items: center;
   min-height: 104px;
+  padding: 16px 12px;
   background: #fafafa;
 }
 
@@ -431,7 +433,9 @@
 
 .placeCopy {
   min-width: 0;
-  padding-left: 12px;
+  padding-inline: 4px;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
 }
 
 .placeCopy strong,
@@ -455,6 +459,70 @@
   margin-top: 8px;
   padding: 0;
   font-size: 14px;
+}
+.placeCopy .placeSaveButton {
+  display: block;
+  min-height: 36px;
+  margin-top: 4px;
+  padding: 6px 10px;
+  color: #59675e;
+  font-size: 13px;
+}
+.placeSaveButton[aria-pressed="true"] {
+  font-weight: 600;
+}
+.placeSaveButton:disabled {
+  opacity: .5;
+  cursor: wait;
+}
+.favoriteGuide {
+  margin: 16px 0;
+  padding: 16px 18px;
+  border: 1px solid #d9d3c8;
+  background: #f6f3ec;
+  color: #575a53;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.favoriteGuide p {
+  margin: 0;
+}
+.favoriteGuide p + p {
+  margin-top: 6px;
+}
+.favoriteGuide p:empty {
+  display: none;
+}
+.favoriteGuide a,
+.favoriteGuide button {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 0;
+  border: 0;
+  background: transparent;
+  color: #344139;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.favoriteGuide a span {
+  font-weight: 400;
+}
+.favoriteGuide [role="status"] {
+  margin-top: 8px;
+  color: #344139;
+  font-weight: 600;
+}
+.favoriteGuide [role="alert"] {
+  margin-top: 8px;
+  color: #9c3f32;
+}
+.placeSaveButton:focus-visible,
+.favoriteGuide a:focus-visible,
+.favoriteGuide button:focus-visible {
+  outline: 2px solid #59675e;
+  outline-offset: 3px;
 }
 
 .drag {
@@ -504,7 +572,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 12px;
-  padding: 12px 14px;
+  padding: 14px 16px;
   background: #f1f1f1;
   color: #777;
   font-size: 14px;
@@ -586,7 +654,7 @@
 .addActions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: 12px;
   margin-top: 32px;
 }
 
@@ -611,102 +679,129 @@
 
 .recommendations {
   width: 100%;
-  margin: 42px 0 24px;
-  padding: 50px 0 40px;
-  border-top: 1px solid #e2e2e2;
+  min-width: 0;
+  margin: 40px 0 24px;
+  padding: 32px 0 20px;
+  border-top: 1px solid #e2ded6;
 }
-
 .recommendationInner {
   width: 100%;
   margin: 0 auto;
   padding: 0 16px;
 }
-.recommendations > h2 {
-  margin: 10px 0 8px;
-  font-size: 27px;
-  font-weight: 500;
-  letter-spacing: -1.2px;
+.recommendationInner > .sectionEyebrow {
+  margin: 0 0 10px;
+  font-size: 11px;
+  line-height: 1.7;
+  letter-spacing: .04em;
 }
-.recommendations > p:not(.sectionEyebrow) {
-  margin: 0 0 22px;
-  color: #aaa;
-  font-size: 14px;
-  line-height: 1.65;
+.recommendationInner > h2 {
+  margin: 0 0 10px;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -.04em;
+}
+.recommendationInner > p:not(.sectionEyebrow) {
+  margin: 0 0 20px;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.7;
 }
 .recommendationGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1px;
+  gap: 16px;
 }
 .recommendationGrid article {
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
   min-width: 0;
-  padding-bottom: 12px;
+  overflow: hidden;
+  padding: 0 0 16px;
+  border: 1px solid #e2ded6;
+  background: #fcfbf8;
 }
 .recommendationImage {
   display: block;
-  aspect-ratio: 1 / 1;
-  height: auto;
-  margin-bottom: 12px;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin: 0 0 14px;
   overflow: hidden;
-  background: #ddd;
+  background: #efede8;
 }
 .recommendationImage img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-.recommendationGrid small,
-.recommendationGrid strong,
-.recommendationGrid article > p,
-.recommendationGrid dl {
-  margin-inline: 10px;
-}
 .recommendationGrid small {
-  display: block;
-  color: #aaa;
-  font-size: 13px;
-  letter-spacing: 1.5px;
-}
-.recommendationGrid strong {
-  display: block;
-  margin-top: 6px;
-  overflow: hidden;
-  font-size: 18px;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-.recommendationGrid article > p {
-  height: 30px;
-  margin-top: 6px;
-  overflow: hidden;
-  color: #999;
-  font-size: 14px;
+  margin: 0 16px;
+  color: #73776c;
+  font-size: 12px;
   line-height: 1.5;
 }
-.recommendationGrid dl {
-  margin-top: 12px;
-  padding-top: 9px;
-  border-top: 1px solid #eee;
-}
-.recommendationGrid dl div {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 4px;
-  color: #aaa;
-  font-size: 14px;
-}
-.recommendationGrid dd {
-  margin: 0;
-  color: #555;
+.recommendationGrid h3 {
+  min-width: 0;
+  margin: 6px 16px 0;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
 }
 .recommendationGrid article > button {
-  width: calc(100% - 20px);
-  height: 52px;
-  margin: 12px 10px 0;
+  width: calc(100% - 32px);
+  min-height: 46px;
+  margin: 18px 16px 0;
+  padding: 12px;
   border: 0;
   background: #111;
   color: #fff;
-  font-size: 14px;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.recommendationGrid article > button:focus-visible {
+  outline: 2px solid #657266;
+  outline-offset: 3px;
+}
+@media (max-width: 640px) {
+  .recommendations {
+    margin: 32px 0 24px;
+    padding: 28px 0 12px;
+  }
+  .recommendationInner > h2 { font-size: 26px; }
+  .recommendationGrid { grid-template-columns: minmax(0, 1fr); }
+  .recommendationGrid article {
+    grid-template-columns: clamp(80px, 23vw, 112px) minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: 14px;
+    padding: 16px;
+  }
+  .recommendationImage {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: start;
+    aspect-ratio: 1;
+    margin: 0;
+  }
+  .recommendationGrid small {
+    grid-column: 2;
+    margin: 0;
+    font-size: 11px;
+  }
+  .recommendationGrid h3 {
+    grid-column: 2;
+    align-self: start;
+    margin: 4px 0 0;
+    font-size: 16px;
+  }
+  .recommendationGrid article > button {
+    grid-column: 1 / -1;
+    width: 100%;
+    margin: 16px 0 0;
+  }
 }
 
 .saveActions {
@@ -768,7 +863,7 @@
   width: min(100%, 560px);
   max-height: calc(100dvh - 56px);
   overflow-y: auto;
-  padding: 20px 14px 0;
+  padding: 24px 20px 0;
   background: #fff;
 }
 .placeAdderInner > header {
@@ -914,7 +1009,7 @@
 }
 .placeResults > div {
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
 .placeResults button {
   position: relative;
@@ -925,7 +1020,7 @@
   gap: 10px;
   align-items: center;
   border: 1px solid transparent;
-  padding: 8px;
+  padding: 14px 12px;
   background: #f7f7f7;
   text-align: left;
 }
@@ -956,6 +1051,18 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+.resultImageEmpty {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 8px;
+  color: #666;
+  background: #efede8;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
 }
 .resultCopy {
   grid-column: 3;
@@ -1013,14 +1120,14 @@
   position: sticky;
   z-index: 3;
   bottom: 0;
-  width: calc(100% + 28px);
+  width: calc(100% + 40px);
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 2fr;
   align-items: center;
   gap: 12px;
-  margin: 24px -14px 0;
-  padding: 12px 14px calc(12px + env(safe-area-inset-bottom));
+  margin: 24px -20px 0;
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
   border-top: 1px solid #eee;
   background: #fff;
 }
@@ -1054,7 +1161,7 @@
   width: min(100%, 560px);
   max-height: calc(100dvh - 56px);
   overflow-y: auto;
-  padding: 22px 16px 0;
+  padding: 24px 20px 0;
   background: #fff;
 }
 .wishlistAdderInner > header {
@@ -1091,12 +1198,13 @@
 }
 .wishlistFilters {
   display: flex;
-  gap: 6px;
-  margin: 12px 0 18px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 20px;
 }
 .wishlistFilters button {
   border: 1px solid #ddd;
-  padding: 7px 12px;
+  padding: 9px 14px;
   background: #fff;
   font-size: 14px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
@@ -1112,7 +1220,7 @@
 }
 .wishlistResults > div {
   display: grid;
-  gap: 8px;
+  gap: 12px;
 }
 .wishlistResults article {
   position: relative;
@@ -1121,7 +1229,7 @@
   grid-template-columns: 24px 72px minmax(0, 1fr) 58px;
   gap: 10px;
   align-items: center;
-  padding: 8px;
+  padding: 14px 12px;
   background: #f7f7f7;
 }
 .wishlistCheckbox {
@@ -1137,19 +1245,45 @@
   input { width: 20px; height: 20px; accent-color: #222; }
 }
 .wishlistResults .resultImage { width: 72px; }
+.wishlistVisitTime {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid #ddd;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.wishlistVisitTime input {
+  min-width: 120px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  background: #fff;
+  font: inherit;
+}
+.additionError {
+  margin: 8px 0 0;
+  color: #9c3f32;
+  font-size: 13px;
+  line-height: 1.6;
+}
 .wishlistResults .resultCopy small { max-width: 100%; box-sizing: border-box; }
 .wishlistFooter {
   position: sticky;
   z-index: 3;
   bottom: 0;
-  width: calc(100% + 32px);
+  width: calc(100% + 40px);
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 12px;
   align-items: center;
-  margin: 24px -16px 0;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  margin: 24px -20px 0;
+  padding: 16px 20px calc(16px + env(safe-area-inset-bottom));
   border-top: 1px solid #eee;
   background: #fff;
 }
@@ -1664,6 +1798,9 @@
   background: #fff;
   color: #222;
 }
+.placeDetail > .favoriteGuide {
+  margin: 16px 20px 20px;
+}
 
 .detailHeader {
   height: 58px;
@@ -1981,9 +2118,9 @@
   }
 
   .stopCard {
-    grid-template-columns: 64px 48px 1fr 32px 28px;
+    grid-template-columns: 64px 48px minmax(0, 1fr) 32px 28px;
     min-height: 112px;
-    padding-inline: 12px;
+    padding: 20px 16px;
   }
 
   .placeCopy strong {

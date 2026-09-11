@@ -179,6 +179,15 @@ export default function Plan() {
     });
   }, [savedDetailState.plan]);
   const weather = useCurrentWeather(selectedTrip.city, selectedTrip.country);
+  const heroWeatherEffect = !weather.loading && !weather.error ? {
+    "맑음": "clear",
+    "대체로 맑음": "clear",
+    "흐림": "cloudy",
+    "안개": "hazy",
+    "이슬비": "hazy",
+    "비": "hazy",
+    "뇌우": "hazy",
+  }[weather.label] : undefined;
   const allPlaces = selectedTrip.days.flatMap((day) => getDayPlaces(day, selectedTrip.city));
   const countryKey = String(selectedTrip.country || "").trim().toLowerCase();
   const normalizedCountry = countryAliases[countryKey] || countryKey;
@@ -388,7 +397,7 @@ export default function Plan() {
 
   return (
     <main ref={planRef} className={styles.plan}>
-      <section className={styles.hero} style={heroImage ? { backgroundImage: `linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.7)), url(${heroImage})` } : undefined}>
+      <section className={styles.hero} data-weather={heroImage ? heroWeatherEffect : undefined} style={heroImage ? { "--hero-image": `url(${heroImage})` } : undefined}>
         <BackButton className={styles.backButton} tone="light" />
         <div className={styles.heroTop}><span>TRAVEL PLAN</span><span>{selectedTrip.country.toUpperCase()} / ISSUE 01</span></div>
         <p className={styles.heroTags}>{nights} NIGHTS · FOOD · CAFÉS</p>

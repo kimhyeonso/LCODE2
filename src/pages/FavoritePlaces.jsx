@@ -1,66 +1,88 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
-import { deleteFavoritePlace, deleteFavoriteTrip, getFavoritePlaces, getFavoriteTrips } from "../services/firestoreService";
+import { deleteFavoritePlace, deleteFavoriteTrip, getFavoritePlaces, getFavoriteTrips, subscribeFavoritePlaces } from "../services/firestoreService";
+import tripRoad from "../data/trip_road.json";
 import styles from "./FavoritePlaces.module.scss";
 import { resolveImageUrl as imageUrl, useImageFallback } from "../utils/imageUtils";
 import MypageBackLink from "../components/MypageBackLink";
-import DesrinationThumnail from "../components/DesrinationThumnail";
-import tripRoad from "../data/trip_road.json";
-import { useManagedCollection } from "../hooks/useManagedCollection";
-
-const imageModules = import.meta.glob("../assets/images/**/*.{jpg,jpeg,png,webp}", { eager: true, import: "default" });
-const getTripImageUrl = (imagePath) => {
-  if (!imagePath) return "";
-  const relativePath = imagePath.replace(/^img\//, "../assets/images/");
-  const key = Object.keys(imageModules).find((path) => path.toLowerCase() === relativePath.toLowerCase());
-  return key ? imageModules[key] : "";
-};
-const getRepresentativeImage = (trip) => getTripImageUrl(
-  trip.days.flatMap((day) => day.items).find((entry) => entry.type === "place" && entry.image)?.image,
-);
-const getFirstPlace = (trip) => trip.days.flatMap((day) => day.items).find((entry) => entry.type === "place");
-const themeNames = { attraction: "ART & WALK", restaurant: "SEA & FOOD", hotel: "STAY & REST", airport: "START A JOURNEY" };
-
 export default function FavoritePlaces() {
   const { user } = useAuth();
-  const managedTrips = useManagedCollection("packages", tripRoad.trips);
-  const [state, setState] = useState({ loading: true, places: [], tripIds: [], error: "" });
+  const [state, setState] = useState({ loading: true, places: [], error: "" });
+  const [favoriteTripIds, setFavoriteTripIds] = useState([]);
 
   useEffect(() => {
     let active = true;
-    Promise.all([getFavoritePlaces(user.uid), getFavoriteTrips(user.uid)])
-      .then(([places, tripIds]) => active && setState({ loading: false, places, tripIds, error: "" }))
-      .catch(() => active && setState({ loading: false, places: [], tripIds: [], error: "찜한 목록을 불러오지 못했습니다." }));
+    getFavoritePlaces(user?.uid)
+      .then((places) => active && setState({ loading: false, places, error: "" }))
+      .catch(() => active && setState({ loading: false, places: [], error: "찜한 목록을 불러오지 못했습니다." }));
     return () => { active = false; };
   }, [user]);
 
+  useEffect(() => {
+    if (!user?.uid) return undefined;
+
+    return subscribeFavoritePlaces(
+      user.uid,
+      (places) => setState({ loading: false, places, error: "" }),
+      () => setState((current) => ({ ...current, loading: false, error: "찜한 장소를 불러오지 못했습니다." })),
+    );
+  }, [user?.uid]);
+
+  useEffect(() => {
+    if (!user?.uid) {
+      setFavoriteTripIds([]);
+      return undefined;
+    }
+
+    let active = true;
+    getFavoriteTrips(user.uid)
+      .then((ids) => { if (active) setFavoriteTripIds(ids); })
+      .catch(() => { if (active) setFavoriteTripIds([]); });
+    return () => { active = false; };
+  }, [user?.uid]);
+
+  const places = useMemo(() => {
+    const placeKeys = new Set(state.places.map((place) => `${place.city || ""}:${place.name || ""}`));
+    const tripPlaces = favoriteTripIds
+      .map((id) => tripRoad.trips.find((trip) => trip.id === id))
+      .filter(Boolean)
+      .map((trip) => {
+        const firstPlace = trip.days.flatMap((day) => day.items).find((item) => item.type === "place");
+        return {
+          id: `trip-${trip.id}`,
+          tripId: trip.id,
+          name: firstPlace?.place || trip.city,
+          city: trip.city,
+          category: "TRAVEL PACKAGE",
+          recommendation: trip.title,
+          image: firstPlace?.image || trip.image || "",
+        };
+      })
+      .filter((place) => !placeKeys.has(`${place.city || ""}:${place.name || ""}`));
+    return [...state.places, ...tripPlaces];
+  }, [favoriteTripIds, state.places]);
+
+  useEffect(() => {
+    if (!favoriteTripIds.length) return;
+    setState((current) => ({ ...current, places }));
+  }, [favoriteTripIds]);
+
   const remove = async (place) => {
     try {
-      await deleteFavoritePlace(user.uid, place.id);
-      setState((current) => ({ ...current, error: "", places: current.places.filter((item) => item.id !== place.id) }));
+      if (place.tripId) {
+        await deleteFavoriteTrip(user.uid, place.tripId);
+        setFavoriteTripIds((current) => current.filter((id) => id !== place.tripId));
+        setState((current) => ({ ...current, places: current.places.filter((item) => item.tripId !== place.tripId) }));
+      } else {
+        await deleteFavoritePlace(user.uid, place.id);
+        setState((current) => ({ ...current, error: "", places: current.places.filter((item) => item.id !== place.id) }));
+      }
       window.dispatchEvent(new Event("favorite-places-changed"));
     } catch {
       setState((current) => ({ ...current, error: "찜한 장소를 삭제하지 못했습니다." }));
     }
   };
-
-  const removeTrip = async (tripId) => {
-    try {
-      await deleteFavoriteTrip(user.uid, tripId);
-      setState((current) => ({
-        ...current,
-        tripIds: current.tripIds.filter((id) => id !== tripId),
-      }));
-      window.dispatchEvent(new Event("favorite-trips-changed"));
-    } catch {
-      setState((current) => ({ ...current, error: "찜한 패키지를 삭제하지 못했습니다." }));
-    }
-  };
-
-  const favoriteTrips = state.tripIds
-    .map((id) => managedTrips.find((trip) => trip.id === id))
-    .filter(Boolean);
 
   return (
     <main className={styles.page}>
@@ -71,26 +93,7 @@ export default function FavoritePlaces() {
       <div className={styles.divider} />
       {state.loading && <p className={styles.empty}>불러오는 중…</p>}
       {state.error && <p className={styles.error} role="alert">{state.error}</p>}
-      {!state.loading && !state.places.length && !favoriteTrips.length && <div className={styles.emptyState}><strong>아직 찜한 장소가 없어요!</strong><Link to="/search">여행지 둘러보기 <span aria-hidden="true">→</span></Link></div>}
-      {favoriteTrips.length > 0 && (
-        <section className={styles.packageGrid} aria-label="찜한 여행 패키지">
-          {favoriteTrips.map((trip, index) => {
-            const firstPlace = getFirstPlace(trip);
-            return (
-              <DesrinationThumnail
-                key={trip.id}
-                trip={trip}
-                index={index}
-                image={getRepresentativeImage(trip)}
-                category={themeNames[firstPlace?.category] || "TRAVEL PACKAGE"}
-                to={`/plan?trip=${encodeURIComponent(trip.id)}`}
-                isFavorite
-                onToggleFavorite={() => removeTrip(trip.id)}
-              />
-            );
-          })}
-        </section>
-      )}
+      {!state.loading && !state.error && !state.places.length && <div className={styles.emptyState}><strong>아직 찜한 장소가 없어요!</strong><Link to="/search">여행지 둘러보기 <span aria-hidden="true">→</span></Link></div>}
       <section className={styles.grid}>
         {state.places.map((place) => (
           <article key={place.id}>

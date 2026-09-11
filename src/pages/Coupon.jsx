@@ -164,6 +164,19 @@ function CouponTicket({ coupon }) {
   const displayCoupon = isPromoCoupon
     ? { ...coupon, type: "EVENT", title: "가차 돌리기", description: "가차 돌리고 쿠폰받자!" }
     : coupon;
+  const eventPrizeImage = coupon.source === "event" && coupon.eventId === "gacha-2026"
+    ? gachaPrizeImages[coupon.prizeId]
+    : null;
+
+  if (eventPrizeImage) {
+    const prizeClassName = coupon.prizeId === "event-fourth" ? styles.eventPrizeFourth : "";
+    return (
+      <article className={`${styles.ticket} ${styles.eventPrizeTicket} ${prizeClassName}`}>
+        <img src={eventPrizeImage} alt={`${coupon.type} 당첨 쿠폰`} />
+      </article>
+    );
+  }
+
   return (
     <article
       className={`${styles.ticket} ${displayCoupon.used ? styles.used : ""} ${isPromoCoupon ? styles.eventTicket : ""}`}

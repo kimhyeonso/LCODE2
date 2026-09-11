@@ -409,7 +409,6 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
     ["쇼핑", 50000],
     ["기타", 15000],
   ];
-  const quickAmounts = [1000, 5000, 10000];
 
   return (
     <section className={styles.matches}>
@@ -465,7 +464,7 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
         <div className={styles.quickExpense}>
           <p className={styles.expenseEyebrow}>QUICK CONVERT</p>
           <div>
-            {quickAmounts.map((amount) => (
+            {[].map((amount) => (
               <span key={amount}>
                 <b>{exchange.symbol}{amount / 1000}K</b>
                 ₩{Math.round((amount * exchange.rate) / exchange.baseUnit).toLocaleString("ko-KR")}
@@ -479,8 +478,14 @@ const MatchScreen = ({ recommendations, onItinerary, onHome, onGame }) => {
         <p className={styles.moreLabel}>MORE FOR YOU</p>
         {more.map((trip, index) => (
           <article className={styles.matchRow} key={`${trip.city}-${trip.place}`}>
-            <p className={styles.matchPrice}><em>{(trip.packagePricing || packagePricingForTrip(trip)).discountPercent}% off</em><strong>{formatPackagePrice((trip.packagePricing || packagePricingForTrip(trip)).sale)}</strong></p>
-            <img loading="lazy" src={trip.image} alt={trip.place} />
+            <p className={styles.matchPrice}><strong>{formatPackagePrice((trip.packagePricing || packagePricingForTrip(trip)).sale)}</strong></p>
+            <Link
+              className={styles.matchImageLink}
+              to={`/plan?trip=${encodeURIComponent(trip.id)}`}
+              aria-label={`${trip.city} 여행 일정 보기`}
+            >
+              <img loading="lazy" src={trip.image} alt={trip.place} />
+            </Link>
             <div>
               <p className={styles.matchPercent}><strong>{index === 0 ? 83 : 77}%</strong> <span>MATCH</span></p>
               <h2>{trip.cityEnglish}</h2>

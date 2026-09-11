@@ -298,6 +298,9 @@ $label: #ece3d5;
   display: block;
   object-fit: cover;
   filter: none;
+  // 렌즈 안의 페이지가 과하게 기울어 보이지 않도록 살짝 왼쪽으로 보정한다.
+  transform: rotate(-30deg) scale(1.12);
+  transform-origin: center;
 }
 
 // 이미지 위에 한 번 더 올리는 렌즈 림: w.png의 흰 부분과 관계없이 테두리가 보이게 한다.
@@ -320,6 +323,18 @@ $label: #ece3d5;
   display: block;
   mix-blend-mode: multiply;
   filter: drop-shadow(0 5px 10px rgba(23, 23, 20, 0.2)) !important;
+}
+
+@media (max-width: 600px) {
+  // 모바일에서는 손잡이 일부가 화면 밖으로 나가도 렌즈가 크게 보이도록 한다.
+  .previewCursor {
+    width: min(105vw, 430px) !important;
+    transform: translate(-25%, -25%) rotate(30deg);
+  }
+
+  .preview {
+    touch-action: none;
+  }
 }
 
 @keyframes magazineFloat {
@@ -575,12 +590,6 @@ $label: #ece3d5;
 
   .ghost {
     order: 2;
-  }
-}
-
-@media (hover: none), (pointer: coarse) {
-  .previewCursor {
-    display: none;
   }
 }
 

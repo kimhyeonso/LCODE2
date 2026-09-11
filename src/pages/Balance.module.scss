@@ -766,9 +766,18 @@
   padding-top: 0;
 }
 
+.matchImageLink,
 .matchRow > img {
   width: 250px;
   height:190px;
+  display: block;
+  overflow: hidden;
+}
+
+.matchImageLink img {
+  display: block;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
@@ -796,10 +805,14 @@
   font-style: italic;
 }
 
+.quickExpense {
+  display: none;
+}
+
 .matchPrice strong {
   color: #171714;
   font-family: "DM Serif Display", Georgia, serif;
-  font-size: 30px;
+  font-size: 26px;
   font-weight: 400;
 }
 
@@ -956,6 +969,52 @@
     min-height: 100vh;
     overflow: hidden;
   }
+
+  // Keep the desktop recommendation cards in their own grid columns. The
+  // mobile layout intentionally uses a compact overlay, but allowing the
+  // oversized image to escape the 150px desktop column made its copy overlap.
+  .moreMatches .matchRow {
+    grid-template-columns: 150px minmax(0, 1fr);
+    grid-template-rows: auto 150px;
+    column-gap: 22px;
+    row-gap: 12px;
+    align-items: start;
+  }
+
+  .moreMatches .matchImageLink,
+  .moreMatches .matchRow > img {
+    grid-column: 1;
+    grid-row: 2;
+    width: 150px;
+    height: 150px;
+  }
+
+  .moreMatches .matchRow > div {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+    align-self: start;
+  }
+
+  .moreMatches .matchPrice {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-self: end;
+  }
+
+  .moreMatches .matchRow h2 {
+    margin-top: 8px;
+    font-size: 30px;
+  }
+
+  .moreMatches .matchRow div > p:not(.matchPercent) {
+    margin-top: 8px;
+    font-size: 12px;
+  }
+
+  .moreMatches .matchRow button {
+    margin-top: 16px;
+  }
 }
 
 @media (max-width: 1100px) {
@@ -1094,13 +1153,13 @@
     display: flex;
     width: calc(100% - 32px);
     margin: 0 16px;
-    padding: clamp(54px, 8dvh, 72px) 0 34px;
+    padding: clamp(54px, 8dvh, 72px) 0 50px;
     flex-direction: column;
   }
 
   .content h1 {
     width: min-content;
-    margin-top: clamp(44px, 8dvh, 56px);
+    margin-top: clamp(24px, 5dvh, 36px);
     font-size: clamp(51px, 14.2vw, 55px);
     line-height: 0.94;
     letter-spacing: -2px;
@@ -1123,7 +1182,7 @@
     position: static;
     width: 148px;
     height: 50px;
-    margin-top: auto;
+    margin-top: 24px;
     align-self: flex-start;
   }
 
@@ -1182,6 +1241,7 @@
     gap: 18px;
   }
 
+  .matchImageLink,
   .matchRow > img {
     width: 110px;
     height: 110px;
@@ -1584,35 +1644,74 @@
   .moreMatches {
     // Mobile: desktop's equal-height grid leaves huge blank rows here.
     display: block;
-    margin: 0 -24px;
+    margin: 0 clamp(-40px, -6.4vw, -24px);
     border-top: 0;
-    padding: 24px 24px 0;
+    padding: clamp(24px, 6.4vw, 40px) clamp(24px, 6.4vw, 40px) 0;
   }
 
   .matchRow {
-    grid-template-columns: 80px minmax(0, 1fr);
-    grid-template-rows: auto 80px;
-    gap: 14px;
-    padding-bottom: 18px;
+    position: relative;
+    grid-template-columns: clamp(80px, 21.5vw, 130px) minmax(0, 1fr);
+    grid-template-rows: clamp(80px, 21.5vw, 130px);
+    column-gap: clamp(18px, 4.7vw, 28px);
+    row-gap: 0;
+    min-height: clamp(126px, 33.5vw, 202px);
+    padding: clamp(16px, 4.3vw, 26px) 0 clamp(42px, 11.2vw, 67px);
+    border-bottom: 0;
   }
 
   .matchRow + .matchRow {
-    padding-top: 18px;
+    padding-top: clamp(16px, 4.3vw, 26px);
   }
 
+  .matchImageLink,
   .matchRow > img {
-    width: 80px;
-    height: 80px;
+    width: clamp(80px, 21.5vw, 130px);
+    height: clamp(80px, 21.5vw, 130px);
   }
 
   .matchRow h2 {
-    margin-top: 5px;
-    font-size: 24px;
+    margin-top: clamp(5px, 1.3vw, 8px);
+    font-size: clamp(20px, 4.7vw, 28px);
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .matchRow div > p:not(.matchPercent) {
-    margin-top: 5px;
-    font-size: 10px;
+    margin-top: clamp(7px, 1.9vw, 11px);
+    font-size: clamp(10px, 2.4vw, 14px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .matchPrice {
+    position: absolute;
+    top: clamp(16px, 4.3vw, 26px);
+    right: 0;
+    z-index: 1;
+    margin: 0;
+  }
+
+  .matchPrice strong {
+    font-size: clamp(20px, 4.7vw, 28px);
+  }
+
+  .matchPercent {
+    min-width: 0;
+    margin: 0;
+    padding-right: clamp(96px, 25.6vw, 154px);
+    white-space: nowrap;
+  }
+
+  .matchPercent strong {
+    font-size: clamp(20px, 4.7vw, 28px);
+  }
+
+  .matchPercent span {
+    font-size: clamp(11px, 2.6vw, 16px);
   }
 
   .matchRow button {
@@ -1620,15 +1719,22 @@
   }
 
   .matchRow div > p.moreExpense {
+    position: absolute;
+    right: 0;
+    bottom: clamp(11px, 2.9vw, 17px);
+    left: 0;
     display: flex;
-    margin-top: 14px;
+    margin: 0;
+    padding-top: clamp(10px, 2.7vw, 16px);
+    border-top: 1px solid #cec8be;
     color: #555;
+    font-size: clamp(10px, 2.4vw, 14px);
     justify-content: space-between;
   }
 
   .moreExpense strong {
     color: #222;
-    font-size: 12px;
+    font-size: clamp(12px, 2.8vw, 17px);
     font-weight: 400;
   }
 
@@ -1637,8 +1743,8 @@
     position: static;
     width: 100%;
     min-width: 0;
-    min-height: 52px;
-    margin-top: 22px;
+    min-height: clamp(52px, 13.9vw, 84px);
+    margin-top: clamp(22px, 5.9vw, 36px);
     box-sizing: border-box;
     justify-content: center;
   }

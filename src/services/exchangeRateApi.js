@@ -1,5 +1,5 @@
-export const getExchangeRates = async () => {
-  const response = await fetch("/api/exchange-rates");
+export const getExchangeRates = async ({ signal } = {}) => {
+  const response = await fetch("/api/exchange-rates", { signal });
   const data = await response.json();
 
   if (!response.ok) {

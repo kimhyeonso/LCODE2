@@ -38,7 +38,7 @@
 }
 
 // 페이지의 큰 제목입니다.
-h1 {
+.content > h1 {
   margin: 1.2rem 0; // Separate the title from the label and description.
   color: #111; // Use strong near-black heading text.
   font: 400 2rem/1 $display; // Use the display typeface with tight leading.
@@ -259,7 +259,7 @@ h1 {
     letter-spacing: .16em;
   }
 
-  h1 {
+  .content > h1 {
     margin: 0.85rem 0;
     font-size: 38px;
   }
@@ -328,12 +328,12 @@ h1 {
   .content > :first-child { margin-bottom: 8px; }
   .content > :first-child { margin-right: 25px; margin-left: 25px; }
   .eyebrow,
-  h1,
+  .content > h1,
   .description,
   .divider { margin-right: 0; margin-left: 0; }
   .eyebrow { margin-top: 0; }
   .eyebrow { font-size: 13px; letter-spacing: .16em !important; }
-  h1 { margin-top: 10px; font-size: 38px; line-height: 1.08; }
+  .content > h1 { margin-top: 10px; font-size: 38px; line-height: 1.08; }
   .description { font-size: 11px; }
   .placeGrid { width: 100%; margin-left: 0; }
 }
@@ -343,7 +343,7 @@ h1 {
   .wishlist { position: relative; margin-top: 0; padding: 36px 0 0; align-items: flex-start; }
   .content > a:first-child { margin-bottom: 8px; }
   .eyebrow { font-size: 0.625rem; letter-spacing: .24em !important; }
-  h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
+  .content > h1 { margin: 18px 0 19px; font-size: 3rem; line-height: 1.05; }
   .description { font-size: .66rem; }
   .divider { width: 492px; max-width: 100%; margin-top: 14px; }
   .placeGrid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
@@ -355,3 +355,7 @@ h1 {
 .content > [data-mypage-back] { letter-spacing: .2em !important; }
 .content > [data-mypage-back] span { letter-spacing: 0 !important; }
 .content > .divider { display: none; }
+
+@media (max-width: 640px) {
+  .placeGrid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+}

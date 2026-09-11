@@ -163,8 +163,9 @@ h1 {
 // 오른쪽 보유 쿠폰 카드 목록입니다.
 .couponList {
   display: grid;
-  gap: 1.3rem;
+  gap: 0.2rem;
   padding-top: 1.5rem;
+  // border: 1px solid red;
 }
 // A barely-there paper shadow separates the stacked coupons from the page, like a magazine insert.
 .couponList .ticket {
@@ -200,6 +201,46 @@ h1 {
   background: #171512;
   color: #f5d287;
   overflow: hidden;
+}
+
+// 이벤트 당첨 쿠폰은 이벤트 결과에서 노출한 디자인 자산 자체를 표시한다.
+// 쿠폰함에서 별도의 티켓 UI를 덧그리지 않아 모바일에서도 바로 알아볼 수 있다.
+.ticket.eventPrizeTicket {
+  display: block;
+  width: 100%;
+  aspect-ratio: auto;
+  background: transparent;
+  line-height: 0;
+  overflow: visible;
+}
+
+.eventPrizeTicket img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.couponList .eventPrizeTicket {
+  box-shadow: none;
+}
+
+// 10% 할인 쿠폰 원본은 정사각형 투명 캔버스에 저장돼 있다.
+// 가로 쿠폰이 차지하는 실제 세로 영역만 남겨, 표시 크기는 그대로 유지한다.
+.ticket.eventPrizeFourth {
+  position: relative;
+  aspect-ratio: 2.45;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  // border: 1px solid red;
+}
+
+.eventPrizeFourth img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-29.3%);
+  
 }
 
 // "가차 돌리기" 홍보 쿠폰의 배너 슬라이드입니다. 이미지들을 겹쳐두고 활성 슬라이드만 보여줍니다.
@@ -521,6 +562,14 @@ h1 {
 
   // 쿠폰 상단 작은 글자(L:CODE / SPECIAL EVENT)
   .ticketType { font-size: 10px; }
+
+  .couponList .ticket.eventPrizeTicket:not(.eventPrizeFourth) {
+    display: block;
+    height: auto;
+    aspect-ratio: auto;
+    border: 0;
+    background: transparent;
+  }
 }
 
 @media (min-width: 901px) {
@@ -566,6 +615,14 @@ h1 {
     order: 4 !important;
   }
 
+  .couponList .ticket.eventPrizeTicket:not(.eventPrizeFourth) {
+    display: block;
+    height: auto;
+    aspect-ratio: auto;
+    border: 0;
+    background: transparent;
+  }
+
   .pagination {
     order: 5 !important;
     margin: 18px 0 0;
@@ -606,6 +663,15 @@ h1 {
     background: #fbf9f4;
     overflow: visible;
   }
+
+  // 일반 쿠폰 규칙보다 뒤에 두어, 이벤트 당첨 이미지의 흰 카드 프레임은 제거한다.
+  .couponList .ticket.eventPrizeFourth {
+    height: calc((100vw - 32px) / 2.45);
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
   .ticket:not(.eventTicket) .ticketBody {
     position: absolute;
     inset: 0 0 28px;
