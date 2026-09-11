@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   query,
   runTransaction,
@@ -61,5 +62,40 @@ export async function drawEventCoupon(userId) {
     });
 
     return { prizeId: prize.prizeId, couponId: EVENT_ID, alreadyClaimed: false };
+  });
+}
+
+
+const MYSTERY_EVENT_ID = "mystery-case-01";
+export const mysteryCouponCode = (userId) => `MYSTERY-CASE-01-${userId}`;
+
+function mysteryCouponRef(userId) {
+  if (!db) throw new Error("Firebase가 설정되지 않았습니다.");
+  if (!userId) throw new Error("로그인이 필요합니다.");
+  return doc(db, "users", userId, "coupons", MYSTERY_EVENT_ID);
+}
+
+export async function getMysteryCoupon(userId) {
+  return (await getDoc(mysteryCouponRef(userId))).exists();
+}
+
+export async function issueMysteryCoupon(userId) {
+  const ref = mysteryCouponRef(userId);
+  return runTransaction(db, async (transaction) => {
+    const existing = await transaction.get(ref);
+    if (existing.exists()) return { alreadyClaimed: true };
+    transaction.set(ref, {
+      eventId: MYSTERY_EVENT_ID,
+      type: "CASE SOLVED REWARD",
+      title: "스타벅스 쿠폰",
+      description: "아메리카노 1잔",
+      detail: "6,100원 상당 (Venti 사이즈 기준)",
+      code: mysteryCouponCode(userId),
+      source: "event",
+      used: false,
+      issuedAt: serverTimestamp(),
+      expiry: "DEMO REWARD",
+    });
+    return { alreadyClaimed: false };
   });
 }
