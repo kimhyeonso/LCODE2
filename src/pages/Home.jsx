@@ -28,6 +28,10 @@ import koreaImage from "../assets/images/korea.webp";
 import japanImage from "../assets/images/japan.webp";
 import chinaImage from "../assets/images/china.webp";
 import journalTokyoImage from "../assets/images/journal_tokyo.webp";
+import { homeVideos } from "../data/homeVideo";
+import { getUpcomingPlans } from "../utils/upcomingPlans";
+import HomeExchange from "../components/HomeExchange";
+import { useHomeViewers } from "../hooks/useHomeViewers";
 import viewerIcon from "../assets/icons/menu_bar/05user.svg";
 
 import styles from "./Home.module.scss";
@@ -58,7 +62,6 @@ const heroSlides = [
     description: "취향에 맞는 여행을 추천하고, 여행 중 예상치 못한 상황에서도 일정을 다시 설계하는 여행 일정 리믹스 플랫폼",
     cta: "나에게 맞는 여행 찾기",
     to: "/destinations",
-    viewerCount: 128,
   },
   {
     desktop: bannerPC1,
@@ -71,7 +74,6 @@ const heroSlides = [
     cta: "VIEW PACKAGE",
     to: "/plan?city=FUKUOKA",
     mobileIvory: true,
-    viewerCount: 86,
   },
   {
     desktop: bannerPC2,
@@ -84,7 +86,6 @@ const heroSlides = [
     cta: "VIEW PACKAGE",
     to: "/plan?city=SEOUL",
     mobileLightText: true,
-    viewerCount: 104,
   },
   {
     desktop: bannerPC3,
@@ -166,9 +167,9 @@ const SectionLabel = ({ number, children }) => (
 );
 
 const ViewerBadge = ({ count }) => (
-  <p className={styles.viewerBadge}>
+  <p className={styles.viewerBadge} title="최근 60초 동안 홈 화면을 연 브라우저 수입니다. 같은 브라우저의 여러 탭은 한 번만 집계합니다.">
     <img src={viewerIcon} alt="" aria-hidden="true" />
-    <span><strong>{count.toLocaleString("ko-KR")}</strong>명이 보고 있어요</span>
+    <span>최근 방문 <strong>{count.toLocaleString("ko-KR")}</strong></span>
   </p>
 );
 
@@ -235,6 +236,7 @@ const TextLink = ({ to, children, ...props }) => (
 );
 
 export default function Home() {
+  const viewerCount = useHomeViewers();
   const page = useRef(null);
   const heroTouchStart = useRef(null);
   const shopRowRef = useRef(null);
@@ -247,7 +249,8 @@ export default function Home() {
     ...product,
     image: product.image || homeProductImages[index] || "",
   }));
-  const [planState, setPlanState] = useState({ userId: null, plans: [] });
+  const [planState, setPlanState] = useState({ userId: null, plans: [], loading: false, error: false });
+  const [planRetry, setPlanRetry] = useState(0);
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const [heroTransitionEnabled, setHeroTransitionEnabled] = useState(true);
 
@@ -411,42 +414,29 @@ export default function Home() {
     if (authLoading || !user) return undefined;
 
     let active = true;
-    getPlans(user.uid)
-      .then((plans) => {
-        if (!active) return;
-        const sortedPlans = [...plans].sort((a, b) => {
-          const first = new Date(a.dateRange?.start || "9999-12-31").getTime();
-          const second = new Date(b.dateRange?.start || "9999-12-31").getTime();
-          return first - second;
-        });
-        setPlanState({ userId: user.uid, plans: sortedPlans });
-      })
-      .catch(() => active && setPlanState({ userId: user.uid, plans: [] }));
+    let requestVersion = 0;
+    const loadPlans = async () => {
+      const version = ++requestVersion;
+      setPlanState({ userId: user.uid, plans: [], loading: true, error: false });
+      try {
+        const plans = await getPlans(user.uid);
+        if (active && version === requestVersion) setPlanState({ userId: user.uid, plans, loading: false, error: false });
+      } catch {
+        if (active && version === requestVersion) setPlanState({ userId: user.uid, plans: [], loading: false, error: true });
+      }
+    };
+    loadPlans();
+    window.addEventListener("plans-changed", loadPlans);
 
     return () => {
       active = false;
+      window.removeEventListener("plans-changed", loadPlans);
     };
-  }, [authLoading, user]);
+  }, [authLoading, user, planRetry]);
 
-  const planLoading = authLoading || Boolean(user && planState.userId !== user.uid);
-  const upcomingPlan = user && planState.userId === user.uid ? planState.plans[0] : null;
-  const scheduleCount = upcomingPlan?.days?.reduce(
-    (total, day) => total + day.items.filter((item) => item.type === "place").length,
-    0,
-  ) ?? 0;
-  const startDate = upcomingPlan?.dateRange?.start;
-  const endDate = upcomingPlan?.dateRange?.end;
-  const cardDate = startDate
-    ? `${formatCardDate(startDate)}${endDate ? ` — ${formatCardDate(endDate, startDate.slice(0, 4) !== endDate.slice(0, 4))}` : ""}`
-    : "일정 미정";
-  const dayCount = upcomingPlan?.days?.length ?? 0;
-  // Plan.jsx의 대표 썸네일(heroImage)과 동일하게 trip_road.json 썸네일을 최우선으로 사용한다.
-  const upcomingImage = getImageUrl(
-    tripRoad.thumbnailMap?.[upcomingPlan?.country]?.[upcomingPlan?.city] || upcomingPlan?.image
-  );
-  const dDay = startDate
-    ? Math.ceil((new Date(startDate).setHours(0, 0, 0, 0) - new Date().setHours(0, 0, 0, 0)) / 86400000)
-    : null;
+  const planLoading = authLoading || Boolean(user && (planState.userId !== user.uid || planState.loading));
+  const planError = Boolean(user && planState.userId === user.uid && planState.error);
+  const upcomingPlans = getUpcomingPlans(user && planState.userId === user.uid ? planState.plans : []);
 
   return (
     <main ref={page} className={styles.home}>
@@ -467,7 +457,7 @@ export default function Home() {
             }}
             onTransitionEnd={handleHeroTransitionEnd}
           >
-            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges, viewerCount, serviceIntro }, index) => {
+            {[...heroSlides, heroSlides[0]].map(({ desktop, mobile, video, eyebrow, title, subtitle, description, cta, to, dark, centered, compactTitle, mobileShiftRight, mobileBottomLeft, mobileIvory, mobileLightText, trimImageEdges, serviceIntro }, index) => {
               const isClone = index === heroSlides.length;
               return (
               <div
@@ -492,7 +482,7 @@ export default function Home() {
                     />
                   </picture>
                 )}
-                {viewerCount && <ViewerBadge count={viewerCount} />}
+                {viewerCount !== null && <ViewerBadge count={viewerCount} />}
                 <div className={`${styles.heroCopy} ${serviceIntro ? styles.serviceIntro : ""} ${centered ? styles.heroCopyCentered : ""} ${compactTitle ? styles.heroCopyCompactTitle : ""} ${mobileShiftRight ? styles.heroCopyMobileRight : ""} ${mobileBottomLeft ? styles.heroCopyMobileBottomLeft : ""}`}>
                   <p className={styles.heroEyebrow}>{eyebrow}</p>
                   <h1>{title}</h1>
@@ -527,38 +517,22 @@ export default function Home() {
         <h1 className={`${styles.matchTitle} whereToNextTitle`}>UPCOMING TRIP</h1>
         <div className={styles.rowTitle}>
           <p>다가오는 여행</p>
-          <TextLink to="/plan">VIEW ALL</TextLink>
+          <TextLink to="/plan/saved">VIEW ALL</TextLink>
         </div>
         {planLoading ? (
           <div className={styles.upcomingLoading}>일정을 확인하고 있어요.</div>
-        ) : upcomingPlan ? (
-          <article className={styles.upcomingCard}>
-            <div className={styles.upcomingMain}>
-              <div>
-                <strong>{dDay === null ? "DATE TBD" : dDay > 0 ? `D−${dDay}` : dDay === 0 ? "D-DAY" : "TRAVELED"}</strong>
-                <h2><Link to="/plan">{upcomingPlan.city?.toUpperCase()}</Link></h2>
-                <p>{upcomingPlan.title}</p>
-                <div className={styles.remixContext}><h3>계획에 문제가 생겼나요?</h3><p>날씨 · 휴무 · 일정 변경이 생겨도 현재 여행을 기준으로 일정을 다시 추천해드려요.</p></div>
-                <Link className={styles.remixButton} to={`/ai-remix?planId=${encodeURIComponent(upcomingPlan.id)}`}>
-                  <span>AI REMIX</span><b>일정 다시 맞추기 →</b>
-                </Link>
-              </div>
-              <div
-                className={styles.upcomingImage}
-                style={upcomingImage ? { backgroundImage: `url(${upcomingImage})` } : undefined}
-              />
-            </div>
-            <dl className={styles.tripMeta}>
-              <div><dt>DATE</dt><dd className={styles.dateValue}>{cardDate}</dd></div>
-              <div><dt>DAYS</dt><dd>{String(dayCount).padStart(2, "0")} DAYS</dd></div>
-              <div><dt>SPOTS</dt><dd>{String(scheduleCount).padStart(2, "0")} SPOTS</dd></div>
-            </dl>
-          </article>
+        ) : planError ? (
+          <div className={styles.upcomingError}>
+            <p role="alert">다가오는 일정을 불러오지 못했어요.<br />잠시 후 다시 시도해 주세요.</p>
+            <button type="button" onClick={() => setPlanRetry((value) => value + 1)}>다시 불러오기</button>
+          </div>
+        ) : upcomingPlans.length ? (
+          <UpcomingTrips key={`${user.uid}:${upcomingPlans.map(({ plan, dDay }) => `${plan.id}:${dDay}`).join(",")}`} trips={upcomingPlans} />
         ) : (
           <div className={styles.upcomingEmpty}>
             <span>NO TRIP YET</span>
-            <h2>아직 정해진 여행이 없어요.</h2>
-            <p>마음에 드는 여행지를 찾아<br />나만의 첫 일정을 만들어 보세요.</p>
+            <h2>다가오는 여행이 없어요.</h2>
+            <p>마음에 드는 여행지를 찾아<br />새로운 일정을 만들어 보세요.</p>
             <Link to={user ? "/search" : "/login"}>{user ? "여행 찾기" : "로그인하고 시작하기"} <b>→</b></Link>
           </div>
         )}
@@ -568,18 +542,9 @@ export default function Home() {
         <SectionLabel number="02">EXCHANGE</SectionLabel>
         <div className={styles.exchangeTitle}>
           <span aria-hidden="true" />
-          <p>실시간 환율</p>
+          <p>최신 환율</p>
         </div>
-            <Link to="/destination" className={styles.exchangeCard}>
-          <div>
-            <span>100 JPY</span>
-            <strong>920</strong>
-          </div>
-          <footer>
-            <span>환율 변동률&nbsp; +0.18%</span>
-            <span>자세히 보기&nbsp; →</span>
-          </footer>
-        </Link>
+        <HomeExchange />
       </section>
 
       <section className={`${styles.section} ${styles.pickSection}`}>
@@ -767,8 +732,19 @@ export default function Home() {
         </div>
       </section>
 
+      <section className={`${styles.section} ${styles.filmSection}`} aria-labelledby="home-film-title">
+        <SectionLabel number="06">TRAVEL FILM</SectionLabel>
+        <div className={styles.filmHeading}>
+          <div>
+            <span className={styles.filmEyebrow}>L:CODE ON YOUTUBE</span>
+            <h2 id="home-film-title">화면 너머, 여행의 시작</h2>
+          </div>
+        </div>
+        <HomeVideoCarousel />
+      </section>
+
       <section className={`${styles.section} ${styles.journal}`}>
-        <SectionLabel number="06">JOURNAL</SectionLabel>
+        <SectionLabel number="07">JOURNAL</SectionLabel>
         <div className={styles.rowTitle}>
           <p>여행자의 기록</p>
           <TextLink
@@ -808,5 +784,182 @@ export default function Home() {
         </Link>
       </section>
     </main>
+  );
+}
+
+function UpcomingTrips({ trips }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStart = useRef(null);
+  const count = trips.length;
+  const move = (direction) => setActiveIndex((current) => (current + direction + count) % count);
+
+  return (
+    <div className={styles.upcomingCarousel} role="region" aria-roledescription="carousel" aria-label="다가오는 일정" tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.target !== event.currentTarget || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+        event.preventDefault();
+        move(event.key === "ArrowLeft" ? -1 : 1);
+      }}
+      onTouchStart={(event) => {
+        touchStart.current = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+      }}
+      onTouchCancel={() => { touchStart.current = null; }}
+      onTouchEnd={(event) => {
+        const start = touchStart.current;
+        touchStart.current = null;
+        if (!start || !event.changedTouches.length) return;
+        const dx = event.changedTouches[0].clientX - start.x;
+        const dy = event.changedTouches[0].clientY - start.y;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) move(dx < 0 ? 1 : -1);
+      }}
+    >
+      <div className={styles.upcomingViewport}>
+        <div className={styles.upcomingTrack} style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+          {trips.map(({ plan, dDay }, index) => {
+            const start = plan.dateRange.start;
+            const end = plan.dateRange.end;
+            const cardDate = `${formatCardDate(start)}${end ? ` — ${formatCardDate(end, start.slice(0, 4) !== end.slice(0, 4))}` : ""}`;
+            const days = plan.days || [];
+            const spots = days.reduce((total, day) => total + (day.items || []).filter((item) => item.type === "place").length, 0);
+            const image = getImageUrl(tripRoad.thumbnailMap?.[plan.country]?.[plan.city] || plan.image);
+            return (
+              <article key={plan.id} className={`${styles.upcomingCard} ${styles.upcomingSlide}`} role="group" aria-roledescription="slide"
+                aria-label={`${index + 1} / ${count}: ${plan.city}`} aria-hidden={index !== activeIndex} inert={index !== activeIndex}>
+                <div className={styles.upcomingMain}>
+                  <div>
+                    <strong>{dDay === 0 ? "D-DAY" : `D−${dDay}`}</strong>
+                    <h2><Link to={`/plan/saved?id=${encodeURIComponent(plan.id)}`}>{plan.city?.toUpperCase()}</Link></h2>
+                    <p>{plan.title}</p>
+                    <div className={styles.remixContext}><h3>계획에 문제가 생겼나요?</h3><p>날씨 · 휴무 · 일정 변경이 생겨도 현재 여행을 기준으로 일정을 다시 추천해드려요.</p></div>
+                    <Link className={styles.remixButton} to={`/ai-remix?planId=${encodeURIComponent(plan.id)}`}>
+                      <span>AI REMIX</span><b>일정 다시 맞추기 →</b>
+                    </Link>
+                  </div>
+                  <div className={styles.upcomingImage} style={image ? { backgroundImage: `url(${image})` } : undefined} />
+                </div>
+                <dl className={styles.tripMeta}>
+                  <div><dt>DATE</dt><dd className={styles.dateValue}>{cardDate}</dd></div>
+                  <div><dt>DAYS</dt><dd>{String(days.length).padStart(2, "0")} DAYS</dd></div>
+                  <div><dt>SPOTS</dt><dd>{String(spots).padStart(2, "0")} SPOTS</dd></div>
+                </dl>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+      {count > 1 && (
+        <div className={styles.upcomingNavigation}>
+          <button type="button" onClick={() => move(-1)} aria-label="이전 일정">←</button>
+          <div className={styles.upcomingPagination}>
+            <span aria-live="polite" aria-atomic="true">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
+            <div className={styles.upcomingDots}>{trips.map(({ plan }, index) => (
+              <button key={plan.id} type="button" aria-label={`${index + 1}번 일정: ${plan.city}`}
+                aria-current={index === activeIndex ? "true" : undefined} onClick={() => setActiveIndex(index)} />
+            ))}</div>
+          </div>
+          <button type="button" onClick={() => move(1)} aria-label="다음 일정">→</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function HomeVideoCarousel() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const touchStart = useRef(null);
+  const videos = homeVideos.length ? homeVideos : [{ videoId: "", title: "새로운 여행 이야기" }];
+  const count = videos.length;
+  const move = (direction) => setActiveIndex((current) => (current + direction + count) % count);
+
+  return (
+    <div className={styles.filmCarousel} role="region" aria-roledescription="carousel" aria-label="여행 영상" tabIndex={0}
+      onKeyDown={(event) => {
+        if (event.target !== event.currentTarget || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+        event.preventDefault();
+        move(event.key === "ArrowLeft" ? -1 : 1);
+      }}
+      onTouchStart={(event) => {
+        touchStart.current = event.touches.length === 1 ? { x: event.touches[0].clientX, y: event.touches[0].clientY } : null;
+      }}
+      onTouchCancel={() => { touchStart.current = null; }}
+      onTouchEnd={(event) => {
+        const start = touchStart.current;
+        touchStart.current = null;
+        if (!start || !event.changedTouches.length) return;
+        const dx = event.changedTouches[0].clientX - start.x;
+        const dy = event.changedTouches[0].clientY - start.y;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) move(dx < 0 ? 1 : -1);
+      }}
+    >
+      <div className={styles.filmViewport}>
+        <div className={styles.filmTrack} style={{ transform: `translateX(-${activeIndex * 100}%)` }}>
+          {videos.map((video, index) => (
+            <div className={styles.filmSlide} key={`${video.videoId}-${index}`} role="group" aria-roledescription="slide"
+              aria-label={`${index + 1} / ${count}: ${video.title}`} aria-hidden={index !== activeIndex} inert={index !== activeIndex}>
+              <HomeVideo key={`${video.videoId}-${index === activeIndex}`} video={video} />
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className={styles.filmNavigation}>
+        <button type="button" onClick={() => move(-1)} disabled={count < 2} aria-label="이전 영상">←</button>
+        <div className={styles.filmPagination}>
+          <span aria-live="polite" aria-atomic="true">{String(activeIndex + 1).padStart(2, "0")} / {String(count).padStart(2, "0")}</span>
+          {count > 1 && <div className={styles.filmDots}>{videos.map((video, index) => (
+            <button key={`${video.videoId}-${index}`} type="button" aria-label={`${index + 1}번 영상: ${video.title}`}
+              aria-current={index === activeIndex ? "true" : undefined} onClick={() => setActiveIndex(index)} />
+          ))}</div>}
+        </div>
+        <button type="button" onClick={() => move(1)} disabled={count < 2} aria-label="다음 영상">→</button>
+      </div>
+    </div>
+  );
+}
+
+function HomeVideo({ video }) {
+  const [playing, setPlaying] = useState(false);
+  const videoId = /^[\w-]{11}$/.test(video.videoId) ? video.videoId : "";
+
+  return (
+    <div className={styles.filmCard}>
+      <div className={styles.filmVisual}>
+        {playing && videoId ? (
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
+            title={video.title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerPolicy="strict-origin-when-cross-origin"
+            allowFullScreen
+          />
+        ) : (
+          <>
+            <img
+              src={videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : japanImage}
+              alt=""
+              loading="lazy"
+              onError={(event) => {
+                if (event.currentTarget.dataset.fallbackApplied) return;
+                event.currentTarget.dataset.fallbackApplied = "true";
+                event.currentTarget.src = japanImage;
+              }}
+            />
+            <div className={styles.filmOverlay}>
+              {videoId ? (
+                <button className={styles.filmPlay} type="button" onClick={() => setPlaying(true)} aria-label={`${video.title} 영상 재생`}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7Z" fill="currentColor" /></svg>
+                  <span>영상 재생</span>
+                </button>
+              ) : (
+                <div className={styles.filmComingSoon}><span>COMING SOON</span><p>새로운 여행 이야기를 준비하고 있어요.</p></div>
+              )}
+            </div>
+          </>
+        )}
+      </div>
+      <div className={styles.filmFooter}>
+        <span>{video.title}</span>
+        {videoId ? <a href={`https://www.youtube.com/watch?v=${videoId}`} target="_blank" rel="noopener noreferrer">YouTube에서 보기 <span aria-hidden="true">↗</span></a> : <span>곧 만나요</span>}
+      </div>
+    </div>
   );
 }

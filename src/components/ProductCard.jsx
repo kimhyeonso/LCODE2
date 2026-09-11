@@ -5,7 +5,7 @@ import {
 
 import styles from "../pages/Shop.module.scss";
 import { useShop } from "../hooks/useShop";
-import { resolveImageUrl } from "../utils/imageUtils";
+import { resolveImageUrl, useImageFallback as handleImageFallback } from "../utils/imageUtils";
 
 
 const STANDARD_OPTION = {
@@ -33,9 +33,12 @@ export default function ProductCard({
     );
 
   const imageNumber = Number(String(product.id).replace(/\D/g, ""));
+  const fallbackThumbnail = imageNumber
+    ? resolveImageUrl(`detail/${imageNumber}_1.webp`, "")
+      || resolveImageUrl(`detail/${imageNumber}.webp`, "")
+    : "";
   const thumbnail = resolveImageUrl(product.image, "")
-    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.webp`, "") : "")
-    || (imageNumber ? resolveImageUrl(`detail/${imageNumber}_1.webp`, "") : "");
+    || fallbackThumbnail;
 
 
   const handleAdd =
@@ -116,9 +119,11 @@ export default function ProductCard({
 
           {thumbnail ? (
             <img loading="lazy"
-              className={styles.productThumb}
+              key={thumbnail}
+              className={`${styles.productThumb} ${styles.productThumbLoaded}`}
               src={thumbnail}
               alt={product.name}
+              onError={(event) => handleImageFallback(event, fallbackThumbnail)}
             />
           ) : (
             <b>
