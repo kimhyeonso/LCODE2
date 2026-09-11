@@ -92,7 +92,7 @@ export default function Event() {
                 <button
                   className={styles.eventCard}
                   type="button"
-                  onClick={() => setStep("magazine")}
+                  onClick={() => setSearchParams({ event: "magazine" })}
                 >
                   <div className={styles.cardVisual}>
                     <img loading="lazy" src="/event/event04/magazinebanne.webp" alt="" />

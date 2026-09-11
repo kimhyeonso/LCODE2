@@ -156,6 +156,19 @@ export async function getFavoritePlaces(userId) {
   return snap.docs.map((item) => ({ id: item.id, ...item.data() }));
 }
 
+export function subscribeFavoritePlaces(userId, onChange, onError) {
+  if (!db || !userId) {
+    onChange([]);
+    return () => {};
+  }
+
+  return onSnapshot(
+    collection(db, "users", userId, "favoritePlaces"),
+    (snapshot) => onChange(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))),
+    onError,
+  );
+}
+
 export async function saveFavoritePlace(userId, place) {
   if (!userId || !place?.key) throw new Error("찜할 장소 정보가 올바르지 않습니다.");
   await setDoc(doc(requireDb(), "users", userId, "favoritePlaces", place.key), {

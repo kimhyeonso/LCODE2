@@ -6,6 +6,14 @@
   padding: 22px 0 72px;
   color: $ink;
 }
+.filterHelp {
+  margin: 16px 24px;
+  padding: 12px 14px;
+  background: #f6f3ec;
+  color: #666;
+  font-size: 12px;
+  line-height: 1.7;
+}
 .searchIntro form {
   display: grid;
   grid-template-columns: 18px 1fr;
@@ -19,6 +27,7 @@
   opacity: 0.45;
 }
 .searchIntro input {
+  min-width: 0;
   height: 42px;
   border: 0;
   outline: 0;
@@ -77,6 +86,12 @@
 .archive {
   margin-top: 28px;
 }
+.resultCount {
+  margin: 0 0 20px;
+  color: #777;
+  font-size: 13px;
+  line-height: 1.6;
+}
 
 .balanceGameCta {
   min-height: 56px;
@@ -134,9 +149,36 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+  // Search 결과 사진 위로만 유광 반사광이 지나가도록 한다.
+  .results > div > a > div:first-child::after {
+    position: absolute;
+    z-index: 1;
+    top: -50%;
+    left: -70%;
+    width: 35%;
+    height: 200%;
+    background: linear-gradient(
+      110deg,
+      transparent,
+      rgba(255, 255, 255, 0.08),
+      rgba(255, 255, 255, 0.5),
+      rgba(255, 255, 255, 0.08),
+      transparent
+    );
+    content: "";
+    opacity: 0.2;
+    pointer-events: none;
+    transform: rotate(15deg);
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
   .results > div:hover > a > div:first-child {
     transform: scale(1.035);
     filter: brightness(0.96);
+  }
+
+  .results > div:hover > a > div:first-child::after {
+    left: 140%;
   }
 
   .results > div > button:hover {
@@ -388,7 +430,7 @@
 }
 .filterPanel > footer {
   position: fixed;
-  width: 100%;
+  width: min(100%, 560px);
   bottom: 0;
   display: grid;
   grid-template-columns: 84px 1fr;
@@ -561,4 +603,28 @@
   .filterPanel select {
     font-size: 14px !important;
   }
+}
+
+@media (max-width: 640px) {
+  .searchIntro input { font-size: 16px; }
+  .tabs { gap: 12px 20px; flex-wrap: wrap; margin-block: 24px; }
+  .tabs button { min-height: 44px; }
+  .controls { flex-wrap: wrap; gap: 12px; }
+  .controls button, .controls select { min-height: 44px; max-width: 100%; }
+  .products > div {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 70%;
+    scroll-snap-type: x proximity;
+    padding-bottom: 8px;
+  }
+  .products > div > * { min-width: 0; scroll-snap-align: start; }
+  .filterPanel { padding-bottom: calc(100px + env(safe-area-inset-bottom)); }
+  .filterHelp { margin-inline: 16px; word-break: keep-all; overflow-wrap: anywhere; }
+  .filterGroup { margin-inline: 16px; }
+  .filterGroup button { min-height: 44px; height: auto; padding-block: 10px; }
+  .paceOptions button { flex-wrap: wrap; gap: 6px 12px; text-align: left; line-height: 1.5; }
+  .filterPanel > header button { min-width: 44px; min-height: 44px; }
+  .filterPanel > footer { padding-inline: 16px; }
+  .filterPanel > footer button { height: auto; min-height: 48px; padding: 10px; line-height: 1.5; }
 }

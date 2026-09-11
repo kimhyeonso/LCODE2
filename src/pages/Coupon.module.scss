@@ -163,8 +163,9 @@ h1 {
 // 오른쪽 보유 쿠폰 카드 목록입니다.
 .couponList {
   display: grid;
-  gap: 1.3rem;
+  gap: 0.2rem;
   padding-top: 1.5rem;
+  // border: 1px solid red;
 }
 // A barely-there paper shadow separates the stacked coupons from the page, like a magazine insert.
 .couponList .ticket {
@@ -200,6 +201,46 @@ h1 {
   background: #171512;
   color: #f5d287;
   overflow: hidden;
+}
+
+// 이벤트 당첨 쿠폰은 이벤트 결과에서 노출한 디자인 자산 자체를 표시한다.
+// 쿠폰함에서 별도의 티켓 UI를 덧그리지 않아 모바일에서도 바로 알아볼 수 있다.
+.ticket.eventPrizeTicket {
+  display: block;
+  width: 100%;
+  aspect-ratio: auto;
+  background: transparent;
+  line-height: 0;
+  overflow: visible;
+}
+
+.eventPrizeTicket img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.couponList .eventPrizeTicket {
+  box-shadow: none;
+}
+
+// 10% 할인 쿠폰 원본은 정사각형 투명 캔버스에 저장돼 있다.
+// 가로 쿠폰이 차지하는 실제 세로 영역만 남겨, 표시 크기는 그대로 유지한다.
+.ticket.eventPrizeFourth {
+  position: relative;
+  aspect-ratio: 2.45;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  // border: 1px solid red;
+}
+
+.eventPrizeFourth img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-29.3%);
+  
 }
 
 // "가차 돌리기" 홍보 쿠폰의 배너 슬라이드입니다. 이미지들을 겹쳐두고 활성 슬라이드만 보여줍니다.
@@ -521,6 +562,14 @@ h1 {
 
   // 쿠폰 상단 작은 글자(L:CODE / SPECIAL EVENT)
   .ticketType { font-size: 10px; }
+
+  .couponList .ticket.eventPrizeTicket:not(.eventPrizeFourth) {
+    display: block;
+    height: auto;
+    aspect-ratio: auto;
+    border: 0;
+    background: transparent;
+  }
 }
 
 @media (min-width: 901px) {
@@ -566,6 +615,14 @@ h1 {
     order: 4 !important;
   }
 
+  .couponList .ticket.eventPrizeTicket:not(.eventPrizeFourth) {
+    display: block;
+    height: auto;
+    aspect-ratio: auto;
+    border: 0;
+    background: transparent;
+  }
+
   .pagination {
     order: 5 !important;
     margin: 18px 0 0;
@@ -606,6 +663,15 @@ h1 {
     background: #fbf9f4;
     overflow: visible;
   }
+
+  // 일반 쿠폰 규칙보다 뒤에 두어, 이벤트 당첨 이미지의 흰 카드 프레임은 제거한다.
+  .couponList .ticket.eventPrizeFourth {
+    height: calc((100vw - 32px) / 2.45);
+    border: 0;
+    background: transparent;
+    overflow: hidden;
+  }
+
   .ticket:not(.eventTicket) .ticketBody {
     position: absolute;
     inset: 0 0 28px;
@@ -700,3 +766,65 @@ h1 {
 .archive .archiveHeading { margin: 0; }
 .archiveHeading > div:first-child { flex: 1; }
 .archive > .description { order: 2; }
+
+/* Starbucks reward card and mobile gift preview. */
+.starbucksGift {
+  display: grid; grid-template-columns: minmax(0, 1fr) 112px;
+  width: 100%; min-height: 265px; padding: 0; overflow: hidden;
+  border: 1px solid #d4e1da; border-radius: 14px; background: #fff;
+  text-align: left; cursor: pointer; box-shadow: 0 10px 26px #12392b16;
+  font: inherit; transition: box-shadow .2s, transform .2s;
+}
+.starbucksGift:hover { transform: translateY(-2px); box-shadow: 0 14px 32px #12392b26; }
+.starbucksGift:focus-visible { outline: 3px solid #00754a; outline-offset: 5px; }
+.giftCardFace {
+  display: flex; flex-direction: column; align-items: flex-start; padding: 25px 28px;
+  background-color: #163e34;
+  background-image: linear-gradient(#ffffff12 1px, transparent 1px), linear-gradient(90deg, #ffffff12 1px, transparent 1px);
+  background-size: 40px 40px; color: #fff;
+}
+.giftEyebrow { color: #c9bb8b; font-size: 8px; letter-spacing: .18em; }
+.giftWordmark { margin-top: 16px; font: 800 44px/.95 Arial, sans-serif; letter-spacing: .13em; color: #b9bc91; }
+.giftCoffeeCo { margin: 12px 0 25px; color: #61a38d; font: 800 22px/1 Arial, sans-serif; letter-spacing: .1em; }
+.giftProduct { margin-top: auto; font-size: 13px; color: #e4eee7; }
+.giftProduct b { margin-left: 8px; font-size: 23px; }
+.giftCardRail { display: flex; flex-direction: column; align-items: center; justify-content: space-between; gap: 24px; padding: 24px 10px; color: #176447; }
+.giftCardRail img { width: 60px; height: 60px; object-fit: contain; }
+.giftCardRail > span { font: 600 10px/1.7 Arial, sans-serif; text-align: center; letter-spacing: .2em; }
+.giftCardRail > b { font-size: 11px; }
+.giftDialog {
+  position: fixed; inset: 0; margin: auto; width: min(420px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px); overflow-y: auto; padding: 0;
+  border: 0; border-radius: 18px; background: #fff; color: #17241e;
+  box-shadow: 0 28px 90px #0005; box-sizing: border-box;
+}
+.giftDialog::backdrop { background: #071711a6; backdrop-filter: blur(4px); }
+.giftDialogHeader { display: flex; justify-content: space-between; align-items: center; padding: 14px 20px; border-bottom: 1px solid #eef1ed; }
+.giftDialogHeader > span { font: 700 10px/1.5 Arial, sans-serif; letter-spacing: .14em; color: #27674f; }
+.giftDialogHeader > button { width: 38px; height: 38px; border: 0; background: transparent; font-size: 28px; color: #304e40; cursor: pointer; }
+.giftCupStage { display: grid; place-items: center; min-height: 215px; padding: 28px; background: radial-gradient(ellipse at center, #e9f2eb 0, #fff 68%); }
+.giftCup { position: relative; width: 120px; height: 145px; display: grid; place-items: center; background: linear-gradient(90deg,#e8e5de,#fff 35%,#f6f5ee 75%,#dcdad2); border-radius: 7px 7px 25px 25px; transform: perspective(400px) rotateX(-9deg); box-shadow: 5px 15px 17px #0002; }
+.giftCup::before { content: ''; position: absolute; top: -10px; left: -3px; right: -3px; height: 19px; border: 5px solid #e7e4d9; border-radius: 50%; background: #362a1c; box-sizing: border-box; }
+.giftCup img { width: 65px; height: 65px; object-fit: contain; }
+.giftCodeArea { text-align: center; padding: 5px 30px 15px; }
+.giftBarcode { display: block; width: 100%; height: 70px; fill: #101010; }
+.giftCodeArea .giftNumber { margin: 10px 0 14px; font: 500 25px/1.3 Arial,sans-serif; letter-spacing: .1em; color: #111; user-select: all; }
+.giftCopyButton { border: 1px solid #cddbd3; border-radius: 20px; padding: 8px 18px; background: #f3f8f4; color: #176447; font: inherit; font-size: 12px; cursor: pointer; }
+.giftCopyStatus { display: block; min-height: 20px; margin-top: 7px; font-size: 11px; color: #53705f; }
+.giftDetails { padding: 22px 28px 26px; border-top: 1px dashed #d7dfd9; }
+.giftDetails > span { font-size: 12px; color: #607166; }
+.giftDetails > h2 { margin: 7px 0 10px; font: 700 22px/1.4 sans-serif; color: #152d21; }
+.giftDetails > p { margin: 0 0 20px; font-size: 12px; color: #68776e; }
+.giftDetails > small { font-size: 10px; color: #9aa39d; }
+@media (max-width: 600px) {
+  .starbucksGift { grid-template-columns: minmax(0,1fr) 85px; min-height: 230px; }
+  .giftCardFace { padding: 22px 18px; }
+  .giftWordmark { font-size: 35px; }
+  .giftCoffeeCo { font-size: 17px; }
+  .giftCardRail { padding: 22px 8px; }
+  .giftCardRail img { width: 49px; height: 49px; }
+  .giftEyebrow { font-size: 7px; }
+  .giftProduct { font-size: 11px; }
+  .giftCodeArea .giftNumber { font-size: 22px; letter-spacing: .07em; }
+}
+@media (prefers-reduced-motion: reduce) { .starbucksGift { transition: none; } }

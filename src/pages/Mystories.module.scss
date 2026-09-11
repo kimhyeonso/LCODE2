@@ -579,7 +579,7 @@ h1 {
 .stories .emptyState { padding: 32px 20px; border: 1px solid #ddd9d2; margin: 24px 0; }
 .stories .emptyState h2 { font-size: 18px; line-height: 1.6; }
 .stories .emptyState p { margin-top: 12px; font-size: 14px; color: #777; }
-.stories .newReview { display: none; align-items: center; justify-content: center; min-height: 52px; margin-top: 20px; padding: 12px 20px; background: #171714; color: #fff; font-size: 14px; }
+.stories .newReview { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; margin-top: 20px; padding: 12px 20px; background: #171714; color: #fff; font-size: 14px; }
 .storyCard .storyInfo { width: 100%; }
 .stories .storyList .storyCard { display: block; aspect-ratio: auto; min-height: 0; margin-bottom: 16px; }
 .stories .storyInfo { padding: 22px 18px; }
@@ -865,7 +865,7 @@ h1 {
   .stories .storySubtitle { margin-top: 6px; font-size: 11px; }
 
   // 하단 '새 리뷰 작성' 버튼은 시안에 없어 숨깁니다. (카드의 '리뷰 쓰기'로 대체)
-  .stories .newReview { display: none; }
+  .stories .newReview { display: inline-flex; }
 
   // 쇼핑 리뷰 영역 제목은 시안에 없어 숨깁니다.
   .shopping .shoppingTitle { display: block; }
@@ -1100,6 +1100,25 @@ h1 {
     gap: 19px 8px;
   }
 
+  // 모바일 카드가 지나치게 길어지지 않도록 이미지 높이를 약 2rem 줄인다.
+  .shopping .productImage {
+    aspect-ratio: 1 / 0.81;
+  }
+
+  .shopping .productCard footer a {
+    padding: 0 4px;
+    font-size: 11px;
+  }
+
+  .shopping .productCategory {
+    font-size: 0.38rem;
+    padding-top: 0.2rem;
+  }
+
+  .shopping .productCard h2 {
+    font-size: 0.58rem;
+  }
+
   .modalBackdrop {
     padding: 18px;
   }
@@ -1116,4 +1135,46 @@ h1 {
     min-width: 88px;
     height: 42px;
   }
+}
+
+// Use the same review layout across the full mobile breakpoint.
+@media (max-width: 640px) {
+  .content { display: block; min-width: 0; }
+  .stories, .shopping, .slideViewport, .productSlider { min-width: 0; }
+  .shopping { margin-top: 32px; padding: 24px 0 0; border-top: 1px solid #ddd9d1; border-left: 0; }
+  .stories .storyCard, .stories .hasStoryPhoto { display: block; aspect-ratio: auto; }
+  .stories .storyPhoto, .storyImage { height: auto; min-height: 0; aspect-ratio: 16 / 9; }
+  .stories .storyInfo { padding: 20px 16px 16px; }
+  .storyInfo h2 { font-size: 18px; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+  .stories .storySubtitle, .storyInfo small { font-size: 12px; line-height: 1.6; }
+  .stories .storyExcerpt { margin-top: 12px; font-size: 14px; line-height: 1.7; overflow-wrap: anywhere; }
+  .stories .storyTags { flex-wrap: wrap; gap: 6px; }
+  .stories .storyTags li { max-width: 100%; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+  .stories .storyInfo footer { margin-top: 20px; gap: 10px; }
+  .stories .storyInfo footer > a { height: auto; min-height: 48px; padding: 12px 8px; font-size: 13px; line-height: 1.5; white-space: normal; text-align: center; word-break: keep-all; }
+  .shopping .productGrid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 20px 12px; }
+  .shopping .productCard { min-width: 0; display: flex; flex-direction: column; }
+  .shopping .productImage { height: auto; aspect-ratio: 1; flex-shrink: 0; }
+  .shopping .productCard h2 { font-size: 16px; line-height: 1.5; word-break: keep-all; overflow-wrap: anywhere; }
+  .shopping .productCard small, .shopping .productCard p, .shopping .productRating { font-size: 12px; line-height: 1.6; overflow-wrap: anywhere; }
+  .shopping .productCard footer { grid-template-columns: minmax(0, 1fr); gap: 8px; margin-top: auto; padding-top: 16px; }
+  .shopping .productCard footer a { display: flex; align-items: center; justify-content: center; height: auto; min-height: 44px; padding: 10px 6px; font-size: 13px; line-height: 1.5; white-space: normal; text-align: center; }
+  .reviewSlider .slideArrow, .productSlider .slideArrow { display: none !important; }
+  .pageDots { flex-wrap: wrap; gap: 0; }
+  .pageDots button { width: 28px; height: 28px; border-radius: 0; background: transparent; display: grid; place-items: center; }
+  .pageDots button::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #d4d1cc; }
+  .pageDots .activeDot { background: transparent; }
+  .pageDots .activeDot::after { background: #65605a; }
+  .stories .reviewDeleteButton, .shopping .deleteReviewButton { width: 44px; height: 44px; background: rgba(0, 0, 0, .45); }
+  .modal { max-height: calc(100dvh - 36px); overflow-y: auto; }
+  .modal p { word-break: keep-all; overflow-wrap: anywhere; }
+}
+
+.travelReviewTitle { margin: 24px 0 16px; font: 500 18px/1.5 $sans; }
+.stories .emptyState h3 { margin: 0; font-size: 16px; line-height: 1.6; }
+.stories .emptyState p { line-height: 1.7; word-break: keep-all; overflow-wrap: anywhere; }
+.stories .newReview { text-align: center; line-height: 1.5; }
+.stories .newReview:focus-visible { outline: 2px solid #344139; outline-offset: 4px; }
+@media (max-width: 640px) {
+  .stories .newReview { display: flex; width: 100%; }
 }

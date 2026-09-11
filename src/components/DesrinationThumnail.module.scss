@@ -12,6 +12,7 @@
 }
 
 .tripImage {
+  position: relative;
   display: grid;
   aspect-ratio: 1 / 1;
   place-items: center;
@@ -120,3 +121,10 @@
   }
 }
 .tripLink { overflow: hidden; }
+
+@media (max-width: 640px) {
+  .tripCopy { min-height: 0; padding: 16px; }
+  .tripCopy h2 { line-height: 1.45; word-break: keep-all; overflow-wrap: anywhere; }
+  .tripCopy > small, .tripCopy strong, .tripCopy em { line-height: 1.6; overflow-wrap: anywhere; }
+  .favoriteButton { width: 44px; height: 44px; }
+}

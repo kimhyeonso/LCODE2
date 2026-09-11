@@ -332,8 +332,15 @@ export default function Mystories() {
   return <main className={styles.mystories}><div className={styles.content}>
     <section className={styles.stories} aria-labelledby="my-stories-title">
       <MypageBackLink /><p className={styles.eyebrow}>JOURNAL</p><h1 id="my-stories-title">MY<span className={styles.mobileBreak}><br /></span> STORIES</h1><p className={styles.description}>나만의 여행을 위해 남긴 글</p><div className={styles.divider} />
+      <h2 className={styles.travelReviewTitle}>여행 리뷰</h2>
       {loading && <p role="status">리뷰를 불러오고 있어요.</p>}
       {error && <p role="alert">{error}</p>}
+      {!loading && !error && displayTravelReviews.length === 0 && (
+        <div className={styles.emptyState}>
+          <h3>아직 작성한 여행 리뷰가 없어요.</h3>
+          <p>여행의 추억을 리뷰로 남겨보세요. 최근 30일 이내에 종료된 여행을 선택해 작성할 수 있어요.</p>
+        </div>
+      )}
       {displayTravelReviews.length > 0 && <section className={styles.reviewSlider} aria-label="작성한 여행 리뷰" aria-roledescription="슬라이드">
         <button type="button" className={styles.slideArrow} aria-label="이전 리뷰" disabled={displayTravelReviews.length < 2} onClick={goToPreviousReview}>{"<"}</button>
         <div className={styles.slideViewport} onTouchStart={handleSwipeStart} onTouchEnd={handleSwipeEnd}><div className={styles.slideTrack} style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
@@ -345,7 +352,7 @@ export default function Mystories() {
           {displayTravelReviews.map((review, index) => <button key={review.id || `dot-${index}`} type="button" className={index === currentSlide ? styles.activeDot : ""} aria-label={`${index + 1}번째 리뷰`} aria-current={index === currentSlide} onClick={() => setSlide(index)} />)}
         </div>}
       </section>}
-      <Link className={styles.newReview} to="/review" state={{ newReview: true }}>새 리뷰 작성</Link>
+      <Link className={styles.newReview} to="/review" state={{ newReview: true }}>여행 리뷰 작성</Link>
     </section>
     <section className={styles.shopping} aria-labelledby="shopping-review-title">
       <h2 className={styles.shoppingTitle} id="shopping-review-title">SHOPPING REVIEW</h2>

@@ -31,6 +31,15 @@
   animation-delay: 0.04s;
 }
 
+.popupCard:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+// AI Remix 포스터는 데스크톱에서만 시안의 더 넓은 비율로 표시한다.
+.popupCard:has(.imageLink > img[src$="popup03.webp"]) {
+  width: min(31vw, calc((100vh - 90px) * 0.65), 480px);
+}
+
 .imageLink {
   display: block;
   width: 100%;
@@ -61,6 +70,11 @@
   background: #fff;
   color: #111;
   font-size: 15px;
+}
+
+.popupCard:has(.imageLink > img[src$="popup03.webp"]) footer {
+  background: #050505;
+  color: #fff;
 }
 
 .popupCard label {
@@ -137,7 +151,13 @@
 
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  // 모바일에서는 콘텐츠 비율과 관계없이 세 팝업을 같은 작은 폭으로 맞춘다.
+  .popupCard,
+  .popupCard:has(.imageLink > img[src$="popup03.webp"]) {
+    width: min(64vw, 240px);
+  }
+
   .popupCard footer {
     min-height: 40px;
     padding-inline: 12px;
